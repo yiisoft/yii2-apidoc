@@ -1,9 +1,13 @@
 API documentation generator for Yii 2
 =====================================
 
-This extension provides an API documentation generator for the Yii framework 2.0.
+This extension provides an API documentation generator for the [Yii framework 2.0](http://www.yiiframework.com).
 
 For license information check the [LICENSE](LICENSE.md)-file.
+
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-apidoc/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
+[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
+
 
 Installation
 ------------
