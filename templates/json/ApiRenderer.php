@@ -10,8 +10,6 @@ namespace yii\apidoc\templates\json;
 use yii\apidoc\models\Context;
 use yii\apidoc\renderers\ApiRenderer as BaseApiRenderer;
 use yii\base\ViewContextInterface;
-use yii\helpers\Html;
-use yii\web\View;
 use Yii;
 
 /**
@@ -40,17 +38,13 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     public function generateApiUrl($typeName)
     {
-        return $this->generateFileName($typeName);
     }
 
     /**
-     * Generates file name for API page for a given type
-     * @param string $typeName
-     * @return string
+     * @inheritdoc
      */
     protected function generateFileName($typeName)
     {
-        return strtolower(str_replace('\\', '-', $typeName)) . '.html';
     }
 
     /**
@@ -58,7 +52,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     public function getViewPath()
     {
-        return Yii::getAlias('@yii/apidoc/templates/html/views');
     }
 
     /**
@@ -66,9 +59,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     protected function generateLink($text, $href, $options = [])
     {
-        $options['href'] = $href;
-
-        return Html::a($text, null, $options);
     }
 
     /**
@@ -76,6 +66,5 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     public function getSourceUrl($type, $line = null)
     {
-        return null;
     }
 }
