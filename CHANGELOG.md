@@ -5,7 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - no changes in this release.
-
+- Enh: Added ability to set pageTitle from command line (unclead)
 
 2.0.3 March 01, 2015
 --------------------

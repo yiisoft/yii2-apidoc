@@ -47,6 +47,9 @@ class GuideController extends BaseController
             return 1;
         }
 
+        if (!empty($this->pageTitle)) {
+            $renderer->pageTitle = $this->pageTitle;
+        }
         if ($renderer->guideUrl === null) {
             $renderer->guideUrl = './';
         }
