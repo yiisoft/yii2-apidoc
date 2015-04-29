@@ -25,11 +25,16 @@ abstract class BaseController extends Controller
      * @var string template to use for rendering
      */
     public $template = 'bootstrap';
+
     /**
      * @var string|array files to exclude.
      */
     public $exclude;
 
+    /**
+     * @var string page title
+     */
+    public $pageTitle;
 
     /**
      * Checks that target directory is valid. Asks questions in tricky cases.
@@ -156,6 +161,6 @@ abstract class BaseController extends Controller
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['template', 'exclude']);
+        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle']);
     }
 }

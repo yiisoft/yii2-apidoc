@@ -50,6 +50,10 @@ class ApiController extends BaseController
         $renderer->apiUrl = './';
         $renderer->guidePrefix = $this->guidePrefix;
 
+        if (!empty($this->pageTitle)) {
+            $renderer->pageTitle = $this->pageTitle;
+        }
+
         // setup reference to guide
         if ($this->guide !== null) {
             $renderer->guideUrl = $guideUrl = $this->guide;

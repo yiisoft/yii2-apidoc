@@ -38,6 +38,8 @@ abstract class BaseRenderer extends Component
 
     public $guidePrefix = 'guide-';
     public $apiUrl;
+    public $pageTitle;
+
     /**
      * @var Context the [[Context]] currently being rendered.
      */
