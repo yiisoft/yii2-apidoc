@@ -25,7 +25,6 @@ use yii\web\View;
  */
 abstract class GuideRenderer extends BaseGuideRenderer
 {
-    public $pageTitle;
     public $layout;
 
     /**

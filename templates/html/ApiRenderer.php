@@ -32,10 +32,6 @@ use Yii;
 class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 {
     /**
-     * @var string string to use as the title of the generated page.
-     */
-    public $pageTitle;
-    /**
      * @var string path or alias of the layout file to use.
      */
     public $layout;
