@@ -4,6 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.0.4 under development
 -----------------------
 
+- Bug #3: Interface documentation did not show inheritance (cebe)
 - Enh: Added ability to set pageTitle from command line (unclead)
 
 
