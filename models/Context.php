@@ -121,6 +121,11 @@ class Context extends Component
                 }
             }
         }
+        foreach ($this->interfaces as $interface) {
+            foreach ($interface->parentInterfaces as $pInterface) {
+                $this->interfaces[$pInterface]->implementedBy[] = $interface->name;
+            }
+        }
         // inherit docs
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
