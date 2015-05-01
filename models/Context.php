@@ -134,6 +134,9 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->updateSubclassInheritance($class);
         }
+        foreach ($this->interfaces as $interface) {
+            $this->updateSubInterfaceInheritance($interface);
+        }
         // add properties from getters and setters
         foreach ($this->classes as $class) {
             $this->handlePropertyFeature($class);
@@ -169,6 +172,21 @@ class Context extends Component
             $subclass->properties = array_merge($class->properties, $subclass->properties);
             $subclass->methods = array_merge($class->methods, $subclass->methods);
             $this->updateSubclassInheritance($subclass);
+        }
+    }
+
+    /**
+     * Add methods to subinterfaces
+     * @param InterfaceDoc $class
+     */
+    protected function updateSubInterfaceInheritance($interface)
+    {
+        foreach ($interface->implementedBy as $subInterface) {
+            if (isset($this->interfaces[$subInterface])) {
+                $subInterface = $this->interfaces[$subInterface];
+                $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+                $this->updateSubInterfaceInheritance($subInterface);
+            }
         }
     }
 
