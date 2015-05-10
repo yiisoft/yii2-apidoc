@@ -19,7 +19,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "yiisoft/yii2": "*",
+        "yiisoft/yii2": ">=2.0.4",
         "yiisoft/yii2-bootstrap": "*",
         "phpdocumentor/reflection": ">=1.0.3",
         "phpdocumentor/reflection-docblock": ">2.0.1",
