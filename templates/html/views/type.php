@@ -55,7 +55,7 @@ $renderer = $this->context;
         <tr><th>Implements</th><td><?= $renderer->renderInterfaces($type->interfaces) ?></td></tr>
     <?php endif; ?>
     <?php if ($type instanceof InterfaceDoc && !empty($type->parentInterfaces)): ?>
-        <tr><th>Implements</th><td><?= $renderer->renderInterfaces($type->parentInterfaces) ?></td></tr>
+        <tr><th>Extends</th><td><?= $renderer->renderInterfaces($type->parentInterfaces) ?></td></tr>
     <?php endif; ?>
     <?php if (!($type instanceof InterfaceDoc) && !empty($type->traits)): ?>
         <tr><th>Uses Traits</th><td><?= $renderer->renderTraits($type->traits) ?></td></tr>
