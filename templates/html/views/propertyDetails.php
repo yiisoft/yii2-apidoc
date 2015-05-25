@@ -35,7 +35,7 @@ ArrayHelper::multisort($properties, 'name');
         <?php endif; ?>
 
         <?= $property->name ?>
-        <span class="detailHeaderTag small">
+        <span class="detail-header-tag small">
             <?= $property->visibility ?>
             <?php if ($property->getIsReadOnly()) echo ' <em>read-only</em> '; ?>
             <?php if ($property->getIsWriteOnly()) echo ' <em>write-only</em> '; ?>
