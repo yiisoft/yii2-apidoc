@@ -224,21 +224,21 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @param PropertyDoc $property
      * @return string
      */
-    public function renderPropertySignature($property)
+    public function renderPropertySignature($property, $context = null)
     {
         if ($property->getter !== null || $property->setter !== null) {
             $sig = [];
             if ($property->getter !== null) {
-                $sig[] = $this->renderMethodSignature($property->getter);
+                $sig[] = $this->renderMethodSignature($property->getter, $context);
             }
             if ($property->setter !== null) {
-                $sig[] = $this->renderMethodSignature($property->setter);
+                $sig[] = $this->renderMethodSignature($property->setter, $context);
             }
 
             return implode('<br />', $sig);
         }
 
-        return $this->createTypeLink($property->types) . ' ' . $this->createSubjectLink($property, $property->name) . ' '
+        return $this->createTypeLink($property->types, $context) . ' ' . $this->createSubjectLink($property, $property->name) . ' '
                 . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
     }
 
@@ -246,18 +246,18 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @param MethodDoc $method
      * @return string
      */
-    public function renderMethodSignature($method)
+    public function renderMethodSignature($method, $context = null)
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = (empty($param->typeHint) ? '' : $param->typeHint . ' ')
+            $params[] = (empty($param->typeHint) ? '' : $this->createTypeLink($param->typeHint, $context) . ' ')
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . $param->name
                 . ($param->isOptional ? ' = ' . $param->defaultValue : '');
         }
 
         return ($method->isReturnByReference ? '<b>&</b>' : '')
-            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes))
+            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes, $context))
             . ' <strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . ApiMarkdown::highlight(str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )'), 'php');
     }

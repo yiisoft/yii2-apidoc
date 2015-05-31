@@ -46,7 +46,7 @@ ArrayHelper::multisort($properties, 'name');
         </span>
     </div>
 
-    <div class="signature"><?php echo $renderer->renderPropertySignature($property); ?></div>
+    <div class="signature"><?php echo $renderer->renderPropertySignature($property, $type); ?></div>
 
     <?= ApiMarkdown::process($property->description, $type) ?>
 

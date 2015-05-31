@@ -53,7 +53,7 @@ ArrayHelper::multisort($methods, 'name');
     </div>
 
     <table class="detail-table table table-striped table-bordered table-hover">
-        <tr><td colspan="3" class="signature"><?= $renderer->renderMethodSignature($method) ?></td></tr>
+        <tr><td colspan="3" class="signature"><?= $renderer->renderMethodSignature($method, $type) ?></td></tr>
         <?php if (!empty($method->params) || !empty($method->return) || !empty($method->exceptions)): ?>
             <?php foreach ($method->params as $param): ?>
                 <tr>
@@ -65,7 +65,7 @@ ArrayHelper::multisort($methods, 'name');
             <?php if (!empty($method->return)): ?>
                 <tr>
                   <th class="param-name-col">return</th>
-                  <td class="param-type-col"><?= $renderer->createTypeLink($method->returnTypes) ?></td>
+                  <td class="param-type-col"><?= $renderer->createTypeLink($method->returnTypes, $type) ?></td>
                   <td class="param-desc-col"><?= ApiMarkdown::process($method->return, $type) ?></td>
                 </tr>
             <?php endif; ?>
