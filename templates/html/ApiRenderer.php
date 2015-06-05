@@ -238,8 +238,16 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             return implode('<br />', $sig);
         }
 
-        return $this->createTypeLink($property->types, $context) . ' ' . $this->createSubjectLink($property, $property->name) . ' '
-                . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
+        $definition = [];
+        $definition[] = $property->visibility;
+        if ($property->isStatic) {
+            $definition[] = 'static';
+        }
+
+        return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
+            . '<span class="signature-type">' . $this->createTypeLink($property->types, $context) . '</span>'
+            . ' ' . $this->createSubjectLink($property, $property->name) . ' '
+            . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
     }
 
     /**
@@ -256,9 +264,19 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
                 . ($param->isOptional ? ' = ' . $param->defaultValue : '');
         }
 
-        return ($method->isReturnByReference ? '<b>&</b>' : '')
-            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes, $context))
-            . ' <strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
+        $definition = [];
+        $definition[] = $method->visibility;
+        if ($method->isAbstract) {
+            $definition[] = 'abstract';
+        }
+        if ($method->isStatic) {
+            $definition[] = 'static';
+        }
+
+        return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
+            . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
+            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes, $context)) . '</span> '
+            . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . ApiMarkdown::highlight(str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )'), 'php');
     }
 

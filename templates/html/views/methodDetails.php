@@ -37,6 +37,8 @@ ArrayHelper::multisort($methods, 'name');
         <?= $method->name ?>()
         <span class="detail-header-tag small">
             <?= $method->visibility ?>
+            <?= $method->isAbstract ? 'abstract' : '' ?>
+            <?= $method->isStatic ? 'static' : '' ?>
             method
             <?php if (!empty($method->since)): ?>
                 (available since version <?= $method->since ?>)
