@@ -27,7 +27,7 @@ $renderer = $this->context;
     }
     echo $type->name;
 ?></h1>
-<div id="nav">
+<div class="top-nav">
     <a href="index.html">All Classes</a>
     <?php if (!($type instanceof InterfaceDoc) && !empty($type->properties)): ?>
         | <a href="#properties">Properties</a>
@@ -83,7 +83,7 @@ $renderer = $this->context;
     <?php endif; ?>
 </table>
 
-<div id="classDescription">
+<div class="class-description">
     <p><strong><?= ApiMarkdown::process($type->shortDescription, $type, true) ?></strong></p>
     <?= ApiMarkdown::process($type->description, $type) ?>
 
