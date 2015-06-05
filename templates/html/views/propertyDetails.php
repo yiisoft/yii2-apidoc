@@ -47,11 +47,13 @@ ArrayHelper::multisort($properties, 'name');
         </span>
     </div>
 
+    <div class="doc-description">
+        <?= ApiMarkdown::process($property->description, $type) ?>
+
+        <?= $this->render('seeAlso', ['object' => $property]) ?>
+    </div>
+
     <div class="signature"><?php echo $renderer->renderPropertySignature($property, $type); ?></div>
-
-    <?= ApiMarkdown::process($property->description, $type) ?>
-
-    <?= $this->render('seeAlso', ['object' => $property]) ?>
 
 <?php endforeach; ?>
 </div>
