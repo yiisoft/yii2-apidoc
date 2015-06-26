@@ -32,10 +32,6 @@ use Yii;
 class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 {
     /**
-     * @var string string to use as the title of the generated page.
-     */
-    public $pageTitle;
-    /**
      * @var string path or alias of the layout file to use.
      */
     public $layout;
@@ -228,42 +224,63 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @param PropertyDoc $property
      * @return string
      */
-    public function renderPropertySignature($property)
+    public function renderPropertySignature($property, $context = null)
     {
         if ($property->getter !== null || $property->setter !== null) {
             $sig = [];
             if ($property->getter !== null) {
-                $sig[] = $this->renderMethodSignature($property->getter);
+                $sig[] = $this->renderMethodSignature($property->getter, $context);
             }
             if ($property->setter !== null) {
-                $sig[] = $this->renderMethodSignature($property->setter);
+                $sig[] = $this->renderMethodSignature($property->setter, $context);
             }
 
             return implode('<br />', $sig);
         }
 
-        return $this->createTypeLink($property->types) . ' ' . $this->createSubjectLink($property, $property->name) . ' '
-                . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
+        $definition = [];
+        $definition[] = $property->visibility;
+        if ($property->isStatic) {
+            $definition[] = 'static';
+        }
+
+        return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
+            . '<span class="signature-type">' . $this->createTypeLink($property->types, $context) . '</span>'
+            . ' ' . $this->createSubjectLink($property, $property->name) . ' '
+            . ApiMarkdown::highlight('= ' . ($property->defaultValue === null ? 'null' : $property->defaultValue), 'php');
     }
 
     /**
      * @param MethodDoc $method
      * @return string
      */
-    public function renderMethodSignature($method)
+    public function renderMethodSignature($method, $context = null)
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = (empty($param->typeHint) ? '' : $param->typeHint . ' ')
-                . ($param->isPassedByReference ? '<b>&</b>' : '')
-                . $param->name
-                . ($param->isOptional ? ' = ' . $param->defaultValue : '');
+            $params[] = (empty($param->typeHint) ? '' : '<span class="signature-type">' . $this->createTypeLink($param->typeHint, $context) . '</span> ')
+                . ApiMarkdown::highlight(
+                    ($param->isPassedByReference ? '<b>&</b>' : '')
+                    . $param->name
+                    . ($param->isOptional ? ' = ' . $param->defaultValue : ''),
+                    'php'
+                );
         }
 
-        return ($method->isReturnByReference ? '<b>&</b>' : '')
-            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes))
-            . ' <strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
-            . ApiMarkdown::highlight(str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )'), 'php');
+        $definition = [];
+        $definition[] = $method->visibility;
+        if ($method->isAbstract) {
+            $definition[] = 'abstract';
+        }
+        if ($method->isStatic) {
+            $definition[] = 'static';
+        }
+
+        return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
+            . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
+            . ($method->returnType === null ? 'void' : $this->createTypeLink($method->returnTypes, $context)) . '</span> '
+            . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
+            . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
     }
 
     /**

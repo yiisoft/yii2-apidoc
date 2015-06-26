@@ -29,6 +29,10 @@ abstract class BaseController extends Controller
      * @var string|array files to exclude.
      */
     public $exclude;
+    /**
+     * @var string page title
+     */
+    public $pageTitle;
 
 
     /**
@@ -156,6 +160,6 @@ abstract class BaseController extends Controller
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['template', 'exclude']);
+        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle']);
     }
 }

@@ -10,6 +10,7 @@ namespace yii\apidoc\helpers;
 use cebe\markdown\GithubMarkdown;
 use yii\apidoc\models\TypeDoc;
 use yii\apidoc\renderers\BaseRenderer;
+use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Markdown;
 
@@ -30,6 +31,39 @@ class ApiMarkdown extends GithubMarkdown
 
     protected $renderingContext;
 
+    protected $headings = [];
+
+    /**
+     * @inheritDoc
+     */
+    protected function prepare()
+    {
+        parent::prepare();
+        $this->headings = [];
+    }
+
+    public function parse($text)
+    {
+        $markup = parent::parse($text);
+        $markup = $this->applyToc($markup);
+        return $markup;
+    }
+
+    protected function applyToc($content)
+    {
+        // generate TOC
+        if (!empty($this->headings)) {
+            $toc = [];
+            foreach ($this->headings as $heading)
+                $toc[] = '<li>' . Html::a($heading['title'], '#' . $heading['id']) . '</li>';
+            $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
+            if (strpos($content, '</h1>') !== false)
+                $content = str_replace('</h1>', "</h1>\n" . $toc, $content);
+            else
+                $content = $toc . $content;
+        }
+        return $content;
+    }
 
     /**
      * @inheritdoc
@@ -80,8 +114,20 @@ class ApiMarkdown extends GithubMarkdown
     protected function renderHeadline($block)
     {
         $content = $this->renderAbsy($block['content']);
-        $hash = Inflector::slug(strip_tags($content));
-        $hashLink = "<a href=\"#$hash\" id=\"$hash\" class=\"hashlink\">&para;</a>";
+        if (preg_match('~<span id="(.*?)"></span>~', $content, $matches)) {
+            $hash = $matches[1];
+            $content = preg_replace('~<span id=".*?"></span>~', '', $content);
+        } else {
+            $hash = Inflector::slug(strip_tags($content));
+        }
+        $hashLink = "<span id=\"$hash\"></span><a href=\"#$hash\" class=\"hashlink\">&para;</a>";
+
+        if ($block['level'] == 2) {
+            $this->headings[] = [
+                'title' => trim($content),
+                'id' => $hash,
+            ];
+        }
 
         $tag = 'h' . $block['level'];
         return "<$tag>$content $hashLink</$tag>";

@@ -39,6 +39,11 @@ abstract class BaseRenderer extends Component
     public $guidePrefix = 'guide-';
     public $apiUrl;
     /**
+     * @var string string to use as the title of the generated page.
+     */
+    public $pageTitle;
+
+    /**
      * @var Context the [[Context]] currently being rendered.
      */
     public $apiContext;
@@ -80,7 +85,10 @@ abstract class BaseRenderer extends Component
                     $type = substr($type, 0, -2);
                 }
 
-                if (($t = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
+                if ($type === '$this' && $context instanceof TypeDoc) {
+                    $title = '$this';
+                    $type = $context;
+                } elseif (($t = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $type = $t;
                 } elseif ($type[0] !== '\\' && ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null) {
                     $type = $t;
@@ -92,6 +100,7 @@ abstract class BaseRenderer extends Component
                 $linkText = ltrim($type, '\\');
                 if ($title !== null) {
                     $linkText = $title;
+                    $title = null;
                 }
                 $phpTypes = [
                     'callable',
@@ -103,12 +112,21 @@ abstract class BaseRenderer extends Component
                     'object',
                     'resource',
                     'null',
+                    'false',
+                    'true',
+                ];
+                $phpTypeAliases = [
+                    'true' => 'boolean',
+                    'false' => 'boolean',
                 ];
                 // check if it is PHP internal class
                 if (((class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
                     ($reflection = new \ReflectionClass($type)) && $reflection->isInternal())) {
                     $links[] = $this->generateLink($linkText, 'http://www.php.net/class.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
                 } elseif (in_array($type, $phpTypes)) {
+                    if (isset($phpTypeAliases[$type])) {
+                        $type = $phpTypeAliases[$type];
+                    }
                     $links[] = $this->generateLink($linkText, 'http://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
                 } else {
                     $links[] = $type;
@@ -117,6 +135,7 @@ abstract class BaseRenderer extends Component
                 $linkText = $type->name;
                 if ($title !== null) {
                     $linkText = $title;
+                    $title = null;
                 }
                 $links[] = $this->generateLink($linkText, $this->generateApiUrl($type->name), $options) . $postfix;
             }

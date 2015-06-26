@@ -58,13 +58,13 @@ table.summaryTable th {
     text-align: left;
 }
 
-#nav {
+.top-nav {
     padding: 3px;
     margin: 0 0 10px 0;
     border-top: 1px #BFCFFF solid;
 }
 
-#classDescription {
+.classDescription {
     padding: 5px;
     margin: 10px 0 20px 0;
     border-bottom: 1px solid #BFCFFF;
@@ -96,4 +96,8 @@ table.summaryTable th {
     margin: 5px 0;
     padding:5px;
     background:#FFF5E6;
+}
+
+img {
+    max-width: 100%;
 }
