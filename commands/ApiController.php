@@ -151,6 +151,11 @@ class ApiController extends BaseController
      */
     protected function findRenderer($template)
     {
+        // find renderer by class name
+        if (class_exists($template)) {
+            return new $template();
+        }
+
         $rendererClass = 'yii\\apidoc\\templates\\' . $template . '\\ApiRenderer';
         if (!class_exists($rendererClass)) {
             $this->stderr('Renderer not found.' . PHP_EOL);
