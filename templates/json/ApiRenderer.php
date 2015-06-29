@@ -15,8 +15,8 @@ use Yii;
 /**
  * The class for outputting documentation data structures as a JSON text.
  *
- * @author Carsten Brandt <mail@cebe.cc>
- * @since 2.0
+ * @author Tom Worster <fsb@thefsb.org>
+ * @since 2.0.5
  */
 class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 {
