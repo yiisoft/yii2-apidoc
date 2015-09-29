@@ -186,8 +186,8 @@ class Context extends Component
         foreach ($interface->implementedBy as $subInterface) {
             if (isset($this->interfaces[$subInterface])) {
                 $subInterface = $this->interfaces[$subInterface];
-                    $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
-                    $this->updateSubInterfaceInheritance($subInterface);
+                $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+                $this->updateSubInterfaceInheritance($subInterface);
             }
         }
     }
