@@ -33,6 +33,16 @@ class ApiMarkdown extends GithubMarkdown
 
     protected $headings = [];
 
+
+    /**
+     * @return array the headlines of this document
+     * @since 2.0.5
+     */
+    public function getHeadings()
+    {
+        return $this->headings;
+    }
+
     /**
      * @inheritDoc
      */
@@ -127,6 +137,13 @@ class ApiMarkdown extends GithubMarkdown
                 'title' => trim($content),
                 'id' => $hash,
             ];
+        } elseif ($block['level'] > 2) {
+            if (end($this->headings)) {
+                $this->headings[key($this->headings)]['sub'][] = [
+                    'title' => trim($content),
+                    'id' => $hash,
+                ];
+            }
         }
 
         $tag = 'h' . $block['level'];
