@@ -13,6 +13,7 @@ use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
 use Yii;
 use yii\helpers\Html;
+use yii\helpers\Markdown;
 use yii\web\AssetManager;
 use yii\web\View;
 
@@ -92,7 +93,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
 
         foreach ($fileData as $file => $content) {
             $output = ApiMarkdown::process($content); // TODO generate links to yiiframework.com by default
-            $output = $this->fixMarkdownLinks($output);
+            $output = $this->afterMarkdownProcess($file, $output, Markdown::$flavors['api']);
             if ($this->layout !== false) {
                 $params = [
                     'chapters' => $chapters,
@@ -113,6 +114,23 @@ abstract class GuideRenderer extends BaseGuideRenderer
             Console::endProgress(true);
             $this->controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
+    }
+
+    /**
+     * Callback that is called after markdown is processed.
+     *
+     * You may override it to do some post processing.
+     * The default implementation fixes some markdown links using [[fixMarkdownLinks]] on the output.
+     *
+     * @param string $file the file that has been processed.
+     * @param string $output the rendered HTML output.
+     * @param ApiMarkdown $renderer the renderer instance.
+     * @return string
+     * @since 2.0.5
+     */
+    protected function afterMarkdownProcess($file, $output, $renderer)
+    {
+        return $this->fixMarkdownLinks($output);
     }
 
     /**
@@ -144,7 +162,6 @@ abstract class GuideRenderer extends BaseGuideRenderer
     protected function fixMarkdownLinks($content)
     {
         $content = preg_replace('/href\s*=\s*"([^"\/]+)\.md(#.*)?"/i', 'href="' . $this->guidePrefix . '\1.html\2"', $content);
-
         return $content;
     }
 

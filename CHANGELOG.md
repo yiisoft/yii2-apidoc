@@ -6,6 +6,7 @@ Yii Framework 2 apidoc extension Change Log
 
 - Enh #13: Allow templates to be specified by class name (tom--)
 - Enh #13: Added a JSON template to output the class structure as a JSON file (tom--)
+- Enh: Added callback `afterMarkdownProcess()` to HTML Guide renderer (cebe)
 
 
 2.0.4 May 10, 2015
