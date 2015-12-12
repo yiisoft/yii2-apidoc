@@ -8,6 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #13: Added a JSON template to output the class structure as a JSON file (tom--)
 - Enh: Added callback `afterMarkdownProcess()` to HTML Guide renderer (cebe)
 - Enh: Added `getHeadings()` method to ApiMarkdown class (cebe)
+- Chg #31: Hightlight.php library is now used for code highlighing, the builtin ApiMarkdown::hightligh() function is not used anymore (cebe)
 
 
 2.0.4 May 10, 2015

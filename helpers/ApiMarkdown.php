@@ -8,6 +8,8 @@
 namespace yii\apidoc\helpers;
 
 use cebe\markdown\GithubMarkdown;
+use DomainException;
+use Highlight\Highlighter;
 use yii\apidoc\models\TypeDoc;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\helpers\Html;
@@ -76,15 +78,35 @@ class ApiMarkdown extends GithubMarkdown
     }
 
     /**
+     * @var Highlighter
+     */
+    private static $highlighter;
+
+    /**
      * @inheritdoc
      */
     protected function renderCode($block)
     {
-        if (isset($block['language'])) {
-            $class = isset($block['language']) ? ' class="language-' . $block['language'] . '"' : '';
-
-            return "<pre><code$class>" . $this->highlight($block['content'] . "\n", $block['language']) . "</code></pre>\n";
-        } else {
+        if (self::$highlighter === null) {
+            self::$highlighter = new Highlighter();
+            self::$highlighter->setAutodetectLanguages([
+                'apache', 'nginx',
+                'bash', 'dockerfile', 'http',
+                'css', 'less', 'scss',
+                'javascript', 'json', 'markdown',
+                'php', 'sql', 'twig', 'xml',
+            ]);
+        }
+        try {
+            if (isset($block['language'])) {
+                $result = self::$highlighter->highlight($block['language'], $block['content'] . "\n");
+                return "<pre><code class=\"hljs {$result->language} language-{$block['language']}\">{$result->value}</code></pre>\n";
+            } else {
+                $result = self::$highlighter->highlightAuto($block['content'] . "\n");
+                return "<pre><code class=\"hljs {$result->language}\">{$result->value}</code></pre>\n";
+            }
+        } catch (DomainException $e) {
+            echo $e;
             return parent::renderCode($block);
         }
     }
@@ -95,6 +117,7 @@ class ApiMarkdown extends GithubMarkdown
      * @param string $code code to highlight
      * @param string $language language of the code to highlight
      * @return string HTML of highlighted code
+     * @deprecated since 2.0.5 this method is not used anymore, highlight.php is used for highlighting
      */
     public static function highlight($code, $language)
     {
@@ -102,7 +125,6 @@ class ApiMarkdown extends GithubMarkdown
             return htmlspecialchars($code, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
         }
 
-        // TODO improve code highlighting
         if (strncmp($code, '<?php', 5) === 0) {
             $text = @highlight_string(trim($code), true);
         } else {

@@ -26,6 +26,7 @@ class AssetBundle extends \yii\web\AssetBundle
         'yii\web\JqueryAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
+        'yii\apidoc\templates\bootstrap\assets\HighlightBundle',
     ];
     public $jsOptions = [
         'position' => View::POS_HEAD,
