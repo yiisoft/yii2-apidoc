@@ -19,7 +19,6 @@ class AssetBundle extends \yii\web\AssetBundle
 {
     public $sourcePath = '@yii/apidoc/templates/bootstrap/assets/css';
     public $css = [
-//		'api.css',
         'style.css',
     ];
     public $depends = [
