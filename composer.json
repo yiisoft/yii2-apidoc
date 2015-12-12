@@ -21,8 +21,8 @@
     "require": {
         "yiisoft/yii2": ">=2.0.4",
         "yiisoft/yii2-bootstrap": "*",
-        "phpdocumentor/reflection": ">=1.0.3",
-        "phpdocumentor/reflection-docblock": ">2.0.1",
+        "phpdocumentor/reflection": "^1.0.3",
+        "phpdocumentor/reflection-docblock": "^2.0.1",
         "nikic/php-parser": "0.9.*",
         "cebe/js-search": "*",
         "cebe/markdown": "~1.0.0 | ~1.1.0",
