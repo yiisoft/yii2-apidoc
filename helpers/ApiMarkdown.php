@@ -30,6 +30,10 @@ class ApiMarkdown extends GithubMarkdown
      * @var BaseRenderer
      */
     public static $renderer;
+    /**
+     * @var array translation for guide block types
+     */
+    public static $blockTranslations = [];
 
     protected $renderingContext;
 
@@ -185,6 +189,17 @@ class ApiMarkdown extends GithubMarkdown
         }, $result, 1);
 
         return $result;
+    }
+
+    protected function translateBlockType($type)
+    {
+        $key = ucfirst($type) . ':';
+        if (isset(static::$blockTranslations[$key])) {
+            $translation = static::$blockTranslations[$key];
+        } else {
+            $translation = $key;
+        }
+        return "<strong>$translation</strong> ";
     }
 
     /**

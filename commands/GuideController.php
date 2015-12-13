@@ -8,11 +8,13 @@
 namespace yii\apidoc\commands;
 
 use yii\apidoc\components\BaseController;
+use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\Context;
 use yii\apidoc\renderers\GuideRenderer;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This command can render documentation stored as markdown files such as the yii guide
@@ -76,6 +78,13 @@ class GuideController extends BaseController
             $renderer->apiContext = new Context();
         }
         $this->updateContext($renderer->apiContext);
+
+        // read blocktypes translations
+        foreach($sourceDirs as $dir) {
+            if (is_file("$dir/blocktypes.json")) {
+                ApiMarkdown::$blockTranslations = Json::decode(file_get_contents("$dir/blocktypes.json"), true);
+            }
+        }
 
         // search for files to process
         if (($files = $this->searchFiles($sourceDirs)) === false) {

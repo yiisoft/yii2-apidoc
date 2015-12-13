@@ -48,6 +48,17 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         return $this->renderApiLink($block);
     }
 
+    protected function translateBlockType($type)
+    {
+        $key = ucfirst($type) . ':';
+        if (isset(ApiMarkdown::$blockTranslations[$key])) {
+            $translation = ApiMarkdown::$blockTranslations[$key];
+        } else {
+            $translation = $key;
+        }
+        return '\textbf{' . $translation . '} ';
+    }
+
     /**
      * Converts markdown into HTML
      *
