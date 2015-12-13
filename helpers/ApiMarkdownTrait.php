@@ -154,7 +154,15 @@ trait ApiMarkdownTrait
             if (isset($parfirst[0]) && $parfirst[0] === 'text') {
                 foreach ($blockTypes as $type) {
                     if (strncasecmp("$type: ", $parfirst[1], $len = strlen($type) + 2) === 0) {
-                        $block[0]['content'][0]['content'][0][1] = $this->translateBlockType($type) . substr($parfirst[1], $len);
+                        // remove block indicator
+                        $block[0]['content'][0]['content'][0][1] = substr($parfirst[1], $len);
+                        // add translated block indicator as bold text
+                        array_unshift($block[0]['content'][0]['content'], [
+                            'strong',
+                            [
+                                ['text', $this->translateBlockType($type)],
+                            ],
+                        ]);
                         $block[0]['blocktype'] = $type;
                         break;
                     }

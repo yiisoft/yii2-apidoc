@@ -199,7 +199,7 @@ class ApiMarkdown extends GithubMarkdown
         } else {
             $translation = $key;
         }
-        return "<strong>$translation</strong> ";
+        return "$translation ";
     }
 
     /**

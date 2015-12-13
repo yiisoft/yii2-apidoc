@@ -56,7 +56,19 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         } else {
             $translation = $key;
         }
-        return '\textbf{' . $translation . '} ';
+        return "$translation ";
+    }
+
+    /**
+     * Renders a blockquote
+     */
+    protected function renderQuote($block)
+    {
+        if (isset($block['blocktype'])) {
+            // TODO render nice icon for different block types: note, info, warning, tip
+            //$class = ' class="' . $block['blocktype'] . '"';
+        }
+        return '\begin{quote}' . $this->renderAbsy($block['content']) . "\\end{quote}\n";
     }
 
     /**

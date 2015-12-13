@@ -7,3 +7,6 @@ pdf:
 	pdflatex -halt-on-error main.tex
 	pdflatex -halt-on-error main.tex
 	mv main.pdf guide.pdf
+
+clean:
+	-rm -f *.aux *.out *.log *.toc
