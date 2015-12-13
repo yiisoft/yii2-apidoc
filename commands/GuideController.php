@@ -80,6 +80,7 @@ class GuideController extends BaseController
         $this->updateContext($renderer->apiContext);
 
         // read blocktypes translations
+        ApiMarkdown::$blockTranslations = [];
         foreach($sourceDirs as $dir) {
             if (is_file("$dir/blocktypes.json")) {
                 ApiMarkdown::$blockTranslations = Json::decode(file_get_contents("$dir/blocktypes.json"), true);
