@@ -71,7 +71,7 @@ class ApiMarkdown extends GithubMarkdown
         if (!empty($this->headings)) {
             $toc = [];
             foreach ($this->headings as $heading)
-                $toc[] = '<li>' . Html::a($heading['title'], '#' . $heading['id']) . '</li>';
+                $toc[] = '<li>' . Html::a(strip_tags($heading['title']), '#' . $heading['id']) . '</li>';
             $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
             if (strpos($content, '</h1>') !== false)
                 $content = str_replace('</h1>', "</h1>\n" . $toc, $content);
