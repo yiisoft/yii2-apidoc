@@ -13,7 +13,7 @@ use yii\helpers\StringHelper;
 // https://github.com/twbs/bootstrap/issues/1768
 $this->registerJs(<<<JS
     var shiftWindow = function () { scrollBy(0, -50) };
-    if (location.hash) shiftWindow();
+    if (location.hash) setTimeout(shiftWindow, 1);
     window.addEventListener("hashchange", shiftWindow);
 JS
 ,
