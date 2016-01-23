@@ -123,7 +123,9 @@ class Context extends Component
         }
         foreach ($this->interfaces as $interface) {
             foreach ($interface->parentInterfaces as $pInterface) {
-                $this->interfaces[$pInterface]->implementedBy[] = $interface->name;
+                if (isset($this->interfaces[$pInterface])) {
+                    $this->interfaces[$pInterface]->implementedBy[] = $interface->name;
+                }
             }
         }
         // inherit docs
