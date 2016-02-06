@@ -199,7 +199,35 @@ class Context extends Component
      */
     protected function inheritDocs($class)
     {
-        // TODO also for properties?
+        // inherit for properties
+        foreach ($class->properties as $p) {
+            if ($p->hasTag('inheritdoc')) {
+                $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
+                if (!$inheritedProperty) {
+                    $this->errors[] = [
+                        'line' => $p->startLine,
+                        'file' => $class->sourceFile,
+                        'message' => "Method {$p->name} has no parent to inherit from in {$class->name}.",
+                    ];
+                    continue;
+                }
+
+                // set all properties that are empty.
+                foreach (['shortDescription', 'description', 'type', 'types'] as $property) {
+                    if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
+                        $p->$property = $inheritedProperty->$property;
+                    }
+                }
+                // descriptions will be concatenated.
+                $p->description = trim($p->description) . "\n\n"
+                    . trim($inheritedProperty->description) . "\n\n"
+                    . $p->getFirstTag('inheritdoc')->getContent();
+
+                $p->removeTag('inheritdoc');
+            }
+        }
+
+        // inherit for methods
         foreach ($class->methods as $m) {
             if ($m->hasTag('inheritdoc')) {
                 $inheritedMethod = $this->inheritMethodRecursive($m, $class);
@@ -211,14 +239,17 @@ class Context extends Component
                     ];
                     continue;
                 }
-                foreach (['shortDescription', 'description', 'return', 'returnType', 'returnTypes', 'exceptions'] as $property) {
-                    // set all properties that are empty. descriptions will be concatenated.
+                // set all properties that are empty.
+                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
                         $m->$property = $inheritedMethod->$property;
-                    } elseif ($property == 'description') {
-                        $m->$property = rtrim($m->$property) . "\n\n" . ltrim($inheritedMethod->$property);
                     }
                 }
+                // descriptions will be concatenated.
+                $m->description = trim($m->description) . "\n\n"
+                    . trim($inheritedMethod->description) . "\n\n"
+                    . $m->getFirstTag('inheritdoc')->getContent();
+
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
                         $this->errors[] = [
@@ -267,6 +298,32 @@ class Context extends Component
         }
 
         return reset($methods);
+    }
+
+    /**
+     * @param PropertyDoc $method
+     * @param ClassDoc $class
+     * @return mixed
+     */
+    private function inheritPropertyRecursive($method, $class)
+    {
+        $inheritanceCandidates = array_merge(
+            $this->getParents($class),
+            $this->getInterfaces($class)
+        );
+
+        $properties = [];
+        foreach($inheritanceCandidates as $candidate) {
+            if (isset($candidate->properties[$method->name])) {
+                $cproperty = $candidate->properties[$method->name];
+                if ($cproperty->hasTag('inheritdoc')) {
+                    $this->inheritDocs($candidate);
+                }
+                $properties[] = $cproperty;
+            }
+        }
+
+        return reset($properties);
     }
 
     /**

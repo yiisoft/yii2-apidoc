@@ -67,6 +67,20 @@ class BaseDoc extends Object
         }
     }
 
+    /**
+     * Get the first tag of a given name
+     * @param string $name
+     * @return \phpDocumentor\Reflection\DocBlock\Tag
+     */
+    public function getFirstTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return $this->tags[$i];
+            }
+        }
+    }
+
 
     /**
      * @param \phpDocumentor\Reflection\BaseReflector $reflector
