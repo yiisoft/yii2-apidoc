@@ -37,7 +37,7 @@ class ApiController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return int
+     * @return integer
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {

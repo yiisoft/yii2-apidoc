@@ -48,6 +48,10 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         return $this->renderApiLink($block);
     }
 
+    /**
+     * @inheritdoc
+     * @since 2.0.5
+     */
     protected function translateBlockType($type)
     {
         $key = ucfirst($type) . ':';

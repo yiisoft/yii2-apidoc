@@ -20,7 +20,6 @@ use Yii;
  */
 class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 {
-
     /**
      * Writes a given [[Context]] as JSON text to file 'types.json'.
      *

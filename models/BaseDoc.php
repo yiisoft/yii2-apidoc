@@ -71,6 +71,7 @@ class BaseDoc extends Object
      * Get the first tag of a given name
      * @param string $name
      * @return \phpDocumentor\Reflection\DocBlock\Tag
+     * @since 2.0.5
      */
     public function getFirstTag($name)
     {

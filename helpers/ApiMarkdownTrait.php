@@ -172,6 +172,9 @@ trait ApiMarkdownTrait
         return $block;
     }
 
+    /**
+     * @since 2.0.5
+     */
     protected abstract function translateBlockType($type);
 
     /**

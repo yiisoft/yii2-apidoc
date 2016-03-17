@@ -32,11 +32,11 @@ class ApiMarkdown extends GithubMarkdown
     public static $renderer;
     /**
      * @var array translation for guide block types
+     * @since 2.0.5
      */
     public static $blockTranslations = [];
 
     protected $renderingContext;
-
     protected $headings = [];
 
 
@@ -65,6 +65,9 @@ class ApiMarkdown extends GithubMarkdown
         return $markup;
     }
 
+    /**
+     * @since 2.0.5
+     */
     protected function applyToc($content)
     {
         // generate TOC
@@ -191,6 +194,10 @@ class ApiMarkdown extends GithubMarkdown
         return $result;
     }
 
+    /**
+     * @inheritdoc
+     * @since 2.0.5
+     */
     protected function translateBlockType($type)
     {
         $key = ucfirst($type) . ':';

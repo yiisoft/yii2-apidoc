@@ -429,7 +429,7 @@ class Context extends Component
      * Check whether a method has `$number` non-optional parameters.
      * @param MethodDoc $method
      * @param integer $number number of not optional parameters
-     * @return bool
+     * @return boolean
      */
     private function hasNonOptionalParams($method, $number = 0)
     {

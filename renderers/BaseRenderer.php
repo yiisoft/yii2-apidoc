@@ -42,7 +42,6 @@ abstract class BaseRenderer extends Component
      * @var string string to use as the title of the generated page.
      */
     public $pageTitle;
-
     /**
      * @var Context the [[Context]] currently being rendered.
      */
