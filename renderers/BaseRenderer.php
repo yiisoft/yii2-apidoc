@@ -89,7 +89,7 @@ abstract class BaseRenderer extends Component
                     $type = $context;
                 } elseif (($t = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $type = $t;
-                } elseif ($type[0] !== '\\' && ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null) {
+                } elseif (!empty($type) && $type[0] !== '\\' && ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null) {
                     $type = $t;
                 } else {
                     ltrim($type, '\\');
@@ -128,7 +128,7 @@ abstract class BaseRenderer extends Component
                     }
                     $links[] = $this->generateLink($linkText, 'http://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
                 } else {
-                    $links[] = $type;
+                    $links[] = $type . $postfix;
                 }
             } elseif ($type instanceof BaseDoc) {
                 $linkText = $type->name;

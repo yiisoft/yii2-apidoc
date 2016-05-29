@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.0.6 under development
 -----------------------
 
-- no changes in this release.
+- Bug #68: Fixed crash on empty type in PHPdoc (cebe, itnelo)
 
 
 2.0.5 March 17, 2016
