@@ -17,16 +17,17 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yiisoft/yii2-apidoc
+composer require --prefer-dist yiisoft/yii2-apidoc
 ```
 
-or add
+The above command may not work on an existing project due to version conflicts that need to be resolved, so it is preferred to add the package manually to the require section of your composer.json:
 
 ```json
 "yiisoft/yii2-apidoc": "~2.0.0"
 ```
 
-to the require section of your composer.json.
+afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you want to avoid updating unrelated packages.
+
 
 Usage
 -----
