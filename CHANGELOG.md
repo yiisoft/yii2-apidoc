@@ -5,6 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Bug #68: Fixed crash on empty type in PHPdoc (cebe, itnelo)
+- Bug #76: Fixed broken links with external urls (CedricYii)
 
 
 2.0.5 March 17, 2016
