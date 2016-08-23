@@ -9,6 +9,36 @@
 % declare some unicode characters
 \DeclareUnicodeCharacter{2713}{yes} % ✓
 
+%
+% Title and author info
+%
+
+\newcommand{\plainTitle}{The definitive Guide to Yii 2.0}
+\newcommand{\formattedTitle}{The Definitive Guide\\\vspace{.5cm}to\\\vspace{.5cm}Yii 2.0}
+\newcommand{\plainAuthors}{
+    Qiang Xue,
+    Alexander Makarov,
+    Carsten Brandt,
+    Klimov Paul,
+    and
+    many contributors from the Yii community
+}
+\newcommand{\formattedAuthors}{
+    Qiang Xue,\\
+    Alexander Makarov,\\
+    Carsten Brandt,\\
+    Klimov Paul,\\
+    and\\
+    many contributors from the Yii community
+}
+\newcommand{\formattedTranslators}{}
+
+%
+% ---
+%
+
+\usepackage{color}
+
 % list spacing http://stackoverflow.com/questions/3275622/latex-remove-spaces-between-items-in-list
 \usepackage{enumitem}
 
@@ -18,9 +48,34 @@
 % make links clickable
 \usepackage{hyperref}
 
+\definecolor{linkcol}{rgb}{0,0,0.4}
+\definecolor{citecol}{rgb}{0.5,0,0}
+
+
+% Change this to change the informations included in the pdf file
+% See hyperref documentation for information on those parameters
+\hypersetup
+{
+bookmarksopen=true,
+pdftitle="\plainTitle",
+pdfauthor="\plainAuthors",
+%pdfsubject="Creation of atlases and atlas based segmentation", %subject of the document
+%pdftoolbar=false, % toolbar hidden
+pdfmenubar=true, %menubar shown
+pdfhighlight=/O, %effect of clicking on a link
+colorlinks=true, %couleurs sur les liens hypertextes
+pdfpagemode=None, %aucun mode de page
+pdfpagelayout=SinglePage, %ouverture en simple page
+pdffitwindow=true, %pages ouvertes entierement dans toute la fenetre
+linkcolor=linkcol, %couleur des liens hypertextes internes
+citecolor=citecol, %couleur des liens pour les citations
+urlcolor=linkcol %couleur des liens pour les url
+}
+\title{\plainTitle}
+\author{\plainAuthors}
+
 % code listings
 \usepackage{listings}
-\usepackage{color}
 
 \definecolor{codebg}{rgb}{0.9,0.9,0.9}
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -115,16 +170,6 @@
   \ifodd\value{page}\hspace*{\dimexpr\evensidemargin-\oddsidemargin}\else\hspace*{-\dimexpr\evensidemargin-\oddsidemargin}\fi%
 }
 
-\title{The definitive Guide to Yii 2.0}
-\author{
-    Qiang Xue,
-    Alexander Makarov,
-    Carsten Brandt,
-    Klimov Paul,
-    and
-    many contributors from the Yii community
-}
-
 % uncomment for debugging layout issues
 %\usepackage{showframe}
 
@@ -143,13 +188,14 @@
         % typesetting the title line
         \noindent
         \parbox{\textwidth}{\centering \bfseries \Huge
-            The Definitive Guide
-        }\vspace{.5cm}
-        \parbox{\textwidth}{\centering \bfseries \Huge
-            to
-        }\vspace{.5cm}
-        \parbox{\textwidth}{\centering \bfseries \Huge
-            Yii 2.0
+            \formattedTitle
+        }
+
+        \vfill
+
+        \noindent
+        \parbox{\textwidth}{\centering \bfseries
+            \url{http://www.yiiframework.com/doc/guide}
         }
 
         \vfill
@@ -157,19 +203,18 @@
         % typesetting authors
         \noindent
         \parbox{\textwidth}{\centering \Large
-            Qiang Xue,\\
-            Alexander Makarov,\\
-            Carsten Brandt,\\
-            Klimov Paul,\\
-            and\\
-            the Yii community
+            \formattedAuthors
+            \\ \vspace{1cm}
+            \formattedTranslators
         }
 
         \vspace*{\fill}
 
         \noindent
         \parbox{\textwidth}{\centering
-            Copyright 2014 Yii Software LLC.
+            This tutorial is released under the \href{http://www.yiiframework.com/doc/terms/}{Terms of Yii Documentation}.\\
+            \vspace{0.5cm}
+            Copyright 2014 Yii Software LLC. All Rights Reserved.
         }
     \end{titlepage}
 
