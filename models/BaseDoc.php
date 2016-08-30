@@ -156,12 +156,12 @@ class BaseDoc extends Object
      */
     public static function extractFirstSentence($text)
     {
-        if (mb_strlen($text) > 4 && ($pos = mb_strpos($text, '.', 4, 'utf-8')) !== false) {
+        if (mb_strlen($text, 'utf-8') > 4 && ($pos = mb_strpos($text, '.', 4, 'utf-8')) !== false) {
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
-            if (mb_strlen($text) >= $pos + 3) {
-                $abbrev = mb_substr($text, $pos - 1, 4);
+            if (mb_strlen($text, 'utf-8') >= $pos + 3) {
+                $abbrev = mb_substr($text, $pos - 1, 4, 'utf-8');
                 if ($abbrev === 'e.g.' || $abbrev === 'i.e.') { // do not break sentence after abbreviation
-                    $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1));
+                    $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'));
                 }
             }
             return $sentence;
