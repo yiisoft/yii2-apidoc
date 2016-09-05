@@ -19,12 +19,12 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "yiisoft/yii2": ">=2.0.4",
-        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2": "~2.0.4",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
         "phpdocumentor/reflection": "^1.0.3",
         "phpdocumentor/reflection-docblock": "^2.0.1",
         "nikic/php-parser": "0.9.*",
-        "cebe/js-search": "*",
+        "cebe/js-search": "0.9.*",
         "cebe/markdown": "~1.0.0 | ~1.1.0",
         "cebe/markdown-latex": "~1.0",
         "scrivo/highlight.php": "~8.0"
