@@ -8,6 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #76: Fixed broken links with external urls (CedricYii)
 - Bug #79: Fixed crash due to missing encoding specified in `mb_*` functions (cebe, dingzhihao)
 - Enh #117: Add support for `int` and `bool` types (rob006)
+- Enh #118: Separate warnings and errors occurred on processing files (rob006)
 
 
 2.0.5 March 17, 2016
