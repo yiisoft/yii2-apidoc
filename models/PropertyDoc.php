@@ -83,7 +83,7 @@ class PropertyDoc extends BaseDoc
             }
         }
         if (empty($this->shortDescription) && $context !== null && !$hasInheritdoc) {
-            $context->errors[] = [
+            $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
                 'message' => "No short description for element '{$this->name}'",
