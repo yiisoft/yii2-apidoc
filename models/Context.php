@@ -33,7 +33,15 @@ class Context extends Component
      * @var TraitDoc[]
      */
     public $traits = [];
+    /**
+     * @var array
+     */
     public $errors = [];
+    /**
+     * @var array
+     * @since 2.0.6
+     */
+    public $warnings = [];
 
 
     /**

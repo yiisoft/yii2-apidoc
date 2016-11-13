@@ -105,7 +105,7 @@ class BaseDoc extends Object
         if ($docblock !== null) {
             $this->shortDescription = ucfirst($docblock->getShortDescription());
             if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
-                $context->errors[] = [
+                $context->warnings[] = [
                     'line' => $this->startLine,
                     'file' => $this->sourceFile,
                     'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
@@ -127,7 +127,7 @@ class BaseDoc extends Object
                 }
             }
         } elseif ($context !== null) {
-            $context->errors[] = [
+            $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
                 'message' => "No docblock for element '{$this->name}'",
