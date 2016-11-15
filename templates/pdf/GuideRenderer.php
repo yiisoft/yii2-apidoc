@@ -85,6 +85,6 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
             $this->controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
 
-        echo "\nnow run `make pdf` in $targetDir (you need pdflatex to compile pdf file)\n\n";
+        echo "\nnow run `make` in $targetDir (you need pdflatex to compile pdf file)\n\n";
     }
 }
