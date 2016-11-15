@@ -55,7 +55,9 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
         $output = '';
         foreach ($chapters as $chapter) {
 
-            $output .= '\chapter{' . $chapter['headline'] . "}\n";
+            if (isset($chapter['headline'])) {
+                $output .= '\chapter{' . $chapter['headline'] . "}\n";
+            }
             foreach($chapter['content'] as $content) {
                 if (isset($fileData[$content['file']])) {
                     $md->labelPrefix = $content['file'] . '#';
@@ -74,6 +76,7 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
         }
         file_put_contents($targetDir . '/guide.tex', $output);
         copy(__DIR__ . '/main.tex', $targetDir . '/main.tex');
+        copy(__DIR__ . '/title.tex', $targetDir . '/title.tex');
         copy(__DIR__ . '/Makefile', $targetDir . '/Makefile');
 
         if ($this->controller !== null) {

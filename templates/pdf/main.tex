@@ -133,6 +133,18 @@ urlcolor=linkcol %couleur des liens pour les url
 	morestring=[b]",
 }
 
+\lstdefinelanguage{less}{
+	morekeywords={},
+	sensitive=false,
+	morestring=[b]",
+}
+
+\lstdefinelanguage{scss}{
+	morekeywords={},
+	sensitive=false,
+	morestring=[b]",
+}
+
 \lstdefinelanguage{javascript}{
 	morekeywords={},
 	sensitive=false,
@@ -178,46 +190,7 @@ urlcolor=linkcol %couleur des liens pour les url
 
     \frontmatter
 
-    \begin{titlepage}
-        % ensure centering the title page by ignoring odd and even margin
-        \setlength{\oddsidemargin}{-1in}
-        \setlength{\evensidemargin}{-1in}
-        \setlength{\textwidth}{\paperwidth}
-
-        \vspace*{\fill}
-
-        % typesetting the title line
-        \noindent
-        \parbox{\textwidth}{\centering \bfseries \Huge
-            \formattedTitle
-        }
-
-        \vfill
-
-        \noindent
-        \parbox{\textwidth}{\centering \bfseries
-            \url{http://www.yiiframework.com/doc/guide}
-        }
-
-        \vfill
-
-        % typesetting authors
-        \noindent
-        \parbox{\textwidth}{\centering \Large
-            \formattedAuthors
-            \\ \vspace{1cm}
-            \formattedTranslators
-        }
-
-        \vspace*{\fill}
-
-        \noindent
-        \parbox{\textwidth}{\centering
-            This tutorial is released under the \href{http://www.yiiframework.com/doc/terms/}{Terms of Yii Documentation}.\\
-            \vspace{0.5cm}
-            Copyright 2014 Yii Software LLC. All Rights Reserved.
-        }
-    \end{titlepage}
+    \include{title}
 
     %Take a blank Page
     \pagebreak \thispagestyle{empty} \cleardoublepage
