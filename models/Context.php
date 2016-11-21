@@ -229,7 +229,7 @@ class Context extends Component
                 // descriptions will be concatenated.
                 $p->description = trim($p->description) . "\n\n"
                     . trim($inheritedProperty->description) . "\n\n"
-                    . $p->getFirstTag('inheritdoc')->getContent();
+                    . $this->getInheritedContent($p);
 
                 $p->removeTag('inheritdoc');
             }
@@ -256,7 +256,7 @@ class Context extends Component
                 // descriptions will be concatenated.
                 $m->description = trim($m->description) . "\n\n"
                     . trim($inheritedMethod->description) . "\n\n"
-                    . $m->getFirstTag('inheritdoc')->getContent();
+                    . $this->getInheritedContent($m);
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
@@ -280,6 +280,16 @@ class Context extends Component
                 $m->removeTag('inheritdoc');
             }
         }
+    }
+
+    /**
+     * @param BaseDoc $doc
+     * @return string
+     */
+    protected function getInheritedContent(BaseDoc $doc)
+    {
+        $firstTag = $doc->getFirstTag('inheritdoc');
+        return ($firstTag instanceof BaseDoc) ? $firstTag->getContent() : '';
     }
 
     /**
