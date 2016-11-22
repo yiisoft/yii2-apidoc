@@ -10,6 +10,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #68: Fixed crash on empty type in PHPdoc (cebe, itnelo)
 - Bug #76: Fixed broken links with external urls (CedricYii)
 - Bug #79: Fixed crash due to missing encoding specified in `mb_*` functions (cebe, dingzhihao)
+- Enh #29: Added styling for bootstrap tables (cebe)
 - Enh #117: Add support for `int` and `bool` types (rob006)
 - Enh #118: Separate warnings and errors occurred on processing files (rob006)
 - Enh: Moved the title page of the PDF template into a separate file for better customization (cebe)

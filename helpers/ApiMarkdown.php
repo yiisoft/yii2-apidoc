@@ -234,4 +234,13 @@ class ApiMarkdown extends GithubMarkdown
             return Markdown::process($content, 'api');
         }
     }
+
+    /**
+     * Add bootstrap classes to tables.
+     * @inheritdoc
+     */
+    public function renderTable($block)
+    {
+        return str_replace('<table>', '<table class="table table-bordered table-striped">', parent::renderTable($block));
+    }
 }
