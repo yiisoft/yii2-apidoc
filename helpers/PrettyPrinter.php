@@ -7,8 +7,7 @@
 
 namespace yii\apidoc\helpers;
 
-use PHPParser_Node_Expr;
-use PHPParser_Node_Expr_Array;
+use PhpParser\Node\Expr;
 
 /**
  * Enhances the phpDocumentor PrettyPrinter with short array syntax
@@ -19,10 +18,10 @@ use PHPParser_Node_Expr_Array;
 class PrettyPrinter extends \phpDocumentor\Reflection\PrettyPrinter
 {
     /**
-     * @param PHPParser_Node_Expr_Array $node
+     * @param Expr\Array_ $node
      * @return string
      */
-    public function pExpr_Array(PHPParser_Node_Expr_Array $node)
+    public function pExpr_Array(Expr\Array_ $node)
     {
         return '[' . $this->pCommaSeparated($node->items) . ']';
     }
@@ -30,10 +29,10 @@ class PrettyPrinter extends \phpDocumentor\Reflection\PrettyPrinter
     /**
      * Returns a simple human readable output for a value.
      *
-     * @param PHPParser_Node_Expr $value The value node as provided by PHP-Parser.
+     * @param Expr $value The value node as provided by PHP-Parser.
      * @return string
      */
-    public static function getRepresentationOfValue(PHPParser_Node_Expr $value)
+    public static function getRepresentationOfValue(Expr $value)
     {
         if ($value === null) {
             return '';
