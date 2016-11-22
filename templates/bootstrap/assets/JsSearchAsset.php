@@ -27,4 +27,8 @@ class JsSearchAsset extends \yii\web\AssetBundle
     public $jsOptions = [
         'position' => View::POS_HEAD,
     ];
+    public $publishOptions = [
+        // only publish the jssearch js file
+        'only' => ['jssearch.js'],
+    ];
 }
