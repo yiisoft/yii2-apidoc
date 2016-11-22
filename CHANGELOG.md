@@ -1,11 +1,10 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.0 under development
+2.1.0 November 22, 2016
 -----------------------
 
-- Enh #8: Updated PHP Parser dependency to from version 0.9 to 1.0 to resolve dependency conflicts with other libraries.
-          This breaks the implementation of the `yii\apidoc\helpers\PrettyPrinter` class (cebe)
+- Enh #8: Updated PHP Parser dependency to from version 0.9 to 1.0 to resolve dependency conflicts with other libraries. This breaks the implementation of the `yii\apidoc\helpers\PrettyPrinter` class (cebe)
 
 
 2.0.6 November 22, 2016
