@@ -172,6 +172,7 @@ class BaseDoc extends Object
 
     /**
      * Multibyte version of ucfirst()
+     * @since 2.0.6
      */
     protected static function mbUcFirst($string)
     {
