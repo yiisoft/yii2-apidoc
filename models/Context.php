@@ -221,7 +221,7 @@ class Context extends Component
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'description', 'type', 'types'] as $property) {
+                foreach (['shortDescription', 'type', 'types'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
                         $p->$property = $inheritedProperty->$property;
                     }

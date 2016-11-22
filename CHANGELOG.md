@@ -7,6 +7,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #5: Enable display of deprecated information for methods, properties, constants and events (cebe)
 - Bug #12: Do not publish PHP files for `jssearch.js` asset (cebe)
 - Bug #42: Fixed stopword filter in JS search index, which resulted in empty results for some words like `sort` (cebe)
+- Bug #61: Fixed duplicate description when `@inheritdoc` is used for properties (cebe)
 - Bug #62: Make `@inheritdoc` tag more robust (cebe, sasha-ch)
 - Bug #65: Fixed handling of `YiiRequirementChecker` namespace and navigation (cebe)
 - Bug #67: Use multibyte compatible function for `ucfirst()` in descriptions (cebe, samdark)
