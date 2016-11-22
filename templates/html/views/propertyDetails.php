@@ -47,6 +47,15 @@ ArrayHelper::multisort($properties, 'name');
         </span>
     </div>
 
+    <?php if (!empty($property->deprecatedSince) || !empty($property->deprecatedReason)): ?>
+        <div class="doc-description deprecated">
+            <strong>Deprecated <?php
+                if (!empty($property->deprecatedSince))  { echo 'since version ' . $property->deprecatedSince . ': '; }
+                if (!empty($property->deprecatedReason)) { echo ApiMarkdown::process($property->deprecatedReason, $type, true); }
+                ?></strong>
+        </div>
+    <?php endif; ?>
+
     <div class="doc-description">
         <?= ApiMarkdown::process($property->description, $type) ?>
 

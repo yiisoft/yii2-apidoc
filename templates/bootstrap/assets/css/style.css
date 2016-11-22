@@ -44,7 +44,7 @@ body {
 }
 
 .signature, .table-striped > tbody > tr > td.signature {
-    margin: 10px 0 10px 0;
+    margin: 0px 0 10px 0;
     padding: 8px;
 
     color: #000000;
@@ -125,6 +125,12 @@ table.summary-table .col-defined  { width: 15%; }
     padding: 10px 8px;
     margin: 0;
 }
+.doc-description.deprecated {
+    background: lightpink;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+}
+
 
 .event-doc .doc-description {
     border-bottom: solid 1px #ddd;

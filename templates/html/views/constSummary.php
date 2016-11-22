@@ -35,7 +35,14 @@ ArrayHelper::multisort($constants, 'name');
         <tr<?= $constant->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $constant->name ?>">
           <td id="<?= $constant->name ?>-detail"><?= $constant->name ?></td>
           <td><?= $constant->value ?></td>
-          <td><?= ApiMarkdown::process($constant->shortDescription . "\n" . $constant->description, $constant->definedBy, true) ?></td>
+          <td><?= ApiMarkdown::process($constant->shortDescription . "\n" . $constant->description, $constant->definedBy, true) ?>
+              <?php if (!empty($constant->deprecatedSince) || !empty($constant->deprecatedReason)): ?>
+                  <strong>Deprecated <?php
+                      if (!empty($constant->deprecatedSince))  { echo 'since version ' . $constant->deprecatedSince . ': '; }
+                      if (!empty($constant->deprecatedReason)) { echo ApiMarkdown::process($constant->deprecatedReason, $type, true); }
+                      ?></strong>
+              <?php endif; ?>
+          </td>
           <td><?= $renderer->createTypeLink($constant->definedBy) ?></td>
         </tr>
     <?php endforeach; ?>
