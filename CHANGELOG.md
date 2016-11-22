@@ -4,6 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.0.6 under development
 -----------------------
 
+- Bug #62: Make `@inheritdoc` tag more robust (cebe, sasha-ch)
 - Bug #68: Fixed crash on empty type in PHPdoc (cebe, itnelo)
 - Bug #76: Fixed broken links with external urls (CedricYii)
 - Bug #79: Fixed crash due to missing encoding specified in `mb_*` functions (cebe, dingzhihao)

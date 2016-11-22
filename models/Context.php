@@ -209,7 +209,7 @@ class Context extends Component
     {
         // inherit for properties
         foreach ($class->properties as $p) {
-            if ($p->hasTag('inheritdoc')) {
+            if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
                 $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
                 if (!$inheritedProperty) {
                     $this->errors[] = [
@@ -229,7 +229,7 @@ class Context extends Component
                 // descriptions will be concatenated.
                 $p->description = trim($p->description) . "\n\n"
                     . trim($inheritedProperty->description) . "\n\n"
-                    . $p->getFirstTag('inheritdoc')->getContent();
+                    . $inheritTag->getContent();
 
                 $p->removeTag('inheritdoc');
             }
@@ -237,7 +237,7 @@ class Context extends Component
 
         // inherit for methods
         foreach ($class->methods as $m) {
-            if ($m->hasTag('inheritdoc')) {
+            if ($m->hasTag('inheritdoc') && ($inheritTag = $m->getFirstTag('inheritdoc')) !== null) {
                 $inheritedMethod = $this->inheritMethodRecursive($m, $class);
                 if (!$inheritedMethod) {
                     $this->errors[] = [
@@ -256,7 +256,7 @@ class Context extends Component
                 // descriptions will be concatenated.
                 $m->description = trim($m->description) . "\n\n"
                     . trim($inheritedMethod->description) . "\n\n"
-                    . $m->getFirstTag('inheritdoc')->getContent();
+                    . $inheritTag->getContent();
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
