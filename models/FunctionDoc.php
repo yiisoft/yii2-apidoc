@@ -67,14 +67,14 @@ class FunctionDoc extends BaseDoc
                     ];
                     continue;
                 }
-                $this->params[$paramName]->description = ucfirst($tag->getDescription());
+                $this->params[$paramName]->description = static::mbUcFirst($tag->getDescription());
                 $this->params[$paramName]->type = $tag->getType();
                 $this->params[$paramName]->types = $tag->getTypes();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof ReturnTag) {
                 $this->returnType = $tag->getType();
                 $this->returnTypes = $tag->getTypes();
-                $this->return = ucfirst($tag->getDescription());
+                $this->return = static::mbUcFirst($tag->getDescription());
                 unset($this->tags[$i]);
             }
         }

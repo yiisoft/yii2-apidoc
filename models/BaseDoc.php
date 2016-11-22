@@ -103,7 +103,7 @@ class BaseDoc extends Object
 
         $docblock = $reflector->getDocBlock();
         if ($docblock !== null) {
-            $this->shortDescription = ucfirst($docblock->getShortDescription());
+            $this->shortDescription = static::mbUcFirst($docblock->getShortDescription());
             if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
                 $context->warnings[] = [
                     'line' => $this->startLine,
@@ -168,5 +168,14 @@ class BaseDoc extends Object
         } else {
             return $text;
         }
+    }
+
+    /**
+     * Multibyte version of ucfirst()
+     */
+    protected static function mbUcFirst($string)
+    {
+        $firstChar = mb_strtoupper(mb_substr($string, 0, 1, 'utf-8'), 'utf-8');
+        return $firstChar . mb_substr($string, 1, mb_strlen($string, 'utf-8'), 'utf-8');
     }
 }

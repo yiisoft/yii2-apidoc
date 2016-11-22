@@ -39,7 +39,7 @@ class EventDoc extends ConstDoc
                 $eventTag = new ReturnTag('event', $tag->getContent(), $tag->getDocBlock(), $tag->getLocation());
                 $this->type = $eventTag->getType();
                 $this->types = $eventTag->getTypes();
-                $this->description = ucfirst($eventTag->getDescription());
+                $this->description = static::mbUcFirst($eventTag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
                 unset($this->tags[$i]);
             }
