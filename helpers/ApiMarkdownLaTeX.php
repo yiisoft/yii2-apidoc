@@ -80,7 +80,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
      *
      * @param string $content
      * @param TypeDoc $context
-     * @param boolean $paragraph
+     * @param bool $paragraph
      * @return string
      */
     public static function process($content, $context = null, $paragraph = false)

@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.0.6 under development
+2.0.6 November 22, 2016
 -----------------------
 
 - Bug #5: Enable display of deprecated information for methods, properties, constants and events (cebe)

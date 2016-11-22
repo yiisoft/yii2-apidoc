@@ -38,7 +38,7 @@ abstract class BaseController extends Controller
     /**
      * Checks that target directory is valid. Asks questions in tricky cases.
      * @param string $target
-     * @return boolean|string
+     * @return bool|string
      */
     protected function normalizeTargetDir($target)
     {
@@ -64,7 +64,7 @@ abstract class BaseController extends Controller
     /**
      * Finds files to process
      * @param array $sourceDirs
-     * @return array|boolean list of files to process or false on failure
+     * @return array|bool list of files to process or false on failure
      */
     protected function searchFiles($sourceDirs)
     {

@@ -39,7 +39,7 @@ class GuideController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return integer
+     * @return int
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {

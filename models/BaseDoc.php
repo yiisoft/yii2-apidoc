@@ -42,7 +42,7 @@ class BaseDoc extends Object
     /**
      * Checks if doc has tag of a given name
      * @param string $name tag name
-     * @return boolean if doc has tag of a given name
+     * @return bool if doc has tag of a given name
      */
     public function hasTag($name)
     {
