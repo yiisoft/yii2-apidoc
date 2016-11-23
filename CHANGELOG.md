@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.1.1 under development
 -----------------------
 
-- no changes in this release.
+- Enh #38: Fixed display of default values given as octal or hex notation (hiqsol)
 
 
 2.1.0 November 22, 2016
