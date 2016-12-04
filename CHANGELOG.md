@@ -5,6 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Enh #38: Fixed display of default values given as octal or hex notation (hiqsol)
+- Enh: Display TOC only if there is more than one headline (cebe)
 
 
 2.1.0 November 22, 2016
