@@ -70,11 +70,12 @@ class ApiMarkdown extends GithubMarkdown
      */
     protected function applyToc($content)
     {
-        // generate TOC
-        if (!empty($this->headings)) {
+        // generate TOC if there is more than one headline
+        if (!empty($this->headings) && count($this->headings) > 1) {
             $toc = [];
-            foreach ($this->headings as $heading)
+            foreach ($this->headings as $heading) {
                 $toc[] = '<li>' . Html::a(strip_tags($heading['title']), '#' . $heading['id']) . '</li>';
+            }
             $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
             if (strpos($content, '</h1>') !== false)
                 $content = str_replace('</h1>', "</h1>\n" . $toc, $content);
