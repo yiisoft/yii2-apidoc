@@ -110,9 +110,9 @@ See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/inte
 Creating your own templates
 ---------------------------
 
-TDB
+TBD
 
 Using the model layer
 ---------------------
 
-TDB
+TBD
