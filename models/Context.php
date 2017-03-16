@@ -140,7 +140,7 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, contants and events to subclasses
+        // inherit properties, methods, constants and events to subclasses
         foreach ($this->classes as $class) {
             $this->updateSubclassInheritance($class);
         }
@@ -208,30 +208,32 @@ class Context extends Component
     protected function inheritDocs($class)
     {
         // inherit for properties
-        foreach ($class->properties as $p) {
-            if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
-                $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
-                if (!$inheritedProperty) {
-                    $this->errors[] = [
-                        'line' => $p->startLine,
-                        'file' => $class->sourceFile,
-                        'message' => "Method {$p->name} has no parent to inherit from in {$class->name}.",
-                    ];
-                    continue;
-                }
-
-                // set all properties that are empty.
-                foreach (['shortDescription', 'type', 'types'] as $property) {
-                    if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
-                        $p->$property = $inheritedProperty->$property;
+        if (!empty($class->properties)) {
+            foreach ($class->properties as $p) {
+                if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
+                    $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
+                    if (!$inheritedProperty) {
+                        $this->errors[] = [
+                            'line' => $p->startLine,
+                            'file' => $class->sourceFile,
+                            'message' => "Method {$p->name} has no parent to inherit from in {$class->name}.",
+                        ];
+                        continue;
                     }
-                }
-                // descriptions will be concatenated.
-                $p->description = trim($p->description) . "\n\n"
-                    . trim($inheritedProperty->description) . "\n\n"
-                    . $inheritTag->getContent();
 
-                $p->removeTag('inheritdoc');
+                    // set all properties that are empty.
+                    foreach (['shortDescription', 'type', 'types'] as $property) {
+                        if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
+                            $p->$property = $inheritedProperty->$property;
+                        }
+                    }
+                    // descriptions will be concatenated.
+                    $p->description = trim($p->description)."\n\n"
+                        .trim($inheritedProperty->description)."\n\n"
+                        .$inheritTag->getContent();
+
+                    $p->removeTag('inheritdoc');
+                }
             }
         }
 
@@ -340,7 +342,7 @@ class Context extends Component
      */
     private function getParents($class)
     {
-        if ($class->parentClass === null || !isset($this->classes[$class->parentClass])) {
+        if ($class instanceof InterfaceDoc || $class->parentClass === null || !isset($this->classes[$class->parentClass])) {
             return [];
         }
         return array_merge([$this->classes[$class->parentClass]], $this->getParents($this->classes[$class->parentClass]));
@@ -353,9 +355,12 @@ class Context extends Component
     private function getInterfaces($class)
     {
         $interfaces = [];
-        foreach($class->interfaces as $interface) {
-            if (isset($this->interfaces[$interface])) {
-                $interfaces[] = $this->interfaces[$interface];
+
+        if (!empty($class->interfaces)) {
+            foreach ($class->interfaces as $interface) {
+                if (isset($this->interfaces[$interface])) {
+                    $interfaces[] = $this->interfaces[$interface];
+                }
             }
         }
         return $interfaces;
