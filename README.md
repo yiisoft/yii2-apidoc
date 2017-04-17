@@ -58,7 +58,7 @@ Currently there is only the `bootstrap` template available.
 You may also add the `yii\apidoc\commands\ApiController` and `GuideController` to your console application command map
 and run them inside of your applications console app.
 
-### Generting docs from multiple sources
+### Generating docs from multiple sources
 
 The apidoc generator can use multiple directories, so you can generate docs for your application and include the yii framework
 docs to enable links between your classes and framework classes. This also allows `@inheritdoc` to work
