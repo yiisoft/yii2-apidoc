@@ -8,6 +8,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
 use yii\helpers\StringHelper;
 
 /**
@@ -188,6 +189,19 @@ class TypeDoc extends BaseDoc
             if ($tag instanceof AuthorTag) {
                 $this->authors[$tag->getAuthorName()] = $tag->getAuthorEmail();
                 unset($this->tags[$i]);
+            }
+        }
+
+        foreach ($this->tags as $tag) {
+            if ($tag instanceof PropertyTag) {
+                $property = new PropertyDoc();
+                $property->definedBy = $this->name;
+                $property->visibility = 'public';
+                $property->name = $tag->getVariableName();
+                $property->types = $tag->getType();
+                $property->description = $tag->getDescription();
+                $property->shortDescription = preg_replace('~\n.*~s', '', $tag->getDescription());
+                $this->properties[$property->name] = $property;
             }
         }
 
