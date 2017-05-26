@@ -59,6 +59,10 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
                 $output .= '\chapter{' . $chapter['headline'] . "}\n";
             }
             foreach($chapter['content'] as $content) {
+                // ignore URLs in TOC
+                if (strpos($content['file'], 'http://') === 0) {
+                    continue;
+                }
                 if (isset($fileData[$content['file']])) {
                     $md->labelPrefix = $content['file'] . '#';
                     $output .= '\label{'. $content['file'] . '}';
