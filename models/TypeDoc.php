@@ -53,7 +53,7 @@ class TypeDoc extends BaseDoc
      * @return null|MethodDoc|PropertyDoc
      */
     public function findSubject($subjectName)
-    {
+    {if(isset($subjectName[0])){
         if ($subjectName[0] != '$') {
             foreach ($this->methods as $name => $method) {
                 if (rtrim($subjectName, '()') == $name) {
@@ -61,6 +61,7 @@ class TypeDoc extends BaseDoc
                 }
             }
         }
+}
         if (!empty($subjectName) && substr_compare($subjectName, '()', -2, 2) === 0) {
             return null;
         }
