@@ -41,7 +41,7 @@ trait ApiMarkdownTrait
                 }
                 /** @var $type TypeDoc */
                 $type = static::$renderer->apiContext->getType($typeName);
-                if ($type === null) {
+                if ($type === null || $subjectName === '') {
                     static::$renderer->apiContext->errors[] = [
                         'file' => ($context !== null) ? $context->sourceFile : null,
                         'message' => 'broken link to ' . $typeName . '::' . $subjectName . (($context !== null) ? ' in ' . $context->name : ''),

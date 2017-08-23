@@ -54,14 +54,17 @@ class TypeDoc extends BaseDoc
      */
     public function findSubject($subjectName)
     {
-        if ($subjectName[0] != '$') {
+        if (empty($subjectName)) {
+            return null;
+        }
+        if ($subjectName[0] !== '$') {
             foreach ($this->methods as $name => $method) {
                 if (rtrim($subjectName, '()') == $name) {
                     return $method;
                 }
             }
         }
-        if (!empty($subjectName) && substr_compare($subjectName, '()', -2, 2) === 0) {
+        if (substr_compare($subjectName, '()', -2, 2) === 0) {
             return null;
         }
         if ($this->properties === null) {
