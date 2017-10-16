@@ -47,7 +47,6 @@ trait MarkdownHighlightTrait
                 return "<pre><code class=\"hljs {$result->language}\">{$result->value}</code></pre>\n";
             }
         } catch (DomainException $e) {
-            echo $e;
             return parent::renderCode($block);
         }
     }
