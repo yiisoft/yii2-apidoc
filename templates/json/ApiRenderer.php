@@ -7,7 +7,10 @@
 
 namespace yii\apidoc\templates\json;
 
+use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\Context;
+use yii\apidoc\models\InterfaceDoc;
+use yii\apidoc\models\TraitDoc;
 use yii\apidoc\renderers\ApiRenderer as BaseApiRenderer;
 use yii\base\ViewContextInterface;
 use Yii;
@@ -29,6 +32,16 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     public function render($context, $targetDir)
     {
         $types = array_merge($context->classes, $context->interfaces, $context->traits);
+        foreach($types as $name => $type) {
+            $types[$name] = (array) $type;
+            if ($type instanceof ClassDoc) {
+                $types[$name]['type'] = 'class';
+            } elseif ($type instanceof InterfaceDoc) {
+                $types[$name]['type'] = 'interface';
+            } elseif ($type instanceof TraitDoc) {
+                $types[$name]['type'] = 'trait';
+            }
+        }
         file_put_contents($targetDir . '/types.json', json_encode($types, JSON_PRETTY_PRINT));
     }
 
