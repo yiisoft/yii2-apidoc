@@ -52,6 +52,10 @@ abstract class BaseRenderer extends Component
     public $controller;
     public $guideUrl;
 
+    /**
+     * @var string URL for the README to use for the index of the guide.
+     */
+    public $readmeUrl;
 
     public function init()
     {
