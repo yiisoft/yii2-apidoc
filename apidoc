@@ -50,5 +50,7 @@ $application = new yii\console\Application([
 if ($vendorPath !== null) {
     $application->setVendorPath($vendorPath);
 }
+Yii::setAlias('@bower', '@vendor/bower-asset');                                 
+Yii::setAlias('@npm', '@vendor/npm-asset'); 
 $exitCode = $application->run();
 exit($exitCode);
