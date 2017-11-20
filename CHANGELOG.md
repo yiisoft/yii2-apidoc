@@ -8,6 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #160: Fixed parsing of '{@inheritdoc}' tag (klimov-paul)
 - Bug: Usage of deprecated `yii\base\Object` changed to `yii\base\BaseObject` allowing compatibility with PHP 7.2 (klimov-paul)
 - Enh #38: Fixed display of default values given as octal or hex notation (hiqsol)
+- Enh #152: Set `@bower` and `@npm` aliases dependent on the existing directories (ricpelo)
 - Enh: Display TOC only if there is more than one headline (cebe)
 - Enh: Extracted markdown code highlighting to a trait `MarkdownHighlightTrait` (cebe)
 - Enh: Added "type" attribute to JSON renderer to keep information about whether an entry is a class, interface or trait (cebe)
