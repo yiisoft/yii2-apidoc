@@ -49,6 +49,26 @@ $application = new yii\console\Application([
 ]);
 if ($vendorPath !== null) {
     $application->setVendorPath($vendorPath);
+    $bowerDirs = [
+        "$vendorPath/bower",
+        "$vendorPath/bower-asset",
+    ];
+    foreach ($bowerDirs as $dir) {
+        if (file_exists($dir)) {
+            Yii::setAlias('@bower', $dir);
+            break;
+        }
+    }
+    $npmDirs = [
+        "$vendorPath/npm",
+        "$vendorPath/npm-asset",
+    ];
+    foreach ($npmDirs as $dir) {
+        if (file_exists($dir)) {
+            Yii::setAlias('@npm', $dir);
+            break;
+        }
+    }
 }
 $exitCode = $application->run();
 exit($exitCode);

@@ -5,6 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Enh #38: Fixed display of default values given as octal or hex notation (hiqsol)
+- Enh #152: Set `@bower` and `@npm` aliases dependent on the existing directories (ricpelo)
 - Enh: Display TOC only if there is more than one headline (cebe)
 - Enh: Extracted markdown code highlighting to a trait `MarkdownHighlightTrait` (cebe)
 
