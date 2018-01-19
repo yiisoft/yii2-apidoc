@@ -166,9 +166,9 @@ class BaseDoc extends Object
                 }
             }
             return $sentence;
-        } else {
-            return $text;
         }
+
+        return $text;
     }
 
     /**

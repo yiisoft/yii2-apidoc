@@ -57,10 +57,10 @@ class SideNavWidget extends Widget
      *
      * - label: string, required, the nav item label.
      * - url: optional, the item's URL. Defaults to "#".
-     * - visible: boolean, optional, whether this menu item is visible. Defaults to true.
+     * - visible: bool, optional, whether this menu item is visible. Defaults to true.
      * - linkOptions: array, optional, the HTML attributes of the item's link.
      * - options: array, optional, the HTML attributes of the item container (LI).
-     * - active: boolean, optional, whether the item should be on active state or not.
+     * - active: bool, optional, whether the item should be on active state or not.
      * - items: array|string, optional, the configuration array for creating a [[Dropdown]] widget,
      *   or a string representing the dropdown menu. Note that Bootstrap does not support sub-dropdown menus.
      *
@@ -68,7 +68,7 @@ class SideNavWidget extends Widget
      */
     public $items = [];
     /**
-     * @var boolean whether the nav items labels should be HTML-encoded.
+     * @var bool whether the nav items labels should be HTML-encoded.
      */
     public $encodeLabels = true;
     /**

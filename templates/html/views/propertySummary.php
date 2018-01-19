@@ -6,7 +6,7 @@ use yii\apidoc\models\TraitDoc;
 use yii\helpers\ArrayHelper;
 
 /* @var $type ClassDoc|TraitDoc */
-/* @var $protected boolean */
+/* @var $protected bool */
 /* @var $this yii\web\View */
 /* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
 
