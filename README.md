@@ -12,6 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-apidoc/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
+[![Build Status](https://travis-ci.org/yiisoft/yii2-apidoc.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-apidoc)
 
 
 Installation
