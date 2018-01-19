@@ -362,12 +362,12 @@ class Context extends Component
     }
 
     /**
-     * Add properties for getters and setters if class is subclass of [[\yii\base\Object]].
+     * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
      * @param ClassDoc $class
      */
     protected function handlePropertyFeature($class)
     {
-        if (!$this->isSubclassOf($class, 'yii\base\Object')) {
+        if (!$this->isSubclassOf($class, 'yii\base\BaseObject')) {
             return;
         }
         foreach ($class->getPublicMethods() as $name => $method) {

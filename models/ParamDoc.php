@@ -8,7 +8,7 @@
 namespace yii\apidoc\models;
 
 use yii\apidoc\helpers\PrettyPrinter;
-use yii\base\Object;
+use yii\base\BaseObject;
 
 /**
  * Represents API documentation information for a [[FunctionDoc|function]] or [[MethodDoc|method]] `param`.
@@ -16,7 +16,7 @@ use yii\base\Object;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class ParamDoc extends Object
+class ParamDoc extends BaseObject
 {
     public $name;
     public $typeHint;

@@ -9,7 +9,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
 /**
@@ -18,7 +18,7 @@ use yii\helpers\StringHelper;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class BaseDoc extends Object
+class BaseDoc extends BaseObject
 {
     /**
      * @var \phpDocumentor\Reflection\DocBlock\Context
