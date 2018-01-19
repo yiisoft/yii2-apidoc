@@ -30,6 +30,12 @@
         "cebe/markdown-latex": "~1.0",
         "scrivo/highlight.php": "~8.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
     },
@@ -37,10 +43,6 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.1.x-dev"
-        },
-        "asset-installer-paths": {
-            "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
         }
     }
 }

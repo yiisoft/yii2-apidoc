@@ -19,7 +19,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        $this->removeRuntimeDirectory();
+        //$this->removeRuntimeDirectory();
         $this->destroyApplication();
     }
 
@@ -83,13 +83,29 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param string $actionId id of action to be run.
      * @param array $args action arguments.
      * @return string command output.
+     * @throws \Throwable on failure.
      */
     protected function runControllerAction($controller, $actionId, array $args = [])
     {
-        $controller->run($actionId, $args);
-        return $controller->flushStdErrBuffer() . $controller->flushStdOutBuffer();
+        ob_start();
+        ob_implicit_flush(false);
+        try {
+            $controller->run($actionId, $args);
+        } catch (\Exception $e) {
+            ob_end_flush();
+            throw $e;
+        } catch (\Throwable $e) {
+            ob_end_flush();
+            throw $e;
+        }
+        ob_get_clean();
+
+        return $controller->flushStdErrBuffer() . "\n" . $controller->flushStdOutBuffer();
     }
 
+    /**
+     * Removes tests runtime directory as a cleanup.
+     */
     protected function removeRuntimeDirectory()
     {
         $runtimePath = Yii::getAlias('@runtime');
