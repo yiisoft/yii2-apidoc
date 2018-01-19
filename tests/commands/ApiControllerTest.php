@@ -119,8 +119,17 @@ HTML
         );
         //$this->assertContains('$age', $animalContent);
 
+        // Class `Dog` :
+        $dogFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-dog.html';
+        $this->assertTrue(file_exists($dogFile));
+        $dogContent = file_get_contents($dogFile);
+        $this->assertContains('<th>Available since version</th><td>1.1</td>', $dogContent);
+        $this->assertNotContains('@inheritdoc', $dogContent);
+
         // Class `Cat` :
         $catFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-cat.html';
         $this->assertTrue(file_exists($catFile));
+        /*$catContent = file_get_contents($catFile);
+        $this->assertNotContains('@inheritdoc', $catContent);*/
     }
 }

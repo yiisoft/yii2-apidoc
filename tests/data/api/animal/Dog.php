@@ -8,19 +8,19 @@
 namespace yiiunit\apidoc\data\api\animal;
 
 /**
- * Cat represents a cat animal.
+ * Dog represents a dog animal.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
-class Cat extends Animal
+class Dog extends Animal
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function render()
     {
-        // this method has `@inheritdoc` tag in brackets
-        return 'This is a cat';
+        // this method has `@inheritdoc` tag without brackets
+        return 'This is a dog';
     }
 }
