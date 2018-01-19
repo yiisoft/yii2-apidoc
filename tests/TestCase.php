@@ -65,6 +65,20 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Asserts that a haystack contains a needle, ignoring indenting symbols.
+     *
+     * @param mixed  $needle
+     * @param mixed  $haystack
+     * @param string $message
+     */
+    public function assertContainsWithoutIndent($needle, $haystack, $message = '')
+    {
+        $needle = str_replace(["\r", "\n", "\t", '  '], '', $needle);
+        $haystack = str_replace(["\r", "\n", "\t", '  '], '', $haystack);
+        $this->assertContains($needle, $haystack, $message);
+    }
+
+    /**
      * Invokes object method, even if it is private or protected.
      * @param object $object object.
      * @param string $method method name.
