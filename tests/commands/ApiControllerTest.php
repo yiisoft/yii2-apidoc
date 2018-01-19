@@ -129,7 +129,7 @@ HTML
         // Class `Cat` :
         $catFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-cat.html';
         $this->assertTrue(file_exists($catFile));
-        /*$catContent = file_get_contents($catFile);
-        $this->assertNotContains('@inheritdoc', $catContent);*/
+        $catContent = file_get_contents($catFile);
+        $this->assertNotContains('@inheritdoc', $catContent);
     }
 }

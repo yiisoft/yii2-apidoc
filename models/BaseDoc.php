@@ -7,6 +7,7 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
 use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
 use yii\base\BaseObject;
@@ -34,7 +35,7 @@ class BaseDoc extends BaseObject
     public $deprecatedSince;
     public $deprecatedReason;
     /**
-     * @var \phpDocumentor\Reflection\DocBlock\Tag[]
+     * @var Tag[]
      */
     public $tags = [];
 
@@ -70,7 +71,7 @@ class BaseDoc extends BaseObject
     /**
      * Get the first tag of a given name
      * @param string $name tag name.
-     * @return \phpDocumentor\Reflection\DocBlock\Tag|null tag instance, `null` if not found.
+     * @return Tag|null tag instance, `null` if not found.
      * @since 2.0.5
      */
     public function getFirstTag($name)
@@ -127,6 +128,14 @@ class BaseDoc extends BaseObject
                     unset($this->tags[$i]);
                 }
             }
+
+            if ($this->shortDescription === '{@inheritdoc}') {
+                // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
+                // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
+                $this->tags[] = new Tag('inheritdoc', '');
+                $this->shortDescription = '';
+            }
+
         } elseif ($context !== null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
