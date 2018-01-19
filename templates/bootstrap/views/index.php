@@ -13,8 +13,8 @@ $renderer = $this->context;
 if (isset($readme)) {
     echo \yii\apidoc\helpers\ApiMarkdown::process($readme);
 }
-
-?><h1>Class Reference</h1>
+?>
+<h1>Class Reference</h1>
 
 <table class="summaryTable docIndex table table-bordered table-striped table-hover">
     <colgroup>

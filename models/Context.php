@@ -187,7 +187,7 @@ class Context extends Component
 
     /**
      * Add methods to subinterfaces
-     * @param InterfaceDoc $class
+     * @param InterfaceDoc $interface
      */
     protected function updateSubInterfaceInheritance($interface)
     {

@@ -39,6 +39,7 @@ trait RendererTrait
         'twig',
     ];
 
+
     /**
      * Returns nav TypeDocs
      * @param TypeDoc $type typedoc to take category from

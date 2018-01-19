@@ -16,7 +16,8 @@ if (isset($currentFile)) {
     }
 }
 
-$this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($guideHeadline) ? ['guideHeadline' => $guideHeadline] : []); ?>
+$this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($guideHeadline) ? ['guideHeadline' => $guideHeadline] : []);
+?>
 
 <div class="row">
     <div class="col-md-2">
@@ -33,7 +34,7 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($g
             }
             $nav[] = [
                 'label' => $chapter['headline'],
-//                'url' => $this->context->generateGuideUrl($file),
+                //'url' => $this->context->generateGuideUrl($file),
                 'items' => $items,
             ];
         } ?>
