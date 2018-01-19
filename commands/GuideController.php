@@ -39,7 +39,7 @@ class GuideController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return int
+     * @return int status code.
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {
@@ -103,6 +103,8 @@ class GuideController extends BaseController
             }
         }
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+
+        return 0;
     }
 
 

@@ -17,15 +17,30 @@ namespace yii\apidoc\models;
  */
 class ClassDoc extends TypeDoc
 {
+    /**
+     * @var string
+     */
     public $parentClass;
+    /**
+     * @var bool
+     */
     public $isAbstract;
+    /**
+     * @var bool
+     */
     public $isFinal;
     /**
      * @var string[]
      */
     public $interfaces = [];
+    /**
+     * @var string[]
+     */
     public $traits = [];
     // will be set by Context::updateReferences()
+    /**
+     * @var string[]
+     */
     public $subclasses = [];
     /**
      * @var EventDoc[]

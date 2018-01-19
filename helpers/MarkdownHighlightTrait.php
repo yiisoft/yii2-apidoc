@@ -23,6 +23,7 @@ trait MarkdownHighlightTrait
      */
     private static $highlighter;
 
+
     /**
      * @inheritdoc
      */

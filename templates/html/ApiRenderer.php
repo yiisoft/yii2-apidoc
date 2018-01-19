@@ -48,9 +48,15 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -84,7 +90,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * Renders a given [[Context]].
      *
      * @param Context $context the api documentation context to render.
-     * @param $targetDir
+     * @param string $targetDir
      */
     public function render($context, $targetDir)
     {
@@ -135,11 +141,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         $output = $this->getView()->render($viewFile, $params, $this);
         if ($this->layout !== false) {
             $params['content'] = $output;
-
             return $this->getView()->renderFile($this->layout, $params, $this);
-        } else {
-            return $output;
         }
+
+        return $output;
     }
 
     /**
@@ -222,6 +227,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
     /**
      * @param PropertyDoc $property
+     * @param mixed $context
      * @return string
      */
     public function renderPropertySignature($property, $context = null)

@@ -37,7 +37,7 @@ class ApiController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return int
+     * @return int status code.
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {
@@ -122,6 +122,8 @@ class ApiController extends BaseController
             file_put_contents($targetDir . '/warnings.txt', print_r($context->warnings, true));
             $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
         }
+
+        return 0;
     }
 
     /**

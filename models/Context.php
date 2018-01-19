@@ -201,7 +201,7 @@ class Context extends Component
     }
 
     /**
-     * Inhertit docsblocks using `@inheritDoc` tag.
+     * Inherit docsblocks using `@inheritDoc` tag.
      * @param ClassDoc $class
      * @see http://phpdoc.org/docs/latest/guides/inheritance.html
      */

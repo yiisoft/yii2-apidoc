@@ -69,8 +69,8 @@ class BaseDoc extends Object
 
     /**
      * Get the first tag of a given name
-     * @param string $name
-     * @return \phpDocumentor\Reflection\DocBlock\Tag
+     * @param string $name tag name.
+     * @return \phpDocumentor\Reflection\DocBlock\Tag|null tag instance, `null` if not found.
      * @since 2.0.5
      */
     public function getFirstTag($name)
@@ -80,8 +80,9 @@ class BaseDoc extends Object
                 return $this->tags[$i];
             }
         }
-    }
 
+        return null;
+    }
 
     /**
      * @param \phpDocumentor\Reflection\BaseReflector $reflector

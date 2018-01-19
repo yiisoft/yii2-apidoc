@@ -7,8 +7,9 @@
 
 ### Additional info
 
-| Q                | A
-| ---------------- | ---
-| Yii vesion       |
-| PHP version      |
-| Operating system |
+| Q                  | A
+| ------------------ | ---
+| Yii vesion         |
+| Yii APIDoc version |
+| PHP version        |
+| Operating system   |

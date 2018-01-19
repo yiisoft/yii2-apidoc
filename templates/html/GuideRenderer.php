@@ -32,6 +32,9 @@ abstract class GuideRenderer extends BaseGuideRenderer
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 
