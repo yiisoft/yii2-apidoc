@@ -19,7 +19,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     protected function tearDown()
     {
         parent::tearDown();
-        //$this->removeRuntimeDirectory();
+        $this->removeRuntimeDirectory();
         $this->destroyApplication();
     }
 
@@ -35,6 +35,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
             'id' => 'testapp',
             'basePath' => __DIR__,
             'vendorPath' => dirname(__DIR__) . '/vendor',
+            'aliases' => [
+                '@bower' => '@vendor/bower-asset',
+                '@npm' => '@vendor/npm-asset',
+            ],
         ], $config));
     }
 
