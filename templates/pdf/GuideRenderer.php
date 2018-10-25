@@ -60,7 +60,7 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
             }
             foreach($chapter['content'] as $content) {
                 // ignore URLs in TOC
-                if (strpos($content['file'], 'http://') === 0) {
+                if (strpos($content['file'], 'http://') === 0 || strpos($content['file'], 'https://') === 0) {
                     continue;
                 }
                 if (isset($fileData[$content['file']])) {
