@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.1 under development
+2.1.1 November 14, 2018
 -----------------------
 
 - Bug #149: Fixed crash on wrongly formatted API links (cebe, santosh-1265)
