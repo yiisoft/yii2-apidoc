@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.1.2 under development
 -----------------------
 
-- no changes in this release.
+- Bug #172: Upgraded highlight.js dependency to 9.13.1 (samdark)
 
 
 2.1.1 November 14, 2018
