@@ -30,6 +30,9 @@
         "cebe/markdown-latex": "~1.0",
         "scrivo/highlight.php": "~9.13"
     },
+    "require-dev": {
+        "phpunit/phpunit": "<7"
+    },
     "repositories": [
         {
             "type": "composer",
