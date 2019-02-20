@@ -26,7 +26,7 @@
         "phpdocumentor/reflection-docblock": "^2.0.4",
         "nikic/php-parser": "^1.0",
         "cebe/js-search": "~0.9.3",
-        "cebe/markdown": "~1.0.0 | ~1.1.0",
+        "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
         "cebe/markdown-latex": "~1.0",
         "scrivo/highlight.php": "~9.13"
     },
