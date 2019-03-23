@@ -68,12 +68,20 @@ class GuideControllerTest extends TestCase
         $this->assertContains('Publishing images...done.', $output);
 
         $outputPath = Yii::getAlias('@runtime');
+
         $readmeFile = $outputPath . DIRECTORY_SEPARATOR . 'guide-README.html';
         $this->assertTrue(file_exists($readmeFile));
         $readmeContent = file_get_contents($readmeFile);
         $this->assertContains('<h1>The Test Guide <span id="the-test-guide"></span><a href="#the-test-guide" class="hashlink">', $readmeContent);
         $this->assertContains('<a href="guide-intro.html">Intro</a>', $readmeContent);
         $this->assertContains('<a href="guide-intro-upgrade.html">Upgrade</a>', $readmeContent);
+
+        $tocFile = $outputPath . DIRECTORY_SEPARATOR . 'guide-TOC.html';
+        $this->assertTrue(file_exists($tocFile));
+        $tocFile = file_get_contents($tocFile);
+
+        $this->assertContains('<h1>TOC Test <span id="toc-test"></span><a href="#toc-test" class="hashlink">', $tocFile);
+        $this->assertEquals(1, substr_count($tocFile, '<div class="toc">'));
     }
 
     public function testGeneratePdf()
