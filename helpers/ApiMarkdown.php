@@ -76,10 +76,14 @@ class ApiMarkdown extends GithubMarkdown
                 $toc[] = '<li>' . Html::a(strip_tags($heading['title']), '#' . $heading['id']) . '</li>';
             }
             $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
-            if (strpos($content, '</h1>') !== false)
-                $content = str_replace('</h1>', "</h1>\n" . $toc, $content);
-            else
+
+            $needle = '</h1>';
+            $pos = strpos($content, $needle);
+            if ($pos !== false) {
+                $content = substr_replace($content, "$needle\n$toc", $pos, strlen($needle));
+            } else {
                 $content = $toc . $content;
+            }
         }
         return $content;
     }
