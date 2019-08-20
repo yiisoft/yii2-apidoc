@@ -140,7 +140,7 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, contants and events to subclasses
+        // inherit properties, methods, constants and events to subclasses
         foreach ($this->classes as $class) {
             $this->updateSubclassInheritance($class);
         }
