@@ -1,11 +1,11 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.2 under development
------------------------
+2.1.2 August 20, 2019
+---------------------
 
-- Bug #176: Prevent multiple TOC rendering in ApiMarkdown (machour)
 - Bug #172: Upgraded highlight.js dependency to 9.13.1 (samdark)
+- Bug #176: Prevent multiple TOC rendering in ApiMarkdown (machour)
 
 
 2.1.1 November 14, 2018
