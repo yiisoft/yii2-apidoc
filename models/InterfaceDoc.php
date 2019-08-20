@@ -42,6 +42,6 @@ class InterfaceDoc extends TypeDoc
         }
 
         // interface can not have properties
-        $this->properties = null;
+        $this->properties = [];
     }
 }
