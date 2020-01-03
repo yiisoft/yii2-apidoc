@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.1.3 under development
 -----------------------
 
-- no changes in this release.
+- Enh #185: Use HTTPS for www.php.net links (kamarton)
 
 
 2.1.2 August 20, 2019
