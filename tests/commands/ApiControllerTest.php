@@ -79,7 +79,7 @@ class ApiControllerTest extends TestCase
             <<<HTML
 <tr id="\$name">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$name-detail">\$name</a></td>
-    <td><a href="http://www.php.net/language.types.string">string</a></td>
+    <td><a href="https://www.php.net/language.types.string">string</a></td>
     <td>Animal name.</td>
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
 </tr>
@@ -90,7 +90,7 @@ HTML
             <<<HTML
 <tr id="\$birthDate">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$birthDate-detail">\$birthDate</a></td>
-    <td><a href="http://www.php.net/language.types.integer">integer</a></td>
+    <td><a href="https://www.php.net/language.types.integer">integer</a></td>
     <td>Animal birth date as a UNIX timestamp.</td>
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
 </tr>
