@@ -5,6 +5,8 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Enh #185: Use HTTPS for www.php.net links (kamarton)
+- Enh #137: @since tags are now propagated to inherited methods/properties and magic properties (brandonkelly)
+- Bug #187: Prevent getter/setter methods from affecting class-defined property docs (brandonkelly)
 
 
 2.1.2 August 20, 2019
