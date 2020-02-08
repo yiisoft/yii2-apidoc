@@ -222,7 +222,7 @@ class Context extends Component
                 }
 
                 // keep track of where the property inherits from
-                $p->inheritsFrom = $inheritedProperty->inheritsFrom ?: $inheritedProperty->definedBy;
+                $p->addInherit($inheritedProperty->definedBy);
                 // set all properties that are empty.
                 foreach (['shortDescription', 'type', 'types'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
@@ -253,7 +253,7 @@ class Context extends Component
                 }
 
                 // keep track of where the method inherits from
-                $m->inheritsFrom = $inheritedMethod->inheritsFrom ?: $inheritedMethod->definedBy;
+                $m->addInherit($inheritedMethod->definedBy);
                 // set all properties that are empty.
                 foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {

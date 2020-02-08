@@ -21,6 +21,8 @@ use yii\apidoc\helpers\PrettyPrinter;
  */
 class PropertyDoc extends BaseDoc
 {
+    use InheritableTrait;
+
     public $visibility;
     public $isStatic;
     public $type;
@@ -31,7 +33,6 @@ class PropertyDoc extends BaseDoc
     public $setter;
     // will be set by creating class
     public $definedBy;
-    public $inheritsFrom;
 
 
     /**
