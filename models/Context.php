@@ -376,17 +376,15 @@ class Context extends Component
             }
             if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                if (isset($class->properties[$propertyName])) {
-                    $property = $class->properties[$propertyName];
-                    if ($property->getter === null && $property->setter === null) {
-                        $this->errors[] = [
-                            'line' => $property->startLine,
-                            'file' => $class->sourceFile,
-                            'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
-                        ];
-                    }
-                    $property->getter = $method;
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property && $property->getter === null && $property->setter === null) {
+                    $this->errors[] = [
+                        'line' => $property->startLine,
+                        'file' => $class->sourceFile,
+                        'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
+                    ];
                 } else {
+                    // Override the setter-defined property if it exists already
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
                         'name' => $propertyName,
                         'definedBy' => $method->definedBy,
@@ -397,23 +395,27 @@ class Context extends Component
                         'types' => $method->returnTypes,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
-                        'getter' => $method
+                        'since' => $method->since,
+                        'getter' => $method,
+                        'setter' => isset($property->setter) ? $property->setter : null,
                         // TODO set default value
                     ]);
                 }
             }
             if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                if (isset($class->properties[$propertyName])) {
-                    $property = $class->properties[$propertyName];
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property) {
                     if ($property->getter === null && $property->setter === null) {
                         $this->errors[] = [
                             'line' => $property->startLine,
                             'file' => $class->sourceFile,
                             'message' => "Property $propertyName conflicts with a defined setter {$method->name} in {$class->name}.",
                         ];
+                    } else {
+                        // Just set the setter
+                        $property->setter = $method;
                     }
-                    $property->setter = $method;
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
@@ -426,7 +428,8 @@ class Context extends Component
                         'types' => $param->types,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,
-                        'setter' => $method
+                        'since' => $method->since,
+                        'setter' => $method,
                     ]);
                 }
             }

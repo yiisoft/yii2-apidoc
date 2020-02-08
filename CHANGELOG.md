@@ -5,6 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Enh #185: Use HTTPS for www.php.net links (kamarton)
+- Bug #187: Prevent getter/setter methods from affecting class-defined property docs (brandonkelly)
 
 
 2.1.2 August 20, 2019
