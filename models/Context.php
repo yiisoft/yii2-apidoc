@@ -376,7 +376,7 @@ class Context extends Component
             }
             if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = $class->properties[$propertyName] ?? null;
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
                 if ($property && $property->getter === null && $property->setter === null) {
                     $this->errors[] = [
                         'line' => $property->startLine,
@@ -397,14 +397,14 @@ class Context extends Component
                         'description' => $method->return,
                         'since' => $method->since,
                         'getter' => $method,
-                        'setter' => $property->setter ?? null,
+                        'setter' => isset($property->setter) ? $property->setter : null,
                         // TODO set default value
                     ]);
                 }
             }
             if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = $class->properties[$propertyName] ?? null;
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
                 if ($property) {
                     if ($property->getter === null && $property->setter === null) {
                         $this->errors[] = [
