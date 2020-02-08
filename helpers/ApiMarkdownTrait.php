@@ -59,7 +59,7 @@ trait ApiMarkdownTrait
         ];
 
         return [
-            ['brokenApiLink', '<span class="broken-link">' . $e->object . '</span>'],
+            ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
             $offset
         ];
     }
