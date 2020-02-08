@@ -154,7 +154,7 @@ class ApiMarkdown extends GithubMarkdown
      * Converts markdown into HTML
      *
      * @param string $content
-     * @param TypeDoc $context
+     * @param TypeDoc|string|TypeDoc[]|string[]|null $context
      * @param bool $paragraph
      * @return string
      */
@@ -164,9 +164,23 @@ class ApiMarkdown extends GithubMarkdown
             Markdown::$flavors['api'] = new static;
         }
 
-        if (is_string($context)) {
-            $context = static::$renderer->apiContext->getType($context);
+        // Normalize $context into an array of TypeDoc objects
+        if ($context !== null) {
+            if (!is_array($context)) {
+                $context = array($context);
+            }
+            foreach ($context as &$c) {
+                if (is_string($c)) {
+                    $c = static::$renderer->apiContext->getType($c);
+                }
+            }
+            // Filter empty types
+            $context = array_filter($context);
+            if (empty($context)) {
+                $context = null;
+            }
         }
+
         Markdown::$flavors['api']->renderingContext = $context;
 
         if ($paragraph) {

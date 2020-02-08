@@ -14,7 +14,7 @@ use yii\apidoc\models\TypeDoc;
 /**
  * Class ApiMarkdownTrait
  *
- * @property TypeDoc $renderingContext
+ * @property TypeDoc|TypeDoc[]|null $renderingContext
  */
 trait ApiMarkdownTrait
 {
@@ -23,93 +23,118 @@ trait ApiMarkdownTrait
      */
     protected function parseApiLinks($text)
     {
-        $context = $this->renderingContext;
+        if (!preg_match('/^\[\[([\w\d\\\\\(\):$]+)(\|[^\]]*)?\]\]/', $text, $matches)) {
+            return [['text', '[['], 2];
+        }
 
-        if (preg_match('/^\[\[([\w\d\\\\\(\):$]+)(\|[^\]]*)?\]\]/', $text, $matches)) {
+        $offset = strlen($matches[0]);
+        $object = $matches[1];
+        $title = (empty($matches[2]) || $matches[2] == '|') ? null : substr($matches[2], 1);
 
-            $offset = strlen($matches[0]);
+        if (is_array($this->renderingContext)) {
+            $contexts = array_merge($this->renderingContext);
+        } elseif ($this->renderingContext) {
+            $contexts = array($this->renderingContext);
+        } else {
+            $contexts = array();
+        }
+        $contexts[] = null;
 
-            $object = $matches[1];
-            $title = (empty($matches[2]) || $matches[2] == '|') ? null : substr($matches[2], 1);
+        $e = null;
+        foreach ($contexts as $context) {
+            /** @var TypeDoc|null $context */
+            try {
+                return $this->parseApiLinkForContext($offset, $object, $title, $context);
+            } catch (BrokenLinkException $e) {
+                // Keep going if there are more contexts to check
+                continue;
+            }
+        }
 
-            if (($pos = strpos($object, '::')) !== false) {
-                $typeName = substr($object, 0, $pos);
-                $subjectName = substr($object, $pos + 2);
-                if ($context !== null) {
-                    // Collection resolves relative types
-                    $typeName = (new Collection([$typeName], $context->phpDocContext))->__toString();
+        // If we made it this far, there was a broken link
+        /** @var BrokenLinkException $e */
+        static::$renderer->apiContext->errors[] = [
+            'file' => ($e->context !== null) ? $e->context->sourceFile : null,
+            'message' => $e->getMessage(),
+        ];
+
+        return [
+            ['brokenApiLink', '<span class="broken-link">' . $e->object . '</span>'],
+            $offset
+        ];
+    }
+
+    /**
+     * Attempts to parse an API link for the given context.
+     *
+     * @param int $offset
+     * @param string $object
+     * @param string|null $title
+     * @param TypeDoc|null $context
+     * @return array
+     * @throws BrokenLinkException if the object can't be resolved
+     */
+    protected function parseApiLinkForContext($offset, $object, $title, $context)
+    {
+        if (($pos = strpos($object, '::')) !== false) {
+            $typeName = substr($object, 0, $pos);
+            $subjectName = substr($object, $pos + 2);
+
+            if ($context !== null) {
+                // Collection resolves relative types
+                $typeName = (new Collection([$typeName], $context->phpDocContext))->__toString();
+            }
+
+            /** @var $type TypeDoc */
+            $type = static::$renderer->apiContext->getType($typeName);
+
+            if ($type === null || $subjectName === '') {
+                throw new BrokenLinkException($typeName . '::' . $subjectName, $context);
+            }
+            if (($subject = $type->findSubject($subjectName)) === null) {
+                throw new BrokenLinkException($type->name . '::' . $subjectName, $context);
+            }
+
+            if ($title === null) {
+                $title = $type->name . '::' . $subject->name;
+                if ($subject instanceof MethodDoc) {
+                    $title .= '()';
                 }
-                /** @var $type TypeDoc */
-                $type = static::$renderer->apiContext->getType($typeName);
-                if ($type === null || $subjectName === '') {
-                    static::$renderer->apiContext->errors[] = [
-                        'file' => ($context !== null) ? $context->sourceFile : null,
-                        'message' => 'broken link to ' . $typeName . '::' . $subjectName . (($context !== null) ? ' in ' . $context->name : ''),
-                    ];
+            }
 
-                    return [
-                        ['brokenApiLink', '<span class="broken-link">' . $typeName . '::' . $subjectName . '</span>'],
-                        $offset
-                    ];
-                } else {
-                    if (($subject = $type->findSubject($subjectName)) !== null) {
-                        if ($title === null) {
-                            $title = $type->name . '::' . $subject->name;
-                            if ($subject instanceof MethodDoc) {
-                                $title .= '()';
-                            }
-                        }
+            return [
+                ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
+                $offset
+            ];
+        }
 
-                        return [
-                            ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
-                            $offset
-                        ];
-                    } else {
-                        static::$renderer->apiContext->errors[] = [
-                            'file' => ($context !== null) ? $context->sourceFile : null,
-                            'message' => 'broken link to ' . $type->name . '::' . $subjectName . (($context !== null) ? ' in ' . $context->name : ''),
-                        ];
-
-                        return [
-                            ['brokenApiLink', '<span class="broken-link">' . $type->name . '::' . $subjectName . '</span>'],
-                            $offset
-                        ];
-                    }
-                }
-            } elseif ($context !== null && ($subject = $context->findSubject($object)) !== null) {
+        if ($context !== null) {
+            if (($subject = $context->findSubject($object)) !== null) {
                 return [
                     ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
                     $offset
                 ];
             }
 
-            if ($context !== null) {
-                // Collection resolves relative types
-                $object = (new Collection([$object], $context->phpDocContext))->__toString();
-            }
-            if (($type = static::$renderer->apiContext->getType($object)) !== null) {
-                return [
-                    ['apiLink', static::$renderer->createTypeLink($type, null, $title)],
-                    $offset
-                ];
-            } elseif (strpos($typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href') !== false) {
-                return [
-                    ['apiLink', $typeLink],
-                    $offset
-                ];
-            }
-            static::$renderer->apiContext->errors[] = [
-                'file' => ($context !== null) ? $context->sourceFile : null,
-                'message' => 'broken link to ' . $object . (($context !== null) ? ' in ' . $context->name : ''),
-            ];
+            // Collection resolves relative types
+            $object = (new Collection([$object], $context->phpDocContext))->__toString();
+        }
 
+        if (($type = static::$renderer->apiContext->getType($object)) !== null) {
             return [
-                ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
+                ['apiLink', static::$renderer->createTypeLink($type, null, $title)],
                 $offset
             ];
         }
 
-        return [['text', '[['], 2];
+        if (strpos($typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href') !== false) {
+            return [
+                ['apiLink', $typeLink],
+                $offset
+            ];
+        }
+
+        throw new BrokenLinkException($object, $context);
     }
 
     /**
