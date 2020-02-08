@@ -21,6 +21,7 @@ class MethodDoc extends FunctionDoc
     public $visibility;
     // will be set by creating class
     public $definedBy;
+    public $inheritsFrom;
 
 
     /**

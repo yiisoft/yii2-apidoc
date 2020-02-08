@@ -31,6 +31,7 @@ class PropertyDoc extends BaseDoc
     public $setter;
     // will be set by creating class
     public $definedBy;
+    public $inheritsFrom;
 
 
     /**

@@ -210,6 +210,7 @@ class Context extends Component
         // inherit for properties
         foreach ($class->properties as $p) {
             if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
+                /** @var PropertyDoc|null $inheritedProperty */
                 $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
                 if (!$inheritedProperty) {
                     $this->errors[] = [
@@ -220,6 +221,8 @@ class Context extends Component
                     continue;
                 }
 
+                // keep track of where the property inherits from
+                $p->inheritsFrom = $inheritedProperty->inheritsFrom ?: $inheritedProperty->definedBy;
                 // set all properties that are empty.
                 foreach (['shortDescription', 'type', 'types'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
@@ -238,6 +241,7 @@ class Context extends Component
         // inherit for methods
         foreach ($class->methods as $m) {
             if ($m->hasTag('inheritdoc') && ($inheritTag = $m->getFirstTag('inheritdoc')) !== null) {
+                /** @var MethodDoc|null $inheritedMethod */
                 $inheritedMethod = $this->inheritMethodRecursive($m, $class);
                 if (!$inheritedMethod) {
                     $this->errors[] = [
@@ -247,6 +251,9 @@ class Context extends Component
                     ];
                     continue;
                 }
+
+                // keep track of where the method inherits from
+                $m->inheritsFrom = $inheritedMethod->inheritsFrom ?: $inheritedMethod->definedBy;
                 // set all properties that are empty.
                 foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
