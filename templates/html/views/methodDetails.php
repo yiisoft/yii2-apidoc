@@ -50,15 +50,15 @@ ArrayHelper::multisort($methods, 'name');
         <div class="doc-description deprecated">
             <strong>Deprecated <?php
                 if (!empty($method->deprecatedSince))  { echo 'since version ' . $method->deprecatedSince . ': '; }
-                if (!empty($method->deprecatedReason)) { echo ApiMarkdown::process($method->deprecatedReason, $method->getContext(), true); }
+                if (!empty($method->deprecatedReason)) { echo ApiMarkdown::process($method->deprecatedReason, $type, true); }
                 ?></strong>
         </div>
     <?php endif; ?>
 
     <div class="doc-description">
-        <p><strong><?= ApiMarkdown::process($method->shortDescription, $method->getContext(), true) ?></strong></p>
+        <p><strong><?= ApiMarkdown::process($method->shortDescription, $type, true) ?></strong></p>
 
-        <?= ApiMarkdown::process($method->description, $method->getContext()) ?>
+        <?= ApiMarkdown::process($method->description, $type) ?>
 
         <?= $this->render('seeAlso', ['object' => $method]) ?>
     </div>
@@ -70,21 +70,21 @@ ArrayHelper::multisort($methods, 'name');
                 <tr>
                   <td class="param-name-col"><?= ApiMarkdown::highlight($param->name, 'php') ?></td>
                   <td class="param-type-col"><?= $renderer->createTypeLink($param->types) ?></td>
-                  <td class="param-desc-col"><?= ApiMarkdown::process($param->description, $method->getContext()) ?></td>
+                  <td class="param-desc-col"><?= ApiMarkdown::process($param->description, $type) ?></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (!empty($method->return)): ?>
                 <tr>
                   <th class="param-name-col">return</th>
                   <td class="param-type-col"><?= $renderer->createTypeLink($method->returnTypes, $type) ?></td>
-                  <td class="param-desc-col"><?= ApiMarkdown::process($method->return, $method->getContext()) ?></td>
+                  <td class="param-desc-col"><?= ApiMarkdown::process($method->return, $type) ?></td>
                 </tr>
             <?php endif; ?>
             <?php foreach ($method->exceptions as $exception => $description): ?>
                 <tr>
                   <th class="param-name-col">throws</th>
                   <td class="param-type-col"><?= $renderer->createTypeLink($exception) ?></td>
-                  <td class="param-desc-col"><?= ApiMarkdown::process($description, $method->getContext()) ?></td>
+                  <td class="param-desc-col"><?= ApiMarkdown::process($description, $type) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

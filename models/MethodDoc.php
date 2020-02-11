@@ -15,8 +15,6 @@ namespace yii\apidoc\models;
  */
 class MethodDoc extends FunctionDoc
 {
-    use InheritableTrait;
-
     public $isAbstract;
     public $isFinal;
     public $isStatic;

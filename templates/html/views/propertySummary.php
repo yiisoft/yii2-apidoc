@@ -39,7 +39,7 @@ foreach ($properties as $property): ?>
     <tr<?= $property->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $property->name ?>">
         <td><?= $renderer->createSubjectLink($property) ?></td>
         <td><?= $renderer->createTypeLink($property->types) ?></td>
-        <td><?= ApiMarkdown::process($property->shortDescription, $property->getContext(), true) ?></td>
+        <td><?= ApiMarkdown::process($property->shortDescription, $property->definedBy, true) ?></td>
         <td><?= $renderer->createTypeLink($property->definedBy) ?></td>
     </tr>
     <?php endif; ?>

@@ -51,13 +51,13 @@ ArrayHelper::multisort($properties, 'name');
         <div class="doc-description deprecated">
             <strong>Deprecated <?php
                 if (!empty($property->deprecatedSince))  { echo 'since version ' . $property->deprecatedSince . ': '; }
-                if (!empty($property->deprecatedReason)) { echo ApiMarkdown::process($property->deprecatedReason, $property->getContext(), true); }
+                if (!empty($property->deprecatedReason)) { echo ApiMarkdown::process($property->deprecatedReason, $type, true); }
                 ?></strong>
         </div>
     <?php endif; ?>
 
     <div class="doc-description">
-        <?= ApiMarkdown::process($property->description, $property->getContext()) ?>
+        <?= ApiMarkdown::process($property->description, $type) ?>
 
         <?= $this->render('seeAlso', ['object' => $property]) ?>
     </div>

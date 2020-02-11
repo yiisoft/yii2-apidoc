@@ -8,13 +8,14 @@
 namespace yii\apidoc\helpers;
 
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
+use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\TypeDoc;
 
 /**
  * Class ApiMarkdownTrait
  *
- * @property TypeDoc|TypeDoc[]|null $renderingContext
+ * @property TypeDoc $renderingContext
  */
 trait ApiMarkdownTrait
 {
@@ -31,12 +32,16 @@ trait ApiMarkdownTrait
         $object = $matches[1];
         $title = (empty($matches[2]) || $matches[2] == '|') ? null : substr($matches[2], 1);
 
-        if (is_array($this->renderingContext)) {
-            $contexts = array_merge($this->renderingContext);
-        } elseif ($this->renderingContext) {
-            $contexts = array($this->renderingContext);
-        } else {
-            $contexts = array();
+        $contexts = [];
+        if ($this->renderingContext) {
+            $thisContext = $this->renderingContext;
+            do {
+                $contexts[] = $thisContext;
+                if (!$thisContext instanceof ClassDoc || !$thisContext->parentClass) {
+                    break;
+                }
+                $thisContext = static::$renderer->apiContext->getType($thisContext->parentClass);
+            } while ($thisContext instanceof ClassDoc);
         }
         $contexts[] = null;
 

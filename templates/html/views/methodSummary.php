@@ -38,7 +38,7 @@ foreach ($methods as $method): ?>
     <?php if ($protected && $method->visibility == 'protected' || !$protected && $method->visibility != 'protected'): ?>
     <tr<?= $method->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $method->name ?>()">
         <td><?= $renderer->createSubjectLink($method, $method->name.'()') ?></td>
-        <td><?= ApiMarkdown::process($method->shortDescription, $method->getContext(), true) ?></td>
+        <td><?= ApiMarkdown::process($method->shortDescription, $method->definedBy, true) ?></td>
         <td><?= $renderer->createTypeLink($method->definedBy, $type) ?></td>
     </tr>
     <?php endif; ?>
