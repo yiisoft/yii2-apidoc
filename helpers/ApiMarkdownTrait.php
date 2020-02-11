@@ -76,24 +76,18 @@ trait ApiMarkdownTrait
         $contexts[] = $type;
 
         if ($type instanceof ClassDoc) {
-            if (!empty($type->traits)) {
-                foreach ($type->traits as $trait) {
-                    $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
-                }
+            foreach ($type->traits as $trait) {
+                $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
             }
-            if (!empty($type->interfaces)) {
-                foreach ($type->interfaces as $interface) {
-                    $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-                }
+            foreach ($type->interfaces as $interface) {
+                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
             }
             if ($type->parentClass) {
                 $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
             }
         } elseif ($type instanceof InterfaceDoc) {
-            if (!empty($type->parentInterfaces)) {
-                foreach ($type->parentInterfaces as $interface) {
-                    $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-                }
+            foreach ($type->parentInterfaces as $interface) {
+                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
             }
         }
     }
