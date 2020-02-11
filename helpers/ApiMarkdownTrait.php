@@ -9,6 +9,7 @@ namespace yii\apidoc\helpers;
 
 use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use yii\apidoc\models\ClassDoc;
+use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\TypeDoc;
 
@@ -32,16 +33,10 @@ trait ApiMarkdownTrait
         $object = $matches[1];
         $title = (empty($matches[2]) || $matches[2] == '|') ? null : substr($matches[2], 1);
 
+        /** @var TypeDoc[] $contexts */
         $contexts = [];
         if ($this->renderingContext) {
-            $thisContext = $this->renderingContext;
-            do {
-                $contexts[] = $thisContext;
-                if (!$thisContext instanceof ClassDoc || !$thisContext->parentClass) {
-                    break;
-                }
-                $thisContext = static::$renderer->apiContext->getType($thisContext->parentClass);
-            } while ($thisContext instanceof ClassDoc);
+            $this->_findContexts($this->renderingContext, $contexts);
         }
         $contexts[] = null;
 
@@ -67,6 +62,38 @@ trait ApiMarkdownTrait
             ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
             $offset
         ];
+    }
+
+    /**
+     * @param TypeDoc $type
+     * @param array $contexts
+     * @since 2.1.3
+     */
+    private function _findContexts($type, &$contexts = array())
+    {
+        $contexts[] = $type;
+
+        if ($type instanceof ClassDoc) {
+            if (!empty($type->traits)) {
+                foreach ($type->traits as $trait) {
+                    $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
+                }
+            }
+            if (!empty($type->interfaces)) {
+                foreach ($type->interfaces as $interface) {
+                    $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+                }
+            }
+            if ($type->parentClass) {
+                $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
+            }
+        } elseif ($type instanceof InterfaceDoc) {
+            if (!empty($type->parentInterfaces)) {
+                foreach ($type->parentInterfaces as $interface) {
+                    $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+                }
+            }
+        }
     }
 
     /**
