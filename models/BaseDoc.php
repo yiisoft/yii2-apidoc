@@ -86,6 +86,21 @@ class BaseDoc extends BaseObject
     }
 
     /**
+     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
+     *
+     * @return string|null
+     * @since 2.1.3
+     */
+    public function getPackageName()
+    {
+        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
+            return null;
+        }
+
+        return $match[1];
+    }
+
+    /**
      * @param \phpDocumentor\Reflection\BaseReflector $reflector
      * @param Context $context
      * @param array $config
