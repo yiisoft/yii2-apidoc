@@ -46,7 +46,7 @@ ArrayHelper::multisort($events, 'name');
         <div class="doc-description deprecated">
             <strong>Deprecated <?php
                 if (!empty($event->deprecatedSince))  { echo 'since version ' . $event->deprecatedSince . ': '; }
-                if (!empty($event->deprecatedReason)) { echo ApiMarkdown::process($event->deprecatedReason, $type, true); }
+                if (!empty($event->deprecatedReason)) { echo ApiMarkdown::process($event->deprecatedReason, $event->definedBy, true); }
                 ?></strong>
         </div>
     <?php endif; ?>
