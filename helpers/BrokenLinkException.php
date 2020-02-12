@@ -27,6 +27,7 @@ class BrokenLinkException extends Exception
      */
     public $context;
 
+
     /**
      * Constructor.
      *

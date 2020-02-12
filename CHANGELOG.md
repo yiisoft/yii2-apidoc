@@ -1,13 +1,13 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.3 under development
+2.1.3 February 12, 2020
 -----------------------
 
-- Enh #185: Use HTTPS for www.php.net links (kamarton)
+- Bug #145: Fixed broken API links on property/method docs that were pulled in with @inheritdoc (brandonkelly)
 - Bug #187: Prevent getter/setter methods from affecting class-defined property docs (brandonkelly)
 - Enh #137: @since tags are now propagated to inherited methods/properties in the same package (brandonkelly)
-- Bug #145: Fixed broken API links on property/method docs that were pulled in with @inheritdoc (brandonkelly)
+- Enh #185: Use HTTPS for www.php.net links (kamarton)
 
 
 2.1.2 August 20, 2019
