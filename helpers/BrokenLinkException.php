@@ -7,9 +7,6 @@
 
 namespace yii\apidoc\helpers;
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
-use Throwable;
-use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\base\Exception;
 

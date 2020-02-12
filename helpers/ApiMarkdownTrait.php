@@ -31,7 +31,7 @@ trait ApiMarkdownTrait
 
         $offset = strlen($matches[0]);
         $object = $matches[1];
-        $title = (empty($matches[2]) || $matches[2] == '|') ? null : substr($matches[2], 1);
+        $title = (empty($matches[2]) || $matches[2] === '|') ? null : substr($matches[2], 1);
 
         /** @var TypeDoc[] $contexts */
         $this->_findContexts($this->renderingContext, $contexts);
@@ -45,7 +45,6 @@ trait ApiMarkdownTrait
                 return $this->parseApiLinkForContext($offset, $object, $title, $context);
             } catch (BrokenLinkException $e) {
                 // Keep going if there are more contexts to check
-                continue;
             }
         }
 
@@ -65,9 +64,8 @@ trait ApiMarkdownTrait
     /**
      * @param TypeDoc $type
      * @param array $contexts
-     * @since 2.1.3
      */
-    private function _findContexts($type, &$contexts = array())
+    private function _findContexts($type, &$contexts = [])
     {
         if ($type === null) {
             return;
@@ -101,6 +99,7 @@ trait ApiMarkdownTrait
      * @param TypeDoc|null $context
      * @return array
      * @throws BrokenLinkException if the object can't be resolved
+     * @since 2.1.3
      */
     protected function parseApiLinkForContext($offset, $object, $title, $context)
     {
