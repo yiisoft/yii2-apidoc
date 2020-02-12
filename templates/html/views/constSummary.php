@@ -39,7 +39,7 @@ ArrayHelper::multisort($constants, 'name');
               <?php if (!empty($constant->deprecatedSince) || !empty($constant->deprecatedReason)): ?>
                   <strong>Deprecated <?php
                       if (!empty($constant->deprecatedSince))  { echo 'since version ' . $constant->deprecatedSince . ': '; }
-                      if (!empty($constant->deprecatedReason)) { echo ApiMarkdown::process($constant->deprecatedReason, $type, true); }
+                      if (!empty($constant->deprecatedReason)) { echo ApiMarkdown::process($constant->deprecatedReason, $constant->definedBy, true); }
                       ?></strong>
               <?php endif; ?>
           </td>
