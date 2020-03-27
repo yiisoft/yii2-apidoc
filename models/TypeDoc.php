@@ -8,6 +8,8 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
+use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
+use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
 use yii\helpers\StringHelper;
 
 /**
@@ -191,6 +193,59 @@ class TypeDoc extends BaseDoc
             if ($tag instanceof AuthorTag) {
                 $this->authors[$tag->getAuthorName()] = $tag->getAuthorEmail();
                 unset($this->tags[$i]);
+            }
+
+            if ($tag instanceof PropertyTag) {
+                $property = new PropertyDoc(null, $context, [
+                    'sourceFile' => $this->sourceFile,
+                    'name' => $tag->getVariableName(),
+                    'isStatic' => false,
+                    'visibility' => 'public',
+                    'definedBy' => $this->name,
+                    'type' => $tag->getType(),
+                    'types' => $tag->getTypes(),
+                    'shortDescription' => $tag->getDescription(),
+                    'description' => $tag->getDescription(),
+                ]);
+
+                $this->properties[$property->name] = $property;
+            }
+
+            if ($tag instanceof MethodTag) {
+                $params = [];
+
+                foreach ($tag->getArguments() as $tagArgument) {
+                    $argumentType = null;
+
+                    if (count($tagArgument) === 2) {
+                        list ($argumentType, $argumentName) = $tagArgument;
+                    } else {
+                        $argumentName = $tagArgument[0];
+                    }
+
+                    $params[] = new ParamDoc(null, $context, [
+                        'sourceFile' => $this->sourceFile,
+                        'name' => $argumentName,
+                        'typeHint' => $argumentType,
+                        'type' => $argumentType,
+                        'types' => [],
+                    ]);
+                }
+
+                $method = new MethodDoc(null, $context, [
+                    'sourceFile' => $this->sourceFile,
+                    'name' => $tag->getMethodName(),
+                    'shortDescription' => $tag->getDescription(),
+                    'description' => $tag->getDescription(),
+                    'visibility' => 'public',
+                    'params' => $params,
+                    'isStatic' => $tag->isStatic(),
+                    'return' => ' ',
+                    'returnType' => $tag->getType(),
+                    'returnTypes' => $tag->getTypes(),
+                ]);
+                $method->definedBy = $this->name;
+                $this->methods[$method->name] = $method;
             }
         }
 
