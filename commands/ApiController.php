@@ -96,7 +96,11 @@ class ApiController extends BaseController
         Console::startProgress(0, $fileCount, 'Processing files... ', false);
         $done = 0;
         foreach ($files as $file) {
-            $context->addFile($file);
+            try {
+                $context->addFile($file);
+            } catch (\Exception $e) {
+                $context->errors[] = "Unable to process \"$file\": " . $e->getMessage();
+            }
             Console::updateProgress(++$done, $fileCount);
         }
         Console::endProgress(true);

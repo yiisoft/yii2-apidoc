@@ -5,7 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Bug #198: Add missing initialization of `$contexts` in `ApiMarkdownTrait::parseApiLinks()` (samdark)
-
+- Do not stop on fatal errors during parsing source files (samdark)
 
 2.1.4 May 02, 2020
 ------------------
