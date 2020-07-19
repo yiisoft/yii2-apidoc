@@ -34,6 +34,7 @@ trait ApiMarkdownTrait
         $title = (empty($matches[2]) || $matches[2] === '|') ? null : substr($matches[2], 1);
 
         /** @var TypeDoc[] $contexts */
+        $contexts = [];
         $this->_findContexts($this->renderingContext, $contexts);
         $contexts = array_unique($contexts, SORT_REGULAR);
         $contexts[] = null;
