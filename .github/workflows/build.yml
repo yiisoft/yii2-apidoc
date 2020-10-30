@@ -39,7 +39,7 @@ jobs:
             - name: Run unit tests without coverage
               run: vendor/bin/phpunit --verbose --colors=always
               if: matrix.php != '7.1'
-            - name: Code coverage
+            - name: Upload code coverage
               run: |
                   wget https://scrutinizer-ci.com/ocular.phar
                   php ocular.phar code-coverage:upload --format=php-clover coverage.clover
