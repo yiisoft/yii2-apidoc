@@ -6,6 +6,7 @@ Yii Framework 2 apidoc extension Change Log
 
 - Bug: Fixed invalid path to `solarized-light.css` in `HighlightBundle` (bu4ak)
 
+
 2.1.5 July 19, 2020
 -------------------
 
