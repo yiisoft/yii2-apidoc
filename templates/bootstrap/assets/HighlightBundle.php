@@ -19,6 +19,6 @@ class HighlightBundle extends \yii\web\AssetBundle
 {
     public $sourcePath = '@vendor/scrivo/highlight.php/styles';
     public $css = [
-        'solarized_light.css'
+        'solarized-light.css'
     ];
 }
