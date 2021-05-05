@@ -24,7 +24,7 @@ use Yii;
 /**
  * The base class for HTML API documentation renderers.
  *
- * @property View $view The view instance. This property is read-only.
+ * @property-read View $view The view instance. This property is read-only.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

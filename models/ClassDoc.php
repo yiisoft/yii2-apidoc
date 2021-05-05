@@ -10,7 +10,7 @@ namespace yii\apidoc\models;
 /**
  * Represents API documentation information for a `class`.
  *
- * @property EventDoc[] $nativeEvents This property is read-only.
+ * @property-read EventDoc[] $nativeEvents This property is read-only.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
