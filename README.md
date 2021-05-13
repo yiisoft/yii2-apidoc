@@ -114,6 +114,18 @@ Special Markdown Syntax
 We have a special Syntax for linking to classes in the API documentation.
 See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md#markdown) for details.
 
+Generating documentation for your own project
+---------------------------------------------
+
+To generate API documentation for your own project, use the "project" template and specify the README.md of your repository using the "readmeUrl" parameter
+
+    apidoc api YOUR_REPO_PATH OUTPUT_PATH --exclude="vendor" --template="project"  --readmeUrl="file://YOUR_REPO_PATH/README.md" --pageTitle="TITLE_OF_YOUR_DOCS"
+
+To also include links to the Yii2 documentation, you can do
+    
+    apidoc api "YOUR_REPO_PATH,vendor/yiisoft/yii2" OUTPUT_PATH --exclude="vendor" --template="project"  --readmeUrl="file://YOUR_REPO_PATH/README.md" --pageTitle="TITLE_OF_YOUR_DOCS"
+
+
 Creating your own templates
 ---------------------------
 
