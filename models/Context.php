@@ -306,7 +306,7 @@ class Context extends Component
         foreach($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
-                if ($cmethod->hasTag('inheritdoc')) {
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
                     $this->inheritDocs($candidate);
                 }
                 $methods[] = $cmethod;
