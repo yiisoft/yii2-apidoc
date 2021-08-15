@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 2.1.7 under development
 -----------------------
 
-- no changes in this release.
+- Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
 
 
 2.1.6 May 05, 2021
