@@ -97,7 +97,7 @@ class ApiController extends BaseController
         $done = 0;
         foreach ($files as $file) {
             try {
-                $context->addFile($file);
+                $context->addProjectFile($file);
             } catch (\Exception $e) {
                 $context->errors[] = "Unable to process \"$file\": " . $e->getMessage();
             }
@@ -105,6 +105,7 @@ class ApiController extends BaseController
         }
         Console::endProgress(true);
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        $context->processFiles();
 
         // save processed data to cache
         $this->storeContext($context, $targetDir);

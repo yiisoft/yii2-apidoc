@@ -36,7 +36,7 @@ $properties = $type->properties;
 ArrayHelper::multisort($properties, 'name');
 foreach ($properties as $property): ?>
     <?php if ($protected && $property->visibility == 'protected' || !$protected && $property->visibility != 'protected'): ?>
-    <tr<?= $property->definedBy != $type->name ? ' class="inherited"' : '' ?> id="<?= $property->name ?>">
+    <tr<?= $property->definedBy !== $type->name ? ' class="inherited"' : '' ?> id="<?= $property->shortName ?>">
         <td><?= $renderer->createSubjectLink($property) ?></td>
         <td><?= $renderer->createTypeLink($property->types) ?></td>
         <td><?= ApiMarkdown::process($property->shortDescription, $property->definedBy, true) ?></td>

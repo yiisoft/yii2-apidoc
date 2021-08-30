@@ -33,3 +33,5 @@ phpunit.phar
 
 # local tests configuration
 /tests/data/config.local.php
+
+.phpunit.result.cache

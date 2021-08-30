@@ -19,7 +19,7 @@ class ApiControllerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mockApplication();
@@ -56,7 +56,7 @@ class ApiControllerTest extends TestCase
         $output = $this->generateApi(Yii::getAlias('@yiiunit/apidoc/data/guide'));
 
         $this->assertNotEmpty($output);
-        $this->assertContains('Error: No files found to process', $output);
+        $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
     public function testGenerateBootstrap()
@@ -64,7 +64,7 @@ class ApiControllerTest extends TestCase
         $output = $this->generateApi(Yii::getAlias('@yiiunit/apidoc/data/api'), '@runtime', ['template' => 'bootstrap']);
 
         $this->assertNotEmpty($output);
-        $this->assertContains('generating search index...done.', $output);
+        $this->assertStringContainsString('generating search index...done.', $output);
 
         $outputPath = Yii::getAlias('@runtime');
 
@@ -72,9 +72,9 @@ class ApiControllerTest extends TestCase
         $animalFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-animal.html';
         $this->assertTrue(file_exists($animalFile));
         $animalContent = file_get_contents($animalFile);
-        $this->assertContains('<h1>Abstract Class yiiunit\apidoc\data\api\animal\Animal</h1>', $animalContent);
-        $this->assertContains('<th>Available since version</th><td>1.0</td>', $animalContent);
-        $this->assertContains('Animal is a base class for animals.', $animalContent);
+        $this->assertStringContainsString('<h1>Abstract Class yiiunit\apidoc\data\api\animal\Animal</h1>', $animalContent);
+        $this->assertStringContainsString('<th>Available since version</th><td>1.0</td>', $animalContent);
+        $this->assertStringContainsString('Animal is a base class for animals.', $animalContent);
         $this->assertContainsWithoutIndent(
             <<<HTML
 <tr id="\$name">
@@ -123,13 +123,13 @@ HTML
         $dogFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-dog.html';
         $this->assertTrue(file_exists($dogFile));
         $dogContent = file_get_contents($dogFile);
-        $this->assertContains('<th>Available since version</th><td>1.1</td>', $dogContent);
-        $this->assertNotContains('@inheritdoc', $dogContent);
+        $this->assertStringContainsString('<th>Available since version</th><td>1.1</td>', $dogContent);
+        $this->assertStringNotContainsString('@inheritdoc', $dogContent);
 
         // Class `Cat` :
         $catFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-cat.html';
         $this->assertTrue(file_exists($catFile));
         $catContent = file_get_contents($catFile);
-        $this->assertNotContains('@inheritdoc', $catContent);
+        $this->assertStringNotContainsString('@inheritdoc', $catContent);
     }
 }

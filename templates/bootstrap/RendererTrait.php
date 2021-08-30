@@ -100,7 +100,7 @@ trait RendererTrait
             case 'yii':
                 $self = $this;
                 $types = array_filter($types, function ($val) use ($self) {
-                    if ($val->name == 'Yii' || $val->name == 'YiiRequirementChecker') {
+                    if ($val->name === 'Yii' || $val->name === 'YiiRequirementChecker') {
                         return true;
                     }
                     if (strlen($val->name) < 5) {

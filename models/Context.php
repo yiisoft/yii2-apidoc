@@ -5,15 +5,18 @@
  * @license http://www.yiiframework.com/license/
  */
 
+declare(strict_types=1);
+
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\FileReflector;
+use phpDocumentor\Reflection\File\LocalFile;
+use phpDocumentor\Reflection\Php\Project;
+use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\base\Component;
 
 /**
- *
  * @author Carsten Brandt <mail@cebe.cc>
- * @since 2.0
+ * @author Paweł Brzozowski <pawel@positive.codes>
  */
 class Context extends Component
 {
@@ -39,7 +42,6 @@ class Context extends Component
     public $errors = [];
     /**
      * @var array
-     * @since 2.0.6
      */
     public $warnings = [];
 
@@ -49,29 +51,58 @@ class Context extends Component
      * @param string $type
      * @return null|ClassDoc|InterfaceDoc|TraitDoc
      */
-    public function getType($type)
+    public function getType(string $type)
     {
         $type = ltrim($type, '\\');
+
         if (isset($this->classes[$type])) {
             return $this->classes[$type];
-        } elseif (isset($this->interfaces[$type])) {
+        }
+        if (isset($this->interfaces[$type])) {
             return $this->interfaces[$type];
-        } elseif (isset($this->traits[$type])) {
+        }
+        if (isset($this->traits[$type])) {
             return $this->traits[$type];
         }
 
         return null;
     }
 
+    public function addProjectFile($fileName): void
+    {
+        $this->files[$fileName] = sha1_file($fileName);
+    }
+
+    public function processFiles(): void
+    {
+        $projectFiles = $this->getReflectionProject()->getFiles();
+        foreach ($this->files as $fileName => $hash) {
+            $reflection = $projectFiles[$fileName];
+
+            foreach ($reflection->getClasses() as $class) {
+                $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
+                $this->classes[$class->name] = $class;
+            }
+            foreach ($reflection->getInterfaces() as $interface) {
+                $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
+                $this->interfaces[$interface->name] = $interface;
+            }
+            foreach ($reflection->getTraits() as $trait) {
+                $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
+                $this->traits[$trait->name] = $trait;
+            }
+        }
+    }
+
     /**
      * Adds file to context
      * @param string $fileName
      */
-    public function addFile($fileName)
+    public function addFile(string $fileName): void
     {
         $this->files[$fileName] = sha1_file($fileName);
 
-        $reflection = new FileReflector($fileName, true);
+        $reflection = new \phpDocumentor\Reflection\File\LocalFile($fileName, true);
         $reflection->process();
 
         foreach ($reflection->getClasses() as $class) {
@@ -91,7 +122,7 @@ class Context extends Component
     /**
      * Updates references
      */
-    public function updateReferences()
+    public function updateReferences(): void
     {
         // update all subclass references
         foreach ($this->classes as $class) {
@@ -101,10 +132,12 @@ class Context extends Component
                 $class->subclasses[] = $className;
             }
         }
+
         // update interfaces of subclasses
         foreach ($this->classes as $class) {
             $this->updateSubclassInterfacesTraits($class);
         }
+
         // update implementedBy and usedBy for interfaces and traits
         foreach ($this->classes as $class) {
             foreach ($class->traits as $trait) {
@@ -306,7 +339,7 @@ class Context extends Component
         foreach($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
-                if ($cmethod->hasTag('inheritdoc')) {
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
                     $this->inheritDocs($candidate);
                 }
                 $methods[] = $cmethod;
@@ -458,7 +491,7 @@ class Context extends Component
                 $count++;
             }
         }
-        return $count == $number;
+        return $count === $number;
     }
 
     /**
@@ -485,15 +518,31 @@ class Context extends Component
         if (is_object($classB)) {
             $classB = $classB->name;
         }
-        if ($classA->name == $classB) {
+        if ($classA->name === $classB) {
             return true;
         }
         while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
             $classA = $this->classes[$classA->parentClass];
-            if ($classA->name == $classB) {
+            if ($classA->name === $classB) {
                 return true;
             }
         }
         return false;
+    }
+
+    private $reflectionProject;
+
+    public function getReflectionProject(): Project
+    {
+        if ($this->reflectionProject === null) {
+            $files = [];
+            foreach ($this->files as $fileName => $hash) {
+                $files[] = new LocalFile($fileName);
+            }
+
+            $this->reflectionProject = ProjectFactory::createInstance()->create('ApiDoc', $files);
+        }
+
+        return $this->reflectionProject;
     }
 }
