@@ -144,7 +144,7 @@ class BaseDoc extends BaseObject
                 }
             }
 
-            if ($this->shortDescription === '{@inheritdoc}') {
+            if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
                 // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
                 // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
                 $this->tags[] = new Tag('inheritdoc', '');
