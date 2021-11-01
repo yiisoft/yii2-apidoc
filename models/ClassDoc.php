@@ -101,7 +101,7 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParentClass(), '\\');
+        $this->parentClass = ltrim($reflector->getParent(), '\\');
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
@@ -111,7 +111,7 @@ class ClassDoc extends TypeDoc
         foreach ($reflector->getInterfaces() as $interface) {
             $this->interfaces[] = ltrim($interface, '\\');
         }
-        foreach ($reflector->getTraits() as $trait) {
+        foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
         }
         foreach ($reflector->getConstants() as $constantReflector) {

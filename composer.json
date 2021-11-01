@@ -19,20 +19,19 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": ">=5.4",
-        "yiisoft/yii2": "~2.0.13",
+        "php": "^7.2",
+        "yiisoft/yii2": "~2.0.16",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "phpdocumentor/reflection": "^3.0.1",
-        "phpdocumentor/reflection-docblock": "^2.0.4",
-        "nikic/php-parser": "^1.0",
-        "cebe/js-search": "~0.9.3",
-        "cebe/markdown": "~1.0.0 | ~1.1.0 | ~1.2.0",
-        "cebe/markdown-latex": "~1.0",
-        "scrivo/highlight.php": "~9.13"
+        "phpdocumentor/reflection": "^4.0 | ^5.0",
+        "phpdocumentor/reflection-docblock": "^4.0 | ^5.0",
+        "nikic/php-parser": "^4.0",
+        "cebe/js-search": "~0.9.0",
+        "cebe/markdown": "^1.0",
+        "cebe/markdown-latex": "^1.0",
+        "scrivo/highlight.php": "^9.0"
     },
     "require-dev": {
-        "cweagans/composer-patches": "^1.7",
-        "phpunit/phpunit": "4.8.34"
+        "phpunit/phpunit": "*"
     },
     "repositories": [
         {
@@ -47,16 +46,6 @@
     "extra": {
         "branch-alias": {
             "dev-master": "2.1.x-dev"
-        },
-        "composer-exit-on-patch-failure": true,
-        "patches": {
-            "phpunit/phpunit-mock-objects": {
-                "Fix PHP 7 and 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_mock_objects.patch"
-            },
-            "phpunit/phpunit": {
-                "Fix PHP 7 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php7.patch",
-                "Fix PHP 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php8.patch"
-            }
         }
     }
 }
