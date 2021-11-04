@@ -19,7 +19,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.2",
+        "php": "^7.2 || ^8.0",
         "yiisoft/yii2": "~2.0.16",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "phpdocumentor/reflection": "^5.0",
