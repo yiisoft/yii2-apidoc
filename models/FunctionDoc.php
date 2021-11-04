@@ -56,8 +56,6 @@ class FunctionDoc extends BaseDoc
             if ($tag instanceof Throws) {
                 $this->exceptions[(string) $tag->getType()->getFqsen()] = $tag->getDescription();
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof Property) {
-                // ignore property tag
             } elseif ($tag instanceof Param) {
                 $paramName = $tag->getVariableName();
                 if (!isset($this->params[$paramName]) && $context !== null) {
