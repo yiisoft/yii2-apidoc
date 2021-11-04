@@ -103,9 +103,9 @@ class ApiController extends BaseController
             }
             Console::updateProgress(++$done, $fileCount);
         }
+        $context->processFiles();
         Console::endProgress(true);
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
-        $context->processFiles();
 
         // save processed data to cache
         $this->storeContext($context, $targetDir);

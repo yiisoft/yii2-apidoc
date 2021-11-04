@@ -8,8 +8,6 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
-use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
@@ -26,11 +24,11 @@ use yii\helpers\StringHelper;
 class BaseDoc extends BaseObject
 {
     /**
-     * @var \phpDocumentor\Reflection\DocBlock\Context
+     * @var \phpDocumentor\Reflection\Types\Context
      */
     public $phpDocContext;
     public $name;
-    public $shortName;
+    public $fullName;
     public $sourceFile;
     public $startLine;
     public $endLine;
@@ -119,13 +117,12 @@ class BaseDoc extends BaseObject
         }
 
         // base properties
-        $this->name = ltrim((string) $reflector->getFqsen(), '\\');
-        $separator = strrpos($this->name, '::');
-        if ($separator !== false) {
-            $this->shortName = substr($this->name, $separator + 2);
-        }
+        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
+
+        $position = strrpos($this->fullName, '::');
+        $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
+
         $this->startLine = $reflector->getLocation()->getLineNumber();
-        //$this->endLine = $reflector->getNode()->getAttribute('endLine');
 
         $docblock = $reflector->getDocBlock();
         if ($docblock !== null) {

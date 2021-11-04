@@ -96,8 +96,8 @@ abstract class BaseRenderer extends Component
                 }
             }
 
-            if (is_object($type) && \method_exists($type, '__toString')) {
-                $type = (string)$type;
+            if (is_object($type) && method_exists($type, '__toString')) {
+                $type = (string) $type;
             }
 
             if (is_string($type)) {
@@ -166,16 +166,16 @@ abstract class BaseRenderer extends Component
      * @param array $options additional HTML attributes for the link.
      * @return string
      */
-    public function createSubjectLink($subject, string $title = null, array $options = []): string
+    public function createSubjectLink($subject, $title = null, $options = [])
     {
         if ($title === null) {
-            $title = $subject->shortName;
+            $title = $subject->name;
         }
         if (($type = $this->apiContext->getType($subject->definedBy)) === null) {
-            return $subject->shortName;
+            return $subject->name;
         }
 
-        $link = $this->generateApiUrl($type->name) . '#' . $subject->shortName . '-detail';
+        $link = $this->generateApiUrl($type->name) . '#' . $subject->name . '-detail';
 
         return $this->generateLink($title, $link, $options);
     }

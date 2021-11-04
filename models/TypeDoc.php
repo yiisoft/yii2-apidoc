@@ -7,9 +7,9 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use yii\helpers\StringHelper;
 
 /**
@@ -190,12 +190,12 @@ class TypeDoc extends BaseDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag instanceof AuthorTag) {
-                $this->authors[$tag->getAuthorName()] = $tag->getAuthorEmail();
+            if ($tag instanceof Author) {
+                $this->authors[$tag->getAuthorName()] = $tag->getEmail();
                 unset($this->tags[$i]);
             }
 
-            if ($tag instanceof PropertyTag) {
+            if ($tag instanceof Property) {
                 $property = new PropertyDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getVariableName(),
@@ -203,7 +203,7 @@ class TypeDoc extends BaseDoc
                     'visibility' => 'public',
                     'definedBy' => $this->name,
                     'type' => $tag->getType(),
-                    'types' => $tag->getTypes(),
+                    'types' => $tag->getType(),
                     'shortDescription' => $tag->getDescription(),
                     'description' => $tag->getDescription(),
                 ]);
@@ -211,7 +211,7 @@ class TypeDoc extends BaseDoc
                 $this->properties[$property->name] = $property;
             }
 
-            if ($tag instanceof MethodTag) {
+            if ($tag instanceof Method) {
                 $params = [];
 
                 foreach ($tag->getArguments() as $tagArgument) {
@@ -242,7 +242,7 @@ class TypeDoc extends BaseDoc
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
                     'returnType' => $tag->getType(),
-                    'returnTypes' => $tag->getTypes(),
+                    'returnTypes' => $tag->getType(),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

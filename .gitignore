@@ -25,13 +25,15 @@ composer.phar
 
 # phpunit itself is not needed
 phpunit.phar
+
 # local phpunit config
 /phpunit.xml
+
+# phpunit cache
+.phpunit.result.cache
 
 # local tests runtime
 /tests/runtime
 
 # local tests configuration
 /tests/data/config.local.php
-
-.phpunit.result.cache

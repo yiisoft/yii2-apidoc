@@ -5,8 +5,6 @@
  * @license http://www.yiiframework.com/license/
  */
 
-declare(strict_types=1);
-
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\File\LocalFile;
@@ -44,6 +42,10 @@ class Context extends Component
      * @var array
      */
     public $warnings = [];
+    /**
+     * @var Project
+     */
+    private $reflectionProject;
 
 
     /**
@@ -68,43 +70,32 @@ class Context extends Component
         return null;
     }
 
-    public function addProjectFile($fileName): void
-    {
-        $this->files[$fileName] = sha1_file($fileName);
-    }
-
-    public function processFiles(): void
+    public function processFiles()
     {
         $projectFiles = $this->getReflectionProject()->getFiles();
         foreach ($this->files as $fileName => $hash) {
             $reflection = $projectFiles[$fileName];
 
-            foreach ($reflection->getClasses() as $class) {
-                $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
-                $this->classes[$class->name] = $class;
-            }
-            foreach ($reflection->getInterfaces() as $interface) {
-                $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
-                $this->interfaces[$interface->name] = $interface;
-            }
-            foreach ($reflection->getTraits() as $trait) {
-                $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
-                $this->traits[$trait->name] = $trait;
-            }
+            $this->parseFile($reflection, $fileName);
         }
     }
 
     /**
      * Adds file to context
+     * @deprecated Use addProjectFile() instead
      * @param string $fileName
      */
-    public function addFile(string $fileName): void
+    public function addFile($fileName)
+    {
+    }
+
+    public function addProjectFile($fileName)
     {
         $this->files[$fileName] = sha1_file($fileName);
+    }
 
-        $reflection = new \phpDocumentor\Reflection\File\LocalFile($fileName, true);
-        $reflection->process();
-
+    private function parseFile($reflection, $fileName)
+    {
         foreach ($reflection->getClasses() as $class) {
             $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
             $this->classes[$class->name] = $class;
@@ -119,10 +110,7 @@ class Context extends Component
         }
     }
 
-    /**
-     * Updates references
-     */
-    public function updateReferences(): void
+    public function updateReferences()
     {
         // update all subclass references
         foreach ($this->classes as $class) {
@@ -132,12 +120,10 @@ class Context extends Component
                 $class->subclasses[] = $className;
             }
         }
-
         // update interfaces of subclasses
         foreach ($this->classes as $class) {
             $this->updateSubclassInterfacesTraits($class);
         }
-
         // update implementedBy and usedBy for interfaces and traits
         foreach ($this->classes as $class) {
             foreach ($class->traits as $trait) {
@@ -530,18 +516,18 @@ class Context extends Component
         return false;
     }
 
-    private $reflectionProject;
-
-    public function getReflectionProject(): Project
+    public function getReflectionProject()
     {
-        if ($this->reflectionProject === null) {
-            $files = [];
-            foreach ($this->files as $fileName => $hash) {
-                $files[] = new LocalFile($fileName);
-            }
-
-            $this->reflectionProject = ProjectFactory::createInstance()->create('ApiDoc', $files);
+        if ($this->reflectionProject !== null) {
+            return $this->reflectionProject;
         }
+
+        $files = [];
+        foreach ($this->files as $fileName => $hash) {
+            $files[] = new LocalFile($fileName);
+        }
+
+        $this->reflectionProject = ProjectFactory::createInstance()->create('ApiDoc', $files);
 
         return $this->reflectionProject;
     }

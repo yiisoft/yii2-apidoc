@@ -7,13 +7,9 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
-use phpDocumentor\Reflection\Php\Function_;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 
@@ -58,7 +54,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[$tag->getType()] = $tag->getDescription();
+                $this->exceptions[(string) $tag->getType()->getFqsen()] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Property) {
                 // ignore property tag
@@ -74,11 +70,11 @@ class FunctionDoc extends BaseDoc
                 }
                 $this->params[$paramName]->description = static::mbUcFirst($tag->getDescription());
                 $this->params[$paramName]->type = $tag->getType();
-                $this->params[$paramName]->types = $tag->getTypes();
+                $this->params[$paramName]->types = $tag->getType();
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof ReturnTag) {
+            } elseif ($tag instanceof Return_) {
                 $this->returnType = $tag->getType();
-                $this->returnTypes = $tag->getTypes();
+                $this->returnTypes = $tag->getType();
                 $this->return = static::mbUcFirst($tag->getDescription());
                 unset($this->tags[$i]);
             }

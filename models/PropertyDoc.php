@@ -77,8 +77,16 @@ class PropertyDoc extends BaseDoc
                 $hasInheritdoc = true;
             }
             if ($tag instanceof Var_) {
-                $this->type = $tag->getType();
-                $this->types = [$tag->getType()];
+                $this->type = (string) $tag->getType();
+
+                foreach ($tag->getType() as $type) {
+                    $this->types[] = (string) $type;
+                }
+
+                if (!$this->types) {
+                    $this->types = [$this->type];
+                }
+
                 $this->description = static::mbUcFirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             }

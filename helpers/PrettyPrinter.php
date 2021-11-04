@@ -8,6 +8,7 @@
 namespace yii\apidoc\helpers;
 
 use PhpParser\Node\Expr;
+use PhpParser\PrettyPrinter\Standard as BasePrettyPrinter;
 
 /**
  * Enhances the phpDocumentor PrettyPrinter with short array syntax
@@ -15,7 +16,7 @@ use PhpParser\Node\Expr;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class PrettyPrinter extends \phpDocumentor\Reflection\PrettyPrinter
+class PrettyPrinter extends BasePrettyPrinter
 {
     /**
      * @param Expr\Array_ $node
