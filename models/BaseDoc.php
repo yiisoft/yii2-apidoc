@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use phpDocumentor\Reflection\DocBlock\Tags\TagWithType;
 use phpDocumentor\Reflection\Php\Class_;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
@@ -104,6 +105,20 @@ class BaseDoc extends BaseObject
                 'message' => "No docblock for element '{$this->name}'",
             ];
         }
+    }
+
+    /**
+     * @param TagWithType $tag
+     * @return string[]
+     */
+    protected function getTagTypes($tag)
+    {
+        $types = [];
+        foreach ($tag->getType() as $type) {
+            $types[] = (string) $type;
+        }
+
+        return $types ?: [$tag->getType()];
     }
 
     /**

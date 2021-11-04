@@ -38,8 +38,8 @@ class EventDoc extends ConstDoc
         foreach ($this->tags as $i => $tag) {
             if ($tag->getName() == 'event') {
                 $eventTag = new Return_('event', $tag->getContent(), $tag->getDocBlock(), $tag->getLocation());
-                $this->type = $eventTag->getType();
-                $this->types = $eventTag->getType();
+                $this->type = (string) $eventTag->getType();
+                $this->types = $this->getTagTypes($eventTag);
                 $this->description = StringHelper::mb_ucfirst($eventTag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
                 unset($this->tags[$i]);

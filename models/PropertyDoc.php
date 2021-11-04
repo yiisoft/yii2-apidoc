@@ -79,14 +79,7 @@ class PropertyDoc extends BaseDoc
             }
             if ($tag instanceof Var_) {
                 $this->type = (string) $tag->getType();
-
-                foreach ($tag->getType() as $type) {
-                    $this->types[] = (string) $type;
-                }
-
-                if (!$this->types) {
-                    $this->types = [$this->type];
-                }
+                $this->types = $this->getTagTypes($tag);
 
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
