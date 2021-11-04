@@ -44,66 +44,6 @@ class BaseDoc extends BaseObject
 
 
     /**
-     * Checks if doc has tag of a given name
-     * @param string $name tag name
-     * @return bool if doc has tag of a given name
-     */
-    public function hasTag($name)
-    {
-        foreach ($this->tags as $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Removes tag of a given name
-     * @param string $name
-     */
-    public function removeTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                unset($this->tags[$i]);
-            }
-        }
-    }
-
-    /**
-     * Get the first tag of a given name
-     * @param string $name tag name.
-     * @return Tag|null tag instance, `null` if not found.
-     * @since 2.0.5
-     */
-    public function getFirstTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return $this->tags[$i];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
-     *
-     * @return string|null
-     * @since 2.1.3
-     */
-    public function getPackageName()
-    {
-        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
-            return null;
-        }
-
-        return $match[1];
-    }
-
-    /**
      * @param Class_ $reflector
      * @param Context $context
      * @param array $config
@@ -166,19 +106,65 @@ class BaseDoc extends BaseObject
         }
     }
 
-    // TODO implement
-//	public function loadSource($reflection)
-//	{
-//		$this->sourceFile;
-//		$this->startLine;
-//		$this->endLine;
-//	}
-//
-//	public function getSourceCode()
-//	{
-//		$lines = file(YII2_PATH . $this->sourcePath);
-//		return implode("", array_slice($lines, $this->startLine - 1, $this->endLine - $this->startLine + 1));
-//	}
+    /**
+     * Checks if doc has tag of a given name
+     * @param string $name tag name
+     * @return bool if doc has tag of a given name
+     */
+    public function hasTag($name)
+    {
+        foreach ($this->tags as $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Removes tag of a given name
+     * @param string $name
+     */
+    public function removeTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                unset($this->tags[$i]);
+            }
+        }
+    }
+
+    /**
+     * Get the first tag of a given name
+     * @param string $name tag name.
+     * @return Tag|null tag instance, `null` if not found.
+     * @since 2.0.5
+     */
+    public function getFirstTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return $this->tags[$i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
+     *
+     * @return string|null
+     * @since 2.1.3
+     */
+    public function getPackageName()
+    {
+        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
+            return null;
+        }
+
+        return $match[1];
+    }
 
     /**
      * Extracts first sentence out of text
