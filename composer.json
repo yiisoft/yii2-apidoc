@@ -22,7 +22,7 @@
         "php": "^7.2 || ^8.0",
         "yiisoft/yii2": "~2.0.16",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "phpdocumentor/reflection": "^5.0",
+        "phpdocumentor/reflection": "dev-access-phpparser-node",
         "nikic/php-parser": "^4.0",
         "cebe/js-search": "~0.9.0",
         "cebe/markdown": "^1.0",
@@ -36,6 +36,10 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/arogachev/reflection"
         }
     ],
     "autoload": {

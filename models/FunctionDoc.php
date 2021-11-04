@@ -46,7 +46,7 @@ class FunctionDoc extends BaseDoc
             return;
         }
 
-        $this->isReturnByReference = false;
+        $this->isReturnByReference = $reflector->getNode()->byRef;
 
         foreach ($reflector->getArguments() as $arg) {
             $arg = new ParamDoc($arg, $context, ['sourceFile' => $this->sourceFile]);

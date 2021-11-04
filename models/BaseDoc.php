@@ -65,6 +65,10 @@ class BaseDoc extends BaseObject
 
         $this->startLine = $reflector->getLocation()->getLineNumber();
 
+        if (method_exists($reflector, 'getNode')) {
+            $this->endLine = $reflector->getNode()->getAttribute('endLine');
+        }
+
         $docblock = $reflector->getDocBlock();
         if ($docblock !== null) {
             $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());
@@ -118,7 +122,7 @@ class BaseDoc extends BaseObject
             $types[] = (string) $type;
         }
 
-        return $types ?: [$tag->getType()];
+        return $types ?: [(string) $tag->getType()];
     }
 
     /**
