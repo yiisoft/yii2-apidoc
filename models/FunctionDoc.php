@@ -12,6 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `function`.
@@ -66,14 +67,14 @@ class FunctionDoc extends BaseDoc
                     ];
                     continue;
                 }
-                $this->params[$paramName]->description = static::mbUcFirst($tag->getDescription());
+                $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->params[$paramName]->type = $tag->getType();
                 $this->params[$paramName]->types = $tag->getType();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
                 $this->returnType = $tag->getType();
                 $this->returnTypes = $tag->getType();
-                $this->return = static::mbUcFirst($tag->getDescription());
+                $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             }
         }

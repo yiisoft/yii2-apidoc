@@ -10,6 +10,7 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
 use yii\apidoc\helpers\PrettyPrinter;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `property`.
@@ -87,7 +88,7 @@ class PropertyDoc extends BaseDoc
                     $this->types = [$this->type];
                 }
 
-                $this->description = static::mbUcFirst($tag->getDescription());
+                $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             }
         }
