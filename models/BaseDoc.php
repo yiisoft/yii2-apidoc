@@ -122,7 +122,7 @@ class BaseDoc extends BaseObject
             $types[] = (string) $type;
         }
 
-        return $types ?: [(string) $type];
+        return $types ?: [(string) $aggregatedType];
     }
 
     /**
