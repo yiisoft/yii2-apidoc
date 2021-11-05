@@ -16,7 +16,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * Clean up after test.
      * By default the application created with [[mockApplication]] will be destroyed.
      */
-    protected function tearDown(): void
+    protected function tearDown()
     {
         parent::tearDown();
         $this->removeRuntimeDirectory();
@@ -71,11 +71,11 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      * @param mixed  $haystack
      * @param string $message
      */
-    public function assertContainsWithoutIndent($needle, $haystack/*, $message = ''*/)
+    public function assertContainsWithoutIndent($needle, $haystack)
     {
         $needle = str_replace(["\r", "\n", "\t", '  '], '', $needle);
         $haystack = str_replace(["\r", "\n", "\t", '  '], '', $haystack);
-        $this->assertStringContainsString($needle, $haystack/*, $message*/);
+        $this->assertStringContainsString($needle, $haystack);
     }
 
     /**

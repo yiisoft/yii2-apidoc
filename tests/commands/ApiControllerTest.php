@@ -19,7 +19,7 @@ class ApiControllerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp(): void
+    protected function setUp()
     {
         parent::setUp();
         $this->mockApplication();
@@ -117,7 +117,6 @@ HTML
 HTML
             , $animalContent
         );
-        //$this->assertContains('$age', $animalContent);
 
         // Class `Dog` :
         $dogFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-dog.html';
