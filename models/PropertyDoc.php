@@ -66,11 +66,7 @@ class PropertyDoc extends BaseDoc
 
         $this->visibility = $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-
-        // bypass $reflector->getDefault() for short array syntax
-        if ($reflector->getDefault()) {
-            $this->defaultValue = $reflector->getDefault(); //PrettyPrinter::getRepresentationOfValue($reflector->getDefault());
-        }
+        $this->defaultValue = $reflector->getDefault();
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {

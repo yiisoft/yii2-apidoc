@@ -30,6 +30,7 @@ class PrettyPrinter extends BasePrettyPrinter
     /**
      * Returns a simple human readable output for a value.
      *
+     * @deprecated It's now handled in phpDocumentor library.
      * @param Expr $value The value node as provided by PHP-Parser.
      * @return string
      */

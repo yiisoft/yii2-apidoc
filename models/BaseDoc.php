@@ -205,4 +205,16 @@ class BaseDoc extends BaseObject
 
         return $text;
     }
+
+
+    /**
+     * Multibyte version of ucfirst()
+     * @deprecated Use \yii\helpers\StringHelper::mb_ucfirst() instead
+     * @since 2.0.6
+     */
+    protected static function mbUcFirst($string)
+    {
+        $firstChar = mb_strtoupper(mb_substr($string, 0, 1, 'utf-8'), 'utf-8');
+        return $firstChar . mb_substr($string, 1, mb_strlen($string, 'utf-8'), 'utf-8');
+    }
 }

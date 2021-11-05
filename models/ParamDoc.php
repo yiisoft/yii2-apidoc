@@ -46,11 +46,7 @@ class ParamDoc extends BaseObject
 
         $this->name = '$'. $reflector->getName();
         $this->typeHint = $reflector->getType();
-
-//        if ($reflector->getDefault()) {
-//            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getDefault());
-//        }
-
+        $this->defaultValue = $reflector->getDefault();
         $this->isOptional = $reflector->getDefault() !== null;
         $this->isPassedByReference = $reflector->isByReference();
     }
