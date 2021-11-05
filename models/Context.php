@@ -14,7 +14,6 @@ use yii\base\Component;
 
 /**
  * @author Carsten Brandt <mail@cebe.cc>
- * @author Paweł Brzozowski <pawel@positive.codes>
  */
 class Context extends Component
 {
