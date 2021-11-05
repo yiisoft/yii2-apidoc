@@ -52,7 +52,7 @@ class Context extends Component
      * @param string $type
      * @return null|ClassDoc|InterfaceDoc|TraitDoc
      */
-    public function getType(string $type)
+    public function getType($type)
     {
         $type = ltrim($type, '\\');
 
@@ -476,7 +476,7 @@ class Context extends Component
                 $count++;
             }
         }
-        return $count === $number;
+        return $count == $number;
     }
 
     /**
@@ -503,12 +503,12 @@ class Context extends Component
         if (is_object($classB)) {
             $classB = $classB->name;
         }
-        if ($classA->name === $classB) {
+        if ($classA->name == $classB) {
             return true;
         }
         while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
             $classA = $this->classes[$classA->parentClass];
-            if ($classA->name === $classB) {
+            if ($classA->name == $classB) {
                 return true;
             }
         }

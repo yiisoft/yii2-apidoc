@@ -11,7 +11,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
-use phpDocumentor\Reflection\Php\Property;
 use yii\helpers\StringHelper;
 
 /**

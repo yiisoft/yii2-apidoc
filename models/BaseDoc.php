@@ -206,7 +206,6 @@ class BaseDoc extends BaseObject
         return $text;
     }
 
-
     /**
      * Multibyte version of ucfirst()
      * @deprecated Use \yii\helpers\StringHelper::mb_ucfirst() instead

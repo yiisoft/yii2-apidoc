@@ -8,7 +8,6 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\Php\Argument;
-use yii\apidoc\helpers\PrettyPrinter;
 use yii\base\BaseObject;
 
 /**
