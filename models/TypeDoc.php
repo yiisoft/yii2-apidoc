@@ -202,8 +202,8 @@ class TypeDoc extends BaseDoc
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'type' => $tag->getType(),
-                    'types' => $tag->getType(),
+                    'type' => (string) $tag->getType(),
+                    'types' => $this->splitTypes($tag->getType()),
                     'shortDescription' => $tag->getDescription(),
                     'description' => $tag->getDescription(),
                 ]);
@@ -241,8 +241,8 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => $tag->getType(),
-                    'returnTypes' => $tag->getType(),
+                    'returnType' => (string) $tag->getReturnType(),
+                    'returnTypes' => $this->splitTypes($tag->getReturnType()),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

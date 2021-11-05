@@ -97,7 +97,7 @@ class ApiController extends BaseController
         $done = 0;
         foreach ($files as $file) {
             try {
-                $context->addProjectFile($file);
+                $context->addFile($file);
             } catch (\Exception $e) {
                 $context->errors[] = "Unable to process \"$file\": " . $e->getMessage();
             }

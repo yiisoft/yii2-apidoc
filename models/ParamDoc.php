@@ -44,9 +44,9 @@ class ParamDoc extends BaseObject
         }
 
         $this->name = '$'. $reflector->getName();
-        $this->typeHint = $reflector->getType();
+        $this->typeHint = (string) $reflector->getType();
         $this->defaultValue = $reflector->getDefault();
-        $this->isOptional = $reflector->getDefault() !== null;
+        $this->isOptional = $this->defaultValue !== null;
         $this->isPassedByReference = $reflector->isByReference();
     }
 }

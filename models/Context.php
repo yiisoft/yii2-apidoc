@@ -81,14 +81,9 @@ class Context extends Component
 
     /**
      * Adds file to context
-     * @deprecated Use addProjectFile() instead
      * @param string $fileName
      */
     public function addFile($fileName)
-    {
-    }
-
-    public function addProjectFile($fileName)
     {
         $this->files[$fileName] = sha1_file($fileName);
     }
