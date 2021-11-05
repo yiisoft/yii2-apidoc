@@ -249,19 +249,24 @@ class TypeDoc extends BaseDoc
             }
         }
 
-        foreach ($reflector->getProperties() as $propertyReflector) {
-            if ($propertyReflector->getVisibility() != 'private') {
-                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
-                $property->definedBy = $this->name;
-                $this->properties[$property->name] = $property;
-            }
-        }
+        $this->initProperties($reflector, $context);
 
         foreach ($reflector->getMethods() as $methodReflector) {
             if ($methodReflector->getVisibility() != 'private') {
                 $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
+            }
+        }
+    }
+
+    protected function initProperties($reflector, $context)
+    {
+        foreach ($reflector->getProperties() as $propertyReflector) {
+            if ($propertyReflector->getVisibility() != 'private') {
+                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $property->definedBy = $this->name;
+                $this->properties[$property->name] = $property;
             }
         }
     }

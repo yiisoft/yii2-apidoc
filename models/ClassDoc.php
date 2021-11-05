@@ -115,9 +115,9 @@ class ClassDoc extends TypeDoc
             $this->traits[] = ltrim($trait, '\\');
         }
         foreach ($reflector->getConstants() as $constantReflector) {
-            $docblock = $constantReflector->getDocBlock();
-            if ($docblock !== null && count($docblock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector);
+            $docBlock = $constantReflector->getDocBlock();
+            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
+                $event = new EventDoc($constantReflector, null, null, $docBlock);
                 $event->definedBy = $this->name;
                 $this->events[$event->name] = $event;
             } else {

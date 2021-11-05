@@ -7,7 +7,9 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
 use yii\helpers\StringHelper;
 
 /**
@@ -23,11 +25,12 @@ class EventDoc extends ConstDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\ConstantReflector $reflector
+     * @param Class_|Constant $reflector
      * @param Context $context
      * @param array $config
+     * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
         parent::__construct($reflector, $context, $config);
 
@@ -36,14 +39,21 @@ class EventDoc extends ConstDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag->getName() == 'event') {
-                $eventTag = new Return_('event', $tag->getContent(), $tag->getDocBlock(), $tag->getLocation());
-                $this->type = (string) $eventTag->getType();
-                $this->types = $this->splitTypes($eventTag->getType());
-                $this->description = StringHelper::mb_ucfirst($eventTag->getDescription());
-                $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
-                unset($this->tags[$i]);
+            if ($tag->getName() != 'event') {
+                continue;
             }
+
+            $className = explode(' ', trim($tag->getDescription()))[0];
+            if (str_contains($className, '\\'))  {
+                $this->type = $className;
+            } else {
+                $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
+            }
+
+            $this->types = [$this->type];
+            $this->description = StringHelper::mb_ucfirst((string) $tag->getDescription());
+            $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            unset($this->tags[$i]);
         }
     }
 }

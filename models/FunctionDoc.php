@@ -54,7 +54,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[(string) $tag->getType()->getFqsen()] = $tag->getDescription();
+                $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = $tag->getVariableName();

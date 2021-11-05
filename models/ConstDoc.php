@@ -7,6 +7,8 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock;
+
 /**
  * Represents API documentation information for a `constant`.
  *
@@ -23,8 +25,9 @@ class ConstDoc extends BaseDoc
      * @param \phpDocumentor\Reflection\ClassReflector\ConstantReflector $reflector
      * @param Context $context
      * @param array $config
+     * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
         parent::__construct($reflector, $context, $config);
 
