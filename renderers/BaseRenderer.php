@@ -169,13 +169,23 @@ abstract class BaseRenderer extends Component
     public function createSubjectLink($subject, $title = null, $options = [])
     {
         if ($title === null) {
-            $title = $subject->name;
+            if ($subject instanceof MethodDoc) {
+                $title = $subject->name . '()';
+            } else {
+                $title = $subject->name;
+            }
         }
         if (($type = $this->apiContext->getType($subject->definedBy)) === null) {
             return $subject->name;
         }
 
-        $link = $this->generateApiUrl($type->name) . '#' . $subject->name . '-detail';
+        $link = $this->generateApiUrl($type->name);
+        if ($subject instanceof MethodDoc) {
+            $link .= '#' . $subject->name . '()';
+        } else {
+            $link .= '#' . $subject->name;
+        }
+        $link .= '-detail';
 
         return $this->generateLink($title, $link, $options);
     }
