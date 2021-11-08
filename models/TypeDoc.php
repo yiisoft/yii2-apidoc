@@ -10,6 +10,9 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use phpDocumentor\Reflection\DocBlock\Tags\Property;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
+use phpDocumentor\Reflection\Php\Class_;
 use yii\helpers\StringHelper;
 
 /**
@@ -175,7 +178,7 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param \phpDocumentor\Reflection\InterfaceReflector $reflector
+     * @param Class_ $reflector
      * @param Context $context
      * @param array $config
      */
@@ -195,10 +198,10 @@ class TypeDoc extends BaseDoc
                 unset($this->tags[$i]);
             }
 
-            if ($tag instanceof Property) {
+            if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
                 $property = new PropertyDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
-                    'name' => $tag->getVariableName(),
+                    'name' => '$' . $tag->getVariableName(),
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
