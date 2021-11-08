@@ -43,7 +43,10 @@ class EventDoc extends ConstDoc
                 continue;
             }
 
-            $className = explode(' ', trim($tag->getDescription()))[0];
+            $parts = explode(' ', trim($tag->getDescription()), 2);
+            $className = $parts[0];
+            $this->description = StringHelper::mb_ucfirst($parts[1]);
+
             if (str_contains($className, '\\'))  {
                 $this->type = $className;
             } else {
@@ -51,7 +54,6 @@ class EventDoc extends ConstDoc
             }
 
             $this->types = [$this->type];
-            $this->description = StringHelper::mb_ucfirst((string) $tag->getDescription());
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }
