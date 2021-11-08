@@ -215,17 +215,11 @@ class TypeDoc extends BaseDoc
                 $params = [];
 
                 foreach ($tag->getArguments() as $tagArgument) {
-                    $argumentType = null;
-
-                    if (count($tagArgument) === 2) {
-                        list ($argumentType, $argumentName) = $tagArgument;
-                    } else {
-                        $argumentName = $tagArgument[0];
-                    }
+                    $argumentType = (string) $tagArgument['type'];
 
                     $params[] = new ParamDoc(null, $context, [
                         'sourceFile' => $this->sourceFile,
-                        'name' => $argumentName,
+                        'name' => $tagArgument['name'],
                         'typeHint' => $argumentType,
                         'type' => $argumentType,
                         'types' => [],
