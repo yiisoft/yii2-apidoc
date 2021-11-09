@@ -45,73 +45,6 @@ class BaseDoc extends BaseObject
 
 
     /**
-     * @param Class_ $reflector
-     * @param Context $context
-     * @param array $config
-     */
-    public function __construct($reflector = null, $context = null, $config = [])
-    {
-        parent::__construct($config);
-
-        if ($reflector === null) {
-            return;
-        }
-
-        // base properties
-        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
-
-        $position = strrpos($this->fullName, '::');
-        $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
-
-        $this->startLine = $reflector->getLocation()->getLineNumber();
-
-        if (method_exists($reflector, 'getNode')) {
-            $this->endLine = $reflector->getNode()->getAttribute('endLine');
-        }
-
-        $docblock = $reflector->getDocBlock();
-        if ($docblock !== null) {
-            $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());
-            if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
-                $context->warnings[] = [
-                    'line' => $this->startLine,
-                    'file' => $this->sourceFile,
-                    'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
-                ];
-            }
-            $this->description = $docblock->getDescription()->render();
-
-            $this->phpDocContext = $docblock->getContext();
-
-            $this->tags = $docblock->getTags();
-            foreach ($this->tags as $i => $tag) {
-                if ($tag instanceof Since) {
-                    $this->since = $tag->getVersion();
-                    unset($this->tags[$i]);
-                } elseif ($tag instanceof Deprecated) {
-                    $this->deprecatedSince = $tag->getVersion();
-                    $this->deprecatedReason = $tag->getDescription();
-                    unset($this->tags[$i]);
-                }
-            }
-
-            if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
-                // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
-                // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
-                $this->tags[] = new Generic('inheritdoc');
-                $this->shortDescription = '';
-            }
-
-        } elseif ($context !== null) {
-            $context->warnings[] = [
-                'line' => $this->startLine,
-                'file' => $this->sourceFile,
-                'message' => "No docblock for element '{$this->name}'",
-            ];
-        }
-    }
-
-    /**
      * @param Type|null $aggregatedType
      * @return string[]|array
      */
@@ -187,6 +120,73 @@ class BaseDoc extends BaseObject
         }
 
         return $match[1];
+    }
+
+    /**
+     * @param Class_ $reflector
+     * @param Context $context
+     * @param array $config
+     */
+    public function __construct($reflector = null, $context = null, $config = [])
+    {
+        parent::__construct($config);
+
+        if ($reflector === null) {
+            return;
+        }
+
+        // base properties
+        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
+
+        $position = strrpos($this->fullName, '::');
+        $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
+
+        $this->startLine = $reflector->getLocation()->getLineNumber();
+
+        if (method_exists($reflector, 'getNode')) {
+            $this->endLine = $reflector->getNode()->getAttribute('endLine');
+        }
+
+        $docblock = $reflector->getDocBlock();
+        if ($docblock !== null) {
+            $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());
+            if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
+                $context->warnings[] = [
+                    'line' => $this->startLine,
+                    'file' => $this->sourceFile,
+                    'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
+                ];
+            }
+            $this->description = $docblock->getDescription()->render();
+
+            $this->phpDocContext = $docblock->getContext();
+
+            $this->tags = $docblock->getTags();
+            foreach ($this->tags as $i => $tag) {
+                if ($tag instanceof Since) {
+                    $this->since = $tag->getVersion();
+                    unset($this->tags[$i]);
+                } elseif ($tag instanceof Deprecated) {
+                    $this->deprecatedSince = $tag->getVersion();
+                    $this->deprecatedReason = $tag->getDescription();
+                    unset($this->tags[$i]);
+                }
+            }
+
+            if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
+                // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
+                // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
+                $this->tags[] = new Generic('inheritdoc');
+                $this->shortDescription = '';
+            }
+
+        } elseif ($context !== null) {
+            $context->warnings[] = [
+                'line' => $this->startLine,
+                'file' => $this->sourceFile,
+                'message' => "No docblock for element '{$this->name}'",
+            ];
+        }
     }
 
     /**
