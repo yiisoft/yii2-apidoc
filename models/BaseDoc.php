@@ -112,11 +112,15 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * @param Type $aggregatedType
-     * @return string[]
+     * @param Type|null $aggregatedType
+     * @return string[]|array
      */
     protected function splitTypes($aggregatedType)
     {
+        if ($aggregatedType === null) {
+            return [];
+        }
+
         $types = [];
         foreach ($aggregatedType as $type) {
             $types[] = (string) $type;
