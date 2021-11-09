@@ -13,7 +13,7 @@ foreach ($object->tags as $tag) {
     /** @var $tag phpDocumentor\Reflection\DocBlock\Tags\See */
     if (get_class($tag) == 'phpDocumentor\Reflection\DocBlock\Tags\See') {
         $ref = $tag->getReference();
-        if (str_contains($ref, '://')) {
+        if (strpos($ref, '://') === false) {
             $ref = '[[' . $ref . ']]';
         }
         $see[] = rtrim(ApiMarkdown::process($ref . ' ' . $tag->getDescription(), $type, true), ". \r\n");
