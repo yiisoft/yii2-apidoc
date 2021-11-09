@@ -108,8 +108,13 @@ trait ApiMarkdownTrait
             $subjectName = substr($object, $pos + 2);
 
             if ($context !== null) {
-                $typeName = $context->phpDocContext->getNamespace() . '\\' . $typeName;
+                if (isset($context->phpDocContext->getNamespaceAliases()[$typeName])) {
+                    $typeName = $context->phpDocContext->getNamespaceAliases()[$typeName];
+                } else {
+                    $typeName = $context->phpDocContext->getNamespace() . '\\' . $typeName;
+                }
             }
+
 
             /** @var $type TypeDoc */
             $type = static::$renderer->apiContext->getType($typeName);
@@ -142,7 +147,11 @@ trait ApiMarkdownTrait
                 ];
             }
 
-            $object = $context->phpDocContext->getNamespace() . '\\' . $object;
+            if (isset($context->phpDocContext->getNamespaceAliases()[$object])) {
+                $object = $context->phpDocContext->getNamespaceAliases()[$object];
+            } else {
+                $object =  $context->phpDocContext->getNamespace() . '\\' . $object;
+            }
         }
 
         if (($type = static::$renderer->apiContext->getType($object)) !== null) {

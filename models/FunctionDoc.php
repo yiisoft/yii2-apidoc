@@ -57,7 +57,7 @@ class FunctionDoc extends BaseDoc
                 $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
-                $paramName = $tag->getVariableName();
+                $paramName = '$' . $tag->getVariableName();
                 if (!isset($this->params[$paramName]) && $context !== null) {
                     $context->errors[] = [
                         'line' => $this->startLine,

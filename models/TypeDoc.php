@@ -62,6 +62,8 @@ class TypeDoc extends BaseDoc
         if (empty($subjectName)) {
             return null;
         }
+
+        $subjectName = ltrim(str_replace($this->namespace, '', $subjectName), '\\');
         if ($subjectName[0] !== '$') {
             foreach ($this->methods as $name => $method) {
                 if (rtrim($subjectName, '()') == $name) {
