@@ -44,7 +44,12 @@ class ParamDoc extends BaseObject
         }
 
         $this->name = '$'. $reflector->getName();
+
         $this->typeHint = (string) $reflector->getType();
+        if ($this->typeHint === 'mixed') {
+            $this->typeHint = '';
+        }
+
         $this->defaultValue = $reflector->getDefault();
         $this->isOptional = $this->defaultValue !== null;
         $this->isPassedByReference = $reflector->isByReference();
