@@ -9,6 +9,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
+use yii\apidoc\helpers\PrettyPrinter;
 use yii\helpers\StringHelper;
 
 /**
@@ -65,7 +66,10 @@ class PropertyDoc extends BaseDoc
 
         $this->visibility = $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-        $this->defaultValue = $reflector->getDefault();
+
+        if ($reflector->getDefault() !== null) {
+            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getDefaultNode());
+        }
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {

@@ -150,7 +150,7 @@ trait ApiMarkdownTrait
             if (isset($context->phpDocContext->getNamespaceAliases()[$object])) {
                 $object = $context->phpDocContext->getNamespaceAliases()[$object];
             } else {
-                $object =  $context->phpDocContext->getNamespace() . '\\' . $object;
+                $object = $context->phpDocContext->getNamespace() . '\\' . $object;
             }
         }
 

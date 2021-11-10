@@ -143,7 +143,7 @@ class BaseDoc extends BaseObject
 
         $this->startLine = $reflector->getLocation()->getLineNumber();
 
-        if (method_exists($reflector, 'getNode')) {
+        if (method_exists($reflector, 'getNode') && $reflector->getNode()) {
             $this->endLine = $reflector->getNode()->getAttribute('endLine');
         }
 
