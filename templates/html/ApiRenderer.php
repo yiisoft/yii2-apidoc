@@ -16,7 +16,6 @@ use yii\apidoc\renderers\ApiRenderer as BaseApiRenderer;
 use yii\base\ViewContextInterface;
 use yii\helpers\Console;
 use yii\helpers\Html;
-use yii\helpers\StringHelper;
 use yii\web\AssetManager;
 use yii\web\View;
 use Yii;

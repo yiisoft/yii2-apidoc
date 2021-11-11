@@ -61,6 +61,12 @@ trait MarkdownHighlightTrait
      */
     public static function highlight($code, $language)
     {
+        $restoreBackslashes = false;
+        if (strpos($code, '/') === false) {
+            $code = str_replace('\\', '/', $code);
+            $restoreBackslashes = true;
+        }
+
         if ($language !== 'php') {
             return htmlspecialchars($code, ENT_NOQUOTES | ENT_SUBSTITUTE);
         }
@@ -76,6 +82,11 @@ trait MarkdownHighlightTrait
         }
         // remove <code><span style="color: #000000">\n and </span>tags added by php
         $text = substr(trim($text), 36, -16);
+
+        if ($restoreBackslashes) {
+            $text = str_replace('/', '\\', $text);
+            $text = str_replace('<\span>', '</span>', $text);
+        }
 
         return $text;
     }
