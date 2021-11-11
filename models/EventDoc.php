@@ -49,6 +49,8 @@ class EventDoc extends ConstDoc
 
             if (strpos($className, '\\') !== false)  {
                 $this->type = $className;
+            } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
+                $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];
             } else {
                 $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
