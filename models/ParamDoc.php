@@ -39,19 +39,18 @@ class ParamDoc extends BaseObject
     {
         parent::__construct($config);
 
-        if ($reflector === null) {
-            return;
+        if ($reflector !== null) {
+            $this->name = $reflector->getName();
+            $this->typeHint = (string) $reflector->getType();
+            $this->defaultValue = $reflector->getDefault();
+            $this->isOptional = $this->defaultValue !== null;
+            $this->isPassedByReference = $reflector->isByReference();
         }
 
-        $this->name = '$'. $reflector->getName();
+        $this->name = '$' . $this->name ;
 
-        $this->typeHint = (string) $reflector->getType();
         if ($this->typeHint === 'mixed') {
             $this->typeHint = '';
         }
-
-        $this->defaultValue = $reflector->getDefault();
-        $this->isOptional = $this->defaultValue !== null;
-        $this->isPassedByReference = $reflector->isByReference();
     }
 }
