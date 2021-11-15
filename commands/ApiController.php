@@ -160,7 +160,7 @@ class ApiController extends BaseController
 
     /**
      * @inheritdoc
-     * @return ApiRenderer
+     * @return ApiRenderer|false
      */
     protected function findRenderer($template)
     {

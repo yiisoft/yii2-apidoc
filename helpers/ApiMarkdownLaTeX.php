@@ -68,10 +68,6 @@ class ApiMarkdownLaTeX extends GithubMarkdown
      */
     protected function renderQuote($block)
     {
-        if (isset($block['blocktype'])) {
-            // TODO render nice icon for different block types: note, info, warning, tip
-            //$class = ' class="' . $block['blocktype'] . '"';
-        }
         return '\begin{quote}' . $this->renderAbsy($block['content']) . "\\end{quote}\n";
     }
 

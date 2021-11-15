@@ -24,7 +24,7 @@ trait ApiMarkdownTrait
      */
     protected function parseApiLinks($text)
     {
-        if (!preg_match('/^\[\[([\w\d\\\\\(\):$]+)(\|[^\]]*)?\]\]/', $text, $matches)) {
+        if (!preg_match('/^\[\[([\w\d\\\\():$]+)(\|[^]]*)?]]/', $text, $matches)) {
             return [['text', '[['], 2];
         }
 
@@ -114,7 +114,6 @@ trait ApiMarkdownTrait
                     $typeName = $context->phpDocContext->getNamespace() . '\\' . $typeName;
                 }
             }
-
 
             /** @var $type TypeDoc */
             $type = static::$renderer->apiContext->getType($typeName);

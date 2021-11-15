@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
+/* @var $content string */
 
 \yii\apidoc\templates\bootstrap\assets\AssetBundle::register($this);
 

@@ -19,6 +19,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "ext-mbstring": "*",
         "php": "^7.2 || ^8.0",
         "yiisoft/yii2": "~2.0.16",
         "yiisoft/yii2-bootstrap": "~2.0.0",
@@ -42,6 +43,9 @@
             "url": "https://github.com/arogachev/reflection"
         }
     ],
+    "suggest": {
+        "ext-json": "for outputting documentation data structures as a JSON text"
+    },
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
     },
