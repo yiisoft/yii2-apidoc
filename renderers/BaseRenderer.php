@@ -180,10 +180,9 @@ abstract class BaseRenderer extends Component
         }
 
         $link = $this->generateApiUrl($type->name);
+        $link .= '#' . $subject->name;
         if ($subject instanceof MethodDoc) {
-            $link .= '#' . $subject->name . '()';
-        } else {
-            $link .= '#' . $subject->name;
+             $link .= '()';
         }
         $link .= '-detail';
 
