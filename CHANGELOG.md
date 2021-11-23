@@ -14,6 +14,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #162: Fixed skipping some of PHP files / classes (arogachev)
 - Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
 - Bug #199: Fixed processing of nullable return types (arogachev)
+- Enh #180: Do not include methods and properties marked as internal (arogachev)
 
 
 2.1.6 May 05, 2021
