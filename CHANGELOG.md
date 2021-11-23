@@ -12,6 +12,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
 - Bug #155: Fixed processing of classes containing constants with visibility (arogachev)
 - Bug #162: Fixed skipping some of PHP files / classes (arogachev)
+- Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
 
 
 2.1.6 May 05, 2021
