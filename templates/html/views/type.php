@@ -28,7 +28,7 @@ $renderer = $this->context;
     echo $type->name;
 ?></h1>
 <div class="top-nav">
-    <a href="index.html">All Classes</a>
+    <a href="index">All Classes</a>
     <?php if (!($type instanceof InterfaceDoc) && !empty($type->properties)): ?>
         | <a href="#properties">Properties</a>
     <?php endif; ?>

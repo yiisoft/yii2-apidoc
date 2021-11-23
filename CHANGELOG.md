@@ -6,6 +6,7 @@ Yii Framework 2 apidoc extension Change Log
 
 - Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
 - Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
+- Bug #180: Fixed "All Classes" broken link (arogachev)
 
 
 2.1.6 May 05, 2021
