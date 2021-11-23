@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.7 under development
+3.0.0 under development
 -----------------------
 
 - Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
@@ -10,6 +10,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #146: Update `nikic/php-parser` version (bizley, arogachev)
 - Bug #213: Fix error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
 - Bug #133: Fix PHP Parser error with anonymous class (arogachev)
+- Bug #155: Fix processing of classes containing constants with visibility (arogachev)
 
 
 2.1.6 May 05, 2021
