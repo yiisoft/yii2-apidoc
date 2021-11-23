@@ -6,11 +6,12 @@ Yii Framework 2 apidoc extension Change Log
 
 - Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
 - Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
-- Bug #203: Fix PHP 8 compatibility (bizley, arogachev)
-- Enh #146: Update `nikic/php-parser` version (bizley, arogachev)
-- Bug #213: Fix error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
-- Bug #133: Fix PHP Parser error with anonymous class (arogachev)
-- Bug #155: Fix processing of classes containing constants with visibility (arogachev)
+- Bug #203: Fixed PHP 8 compatibility (bizley, arogachev)
+- Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
+- Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
+- Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
+- Bug #155: Fixed processing of classes containing constants with visibility (arogachev)
+- Bug #162: Fixed skipping some of PHP files / classes (arogachev)
 
 
 2.1.6 May 05, 2021
