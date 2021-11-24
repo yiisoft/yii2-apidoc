@@ -168,7 +168,8 @@ abstract class GuideRenderer extends BaseGuideRenderer
         $doc->loadHTML($content);
 
         foreach ($doc->getElementsByTagName('a') as $link) {
-            $link->setAttribute('href', str_replace('.md', '', $link->getAttribute('href')));
+            $href = $this->guidePrefix . str_replace('.md', '.html', $link->getAttribute('href'));
+            $link->setAttribute('href', $href);
         }
 
         return $doc->saveHTML();
