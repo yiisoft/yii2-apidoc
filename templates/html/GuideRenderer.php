@@ -7,6 +7,7 @@
 
 namespace yii\apidoc\templates\html;
 
+use DOMDocument;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
@@ -163,8 +164,14 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     protected function fixMarkdownLinks($content)
     {
-        $content = preg_replace('/href\s*=\s*"([^"\/]+)\.md(#.*)?"/i', 'href="' . $this->guidePrefix . '\1.html\2"', $content);
-        return $content;
+        $doc = new DOMDocument();
+        $doc->loadHTML($content);
+
+        foreach ($doc->getElementsByTagName('a') as $link) {
+            $link->setAttribute('href', str_replace('.md', '', $link->getAttribute('href')));
+        }
+
+        return $doc->saveHTML();
     }
 
     /**
