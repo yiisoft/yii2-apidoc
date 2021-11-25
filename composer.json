@@ -19,7 +19,6 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "ext-dom": "*",
         "ext-mbstring": "*",
         "php": "^7.2 || ^8.0",
         "yiisoft/yii2": "~2.0.16",
