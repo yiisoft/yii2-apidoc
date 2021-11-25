@@ -16,7 +16,8 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
 - Bug #199: Fixed processing of nullable return types (arogachev)
 - Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
-- Bug #197: Adapted fixing of Markdown links for multiple links (arogachev) 
+- Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
+- Enh #180: Do not include methods and properties marked as internal (arogachev)
 
 
 2.1.6 May 05, 2021
