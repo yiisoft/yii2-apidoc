@@ -28,7 +28,7 @@ class PrettyPrinter extends BasePrettyPrinter
     }
 
     /**
-     * https://github.com/nikic/PHP-Parser/issues/447#issuecomment-348557940
+     * @link https://github.com/nikic/PHP-Parser/issues/447#issuecomment-348557940
      * @param string $string
      * @return string
      */
