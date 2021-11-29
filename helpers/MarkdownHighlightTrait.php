@@ -41,7 +41,7 @@ trait MarkdownHighlightTrait
         }
         try {
             if (isset($block['language'])) {
-                if ($block['language'] === 'php' && strpos($block['content'], '<?=')) {
+                if ($block['language'] === 'php' && strpos($block['content'], '<?=') !== false) {
                     $block['language'] = 'html';
                 }
 
