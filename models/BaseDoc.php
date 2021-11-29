@@ -200,7 +200,12 @@ class BaseDoc extends BaseObject
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
             if (mb_strlen($text, 'utf-8') >= $pos + 3) {
                 $abbrev = mb_substr($text, $pos - 1, 4, 'utf-8');
-                if ($abbrev === 'e.g.' || $abbrev === 'i.e.') { // do not break sentence after abbreviation
+                // do not break sentence after abbreviation
+                if ($abbrev === 'e.g.' ||
+                    $abbrev === 'i.e.' ||
+                    mb_substr_count($sentence, '`', 'utf-8') % 2 === 1 ||
+                    mb_substr_count($text, '`', 'utf-8') % 2 === 1
+                ) {
                     $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'));
                 }
             }
