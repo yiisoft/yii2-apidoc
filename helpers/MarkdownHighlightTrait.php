@@ -41,6 +41,10 @@ trait MarkdownHighlightTrait
         }
         try {
             if (isset($block['language'])) {
+                if ($block['language'] === 'php' && strpos($block['content'], '<?=')) {
+                    $block['language'] = 'html';
+                }
+
                 $result = self::$highlighter->highlight($block['language'], $block['content'] . "\n");
                 return "<pre><code class=\"hljs {$result->language} language-{$block['language']}\">{$result->value}</code></pre>\n";
             } else {
