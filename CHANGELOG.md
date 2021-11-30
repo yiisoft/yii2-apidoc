@@ -8,7 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
 - Bug #180: Fixed "All Classes" broken link (arogachev)
 - Bug #34: Improved highlighting of PHP templates (arogachev)
-
+- Bug #168: Fixed handling of inheritance (arogachev)
 
 2.1.6 May 05, 2021
 ------------------

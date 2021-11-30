@@ -140,9 +140,9 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, constants and events to subclasses
+        // inherit properties, methods, constants and events from subclasses
         foreach ($this->classes as $class) {
-            $this->updateSubclassInheritance($class);
+            $this->handleClassInheritance($class);
         }
         foreach ($this->interfaces as $interface) {
             $this->updateSubInterfaceInheritance($interface);
@@ -172,6 +172,7 @@ class Context extends Component
     /**
      * Add implemented interfaces and used traits to subclasses
      * @param ClassDoc $class
+     * @deprecated Use handleClassInheritance() instead
      */
     protected function updateSubclassInheritance($class)
     {
@@ -182,6 +183,51 @@ class Context extends Component
             $subclass->properties = array_merge($class->properties, $subclass->properties);
             $subclass->methods = array_merge($class->methods, $subclass->methods);
             $this->updateSubclassInheritance($subclass);
+        }
+    }
+
+    /**
+     * @param ClassDoc $class
+     */
+    protected function handleClassInheritance($class)
+    {
+        $parents = $this->getParents($class);
+        if (!$parents) {
+            return;
+        }
+
+        $attrNames = ['events', 'constants', 'properties', 'methods'];
+        $assocAttrNames = ['constants', 'methods'];
+        $map = [];
+
+        foreach ($attrNames as $attrName) {
+            if (in_array($attrName, $assocAttrNames)) {
+                $map[$attrName] = $class->$attrName;
+
+                continue;
+            }
+
+            foreach ($class->$attrName as $item) {
+                $map[$attrName][$item->name] = $item;
+            }
+        }
+
+        foreach ($parents as $parent) {
+            foreach ($attrNames as $attrName) {
+                foreach ($parent->$attrName as $item) {
+                    if (isset($map[$attrName][$item->name])) {
+                        continue;
+                    }
+
+                    if (in_array($attrName, $assocAttrNames)) {
+                        $class->$attrName += [$item->name => $item];
+                    } else {
+                        array_push($class->$attrName, $item);
+                    }
+
+                    $map[$attrName][$item->name] = $item;
+                }
+            }
         }
     }
 
