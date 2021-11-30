@@ -7,7 +7,6 @@
 
 namespace yii\apidoc\helpers;
 
-use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
@@ -25,7 +24,7 @@ trait ApiMarkdownTrait
      */
     protected function parseApiLinks($text)
     {
-        if (!preg_match('/^\[\[([\w\d\\\\\(\):$]+)(\|[^\]]*)?\]\]/', $text, $matches)) {
+        if (!preg_match('/^\[\[([\w\d\\\\():$]+)(\|[^]]*)?]]/', $text, $matches)) {
             return [['text', '[['], 2];
         }
 
@@ -109,8 +108,11 @@ trait ApiMarkdownTrait
             $subjectName = substr($object, $pos + 2);
 
             if ($context !== null) {
-                // Collection resolves relative types
-                $typeName = (new Collection([$typeName], $context->phpDocContext))->__toString();
+                if (isset($context->phpDocContext->getNamespaceAliases()[$typeName])) {
+                    $typeName = $context->phpDocContext->getNamespaceAliases()[$typeName];
+                } else {
+                    $typeName = $context->phpDocContext->getNamespace() . '\\' . $typeName;
+                }
             }
 
             /** @var $type TypeDoc */
@@ -144,8 +146,11 @@ trait ApiMarkdownTrait
                 ];
             }
 
-            // Collection resolves relative types
-            $object = (new Collection([$object], $context->phpDocContext))->__toString();
+            if (isset($context->phpDocContext->getNamespaceAliases()[$object])) {
+                $object = $context->phpDocContext->getNamespaceAliases()[$object];
+            } else {
+                $object = $context->phpDocContext->getNamespace() . '\\' . $object;
+            }
         }
 
         if (($type = static::$renderer->apiContext->getType($object)) !== null) {

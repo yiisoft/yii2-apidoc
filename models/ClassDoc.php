@@ -101,7 +101,7 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParentClass(), '\\');
+        $this->parentClass = ltrim($reflector->getParent(), '\\');
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
@@ -111,13 +111,13 @@ class ClassDoc extends TypeDoc
         foreach ($reflector->getInterfaces() as $interface) {
             $this->interfaces[] = ltrim($interface, '\\');
         }
-        foreach ($reflector->getTraits() as $trait) {
+        foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
         }
         foreach ($reflector->getConstants() as $constantReflector) {
-            $docblock = $constantReflector->getDocBlock();
-            if ($docblock !== null && count($docblock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector);
+            $docBlock = $constantReflector->getDocBlock();
+            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
+                $event = new EventDoc($constantReflector, null, null, $docBlock);
                 $event->definedBy = $this->name;
                 $this->events[$event->name] = $event;
             } else {
