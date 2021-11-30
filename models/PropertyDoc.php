@@ -7,8 +7,10 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\Php\Property;
 use yii\apidoc\helpers\PrettyPrinter;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `property`.
@@ -50,7 +52,7 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\PropertyReflector $reflector
+     * @param Property $reflector
      * @param Context $context
      * @param array $config
      */
@@ -65,9 +67,8 @@ class PropertyDoc extends BaseDoc
         $this->visibility = $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
 
-        // bypass $reflector->getDefault() for short array syntax
-        if ($reflector->getNode()->default) {
-            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getNode()->default);
+        if ($reflector->getDefault() !== null) {
+            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getDefaultNode());
         }
 
         $hasInheritdoc = false;
@@ -75,10 +76,11 @@ class PropertyDoc extends BaseDoc
             if ($tag->getName() === 'inheritdoc') {
                 $hasInheritdoc = true;
             }
-            if ($tag instanceof VarTag) {
-                $this->type = $tag->getType();
-                $this->types = $tag->getTypes();
-                $this->description = static::mbUcFirst($tag->getDescription());
+            if ($tag instanceof Var_) {
+                $this->type = (string) $tag->getType();
+                $this->types = $this->splitTypes($tag->getType());
+
+                $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             }
         }

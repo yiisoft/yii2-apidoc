@@ -103,6 +103,7 @@ class ApiController extends BaseController
             }
             Console::updateProgress(++$done, $fileCount);
         }
+        $context->processFiles();
         Console::endProgress(true);
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
 
@@ -159,7 +160,7 @@ class ApiController extends BaseController
 
     /**
      * @inheritdoc
-     * @return ApiRenderer
+     * @return ApiRenderer|false
      */
     protected function findRenderer($template)
     {
