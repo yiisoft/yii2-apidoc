@@ -51,13 +51,4 @@ class PrettyPrinter extends BasePrettyPrinter
 
         return $printer->prettyPrintExpr($value);
     }
-
-    /**
-     * https://github.com/nikic/PHP-Parser/issues/447#issuecomment-348557940
-     * @param string $string
-     * @return string
-     */
-    protected function pSingleQuotedString(string $string) {
-        return '\'' . preg_replace("/'|\\\\(?=[\\\\']|$)/", '\\\\$0', $string) . '\'';
-    }
 }
