@@ -90,7 +90,7 @@ ArrayHelper::multisort($methods, 'name');
         <?php endif; ?>
     </table>
 
-<!--	--><?php //$this->renderPartial('sourceCode',array('object'=>$method)); ?>
+    <?= $this->render('@yii/apidoc/templates/html/views/todos', ['doc' => $method]) ?>
 
 <?php endforeach; ?>
 </div>
