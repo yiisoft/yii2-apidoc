@@ -273,3 +273,22 @@ tr.deprecated td,
 tr.deprecated th {
     background: lightpink;
 }
+
+/* Todos */
+
+.todo {
+    margin-top: 10px;
+}
+
+.todo-label {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.todo-label::after {
+    content: ":";
+}
+
+.todo-description {
+    margin-left: 5px;
+}

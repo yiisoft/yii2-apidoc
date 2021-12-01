@@ -8,6 +8,7 @@
 namespace yii\apidoc\helpers;
 
 use PhpParser\Node\Expr;
+use PhpParser\NodeAbstract;
 use PhpParser\PrettyPrinter\Standard as BasePrettyPrinter;
 
 /**
@@ -19,21 +20,30 @@ use PhpParser\PrettyPrinter\Standard as BasePrettyPrinter;
 class PrettyPrinter extends BasePrettyPrinter
 {
     /**
-     * @param Expr\Array_ $node
-     * @return string
-     */
-    public function pExpr_Array(Expr\Array_ $node)
-    {
-        return '[' . $this->pCommaSeparated($node->items) . ']';
-    }
-
-    /**
      * @link https://github.com/nikic/PHP-Parser/issues/447#issuecomment-348557940
      * @param string $string
      * @return string
      */
     protected function pSingleQuotedString(string $string) {
         return '\'' . preg_replace("/'|\\\\(?=[\\\\']|$)/", '\\\\$0', $string) . '\'';
+    }
+
+    /**
+     * @param NodeAbstract[] $nodes
+     * @param bool $trailingComma
+     * @return string
+     */
+    protected function pMaybeMultiline(array $nodes, bool $trailingComma = false)
+    {
+        foreach ($nodes as $node) {
+            $node->setAttribute('comments', []);
+        }
+
+        if (!$nodes) {
+            return $this->pCommaSeparated($nodes);
+        } else {
+            return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
+        }
     }
 
     /**

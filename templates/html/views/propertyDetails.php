@@ -64,5 +64,7 @@ ArrayHelper::multisort($properties, 'name');
 
     <div class="signature"><?php echo $renderer->renderPropertySignature($property, $type); ?></div>
 
+    <?= $this->render('@yii/apidoc/templates/html/views/todos', ['doc' => $property]) ?>
+
 <?php endforeach; ?>
 </div>
