@@ -41,7 +41,7 @@ trait MarkdownHighlightTrait
         }
         try {
             if (isset($block['language'])) {
-                if ($block['language'] === 'php' && strpos($block['content'], '<?=')) {
+                if ($block['language'] === 'php' && strpos($block['content'], '<?=') !== false) {
                     $block['language'] = 'html';
                 }
 
@@ -62,18 +62,17 @@ trait MarkdownHighlightTrait
      * @param string $code code to highlight
      * @param string $language language of the code to highlight
      * @return string HTML of highlighted code
-     * @deprecated since 2.0.5 this method is not used anymore, highlight.php is used for highlighting
      */
     public static function highlight($code, $language)
     {
         if ($language !== 'php') {
-            return htmlspecialchars($code, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8');
+            return htmlspecialchars($code, ENT_NOQUOTES | ENT_SUBSTITUTE);
         }
 
         if (strncmp($code, '<?php', 5) === 0) {
             $text = @highlight_string(trim($code), true);
         } else {
-            $text = highlight_string("<?php ".trim($code), true);
+            $text = highlight_string("<?php " . trim($code), true);
             $text = str_replace('&lt;?php', '', $text);
             if (($pos = strpos($text, '&nbsp;')) !== false) {
                 $text = substr($text, 0, $pos) . substr($text, $pos + 6);

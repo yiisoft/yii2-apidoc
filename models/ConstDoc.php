@@ -7,6 +7,10 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Php\Constant;
+use yii\apidoc\helpers\PrettyPrinter;
+
 /**
  * Represents API documentation information for a `constant`.
  *
@@ -20,11 +24,12 @@ class ConstDoc extends BaseDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\ConstantReflector $reflector
+     * @param Constant $reflector
      * @param Context $context
      * @param array $config
+     * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
         parent::__construct($reflector, $context, $config);
 
@@ -32,6 +37,8 @@ class ConstDoc extends BaseDoc
             return;
         }
 
-        $this->value = $reflector->getValue();
+        if ($reflector->getValue() !== null) {
+            $this->value = PrettyPrinter::getRepresentationOfValue($reflector->getDefaultNode());
+        }
     }
 }

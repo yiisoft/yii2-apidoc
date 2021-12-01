@@ -7,13 +7,13 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\FileReflector;
+use phpDocumentor\Reflection\File\LocalFile;
+use phpDocumentor\Reflection\Php\Project;
+use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\base\Component;
 
 /**
- *
  * @author Carsten Brandt <mail@cebe.cc>
- * @since 2.0
  */
 class Context extends Component
 {
@@ -39,9 +39,12 @@ class Context extends Component
     public $errors = [];
     /**
      * @var array
-     * @since 2.0.6
      */
     public $warnings = [];
+    /**
+     * @var Project
+     */
+    private $reflectionProject;
 
 
     /**
@@ -52,15 +55,28 @@ class Context extends Component
     public function getType($type)
     {
         $type = ltrim($type, '\\');
+
         if (isset($this->classes[$type])) {
             return $this->classes[$type];
-        } elseif (isset($this->interfaces[$type])) {
+        }
+        if (isset($this->interfaces[$type])) {
             return $this->interfaces[$type];
-        } elseif (isset($this->traits[$type])) {
+        }
+        if (isset($this->traits[$type])) {
             return $this->traits[$type];
         }
 
         return null;
+    }
+
+    public function processFiles()
+    {
+        $projectFiles = $this->getReflectionProject()->getFiles();
+        foreach ($this->files as $fileName => $hash) {
+            $reflection = $projectFiles[$fileName];
+
+            $this->parseFile($reflection, $fileName);
+        }
     }
 
     /**
@@ -70,10 +86,10 @@ class Context extends Component
     public function addFile($fileName)
     {
         $this->files[$fileName] = sha1_file($fileName);
+    }
 
-        $reflection = new FileReflector($fileName, true);
-        $reflection->process();
-
+    private function parseFile($reflection, $fileName)
+    {
         foreach ($reflection->getClasses() as $class) {
             $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
             $this->classes[$class->name] = $class;
@@ -88,9 +104,6 @@ class Context extends Component
         }
     }
 
-    /**
-     * Updates references
-     */
     public function updateReferences()
     {
         // update all subclass references
@@ -277,9 +290,11 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $p->description = trim($p->description) . "\n\n"
-                    . trim($inheritedProperty->description) . "\n\n"
-                    . $inheritTag->getContent();
+                $p->description = implode("\n\n", [
+                    trim($p->description),
+                    trim($inheritedProperty->description),
+                    $inheritTag->getDescription(),
+                ]);
 
                 $p->removeTag('inheritdoc');
             }
@@ -308,9 +323,11 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $m->description = trim($m->description) . "\n\n"
-                    . trim($inheritedMethod->description) . "\n\n"
-                    . $inheritTag->getContent();
+                $m->description = implode("\n\n", [
+                    trim($m->description),
+                    trim($inheritedMethod->description),
+                    $inheritTag->getDescription(),
+                ]);
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
@@ -541,5 +558,21 @@ class Context extends Component
             }
         }
         return false;
+    }
+
+    public function getReflectionProject()
+    {
+        if ($this->reflectionProject !== null) {
+            return $this->reflectionProject;
+        }
+
+        $files = [];
+        foreach ($this->files as $fileName => $hash) {
+            $files[] = new LocalFile($fileName);
+        }
+
+        $this->reflectionProject = ProjectFactory::createInstance()->create('ApiDoc', $files);
+
+        return $this->reflectionProject;
     }
 }

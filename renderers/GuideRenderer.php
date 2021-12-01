@@ -26,7 +26,6 @@ abstract class GuideRenderer extends BaseRenderer
      */
     abstract public function render($files, $targetDir);
 
-
     /**
      * Loads guide structure from a set of files
      * @param array $files

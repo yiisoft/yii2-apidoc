@@ -95,6 +95,11 @@ abstract class BaseRenderer extends Component
                     ltrim($type, '\\');
                 }
             }
+
+            if (is_object($type) && method_exists($type, '__toString')) {
+                $type = (string) $type;
+            }
+
             if (is_string($type)) {
                 $linkText = ltrim($type, '\\');
                 if ($title !== null) {
@@ -157,7 +162,7 @@ abstract class BaseRenderer extends Component
     /**
      * creates a link to a subject
      * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
-     * @param string $title
+     * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @return string
      */
@@ -172,17 +177,16 @@ abstract class BaseRenderer extends Component
         }
         if (($type = $this->apiContext->getType($subject->definedBy)) === null) {
             return $subject->name;
-        } else {
-            $link = $this->generateApiUrl($type->name);
-            if ($subject instanceof MethodDoc) {
-                $link .= '#' . $subject->name . '()';
-            } else {
-                $link .= '#' . $subject->name;
-            }
-            $link .= '-detail';
-
-            return $this->generateLink($title, $link, $options);
         }
+
+        $link = $this->generateApiUrl($type->name) . '#' . $subject->name;
+        if ($subject instanceof MethodDoc) {
+             $link .= '()';
+        }
+
+        $link .= '-detail';
+
+        return $this->generateLink($title, $link, $options);
     }
 
     /**

@@ -7,6 +7,8 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\Php\Trait_;
+
 /**
  * Represents API documentation information for a `trait`.
  *
@@ -22,7 +24,7 @@ class TraitDoc extends TypeDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\TraitReflector $reflector
+     * @param Trait_ $reflector
      * @param Context $context
      * @param array $config
      */
@@ -34,7 +36,7 @@ class TraitDoc extends TypeDoc
             return;
         }
 
-        foreach ($reflector->getTraits() as $trait) {
+        foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
         }
     }

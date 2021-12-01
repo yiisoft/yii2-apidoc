@@ -124,7 +124,7 @@ class GuideController extends BaseController
 
     /**
      * @inheritdoc
-     * @return GuideRenderer
+     * @return GuideRenderer|false
      */
     protected function findRenderer($template)
     {
