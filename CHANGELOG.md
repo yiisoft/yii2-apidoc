@@ -18,6 +18,8 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #199: Fixed processing of nullable return types (arogachev)
 - Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
 - Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
+- Enh #209: Added support for todos in properties and methods (arogachev)
+- Enh #18: Added pretty print for arrays (arogachev)
 
 
 2.1.6 May 05, 2021

@@ -42,6 +42,10 @@ class BaseDoc extends BaseObject
      * @var Tag[]
      */
     public $tags = [];
+    /**
+     * @var Generic[]
+     */
+    public $todos = [];
 
 
     /**
@@ -169,6 +173,9 @@ class BaseDoc extends BaseObject
                 } elseif ($tag instanceof Deprecated) {
                     $this->deprecatedSince = $tag->getVersion();
                     $this->deprecatedReason = $tag->getDescription();
+                    unset($this->tags[$i]);
+                } elseif ($tag->getName() === 'todo') {
+                    $this->todos[] = $tag;
                     unset($this->tags[$i]);
                 }
             }
