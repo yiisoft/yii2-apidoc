@@ -8,7 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
 - Bug #180: Fixed "All Classes" broken link (arogachev)
 - Bug #34: Improved highlighting of PHP templates (arogachev)
-- Bug #203: Add PHP 8 compatibility, raise minimum PHP version to 7.2 (bizley, arogachev)
+- Bug #203: Fixed PHP 8 compatibility (bizley, arogachev)
 - Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
 - Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
 - Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
@@ -18,6 +18,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #199: Fixed processing of nullable return types (arogachev)
 - Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
 - Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
+- Bug #34: Improved highlighting of PHP templates (arogachev)
 
 
 2.1.6 May 05, 2021
