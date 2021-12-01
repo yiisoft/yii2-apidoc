@@ -7,7 +7,7 @@
 
 namespace yii\apidoc\models;
 
-use yii\apidoc\helpers\PrettyPrinter;
+use phpDocumentor\Reflection\Php\Argument;
 use yii\base\BaseObject;
 
 /**
@@ -31,7 +31,7 @@ class ParamDoc extends BaseObject
 
 
     /**
-     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $reflector
+     * @param Argument $reflector
      * @param Context $context
      * @param array $config
      */
@@ -39,18 +39,18 @@ class ParamDoc extends BaseObject
     {
         parent::__construct($config);
 
-        if ($reflector === null) {
-            return;
+        if ($reflector !== null) {
+            $this->name = $reflector->getName();
+            $this->typeHint = (string) $reflector->getType();
+            $this->defaultValue = $reflector->getDefault();
+            $this->isOptional = $this->defaultValue !== null;
+            $this->isPassedByReference = $reflector->isByReference();
         }
 
-        $this->name = $reflector->getName();
-        $this->typeHint = $reflector->getType();
-        $this->isOptional = $reflector->getDefault() !== null;
+        $this->name = '$' . $this->name ;
 
-        // bypass $reflector->getDefault() for short array syntax
-        if ($reflector->getNode()->default) {
-            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getNode()->default);
+        if ($this->typeHint === 'mixed') {
+            $this->typeHint = '';
         }
-        $this->isPassedByReference = $reflector->isByRef();
     }
 }

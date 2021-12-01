@@ -8,8 +8,11 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Tag\DeprecatedTag;
-use phpDocumentor\Reflection\DocBlock\Tag\SinceTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Factory\Type;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -22,10 +25,11 @@ use yii\helpers\StringHelper;
 class BaseDoc extends BaseObject
 {
     /**
-     * @var \phpDocumentor\Reflection\DocBlock\Context
+     * @var \phpDocumentor\Reflection\Types\Context
      */
     public $phpDocContext;
     public $name;
+    public $fullName;
     public $sourceFile;
     public $startLine;
     public $endLine;
@@ -39,6 +43,24 @@ class BaseDoc extends BaseObject
      */
     public $tags = [];
 
+
+    /**
+     * @param Type|null $aggregatedType
+     * @return string[]|array
+     */
+    protected function splitTypes($aggregatedType)
+    {
+        if ($aggregatedType === null) {
+            return [];
+        }
+
+        $types = [];
+        foreach ($aggregatedType as $type) {
+            $types[] = (string) $type;
+        }
+
+        return $types ?: [(string) $aggregatedType];
+    }
 
     /**
      * Checks if doc has tag of a given name
@@ -101,7 +123,7 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * @param \phpDocumentor\Reflection\BaseReflector $reflector
+     * @param Class_ $reflector
      * @param Context $context
      * @param array $config
      */
@@ -114,13 +136,20 @@ class BaseDoc extends BaseObject
         }
 
         // base properties
-        $this->name = ltrim($reflector->getName(), '\\');
-        $this->startLine = $reflector->getNode()->getAttribute('startLine');
-        $this->endLine = $reflector->getNode()->getAttribute('endLine');
+        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
+
+        $position = strrpos($this->fullName, '::');
+        $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
+
+        $this->startLine = $reflector->getLocation()->getLineNumber();
+
+        if (method_exists($reflector, 'getNode') && $reflector->getNode()) {
+            $this->endLine = $reflector->getNode()->getAttribute('endLine');
+        }
 
         $docblock = $reflector->getDocBlock();
         if ($docblock !== null) {
-            $this->shortDescription = static::mbUcFirst($docblock->getShortDescription());
+            $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());
             if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
                 $context->warnings[] = [
                     'line' => $this->startLine,
@@ -128,16 +157,16 @@ class BaseDoc extends BaseObject
                     'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
                 ];
             }
-            $this->description = $docblock->getLongDescription()->getContents();
+            $this->description = $docblock->getDescription()->render();
 
             $this->phpDocContext = $docblock->getContext();
 
             $this->tags = $docblock->getTags();
             foreach ($this->tags as $i => $tag) {
-                if ($tag instanceof SinceTag) {
+                if ($tag instanceof Since) {
                     $this->since = $tag->getVersion();
                     unset($this->tags[$i]);
-                } elseif ($tag instanceof DeprecatedTag) {
+                } elseif ($tag instanceof Deprecated) {
                     $this->deprecatedSince = $tag->getVersion();
                     $this->deprecatedReason = $tag->getDescription();
                     unset($this->tags[$i]);
@@ -147,7 +176,7 @@ class BaseDoc extends BaseObject
             if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
                 // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
                 // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
-                $this->tags[] = new Tag('inheritdoc', '');
+                $this->tags[] = new Generic('inheritdoc');
                 $this->shortDescription = '';
             }
 
@@ -159,20 +188,6 @@ class BaseDoc extends BaseObject
             ];
         }
     }
-
-    // TODO implement
-//	public function loadSource($reflection)
-//	{
-//		$this->sourceFile;
-//		$this->startLine;
-//		$this->endLine;
-//	}
-//
-//	public function getSourceCode()
-//	{
-//		$lines = file(YII2_PATH . $this->sourcePath);
-//		return implode("", array_slice($lines, $this->startLine - 1, $this->endLine - $this->startLine + 1));
-//	}
 
     /**
      * Extracts first sentence out of text
@@ -197,6 +212,7 @@ class BaseDoc extends BaseObject
 
     /**
      * Multibyte version of ucfirst()
+     * @deprecated Use \yii\helpers\StringHelper::mb_ucfirst() instead
      * @since 2.0.6
      */
     protected static function mbUcFirst($string)

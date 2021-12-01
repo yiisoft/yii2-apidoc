@@ -7,9 +7,12 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\AuthorTag;
-use phpDocumentor\Reflection\DocBlock\Tag\MethodTag;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
+use phpDocumentor\Reflection\DocBlock\Tags\Property;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
+use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
+use phpDocumentor\Reflection\Php\Class_;
 use yii\helpers\StringHelper;
 
 /**
@@ -59,6 +62,8 @@ class TypeDoc extends BaseDoc
         if (empty($subjectName)) {
             return null;
         }
+
+        $subjectName = ltrim(str_replace($this->namespace, '', $subjectName), '\\');
         if ($subjectName[0] !== '$') {
             foreach ($this->methods as $name => $method) {
                 if (rtrim($subjectName, '()') == $name) {
@@ -175,7 +180,7 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param \phpDocumentor\Reflection\InterfaceReflector $reflector
+     * @param Class_ $reflector
      * @param Context $context
      * @param array $config
      */
@@ -190,20 +195,20 @@ class TypeDoc extends BaseDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag instanceof AuthorTag) {
-                $this->authors[$tag->getAuthorName()] = $tag->getAuthorEmail();
+            if ($tag instanceof Author) {
+                $this->authors[$tag->getAuthorName()] = $tag->getEmail();
                 unset($this->tags[$i]);
             }
 
-            if ($tag instanceof PropertyTag) {
+            if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
                 $property = new PropertyDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
-                    'name' => $tag->getVariableName(),
+                    'name' => '$' . $tag->getVariableName(),
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'type' => $tag->getType(),
-                    'types' => $tag->getTypes(),
+                    'type' => (string) $tag->getType(),
+                    'types' => $this->splitTypes($tag->getType()),
                     'shortDescription' => $tag->getDescription(),
                     'description' => $tag->getDescription(),
                 ]);
@@ -211,21 +216,15 @@ class TypeDoc extends BaseDoc
                 $this->properties[$property->name] = $property;
             }
 
-            if ($tag instanceof MethodTag) {
+            if ($tag instanceof Method) {
                 $params = [];
 
                 foreach ($tag->getArguments() as $tagArgument) {
-                    $argumentType = null;
-
-                    if (count($tagArgument) === 2) {
-                        list ($argumentType, $argumentName) = $tagArgument;
-                    } else {
-                        $argumentName = $tagArgument[0];
-                    }
+                    $argumentType = (string) $tagArgument['type'];
 
                     $params[] = new ParamDoc(null, $context, [
                         'sourceFile' => $this->sourceFile,
-                        'name' => $argumentName,
+                        'name' => $tagArgument['name'],
                         'typeHint' => $argumentType,
                         'type' => $argumentType,
                         'types' => [],
@@ -241,27 +240,32 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => $tag->getType(),
-                    'returnTypes' => $tag->getTypes(),
+                    'returnType' => (string) $tag->getReturnType(),
+                    'returnTypes' => $this->splitTypes($tag->getReturnType()),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
             }
         }
 
-        foreach ($reflector->getProperties() as $propertyReflector) {
-            if ($propertyReflector->getVisibility() != 'private') {
-                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
-                $property->definedBy = $this->name;
-                $this->properties[$property->name] = $property;
-            }
-        }
+        $this->initProperties($reflector, $context);
 
         foreach ($reflector->getMethods() as $methodReflector) {
             if ($methodReflector->getVisibility() != 'private') {
                 $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
+            }
+        }
+    }
+
+    protected function initProperties($reflector, $context)
+    {
+        foreach ($reflector->getProperties() as $propertyReflector) {
+            if ($propertyReflector->getVisibility() != 'private') {
+                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $property->definedBy = $this->name;
+                $this->properties[$property->name] = $property;
             }
         }
     }

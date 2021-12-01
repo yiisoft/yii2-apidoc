@@ -7,10 +7,11 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
-use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
-use phpDocumentor\Reflection\DocBlock\Tag\ThrowsTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
+use phpDocumentor\Reflection\Php\Method;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `function`.
@@ -32,7 +33,7 @@ class FunctionDoc extends BaseDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\FunctionReflector $reflector
+     * @param Method $reflector
      * @param Context $context
      * @param array $config
      */
@@ -44,7 +45,7 @@ class FunctionDoc extends BaseDoc
             return;
         }
 
-        $this->isReturnByReference = $reflector->isByRef();
+        $this->isReturnByReference = $reflector->getNode()->byRef;
 
         foreach ($reflector->getArguments() as $arg) {
             $arg = new ParamDoc($arg, $context, ['sourceFile' => $this->sourceFile]);
@@ -52,13 +53,11 @@ class FunctionDoc extends BaseDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag instanceof ThrowsTag) {
-                $this->exceptions[$tag->getType()] = $tag->getDescription();
+            if ($tag instanceof Throws) {
+                $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof PropertyTag) {
-                // ignore property tag
-            } elseif ($tag instanceof ParamTag) {
-                $paramName = $tag->getVariableName();
+            } elseif ($tag instanceof Param) {
+                $paramName = '$' . $tag->getVariableName();
                 if (!isset($this->params[$paramName]) && $context !== null) {
                     $context->errors[] = [
                         'line' => $this->startLine,
@@ -67,14 +66,14 @@ class FunctionDoc extends BaseDoc
                     ];
                     continue;
                 }
-                $this->params[$paramName]->description = static::mbUcFirst($tag->getDescription());
-                $this->params[$paramName]->type = $tag->getType();
-                $this->params[$paramName]->types = $tag->getTypes();
+                $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
+                $this->params[$paramName]->type = (string) $tag->getType();
+                $this->params[$paramName]->types = $this->splitTypes($tag->getType());
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof ReturnTag) {
-                $this->returnType = $tag->getType();
-                $this->returnTypes = $tag->getTypes();
-                $this->return = static::mbUcFirst($tag->getDescription());
+            } elseif ($tag instanceof Return_) {
+                $this->returnType = (string) $tag->getType();
+                $this->returnTypes = $this->splitTypes($tag->getType());
+                $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             }
         }
