@@ -50,7 +50,7 @@ class MethodDoc extends FunctionDoc
         $this->visibility = $reflector->getVisibility();
 
         $lines = file($this->sourceFile);
-        for($i = $this->startLine - 1; $i <= $this->endLine - 1; $i++) {
+        for ($i = $this->startLine - 1; $i <= $this->endLine - 1; $i++) {
             $this->sourceCode .= substr($lines[$i], 4);
         }
     }
