@@ -7,7 +7,8 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
 - Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
 - Bug #180: Fixed "All Classes" broken link (arogachev)
-- Bug #203: Fixed PHP 8 compatibility (bizley, arogachev)
+- Bug #34: Improved highlighting of PHP templates (arogachev)
+- Bug #203: Add PHP 8 compatibility, raise minimum PHP version to 7.2 (bizley, arogachev)
 - Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
 - Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
 - Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
@@ -15,7 +16,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #162: Fixed skipping some of PHP files / classes (arogachev)
 - Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
 - Bug #199: Fixed processing of nullable return types (arogachev)
-- Bug #148: Fixed processing of code containing uniform variable syntax (arogachev) 
+- Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
 - Enh #209: Added support for todos in properties and methods (arogachev)
 
 
