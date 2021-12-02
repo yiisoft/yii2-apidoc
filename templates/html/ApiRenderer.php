@@ -7,6 +7,7 @@
 
 namespace yii\apidoc\templates\html;
 
+use Highlight\Highlighter;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\PropertyDoc;
@@ -102,12 +103,16 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         if ($this->controller !== null) {
             Console::startProgress(0, $typeCount, 'Rendering files: ', false);
         }
+
         $done = 0;
+        $higlighter = new Highlighter;
+
         foreach ($types as $type) {
             $fileContent = $this->renderWithLayout($this->typeView, [
                 'type' => $type,
                 'apiContext' => $context,
                 'types' => $types,
+                'highlighter' => $higlighter,
             ]);
             file_put_contents($targetDir . '/' . $this->generateFileName($type->name), $fileContent);
 
