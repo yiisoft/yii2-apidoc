@@ -17,9 +17,15 @@ class BaseDocTest extends TestCase
      */
     public function testExtractFirstSentenceWithBackticks()
     {
-        $initialText = 'the host info (e.g. `http://www.example.com`) that is used by [[createAbsoluteUrl()]] to ' .
-            'prepend to created URLs.';
-        $firstSentence = BaseDoc::extractFirstSentence($initialText);
-        $this->assertEquals($initialText, $firstSentence);;
+        $initialText = 'fallback host info (e.g. `http://www.yiiframework.com`) used when ' .
+            '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid. This value will replace ' .
+            '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] before [[$denyCallback]] is called to make sure that ' .
+            'an invalid host will not be used for further processing. You can set it to `null` to leave ' .
+            '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] untouched. Default value is empty string (this will ' .
+            'result creating relative URLs instead of absolute).';
+        $actualFirstSentence = BaseDoc::extractFirstSentence($initialText);
+        $expectedFirstSentence = 'fallback host info (e.g. `http://www.yiiframework.com`) used when ' .
+            '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.';
+        $this->assertEquals($expectedFirstSentence, $actualFirstSentence);
     }
 }

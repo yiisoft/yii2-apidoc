@@ -221,21 +221,26 @@ class BaseDoc extends BaseObject
     /**
      * Extracts first sentence out of text
      * @param string $text
+     * @param string $prevText
      * @return string
      */
-    public static function extractFirstSentence($text)
+    public static function extractFirstSentence($text, $prevText = '')
     {
         if (mb_strlen($text, 'utf-8') > 4 && ($pos = mb_strpos($text, '.', 4, 'utf-8')) !== false) {
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
+            $prevText  = $prevText . $sentence;
+
             if (mb_strlen($text, 'utf-8') >= $pos + 3) {
                 $abbrev = mb_substr($text, $pos - 1, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if ($abbrev === 'e.g.' ||
                     $abbrev === 'i.e.' ||
-                    mb_substr_count($sentence, '`', 'utf-8') % 2 === 1 ||
-                    mb_substr_count($text, '`', 'utf-8') % 2 === 1
+                    mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
-                    $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'));
+                    $sentence .= static::extractFirstSentence(
+                        mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'),
+                        $prevText
+                    );
                 }
             }
             return $sentence;
