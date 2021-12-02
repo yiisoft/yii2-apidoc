@@ -110,5 +110,7 @@ ArrayHelper::multisort($methods, 'name');
         </div>
     </div>
 
+    <?= $this->render('@yii/apidoc/templates/html/views/todos', ['doc' => $method]) ?>
+
 <?php endforeach; ?>
 </div>
