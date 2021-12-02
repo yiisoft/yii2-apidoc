@@ -43,11 +43,15 @@ class BaseDoc extends BaseObject
      * @var Tag[]
      */
     public $tags = [];
+    /**
+     * @var Generic[]
+     */
+    public $todos = [];
 
 
     /**
      * @param Type|null $aggregatedType
-     * @return string[]|array
+     * @return string[]
      */
     protected function splitTypes($aggregatedType)
     {
@@ -137,7 +141,7 @@ class BaseDoc extends BaseObject
         }
 
         // base properties
-        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
+        $this->fullName = trim((string)$reflector->getFqsen(), '\\()');
 
         $position = strrpos($this->fullName, '::');
         $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
@@ -161,8 +165,8 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());
-        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
+        $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());;
+        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
@@ -171,12 +175,12 @@ class BaseDoc extends BaseObject
         }
         $this->shortDescription = static::convertInlineLinks($this->shortDescription);
 
-        $this->description = $docBlock->getDescription()->render();
+        $this->description = $docblock->getDescription()->render();
         $this->description = static::convertInlineLinks($this->description);
 
-        $this->phpDocContext = $docBlock->getContext();
+        $this->phpDocContext = $docblock->getContext();
 
-        $this->tags = $docBlock->getTags();
+        $this->tags = $docblock->getTags();
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Since) {
                 $this->since = $tag->getVersion();
@@ -184,6 +188,9 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Deprecated) {
                 $this->deprecatedSince = $tag->getVersion();
                 $this->deprecatedReason = $tag->getDescription();
+                unset($this->tags[$i]);
+            } elseif ($tag->getName() === 'todo') {
+                $this->todos[] = $tag;
                 unset($this->tags[$i]);
             }
         }
@@ -222,7 +229,12 @@ class BaseDoc extends BaseObject
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
             if (mb_strlen($text, 'utf-8') >= $pos + 3) {
                 $abbrev = mb_substr($text, $pos - 1, 4, 'utf-8');
-                if ($abbrev === 'e.g.' || $abbrev === 'i.e.') { // do not break sentence after abbreviation
+                // do not break sentence after abbreviation
+                if ($abbrev === 'e.g.' ||
+                    $abbrev === 'i.e.' ||
+                    mb_substr_count($sentence, '`', 'utf-8') % 2 === 1 ||
+                    mb_substr_count($text, '`', 'utf-8') % 2 === 1
+                ) {
                     $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'));
                 }
             }

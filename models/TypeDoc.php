@@ -251,7 +251,9 @@ class TypeDoc extends BaseDoc
         $this->initProperties($reflector, $context);
 
         foreach ($reflector->getMethods() as $methodReflector) {
-            if ($methodReflector->getVisibility() != 'private') {
+            if ($methodReflector->getVisibility() != 'private' &&
+                $methodReflector->getDocBlock() &&
+                !$methodReflector->getDocBlock()->hasTag('internal')) {
                 $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
@@ -259,10 +261,16 @@ class TypeDoc extends BaseDoc
         }
     }
 
+    /**
+     * @param Class_ $reflector
+     * @param Context $context
+     */
     protected function initProperties($reflector, $context)
     {
         foreach ($reflector->getProperties() as $propertyReflector) {
-            if ($propertyReflector->getVisibility() != 'private') {
+            if ($propertyReflector->getVisibility() != 'private' &&
+                $propertyReflector->getDocBlock() &&
+                !$propertyReflector->getDocBlock()->hasTag('internal')) {
                 $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $property->definedBy = $this->name;
                 $this->properties[$property->name] = $property;
