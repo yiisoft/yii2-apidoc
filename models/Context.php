@@ -210,35 +210,15 @@ class Context extends Component
         }
 
         $attrNames = ['events', 'constants', 'properties', 'methods'];
-        $assocAttrNames = ['constants', 'methods'];
-        $map = [];
-
-        foreach ($attrNames as $attrName) {
-            if (in_array($attrName, $assocAttrNames)) {
-                $map[$attrName] = $class->$attrName;
-
-                continue;
-            }
-
-            foreach ($class->$attrName as $item) {
-                $map[$attrName][$item->name] = $item;
-            }
-        }
 
         foreach ($parents as $parent) {
             foreach ($attrNames as $attrName) {
                 foreach ($parent->$attrName as $item) {
-                    if (isset($map[$attrName][$item->name])) {
+                    if (isset($class->$attrName[$item->name])) {
                         continue;
                     }
 
-                    if (in_array($attrName, $assocAttrNames)) {
-                        $class->$attrName += [$item->name => $item];
-                    } else {
-                        array_push($class->$attrName, $item);
-                    }
-
-                    $map[$attrName][$item->name] = $item;
+                    $class->$attrName += [$item->name => $item];
                 }
             }
         }
