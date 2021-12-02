@@ -21,7 +21,8 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #209: Added support for todos in properties and methods (arogachev)
 - Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
 - Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
-- Enh #143: Do not include methods and properties marked as internal (arogachev)- Enh #196: Added support for PHPDoc inline links (arogachev)
+- Enh #143: Do not include methods and properties marked as internal (arogachev)
+- Enh #196: Added support for PHPDoc inline links (arogachev)
 
 
 2.1.6 May 05, 2021
