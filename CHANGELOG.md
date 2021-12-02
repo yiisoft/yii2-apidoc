@@ -22,6 +22,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
 - Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
 - Enh #143: Do not include methods and properties marked as internal (arogachev)
+- Enh #196: Added support for PHPDoc inline links (arogachev)
 - Enh #147: Added feature of viewing method source code without external links (arogachev)
 
 
