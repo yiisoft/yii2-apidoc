@@ -8,6 +8,7 @@ use yii\apidoc\models\TraitDoc;
 /* @var $type ClassDoc|InterfaceDoc|TraitDoc */
 /* @var $this yii\web\View */
 /* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/* @var $highlighter \Highlight\Highlighter */
 
 $renderer = $this->context;
 ?>
@@ -105,7 +106,7 @@ $renderer = $this->context;
 <?= $this->render('@yii/apidoc/templates/html/views/constSummary', ['type' => $type]) ?>
 
 <?= $this->render('@yii/apidoc/templates/html/views/propertyDetails', ['type' => $type]) ?>
-<?= $this->render('@yii/apidoc/templates/html/views/methodDetails', ['type' => $type]) ?>
+<?= $this->render('@yii/apidoc/templates/html/views/methodDetails', ['type' => $type, 'highlighter' => $highlighter]) ?>
 <?php if ($type instanceof ClassDoc): ?>
     <?= $this->render('@yii/apidoc/templates/html/views/eventDetails', ['type' => $type]) ?>
 <?php endif; ?>

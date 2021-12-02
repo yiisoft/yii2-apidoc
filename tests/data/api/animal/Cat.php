@@ -20,7 +20,7 @@ class Cat extends Animal
      */
     public function render()
     {
-        // this method has `@inheritdoc` tag in brackets
+        // this method has `inheritdoc` tag in brackets
         return 'This is a cat';
     }
 }

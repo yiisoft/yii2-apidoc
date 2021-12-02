@@ -50,7 +50,7 @@ class BaseDoc extends BaseObject
 
     /**
      * @param Type|null $aggregatedType
-     * @return string[]|array
+     * @return string[]
      */
     protected function splitTypes($aggregatedType)
     {
