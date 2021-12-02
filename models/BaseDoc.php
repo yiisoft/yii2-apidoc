@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
+use yii\apidoc\helpers\ApiMarkdownTrait;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -151,69 +152,95 @@ class BaseDoc extends BaseObject
             $this->endLine = $reflector->getNode()->getAttribute('endLine');
         }
 
-        $docblock = $reflector->getDocBlock();
-        if ($docblock !== null) {
-            $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());
-            if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
+        $docBlock = $reflector->getDocBlock();
+        if ($docBlock === null) {
+            if ($context !== null) {
                 $context->warnings[] = [
                     'line' => $this->startLine,
                     'file' => $this->sourceFile,
-                    'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
+                    'message' => "No docblock for element '{$this->name}'",
                 ];
             }
-            $this->description = $docblock->getDescription()->render();
 
-            $this->phpDocContext = $docblock->getContext();
+            return;
+        }
 
-            $this->tags = $docblock->getTags();
-            foreach ($this->tags as $i => $tag) {
-                if ($tag instanceof Since) {
-                    $this->since = $tag->getVersion();
-                    unset($this->tags[$i]);
-                } elseif ($tag instanceof Deprecated) {
-                    $this->deprecatedSince = $tag->getVersion();
-                    $this->deprecatedReason = $tag->getDescription();
-                    unset($this->tags[$i]);
-                } elseif ($tag->getName() === 'todo') {
-                    $this->todos[] = $tag;
-                    unset($this->tags[$i]);
-                }
-            }
-
-            if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
-                // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
-                // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
-                $this->tags[] = new Generic('inheritdoc');
-                $this->shortDescription = '';
-            }
-
-        } elseif ($context !== null) {
+        $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());;
+        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
-                'message' => "No docblock for element '{$this->name}'",
+                'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
             ];
         }
+        $this->shortDescription = static::convertInlineLinks($this->shortDescription);
+
+        $this->description = $docBlock->getDescription()->render();
+        $this->description = static::convertInlineLinks($this->description);
+
+        $this->phpDocContext = $docBlock->getContext();
+
+        $this->tags = $docBlock->getTags();
+        foreach ($this->tags as $i => $tag) {
+            if ($tag instanceof Since) {
+                $this->since = $tag->getVersion();
+                unset($this->tags[$i]);
+            } elseif ($tag instanceof Deprecated) {
+                $this->deprecatedSince = $tag->getVersion();
+                $this->deprecatedReason = $tag->getDescription();
+                unset($this->tags[$i]);
+            } elseif ($tag->getName() === 'todo') {
+                $this->todos[] = $tag;
+                unset($this->tags[$i]);
+            }
+        }
+
+        if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
+            // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
+            // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
+            $this->tags[] = new Generic('inheritdoc');
+            $this->shortDescription = '';
+        }
+    }
+
+    /**
+     * Converts inline links to unified format.
+     * @see ApiMarkdownTrait::parseApiLinks()
+     * @param string|null $content
+     * @return string|null
+     */
+    protected static function convertInlineLinks($content)
+    {
+        if (!$content) {
+            return $content;
+        }
+
+        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', "[[$1]]", $content);
     }
 
     /**
      * Extracts first sentence out of text
      * @param string $text
+     * @param string $prevText
      * @return string
      */
-    public static function extractFirstSentence($text)
+    public static function extractFirstSentence($text, $prevText = '')
     {
         if (mb_strlen($text, 'utf-8') > 4 && ($pos = mb_strpos($text, '.', 4, 'utf-8')) !== false) {
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
+            $prevText  = $prevText . $sentence;
+
             if (mb_strlen($text, 'utf-8') >= $pos + 3) {
                 $abbrev = mb_substr($text, $pos - 1, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if ($abbrev === 'e.g.' ||
                     $abbrev === 'i.e.' ||
-                    mb_substr_count($sentence, '`', 'utf-8') % 2 === 1 ||
-                    mb_substr_count($text, '`', 'utf-8') % 2 === 1
+                    mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
-                    $sentence .= static::extractFirstSentence(mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'));
+                    $sentence .= static::extractFirstSentence(
+                        mb_substr($text, $pos + 1, mb_strlen($text, 'utf-8'), 'utf-8'),
+                        $prevText
+                    );
                 }
             }
             return $sentence;
