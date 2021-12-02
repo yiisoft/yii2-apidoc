@@ -24,6 +24,10 @@ class MethodDoc extends FunctionDoc
     public $visibility;
     // will be set by creating class
     public $definedBy;
+    /**
+     * @var string
+     */
+    public $sourceCode = '';
 
 
     /**
@@ -44,5 +48,10 @@ class MethodDoc extends FunctionDoc
         $this->isStatic = $reflector->isStatic();
 
         $this->visibility = $reflector->getVisibility();
+
+        $lines = file($this->sourceFile);
+        for ($i = $this->startLine - 1; $i <= $this->endLine - 1; $i++) {
+            $this->sourceCode .= substr($lines[$i], 4);
+        }
     }
 }
