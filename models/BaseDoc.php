@@ -141,7 +141,7 @@ class BaseDoc extends BaseObject
         }
 
         // base properties
-        $this->fullName = trim((string)$reflector->getFqsen(), '\\()');
+        $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
 
         $position = strrpos($this->fullName, '::');
         $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
@@ -165,8 +165,8 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $this->shortDescription = StringHelper::mb_ucfirst($docblock->getSummary());;
-        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docblock->getTagsByName('inheritdoc') === null) {
+        $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());;
+        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
@@ -175,12 +175,12 @@ class BaseDoc extends BaseObject
         }
         $this->shortDescription = static::convertInlineLinks($this->shortDescription);
 
-        $this->description = $docblock->getDescription()->render();
+        $this->description = $docBlock->getDescription()->render();
         $this->description = static::convertInlineLinks($this->description);
 
-        $this->phpDocContext = $docblock->getContext();
+        $this->phpDocContext = $docBlock->getContext();
 
-        $this->tags = $docblock->getTags();
+        $this->tags = $docBlock->getTags();
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Since) {
                 $this->since = $tag->getVersion();
