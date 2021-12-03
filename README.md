@@ -40,9 +40,118 @@ Usage
 
 This extension offers two commands:
 
-- `api` to generate class API documentation. [phpDocumentor](https://www.phpdoc.org/) is used as a base framework
+1)`api` to generate class API documentation. [phpDocumentor](https://www.phpdoc.org/) is used as a base framework
   so refer to its guide for the syntax.
-- `guide` to render nice HTML pages from markdown files such as the yii guide.
+
+The output of `help api` command:
+
+```
+DESCRIPTION
+
+Renders API documentation files
+
+
+USAGE
+
+apidoc api <sourceDirs> <targetDir> [...options...]
+
+- sourceDirs (required): array
+
+- targetDir (required): string
+
+
+OPTIONS
+
+--appconfig: string
+  custom application configuration file path.
+  If not set, default application configuration is used.
+
+--color: boolean, 0 or 1
+  whether to enable ANSI color in the output.
+  If not set, ANSI color will only be enabled for terminals that support it.
+
+--exclude: string|array
+  files to exclude.
+
+--guide: string
+  url to where the guide files are located
+
+--guide-prefix: string (defaults to 'guide-')
+  prefix to prepend to all guide file names.
+
+--help, -h: boolean, 0 or 1 (defaults to 0)
+  whether to display help information about current command.
+
+--interactive: boolean, 0 or 1 (defaults to 1)
+  whether to run the command interactively.
+
+--page-title: string
+  page title
+
+--silent-exit-on-exception: boolean, 0 or 1
+  if true - script finish with `ExitCode::OK` in case of exception.
+  false - `ExitCode::UNSPECIFIED_ERROR`.
+  Default: `YII_ENV_TEST`
+
+--template: string (defaults to 'bootstrap')
+  template to use for rendering
+```
+
+2)`guide` to render nice HTML pages from markdown files such as the yii guide.
+
+The output of `help guide` command:
+
+```
+DESCRIPTION
+
+Renders API documentation files
+
+
+USAGE
+
+apidoc guide <sourceDirs> <targetDir> [...options...]
+
+- sourceDirs (required): array
+
+- targetDir (required): string
+
+
+OPTIONS
+
+--api-docs: string
+  path or URL to the api docs to allow links to classes and properties/methods.
+
+--appconfig: string
+  custom application configuration file path.
+  If not set, default application configuration is used.
+
+--color: boolean, 0 or 1
+  whether to enable ANSI color in the output.
+  If not set, ANSI color will only be enabled for terminals that support it.
+
+--exclude: string|array
+  files to exclude.
+
+--guide-prefix: string (defaults to 'guide-')
+  prefix to prepend to all output file names generated for the guide.
+
+--help, -h: boolean, 0 or 1 (defaults to 0)
+  whether to display help information about current command.
+
+--interactive: boolean, 0 or 1 (defaults to 1)
+  whether to run the command interactively.
+
+--page-title: string
+  page title
+
+--silent-exit-on-exception: boolean, 0 or 1
+  if true - script finish with `ExitCode::OK` in case of exception.
+  false - `ExitCode::UNSPECIFIED_ERROR`.
+  Default: `YII_ENV_TEST`
+
+--template: string (defaults to 'bootstrap')
+  template to use for rendering
+```
 
 Simple usage for stand-alone class documentation:
 
