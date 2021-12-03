@@ -235,12 +235,14 @@ class Context extends Component
      */
     protected function updateSubInterfaceInheritance($interface)
     {
-        foreach ($interface->implementedBy as $subInterface) {
-            if (isset($this->interfaces[$subInterface])) {
-                $subInterface = $this->interfaces[$subInterface];
-                $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
-                $this->updateSubInterfaceInheritance($subInterface);
+        foreach ($interface->implementedBy as $name) {
+            if (!isset($this->interfaces[$name])) {
+                continue;
             }
+
+            $subInterface = $this->interfaces[$name];
+            $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+            $this->updateSubInterfaceInheritance($subInterface);
         }
     }
 
