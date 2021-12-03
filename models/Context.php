@@ -118,7 +118,7 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->updateSubclassInterfacesTraits($class);
         }
-        // update implementedBy and usedBy for interfaces and traits
+        // update implementedBy and usedBy for traits
         foreach ($this->classes as $class) {
             foreach ($class->traits as $trait) {
                 if (isset($this->traits[$trait])) {
@@ -126,19 +126,6 @@ class Context extends Component
                     $trait->usedBy[] = $class->name;
                     $class->properties = array_merge($trait->properties, $class->properties);
                     $class->methods = array_merge($trait->methods, $class->methods);
-                }
-            }
-            foreach ($class->interfaces as $interface) {
-                if (isset($this->interfaces[$interface])) {
-                    $this->interfaces[$interface]->implementedBy[] = $class->name;
-                    if ($class->isAbstract) {
-                        // add not implemented interface methods
-                        foreach ($this->interfaces[$interface]->methods as $method) {
-                            if (!isset($class->methods[$method->name])) {
-                                $class->methods[$method->name] = $method;
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -153,9 +140,25 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, constants and events to subclasses
+        // inherit properties, methods, constants and events from subclasses
         foreach ($this->classes as $class) {
-            $this->updateSubclassInheritance($class);
+            $this->handleClassInheritance($class);
+        }
+        // update implementedBy and usedBy for interfaces
+        foreach ($this->classes as $class) {
+            foreach ($class->interfaces as $interface) {
+                if (isset($this->interfaces[$interface])) {
+                    $this->interfaces[$interface]->implementedBy[] = $class->name;
+                    if ($class->isAbstract) {
+                        // add not implemented interface methods
+                        foreach ($this->interfaces[$interface]->methods as $method) {
+                            if (!isset($class->methods[$method->name])) {
+                                $class->methods[$method->name] = $method;
+                            }
+                        }
+                    }
+                }
+            }
         }
         foreach ($this->interfaces as $interface) {
             $this->updateSubInterfaceInheritance($interface);
@@ -185,6 +188,7 @@ class Context extends Component
     /**
      * Add implemented interfaces and used traits to subclasses
      * @param ClassDoc $class
+     * @deprecated Use handleClassInheritance() instead
      */
     protected function updateSubclassInheritance($class)
     {
@@ -199,17 +203,46 @@ class Context extends Component
     }
 
     /**
+     * @param ClassDoc $class
+     */
+    protected function handleClassInheritance($class)
+    {
+        $parents = $this->getParents($class);
+        if (!$parents) {
+            return;
+        }
+
+        $attrNames = ['events', 'constants', 'properties', 'methods'];
+
+        foreach ($parents as $parent) {
+            $parent = $this->classes[$parent->name];
+
+            foreach ($attrNames as $attrName) {
+                foreach ($parent->$attrName as $item) {
+                    if (isset($class->$attrName[$item->name])) {
+                        continue;
+                    }
+
+                    $class->$attrName += [$item->name => $item];
+                }
+            }
+        }
+    }
+
+    /**
      * Add methods to subinterfaces
      * @param InterfaceDoc $interface
      */
     protected function updateSubInterfaceInheritance($interface)
     {
-        foreach ($interface->implementedBy as $subInterface) {
-            if (isset($this->interfaces[$subInterface])) {
-                $subInterface = $this->interfaces[$subInterface];
-                $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
-                $this->updateSubInterfaceInheritance($subInterface);
+        foreach ($interface->implementedBy as $name) {
+            if (!isset($this->interfaces[$name])) {
+                continue;
             }
+
+            $subInterface = $this->interfaces[$name];
+            $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+            $this->updateSubInterfaceInheritance($subInterface);
         }
     }
 

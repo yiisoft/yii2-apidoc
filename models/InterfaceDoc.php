@@ -18,7 +18,10 @@ use phpDocumentor\Reflection\Php\Interface_;
 class InterfaceDoc extends TypeDoc
 {
     public $parentInterfaces = [];
-    // will be set by Context::updateReferences()
+    /**
+     * @var string[] Class names
+     * @see Context::updateReferences() for initialization
+     */
     public $implementedBy = [];
 
 
