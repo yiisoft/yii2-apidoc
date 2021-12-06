@@ -25,6 +25,8 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #196: Added support for PHPDoc inline links (arogachev)
 - Enh #147: Added feature of viewing method source code without external links (arogachev)
 - Bug #168: Fixed handling of inheritance (arogachev)
+- Bug #240: Fixed a bug when a property's full description was displayed instead of preview in properties list 
+(arogachev)
 
 
 2.1.6 May 05, 2021

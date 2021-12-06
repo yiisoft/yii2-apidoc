@@ -201,6 +201,8 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+
                 $property = new PropertyDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => '$' . $tag->getVariableName(),
@@ -209,7 +211,7 @@ class TypeDoc extends BaseDoc
                     'definedBy' => $this->name,
                     'type' => (string) $tag->getType(),
                     'types' => $this->splitTypes($tag->getType()),
-                    'shortDescription' => $tag->getDescription(),
+                    'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
 
