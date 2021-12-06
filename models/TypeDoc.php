@@ -231,11 +231,14 @@ class TypeDoc extends BaseDoc
                     ]);
                 }
 
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
+
                 $method = new MethodDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getMethodName(),
-                    'shortDescription' => $tag->getDescription(),
-                    'description' => $tag->getDescription(),
+                    'shortDescription' => $shortDescription,
+                    'description' => $description,
                     'visibility' => 'public',
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
