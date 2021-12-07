@@ -25,7 +25,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #196: Added support for PHPDoc inline links (arogachev)
 - Enh #147: Added feature of viewing method source code without external links (arogachev)
 - Bug #168: Fixed handling of inheritance (arogachev)
-- Enh #140: Added support for multiple "@since" tags (arogachev)
+- Enh #140: Added support for multiple "since" tags (arogachev)
 
 
 2.1.6 May 05, 2021
