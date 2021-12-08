@@ -26,7 +26,8 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #147: Added feature of viewing method source code without external links (arogachev)
 - Bug #168: Fixed handling of inheritance (arogachev)
 - Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
-- properties list (arogachev)
+  properties list (arogachev)
+- Bug #239: Do not show a "virtual" / "magic" methods's full description if it matches short description (arogachev)
 
 
 2.1.6 May 05, 2021
