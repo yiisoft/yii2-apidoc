@@ -57,5 +57,7 @@ ArrayHelper::multisort($events, 'name');
         <?= $this->render('seeAlso', ['object' => $event]) ?>
     </div>
 
+    <?= $this->render('@yii/apidoc/templates/html/views/changelog', ['doc' => $event]) ?>
+
 <?php endforeach; ?>
 </div>
