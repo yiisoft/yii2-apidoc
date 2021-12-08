@@ -261,7 +261,7 @@ class Context extends Component
                     $this->errors[] = [
                         'line' => $p->startLine,
                         'file' => $class->sourceFile,
-                        'message' => "Method {$p->name} has no parent to inherit from in {$class->name}.",
+                        'message' => "Property {$p->name} has no parent to inherit from in {$class->name}.",
                     ];
                     continue;
                 }
