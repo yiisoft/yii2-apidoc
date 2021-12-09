@@ -79,10 +79,9 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         $language = $block['language'] ?? 'text';
         // replace No-Break Space characters in code block, which do not render in LaTeX
         $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block['content']);
-        $options = $language === 'php' ? '[startinline=true]' : '';
 
         return implode("\n", [
-            "\\begin{minted}$options{" . "$language}",
+            "\\begin{minted}{" . "$language}",
             $content,
             '\end{minted}',
             '',
