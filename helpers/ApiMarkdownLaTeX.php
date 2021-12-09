@@ -72,6 +72,35 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function renderCode($block)
+    {
+        $language = $block['language'] ?? 'text';
+        // replace No-Break Space characters in code block, which do not render in LaTeX
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block['content']);
+        $options = $language === 'php' ? '[startinline=true]' : '';
+
+        return implode("\n", [
+            "\\begin{minted}$options{" . "$language}",
+            $content,
+            '\end{minted}',
+            '',
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function renderInlineCode($block)
+    {
+        // replace No-Break Space characters in code block, which do not render in LaTeX
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block[1]);
+
+        return '\\mintinline{text}{' . str_replace("\n", ' ', $content) . '}';
+    }
+
+    /**
      * Converts markdown into HTML
      *
      * @param string $content
