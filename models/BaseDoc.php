@@ -36,7 +36,14 @@ class BaseDoc extends BaseObject
     public $endLine;
     public $shortDescription;
     public $description;
+    /**
+     * @var string|null Available since this version.
+     */
     public $since;
+    /**
+     * @var array A mapping where keys are versions and values are descriptions.
+     */
+    public $sinceMap = [];
     public $deprecatedSince;
     public $deprecatedReason;
     /**
@@ -183,11 +190,19 @@ class BaseDoc extends BaseObject
         $this->tags = $docBlock->getTags();
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Since) {
-                $this->since = $tag->getVersion();
+                $description = (string) $tag->getDescription();
+                if (!$this->since && !$this->sinceMap && !$description) {
+                    $this->since = $tag->getVersion();
+                }
+
+                if ($description) {
+                    $this->sinceMap[$tag->getVersion()] = $description;
+                }
+
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Deprecated) {
                 $this->deprecatedSince = $tag->getVersion();
-                $this->deprecatedReason = $tag->getDescription();
+                $this->deprecatedReason = (string) $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;

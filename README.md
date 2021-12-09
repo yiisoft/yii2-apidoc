@@ -161,6 +161,10 @@ Simple usage for stand-alone guide documentation:
 
     vendor/bin/apidoc guide source/docs ./output
 
+Note that in order to generate a proper index file, the `README.md` file containing links to guide sections must be 
+present. An example of such file can be found 
+in the [yii2 repository](https://raw.githubusercontent.com/yiisoft/yii2/master/docs/guide/README.md).
+
 You can combine them to generate class API and guide documentation in one place:
 
     # generate API docs
