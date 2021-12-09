@@ -29,6 +29,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
   properties list (arogachev)
 - Bug #239: Do not show a "virtual" / "magic" methods's full description if it matches short description (arogachev)
+- Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
 
 
 2.1.6 May 05, 2021

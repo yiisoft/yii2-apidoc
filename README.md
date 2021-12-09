@@ -211,7 +211,13 @@ cd $APIDOC_PATH
 
 ### Creating a PDF of the guide
 
-You need `pdflatex` and GNU `make` for this.
+Prerequisites:
+
+- `pdflatex`.
+- [Pygments](https://pygments.org/).
+- GNU `make`.
+
+Generation:
 
 ```
 vendor/bin/apidoc guide source/docs ./output --template=pdf
