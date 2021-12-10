@@ -23,18 +23,6 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
      */
     public function render($files, $targetDir)
     {
-//        $types = array_merge($this->apiContext->classes, $this->apiContext->interfaces, $this->apiContext->traits);
-//
-//        $extTypes = [];
-//        foreach ($this->extensions as $k => $ext) {
-//            $extType = $this->filterTypes($types, $ext);
-//            if (empty($extType)) {
-//                unset($this->extensions[$k]);
-//                continue;
-//            }
-//            $extTypes[$ext] = $extType;
-//        }
-
         $fileCount = count($files) + 1;
         if ($this->controller !== null) {
             Console::startProgress(0, $fileCount, 'Rendering markdown files: ', false);
@@ -44,17 +32,11 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
         $chapters = $this->loadGuideStructure($files);
         foreach ($files as $file) {
             $fileData[basename($file)] = file_get_contents($file);
-//            if (preg_match("/^(.*)\n=+/", $fileData[$file], $matches)) {
-//                $headlines[$file] = $matches[1];
-//            } else {
-//                $headlines[$file] = basename($file);
-//            }
         }
 
         $md = new ApiMarkdownLaTeX();
         $output = '';
         foreach ($chapters as $chapter) {
-
             if (isset($chapter['headline'])) {
                 $output .= '\chapter{' . $chapter['headline'] . "}\n";
             }
