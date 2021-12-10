@@ -13,8 +13,8 @@ Yii communities listed at https://github.com/yiisoft/yii2/wiki/communities
 ### Additional info
 
 | Q                  | A
-| ------------------ | ---
-| Yii vesion         |
+|--------------------| ---
+| Yii version        |
 | Yii APIDoc version |
 | PHP version        |
 | Operating system   |
