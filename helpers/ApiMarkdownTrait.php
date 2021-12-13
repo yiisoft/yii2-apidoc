@@ -7,10 +7,12 @@
 
 namespace yii\apidoc\helpers;
 
+use DOMDocument;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\TypeDoc;
+use yii\helpers\Markdown;
 
 /**
  * Class ApiMarkdownTrait
@@ -31,6 +33,7 @@ trait ApiMarkdownTrait
         $offset = strlen($matches[0]);
         $object = $matches[1];
         $title = (empty($matches[2]) || $matches[2] === '|') ? null : substr($matches[2], 1);
+        $title = $this->renderApiLinkText($title);
 
         /** @var TypeDoc[] $contexts */
         $contexts = [];
@@ -188,6 +191,23 @@ trait ApiMarkdownTrait
     protected function renderBrokenApiLink($block)
     {
         return $block[1];
+    }
+
+    /**
+     * @param null|string $title
+     * @return null|string
+     */
+    protected function renderApiLinkText($title)
+    {
+        if (!$title) {
+            return $title;
+        }
+
+        $title = Markdown::process($title);
+        $doc = new DOMDocument();
+        $doc->loadHTML($title);
+
+        return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
     }
 
     /**
