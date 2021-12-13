@@ -30,6 +30,7 @@ Yii Framework 2 apidoc extension Change Log
   properties list (arogachev)
 - Bug #239: Do not show a "virtual" / "magic" methods's full description if it matches short description (arogachev)
 - Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
+- Enh #161: Render API link text in web guide (arogachev)
 
 
 2.1.6 May 05, 2021
