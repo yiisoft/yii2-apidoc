@@ -91,27 +91,12 @@ ArrayHelper::multisort($methods, 'name');
         <?php endif; ?>
     </table>
 
-    <?php if ($method->sourceCode) {
-        $sourceCode = $method->sourceCode;
-        $collapseId = 'collapse' . ucfirst($method->name);
-        ?>
-
-        <p>
-            <a class="btn btn-link" data-toggle="collapse" href="#<?= $collapseId ?>" role="button" aria-expanded="false"
-               aria-controls="<?= $collapseId ?>">
-                Source code
-            </a>
-        </p>
-        <div class="collapse" id="<?= $collapseId ?>">
-            <div class="card card-body">
-                <pre>
-                    <code class="hljs php language-php"><?= $highlighter->highlight('php', $sourceCode)->value ?></code>
-                </pre>
-            </div>
-        </div>
-
-        <?= $this->render('@yii/apidoc/templates/html/views/todos', ['doc' => $method]) ?>
-    <?php } ?>
+    <?= $this->render('@yii/apidoc/templates/html/views/changelog', ['doc' => $method]) ?>
+    <?= $this->render(
+        '@yii/apidoc/templates/html/views/methodSourceCode',
+        ['method' => $method, 'highlighter' => $highlighter]
+    ) ?>
+    <?= $this->render('@yii/apidoc/templates/html/views/todos', ['doc' => $method]) ?>
 
 <?php endforeach; ?>
 </div>

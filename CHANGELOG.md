@@ -25,6 +25,12 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #196: Added support for PHPDoc inline links (arogachev)
 - Enh #147: Added feature of viewing method source code without external links (arogachev)
 - Bug #168: Fixed handling of inheritance (arogachev)
+- Enh #140: Added support for multiple "since" tags (arogachev)
+- Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
+  properties list (arogachev)
+- Bug #239: Do not show a "virtual" / "magic" methods's full description if it matches short description (arogachev)
+- Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
+- Enh #161: Render API link text in web guide (arogachev)
 - Bug #241: Do not show a method's source code when it's empty (arogachev)
 
 

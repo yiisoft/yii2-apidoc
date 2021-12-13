@@ -91,6 +91,8 @@ $renderer = $this->context;
     <?= $this->render('seeAlso', ['object' => $type]) ?>
 </div>
 
+<?= $this->render('@yii/apidoc/templates/html/views/changelog', ['doc' => $type]) ?>
+
 <a id="properties"></a>
 <?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'protected' => false]) ?>
 <?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'protected' => true]) ?>

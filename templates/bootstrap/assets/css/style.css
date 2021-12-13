@@ -274,6 +274,12 @@ tr.deprecated th {
     background: lightpink;
 }
 
+/* Changelog */
+
+.changelog {
+    border: 1px solid #ddd !important;
+}
+
 /* Todos */
 
 .todo {
