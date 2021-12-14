@@ -125,14 +125,45 @@ class ApiMarkdown extends GithubMarkdown
      */
     protected function renderLink($block)
     {
-        $result = parent::renderLink($block);
+        $url = $block['url'];
+        if (!$url) {
+            static::$renderer->apiContext->errors[] = [
+                'line' => null,
+                'file' => null,
+                'message' => "Using empty link.",
+            ];
 
+            return parent::renderLink($block);
+        }
+
+        //skip parsing external url
+        if ((strpos($url, 'https://') !== false) || (strpos($url, 'http://') !== false) ) {
+            return parent::renderLink($block);
+        }
+
+        $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
-        $result = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function($match) {
-            return 'href="' . static::$renderer->generateGuideUrl($match[1]) . '"';
-        }, $result, 1);
+        $guideLinkHtml = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function ($matches) {
+            return 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"';
+        }, $linkHtml, 1);
+        if ($guideLinkHtml !== $linkHtml) {
+            return $guideLinkHtml;
+        }
 
-        return $result;
+        $repoUrl = static::$renderer->repoUrl;
+        if (!$repoUrl) {
+            static::$renderer->apiContext->errors[] = [
+                'line' => null,
+                'file' => null,
+                'message' => "Using relative link ($url) but repoUrl is not set.",
+            ];
+
+            return $linkHtml;
+        }
+
+        return preg_replace_callback('/href="(.+)"/i', function ($matches) use ($repoUrl) {
+            return 'href="' . $repoUrl . '/' . $matches[1] . '"';
+        }, $linkHtml, 1);
     }
 
     /**

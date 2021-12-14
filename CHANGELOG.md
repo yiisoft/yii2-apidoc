@@ -32,6 +32,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
 - Enh #161: Render API link text in web guide (arogachev)
 - Bug #241: Do not show a method's source code when it's empty (arogachev)
+- Enh #159: Added support to relative links within a repository (arogachev) 
 
 
 2.1.6 May 05, 2021

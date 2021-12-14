@@ -67,6 +67,8 @@ class ApiController extends BaseController
             }
         }
 
+        $renderer->repoUrl = rtrim($this->repoUrl, '/');
+
         // search for files to process
         if (($files = $this->searchFiles($sourceDirs)) === false) {
             return 1;

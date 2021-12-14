@@ -30,9 +30,13 @@ abstract class BaseController extends Controller
      */
     public $exclude;
     /**
-     * @var string page title
+     * @var string
      */
     public $pageTitle;
+    /**
+     * @var string
+     */
+    public $repoUrl;
 
 
     /**
@@ -160,6 +164,6 @@ abstract class BaseController extends Controller
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle']);
+        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle', 'repoUrl']);
     }
 }
