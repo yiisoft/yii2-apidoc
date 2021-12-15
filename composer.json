@@ -45,7 +45,8 @@
         }
     ],
     "suggest": {
-        "ext-json": "for outputting documentation data structures as a JSON text"
+        "ext-json": "for outputting documentation data structures as a JSON text",
+        "ext-intl": "for generating slugs in non-English guides"
     },
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
