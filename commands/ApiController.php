@@ -30,6 +30,13 @@ class ApiController extends BaseController
      * @var string prefix to prepend to all guide file names.
      */
     public $guidePrefix = 'guide-';
+    /**
+     * @var string Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+     * within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+     * skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+     * left as is.
+     */
+    public $repoUrl;
 
 
     // TODO add force update option
@@ -186,6 +193,6 @@ class ApiController extends BaseController
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['guide', 'guidePrefix']);
+        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
     }
 }

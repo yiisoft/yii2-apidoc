@@ -51,10 +51,6 @@ abstract class BaseRenderer extends Component
      */
     public $controller;
     public $guideUrl;
-    /**
-     * @var string
-     */
-    public $repoUrl;
 
 
     public function init()
@@ -239,6 +235,11 @@ abstract class BaseRenderer extends Component
      */
     public function generateGuideUrl($file)
     {
+        //skip parsing external url
+        if ((strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false) ) {
+            return $file;
+        }
+
         $hash = '';
         if (($pos = strpos($file, '#')) !== false) {
             $hash = substr($file, $pos);

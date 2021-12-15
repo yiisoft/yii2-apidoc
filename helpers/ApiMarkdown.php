@@ -136,11 +136,6 @@ class ApiMarkdown extends GithubMarkdown
             return parent::renderLink($block);
         }
 
-        //skip parsing external url
-        if ((strpos($url, 'https://') !== false) || (strpos($url, 'http://') !== false) ) {
-            return parent::renderLink($block);
-        }
-
         $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
         $guideLinkHtml = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function ($matches) {
@@ -148,6 +143,10 @@ class ApiMarkdown extends GithubMarkdown
         }, $linkHtml, 1);
         if ($guideLinkHtml !== $linkHtml) {
             return $guideLinkHtml;
+        }
+
+        if (!property_exists(static::$renderer, 'repoUrl')) {
+            return $linkHtml;
         }
 
         $repoUrl = static::$renderer->repoUrl;
