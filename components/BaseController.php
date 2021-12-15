@@ -35,7 +35,9 @@ abstract class BaseController extends Controller
     public $pageTitle;
     /**
      * @var string Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
-     * within a repository.
+     * within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+     * skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+     * left as is.
      */
     public $repoUrl;
 

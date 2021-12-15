@@ -89,7 +89,9 @@ OPTIONS
 
 --repo-url: string
   Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
-  within a repository.
+  within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+  skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+  left as is.
 
 --silent-exit-on-exception: boolean, 0 or 1
   if true - script finish with `ExitCode::OK` in case of exception.
@@ -148,7 +150,9 @@ OPTIONS
 
 --repo-url: string
   Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
-  within a repository.
+  within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+  skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+  left as is.
 
 --silent-exit-on-exception: boolean, 0 or 1
   if true - script finish with `ExitCode::OK` in case of exception.
