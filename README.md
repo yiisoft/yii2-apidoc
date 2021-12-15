@@ -86,7 +86,10 @@ OPTIONS
   whether to run the command interactively.
 
 --page-title: string
-  page title
+
+--repo-url: string
+  Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+  within a repository.
 
 --silent-exit-on-exception: boolean, 0 or 1
   if true - script finish with `ExitCode::OK` in case of exception.
@@ -142,7 +145,10 @@ OPTIONS
   whether to run the command interactively.
 
 --page-title: string
-  page title
+
+--repo-url: string
+  Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+  within a repository.
 
 --silent-exit-on-exception: boolean, 0 or 1
   if true - script finish with `ExitCode::OK` in case of exception.

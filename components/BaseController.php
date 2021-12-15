@@ -34,7 +34,8 @@ abstract class BaseController extends Controller
      */
     public $pageTitle;
     /**
-     * @var string
+     * @var string Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+     * within a repository.
      */
     public $repoUrl;
 
