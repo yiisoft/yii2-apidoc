@@ -8,6 +8,7 @@
 namespace yii\apidoc\renderers;
 
 use Yii;
+use yii\apidoc\commands\ApiController;
 use yii\apidoc\models\Context;
 
 /**
@@ -18,6 +19,12 @@ use yii\apidoc\models\Context;
  */
 abstract class ApiRenderer extends BaseRenderer
 {
+    /**
+     * @var string
+     * @see ApiController::$repoUrl
+     */
+    public $repoUrl;
+
     /**
      * Renders a given [[Context]].
      *
