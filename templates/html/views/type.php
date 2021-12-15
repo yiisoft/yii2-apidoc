@@ -71,7 +71,7 @@ $renderer = $this->context;
         <tr><th>Implemented by</th><td><?= $renderer->renderClasses($type->usedBy) ?></td></tr>
     <?php endif; ?>
     <?php if (!empty($type->since)): ?>
-        <tr><th><?= $renderer->typeAvailableSinceVersionLabel ?>/th><td><?= $type->since ?></td></tr>
+        <tr><th><?= $renderer->typeAvailableSinceVersionLabel ?></th><td><?= $type->since ?></td></tr>
     <?php endif; ?>
     <?php if (!empty($type->deprecatedSince) || !empty($type->deprecatedReason)): ?>
         <tr class="deprecated"><th>Deprecated since version</th><td><?= $type->deprecatedSince ?> <?= $type->deprecatedReason ?></td></tr>
