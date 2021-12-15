@@ -43,6 +43,14 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @var string path or alias of the view file to use for rendering the index page.
      */
     public $indexView = '@yii/apidoc/templates/html/views/index.php';
+    /**
+     * @var string
+     */
+    public $allClassesUrl = 'index';
+    /**
+     * @var string
+     */
+    public $typeAvailableSinceVersionLabel = 'Available since version';
 
     /**
      * @var View
@@ -110,7 +118,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         foreach ($types as $type) {
             $fileContent = $this->renderWithLayout($this->typeView, [
                 'type' => $type,
-                'apiContext' => $context,
                 'types' => $types,
                 'highlighter' => $higlighter,
             ]);
@@ -121,10 +128,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             }
         }
 
-        $indexFileContent = $this->renderWithLayout($this->indexView, [
-            'apiContext' => $context,
-            'types' => $types,
-        ]);
+        $indexFileContent = $this->renderWithLayout($this->indexView, ['types' => $types]);
         file_put_contents($targetDir . '/index.html', $indexFileContent);
 
         if ($this->controller !== null) {
