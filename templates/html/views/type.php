@@ -5,11 +5,11 @@ use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
 
-/* @var $type ClassDoc|InterfaceDoc|TraitDoc */
 /* @var $this yii\web\View */
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/* @var $type ClassDoc|InterfaceDoc|TraitDoc */
 /* @var $highlighter \Highlight\Highlighter */
 
+/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
 $renderer = $this->context;
 ?>
 <h1><?php
@@ -29,7 +29,7 @@ $renderer = $this->context;
     echo $type->name;
 ?></h1>
 <div class="top-nav">
-    <a href="index">All Classes</a>
+    <a href="<?= $renderer->allClassesUrl ?>">All Classes</a>
     <?php if (!($type instanceof InterfaceDoc) && !empty($type->properties)): ?>
         | <a href="#properties">Properties</a>
     <?php endif; ?>
@@ -71,7 +71,7 @@ $renderer = $this->context;
         <tr><th>Implemented by</th><td><?= $renderer->renderClasses($type->usedBy) ?></td></tr>
     <?php endif; ?>
     <?php if (!empty($type->since)): ?>
-        <tr><th>Available since version</th><td><?= $type->since ?></td></tr>
+        <tr><th><?= $renderer->typeAvailableSinceVersionLabel ?></th><td><?= $type->since ?></td></tr>
     <?php endif; ?>
     <?php if (!empty($type->deprecatedSince) || !empty($type->deprecatedReason)): ?>
         <tr class="deprecated"><th>Deprecated since version</th><td><?= $type->deprecatedSince ?> <?= $type->deprecatedReason ?></td></tr>
