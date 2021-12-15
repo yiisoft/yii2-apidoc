@@ -33,7 +33,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #161: Render API link text in web guide (arogachev)
 - Bug #241: Do not show a method's source code when it's empty (arogachev)
 - Enh #159: Added support to relative links within a repository (arogachev)
-- Enh #36: Allow to customize "All classes url" and "Type available since version" label in HTML API (arogachev)
+- Enh #36: Allow to customize "All classes url" and "Available since version" label for type in HTML API (arogachev)
 
 
 2.1.6 May 05, 2021
