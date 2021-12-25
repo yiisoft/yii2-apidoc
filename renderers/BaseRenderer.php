@@ -176,14 +176,11 @@ abstract class BaseRenderer extends Component
     {
         $returnTypes = [];
         foreach ($method->returnTypes as $returnType) {
-            if ($returnType !== 'static' && $returnType !== 'static[]') {
+            if ($returnType === 'static' || $returnType === 'static[]') {
+                $returnTypes[] = str_replace('static', $method->definedBy, $returnType);
+            } else {
                 $returnTypes[] = $returnType;
-
-                continue;
             }
-
-
-            $returnTypes[] = str_replace('static', $method->definedBy, $returnType);
         }
 
         return $this->createTypeLink($returnTypes, $type);
