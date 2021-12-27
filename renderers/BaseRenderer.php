@@ -174,13 +174,26 @@ abstract class BaseRenderer extends Component
      */
     public function createMethodReturnTypeLink($method, $type)
     {
+        if (!($type instanceof ClassDoc) || $type->isAbstract) {
+            return $this->createTypeLink($method->returnTypes, $type);
+        }
+
         $returnTypes = [];
         foreach ($method->returnTypes as $returnType) {
-            if ($returnType === 'static' || $returnType === 'static[]') {
-                $returnTypes[] = str_replace('static', $method->definedBy, $returnType);
-            } else {
+            if ($returnType !== 'static' && $returnType !== 'static[]') {
                 $returnTypes[] = $returnType;
+
+                continue;
             }
+
+            $context = $this->apiContext;
+            if (isset($context->interfaces[$method->definedBy]) || isset($context->traits[$method->definedBy])) {
+                $replacement = $type->name;
+            } else {
+                $replacement = $method->definedBy;
+            }
+
+            $returnTypes[] = str_replace('static', $replacement, $returnType);
         }
 
         return $this->createTypeLink($returnTypes, $type);
@@ -191,9 +204,10 @@ abstract class BaseRenderer extends Component
      * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
+     * @param TypeDoc|null $type
      * @return string
      */
-    public function createSubjectLink($subject, $title = null, $options = [])
+    public function createSubjectLink($subject, $title = null, $options = [], $type = null)
     {
         if ($title === null) {
             if ($subject instanceof MethodDoc) {
@@ -202,7 +216,12 @@ abstract class BaseRenderer extends Component
                 $title = $subject->name;
             }
         }
-        if (($type = $this->apiContext->getType($subject->definedBy)) === null) {
+
+        if (!$type) {
+            $type = $this->apiContext->getType($subject->definedBy);
+        }
+
+        if (!$type) {
             return $subject->name;
         }
 

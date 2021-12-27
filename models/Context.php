@@ -445,6 +445,7 @@ class Context extends Component
                     // Override the setter-defined property if it exists already
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
                         'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
@@ -478,6 +479,7 @@ class Context extends Component
                     $param = $this->getFirstNotOptionalParameter($method);
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
                         'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
