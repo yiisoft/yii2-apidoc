@@ -37,8 +37,6 @@ class ConstDoc extends BaseDoc
             return;
         }
 
-        if ($reflector->getValue() !== null) {
-            $this->value = PrettyPrinter::getRepresentationOfValue($reflector->getDefaultNode());
-        }
+        $this->value = $reflector->getValue();
     }
 }

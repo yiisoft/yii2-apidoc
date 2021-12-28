@@ -7,9 +7,13 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
+use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
+use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
+use yii\apidoc\helpers\PrettyPrinter;
 use yii\base\Component;
 
 /**
@@ -558,7 +562,14 @@ class Context extends Component
             $files[] = new LocalFile($fileName);
         }
 
-        $this->reflectionProject = ProjectFactory::createInstance()->create('ApiDoc', $files);
+        $projectFactory = ProjectFactory::createInstance();
+        $docBlockFactory = DocBlockFactory::createInstance();
+        $priority = 1200;
+
+        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
+        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
+
+        $this->reflectionProject = $projectFactory->create('ApiDoc', $files);
 
         return $this->reflectionProject;
     }
