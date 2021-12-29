@@ -12,7 +12,10 @@ use PhpParser\NodeAbstract;
 use PhpParser\PrettyPrinter\Standard as BasePrettyPrinter;
 
 /**
- * Enhances the phpDocumentor PrettyPrinter with short array syntax
+ * Enhances the phpDocumentor PrettyPrinter:
+ *
+ * - Fix for single slash becoming double in values of properties and class constants.
+ * - All comments in values are removed because inline comments are shifted to the next line (can be confusing).
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -50,6 +53,8 @@ class PrettyPrinter extends BasePrettyPrinter
      * Returns a simple human readable output for a value.
      * @param Expr $value The value node as provided by PHP-Parser.
      * @return string
+     * @deprecated Pretty print is handled in "phpdocumentor/reflection" library. This custom pretty printer is now
+     * injected through strategies and not directly called within "apidoc" extension.
      */
     public static function getRepresentationOfValue(Expr $value)
     {
