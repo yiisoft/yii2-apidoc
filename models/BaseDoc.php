@@ -154,10 +154,7 @@ class BaseDoc extends BaseObject
         $this->name = $position === false ? $this->fullName : substr($this->fullName, $position + 2);
 
         $this->startLine = $reflector->getLocation()->getLineNumber();
-
-        if (method_exists($reflector, 'getNode') && $reflector->getNode()) {
-            $this->endLine = $reflector->getNode()->getAttribute('endLine');
-        }
+        $this->endLine = $reflector->getEndLocation()->getLineNumber();
 
         $docBlock = $reflector->getDocBlock();
         if ($docBlock === null) {
