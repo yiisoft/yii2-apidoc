@@ -202,10 +202,12 @@ class TypeDoc extends BaseDoc
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $name = '$' . $tag->getVariableName();
 
                 $property = new PropertyDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
-                    'name' => '$' . $tag->getVariableName(),
+                    'name' => $name,
+                    'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $name,
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
@@ -239,6 +241,7 @@ class TypeDoc extends BaseDoc
                 $method = new MethodDoc(null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getMethodName(),
+                    'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $tag->getMethodName(),
                     'shortDescription' => $shortDescription,
                     'description' => $description,
                     'visibility' => 'public',

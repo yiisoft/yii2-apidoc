@@ -77,7 +77,7 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('Animal is a base class for animals.', $animalContent);
         $this->assertContainsWithoutIndent(
             <<<HTML
-<tr id="\$name">
+<tr id="\$name" class="">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$name-detail">\$name</a></td>
     <td><a href="https://www.php.net/language.types.string">string</a></td>
     <td>Animal name.</td>
@@ -88,7 +88,7 @@ HTML
         );
         $this->assertContainsWithoutIndent(
             <<<HTML
-<tr id="\$birthDate">
+<tr id="\$birthDate" class="">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$birthDate-detail">\$birthDate</a></td>
     <td><a href="https://www.php.net/language.types.integer">integer</a></td>
     <td>Animal birth date as a UNIX timestamp.</td>
@@ -99,7 +99,7 @@ HTML
         );
         $this->assertContainsWithoutIndent(
             <<<HTML
-<tr id="getAge()">
+<tr id="getAge()" class="">
 <td><a href="yiiunit-apidoc-data-api-animal-animal.html#getAge()-detail">getAge()</a></td>
 <td>Returns animal age in seconds.</td>
 <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
@@ -109,7 +109,7 @@ HTML
         );
         $this->assertContainsWithoutIndent(
             <<<HTML
-<tr id="render()">
+<tr id="render()" class="">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#render()-detail">render()</a></td>
     <td>Renders animal description.</td>
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
