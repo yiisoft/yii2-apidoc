@@ -17,14 +17,14 @@
             "email": "mail@cebe.cc"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "ext-dom": "*",
         "ext-mbstring": "*",
         "php": "^7.2 || ^8.0",
         "yiisoft/yii2": "~2.0.16",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "phpdocumentor/reflection": "5.x-dev#7666c4bc46b86319be16585b05c093cebf8df90f",
+        "phpdocumentor/reflection": "^5.1.0",
         "nikic/php-parser": "^4.0",
         "cebe/js-search": "~0.9.0",
         "cebe/markdown": "^1.0",
@@ -47,10 +47,5 @@
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
     },
-    "bin": ["apidoc"],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.1.x-dev"
-        }
-    }
+    "bin": ["apidoc"]
 }
