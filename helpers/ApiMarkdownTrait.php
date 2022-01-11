@@ -204,8 +204,9 @@ trait ApiMarkdownTrait
         }
 
         $title = Markdown::process($title);
+        $title = mb_convert_encoding($title, 'HTML-ENTITIES', 'UTF-8');
         $doc = new DOMDocument();
-        $doc->loadHTML(mb_convert_encoding($title, 'HTML-ENTITIES', 'UTF-8'));
+        $doc->loadHTML($title);
 
         return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
     }
