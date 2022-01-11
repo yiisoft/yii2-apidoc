@@ -70,6 +70,13 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         return "$translation ";
     }
 
+    protected function renderHeadline($block)
+    {
+        $block['content'] = str_replace('`', '', $block['content']);
+
+        return parent::renderHeadline($block);
+    }
+
     /**
      * Renders a blockquote
      */
