@@ -12,8 +12,8 @@ $sourceCode = $method->sourceCode;
     $collapseId = 'collapse' . ucfirst($method->name); ?>
 
     <p>
-        <a class="btn btn-link" data-toggle="collapse" href="#<?= $collapseId ?>" role="button" aria-expanded="false"
-           aria-controls="<?= $collapseId ?>">
+        <a class="btn btn-link" data-toggle="collapse" data-target="#<?= $collapseId ?>" role="button"
+           aria-expanded="false" aria-controls="<?= $collapseId ?>">
             Source code
         </a>
     </p>
