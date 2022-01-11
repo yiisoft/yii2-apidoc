@@ -70,6 +70,17 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         return "$translation ";
     }
 
+    protected function renderHeadline($block)
+    {
+        foreach ($block['content'] as $i => &$item) {
+            if ($item[0] === 'inlinecode') {
+                unset($block['content'][$i]);
+            }
+        }
+
+        return parent::renderHeadline($block);
+    }
+
     /**
      * Renders a blockquote
      */
