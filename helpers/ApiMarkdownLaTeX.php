@@ -73,7 +73,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     protected function renderHeadline($block)
     {
         foreach ($block['content'] as $i => &$item) {
-            if ($item[0] === 'inlinecode') {
+            if ($item[0] === 'inlineCode') {
                 unset($block['content'][$i]);
             }
         }
