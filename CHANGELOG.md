@@ -1,40 +1,40 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.0 under development
------------------------
+3.0.0 January 14, 2022
+----------------------
 
-- Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
-- Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
-- Bug #180: Fixed "All Classes" broken link (arogachev)
 - Bug #34: Improved highlighting of PHP templates (arogachev)
-- Bug #203: Add PHP 8 compatibility, raise minimum PHP version to 7.2 (bizley, arogachev)
-- Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
-- Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
+- Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
 - Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
+- Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
 - Bug #155: Fixed processing of classes containing constants with visibility (arogachev)
 - Bug #162: Fixed skipping some of PHP files / classes (arogachev)
-- Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
-- Bug #199: Fixed processing of nullable return types (arogachev)
-- Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
-- Enh #18: Added pretty print for arrays (arogachev)
-- Enh #209: Added support for todos in properties and methods (arogachev)
-- Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
-- Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
-- Enh #143: Do not include methods and properties marked as internal (arogachev)
-- Enh #196: Added support for PHPDoc inline links (arogachev)
-- Enh #147: Added feature of viewing method source code without external links (arogachev)
 - Bug #168: Fixed handling of inheritance (arogachev)
-- Enh #140: Added support for multiple "since" tags (arogachev)
+- Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
+- Bug #180: Fixed "All Classes" broken link (arogachev)
+- Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
+- Bug #199: Fixed processing of nullable return types (arogachev)
+- Bug #203: Add PHP 8 compatibility, raise minimum PHP version to 7.2 (bizley, arogachev)
+- Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
+- Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
+- Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
+- Bug #239: Do not show a "virtual" / "magic" method's full description if it matches short description (arogachev)
 - Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
   properties list (arogachev)
-- Bug #239: Do not show a "virtual" / "magic" method's full description if it matches short description (arogachev)
-- Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
-- Enh #161: Render API link text in web guide (arogachev)
 - Bug #241: Do not show a method's source code when it's empty (arogachev)
-- Enh #159: Added support to relative links within a repository in HTML API (arogachev)
+- Enh #18: Added pretty print for arrays (arogachev)
 - Enh #36: Allow customizing "All classes url" and "Available since version" label for type in HTML API (arogachev)
 - Enh #126: Resolve static return type (arogachev)
+- Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
+- Enh #140: Added support for multiple "since" tags (arogachev)
+- Enh #143: Do not include methods and properties marked as internal (arogachev)
+- Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
+- Enh #147: Added feature of viewing method source code without external links (arogachev)
+- Enh #159: Added support to relative links within a repository in HTML API (arogachev)
+- Enh #161: Render API link text in web guide (arogachev)
+- Enh #196: Added support for PHPDoc inline links (arogachev)
+- Enh #209: Added support for todos in properties and methods (arogachev)
 
 
 2.1.6 May 05, 2021

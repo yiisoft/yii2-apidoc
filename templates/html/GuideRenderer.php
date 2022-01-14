@@ -19,7 +19,7 @@ use yii\web\View;
 
 /**
  *
- * @property-read View $view The view instance. This property is read-only.
+ * @property-read View $view The view instance.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

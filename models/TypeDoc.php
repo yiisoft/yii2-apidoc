@@ -18,12 +18,12 @@ use yii\helpers\StringHelper;
 /**
  * Base class for API documentation information for classes, interfaces and traits.
  *
- * @property-read MethodDoc[] $nativeMethods This property is read-only.
- * @property-read PropertyDoc[] $nativeProperties This property is read-only.
- * @property-read MethodDoc[] $protectedMethods This property is read-only.
- * @property-read PropertyDoc[] $protectedProperties This property is read-only.
- * @property-read MethodDoc[] $publicMethods This property is read-only.
- * @property-read PropertyDoc[] $publicProperties This property is read-only.
+ * @property-read MethodDoc[] $nativeMethods
+ * @property-read PropertyDoc[] $nativeProperties
+ * @property-read MethodDoc[] $protectedMethods
+ * @property-read PropertyDoc[] $protectedProperties
+ * @property-read MethodDoc[] $publicMethods
+ * @property-read PropertyDoc[] $publicProperties
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

@@ -15,8 +15,8 @@ use yii\helpers\StringHelper;
 /**
  * Represents API documentation information for a `property`.
  *
- * @property-read bool $isReadOnly If property is read only. This property is read-only.
- * @property-read bool $isWriteOnly If property is write only. This property is read-only.
+ * @property-read bool $isReadOnly If property is read only.
+ * @property-read bool $isWriteOnly If property is write only.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
