@@ -28,12 +28,12 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #140: Added support for multiple "since" tags (arogachev)
 - Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
   properties list (arogachev)
-- Bug #239: Do not show a "virtual" / "magic" methods's full description if it matches short description (arogachev)
+- Bug #239: Do not show a "virtual" / "magic" method's full description if it matches short description (arogachev)
 - Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
 - Enh #161: Render API link text in web guide (arogachev)
 - Bug #241: Do not show a method's source code when it's empty (arogachev)
 - Enh #159: Added support to relative links within a repository in HTML API (arogachev)
-- Enh #36: Allow to customize "All classes url" and "Available since version" label for type in HTML API (arogachev)
+- Enh #36: Allow customizing "All classes url" and "Available since version" label for type in HTML API (arogachev)
 - Enh #126: Resolve static return type (arogachev)
 
 

@@ -26,13 +26,15 @@ Either run
 composer require --prefer-dist yiisoft/yii2-apidoc
 ```
 
-The above command may not work on an existing project due to version conflicts that need to be resolved, so it is preferred to add the package manually to the require section of your composer.json:
+The above command may not work on an existing project due to version conflicts that need to be resolved, so it
+is preferred to add the package manually to the `require` section of your composer.json:
 
 ```json
 "yiisoft/yii2-apidoc": "~2.1.0"
 ```
 
-afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you want to avoid updating unrelated packages.
+afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
+want to avoid updating unrelated packages.
 
 
 Usage
@@ -180,7 +182,7 @@ By default, the `bootstrap` template will be used. You can choose a different te
 Currently, there is only the `bootstrap` template available.
 
 You may also add the `yii\apidoc\commands\ApiController` and `GuideController` to your console application command map
-and run them inside of your applications console app.
+and run them inside your application's console app.
 
 ### Generating docs from multiple sources
 
@@ -234,7 +236,7 @@ If all runs without errors the PDF will be `guide.pdf` in the `output` dir.
 Special Markdown Syntax
 -----------------------
 
-We have a special Syntax for linking to classes in the API documentation.
+We have a special Syntax for linking to a class in the API documentation.
 See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md#markdown) for details.
 
 Creating your own templates
