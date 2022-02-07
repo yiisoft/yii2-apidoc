@@ -111,6 +111,10 @@ trait ApiMarkdownTrait
             $subjectName = substr($object, $pos + 2);
 
             if ($context !== null) {
+                if (!$context->phpDocContext) {
+                    throw new BrokenLinkException($object, $context);
+                }
+
                 if (isset($context->phpDocContext->getNamespaceAliases()[$typeName])) {
                     $typeName = $context->phpDocContext->getNamespaceAliases()[$typeName];
                 } else {
@@ -147,6 +151,10 @@ trait ApiMarkdownTrait
                     ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
                     $offset
                 ];
+            }
+
+            if (!$context->phpDocContext) {
+                throw new BrokenLinkException($object, $context);
             }
 
             if (isset($context->phpDocContext->getNamespaceAliases()[$object])) {
