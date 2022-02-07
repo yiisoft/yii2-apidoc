@@ -1,10 +1,16 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.1 under development
+3.0.2 under development
 -----------------------
 
 - no changes in this release.
+
+
+3.0.1 under development
+-----------------------
+
+- Bug #278: Fix error: Call to a member function `getNamespaceAliases()` on null (arogachev)
 
 
 3.0.0 January 14, 2022
