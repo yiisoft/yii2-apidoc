@@ -46,11 +46,6 @@ class Context extends Component
      */
     public $warnings = [];
 
-    /**
-     * @var Project
-     */
-    private $reflectionProject;
-
 
     /**
      * Returning TypeDoc for a type given
@@ -556,10 +551,6 @@ class Context extends Component
 
     public function getReflectionProject()
     {
-        if ($this->reflectionProject !== null) {
-            return $this->reflectionProject;
-        }
-
         $files = [];
         foreach ($this->files as $fileName => $hash) {
             $files[] = new LocalFile($fileName);
@@ -572,8 +563,6 @@ class Context extends Component
         $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
-        $this->reflectionProject = $projectFactory->create('ApiDoc', $files);
-
-        return $this->reflectionProject;
+        return $projectFactory->create('ApiDoc', $files);
     }
 }
