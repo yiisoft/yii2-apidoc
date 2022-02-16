@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.2 under development
+3.0.2 February 16, 2022
 -----------------------
 
 - Bug #280: Do not cache `Context::getReflectionProject()` at instance level because it can cause apidoc cache to contain stale data (arogachev)
