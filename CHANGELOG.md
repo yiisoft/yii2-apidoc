@@ -1,10 +1,16 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.3 under development
+3.0.4 under development
 -----------------------
 
 - no changes in this release.
+
+
+3.0.3 under development
+-----------------------
+
+- Bug #281: Fix encoding in non English guides (arogachev)
 
 
 3.0.2 February 16, 2022

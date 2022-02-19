@@ -164,6 +164,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     protected function fixMarkdownLinks($content)
     {
+        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
         $doc = new DOMDocument();
         $doc->loadHTML($content);
 
