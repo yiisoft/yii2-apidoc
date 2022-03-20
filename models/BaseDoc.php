@@ -242,10 +242,10 @@ class BaseDoc extends BaseObject
         $text = str_replace(["\r\n", "\n"], ' ', $text);
         $length = mb_strlen($text, 'utf-8');
         if ($length > 4 && ($pos = mb_strpos($text, '. ', 4, 'utf-8')) !== false) {
-            $sentence = mb_substr($text, 0, $pos + 2, 'utf-8');
+            $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
             $prevText  = $prevText . $sentence;
 
-            if ($length >= $pos + 4) {
+            if ($length >= $pos + 3) {
                 $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if ($abbrev === 'e.g.' ||
@@ -253,7 +253,7 @@ class BaseDoc extends BaseObject
                     mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
                     $sentence .= static::extractFirstSentence(
-                        mb_substr($text, $pos + 2, $length, 'utf-8'),
+                        mb_substr($text, $pos + 1, $length, 'utf-8'),
                         $prevText
                     );
                 }
