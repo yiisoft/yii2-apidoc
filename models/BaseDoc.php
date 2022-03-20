@@ -246,7 +246,7 @@ class BaseDoc extends BaseObject
             $prevText  = $prevText . $sentence;
 
             if ($length >= $pos + 4) {
-                $abbrev = mb_substr($text, $pos - 2, 4, 'utf-8');
+                $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if ($abbrev === 'e.g.' ||
                     $abbrev === 'i.e.' ||
