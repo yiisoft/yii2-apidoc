@@ -231,14 +231,16 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * Extracts first sentence out of text
+     * Extracts first sentence out of text.
+     *
      * @param string $text
      * @param string $prevText
      * @return string
      */
     public static function extractFirstSentence($text, $prevText = '')
     {
-        if (mb_strlen($text, 'utf-8') > 4 && ($pos = mb_strpos($text, '.', 4, 'utf-8')) !== false) {
+        $text = str_replace(["\r\n", "\n"], ' ', $text);
+        if (mb_strlen($text, 'utf-8') > 4 && ($pos = mb_strpos($text, '. ', 4, 'utf-8')) !== false) {
             $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
             $prevText  = $prevText . $sentence;
 
