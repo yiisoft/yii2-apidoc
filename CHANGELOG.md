@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 3.0.4 under development
 -----------------------
 
-- Bug #282: Fix determining end of first sentence in `BaseDoc::extractFirstSentence()` (WinterSilence)
+- Bug #282: Consider the first sentence ended only if the dot is followed by a space in `BaseDoc::extractFirstSentence()` (WinterSilence)
 
 
 3.0.3 February 19, 2022
