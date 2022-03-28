@@ -3,8 +3,8 @@ Yii Framework 2 apidoc extension Change Log
 
 3.0.4 under development
 -----------------------
-
-- Bug #282: Fix `BaseDoc::extractFirstSentence()` (WinterSilence)
+определение конца первого предложения в тексте
+- Bug #282: Fix determining end of first sentence in `BaseDoc::extractFirstSentence()` (WinterSilence)
 
 
 3.0.3 February 19, 2022
