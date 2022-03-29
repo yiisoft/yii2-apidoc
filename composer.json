@@ -47,5 +47,10 @@
     "autoload": {
         "psr-4": { "yii\\apidoc\\": "" }
     },
-    "bin": ["apidoc"]
+    "bin": ["apidoc"],
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    }
 }
