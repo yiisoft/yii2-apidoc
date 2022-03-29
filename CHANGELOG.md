@@ -1,8 +1,8 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.4 under development
------------------------
+3.0.4 March 29, 2022
+--------------------
 
 - Bug #282: Convert newlines to spaces and consider the first sentence ended only if the dot is followed by a space in `BaseDoc::extractFirstSentence()` (WinterSilence)
 
