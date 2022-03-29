@@ -12,16 +12,6 @@ use yii\apidoc\models\BaseDoc;
 
 class BaseDocTest extends TestCase
 {
-    public function testExtractFirstSentence()
-    {
-        $initialText = "a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or\n"
-            . 'URI template [RFC6570](https://tools.ietf.org/html/rfc6570). This property is required.';
-        $actualFirstSentence = BaseDoc::extractFirstSentence($initialText);
-        $expectedFirstSentence = 'a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or'
-            . ' URI template [RFC6570](https://tools.ietf.org/html/rfc6570).';
-        $this->assertEquals($expectedFirstSentence, $actualFirstSentence);
-    }
-
     /**
      * @link https://github.com/yiisoft/yii2-apidoc/issues/128
      */
@@ -36,6 +26,19 @@ class BaseDocTest extends TestCase
         $actualFirstSentence = BaseDoc::extractFirstSentence($initialText);
         $expectedFirstSentence = 'fallback host info (e.g. `http://www.yiiframework.com`) used when '
             . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.';
+        $this->assertEquals($expectedFirstSentence, $actualFirstSentence);
+    }
+    
+    /**
+     * @link https://github.com/yiisoft/yii2-apidoc/pull/282
+     */
+    public function testExtractFirstSentenceWithNewlineAndNoSpaceAfterDot()
+    {
+        $initialText = "a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or\n"
+            . 'URI template [RFC6570](https://tools.ietf.org/html/rfc6570). This property is required.';
+        $actualFirstSentence = BaseDoc::extractFirstSentence($initialText);
+        $expectedFirstSentence = 'a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or'
+            . ' URI template [RFC6570](https://tools.ietf.org/html/rfc6570).';
         $this->assertEquals($expectedFirstSentence, $actualFirstSentence);
     }
 }
