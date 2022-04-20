@@ -47,7 +47,7 @@ class MethodDoc extends FunctionDoc
         $this->isFinal = $reflector->isFinal();
         $this->isStatic = $reflector->isStatic();
 
-        $this->visibility = $reflector->getVisibility();
+        $this->visibility = (string) $reflector->getVisibility();
 
         $lines = file($this->sourceFile);
         for ($i = $this->startLine - 1; $i <= $this->endLine - 1; $i++) {

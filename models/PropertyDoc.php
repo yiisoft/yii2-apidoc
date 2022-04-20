@@ -64,7 +64,7 @@ class PropertyDoc extends BaseDoc
             return;
         }
 
-        $this->visibility = $reflector->getVisibility();
+        $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
         $this->defaultValue = $reflector->getDefault();
 
