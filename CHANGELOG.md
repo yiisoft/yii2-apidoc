@@ -7,8 +7,8 @@ Yii Framework 2 apidoc extension Change Log
 - no changes in this release.
 
 
-3.0.5 under development
------------------------
+3.0.5 April 21, 2022
+--------------------
 
 - Bug #284: Fix empty visibility in methods and properties (arogachev)
 
