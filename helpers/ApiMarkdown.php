@@ -138,8 +138,8 @@ class ApiMarkdown extends GithubMarkdown
 
         $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
-        $guideLinkHtml = preg_replace_callback('/href="(guide:)?(.+?)"/i', function ($matches) {
-            return 'href="' . static::$renderer->generateGuideUrl($matches[2]) . '"';
+        $guideLinkHtml = preg_replace_callback('/href="guide:(.+?)"/i', function ($matches) {
+            return 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"';
         }, $linkHtml, 1);
         if ($guideLinkHtml !== $linkHtml) {
             return $guideLinkHtml;
@@ -161,7 +161,7 @@ class ApiMarkdown extends GithubMarkdown
         }
 
         return preg_replace_callback('/href="(.+?)"/i', function ($matches) use ($repoUrl) {
-            return 'href="' . $repoUrl . '/' . $matches[1] . '"';
+            return 'href="' . static::$renderer->generateGuideUrl($repoUrl . '/' . $matches[1]) . '"';
         }, $linkHtml, 1);
     }
 
