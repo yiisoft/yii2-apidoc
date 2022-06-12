@@ -138,7 +138,7 @@ class ApiMarkdown extends GithubMarkdown
 
         $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
-        $guideLinkHtml = preg_replace_callback('/href="(guide:)?([-.#\w]+)"/i', function ($matches) {
+        $guideLinkHtml = preg_replace_callback('/href="(guide:)?(.+?)"/i', function ($matches) {
             return 'href="' . static::$renderer->generateGuideUrl($matches[2]) . '"';
         }, $linkHtml, 1);
         if ($guideLinkHtml !== $linkHtml) {
