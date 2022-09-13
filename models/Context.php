@@ -200,6 +200,33 @@ class Context extends Component
     /**
      * @param ClassDoc $class
      */
+    protected function handleTraitInheritance($class)
+    {
+        foreach ($class->traits as $traitName) {
+            if (!isset($this->traits[$traitName])) {
+                continue;
+            }
+
+            $trait = $this->traits[$traitName];
+            $trait->usedBy[] = $class->name;
+
+            foreach ($trait->properties as $property) {
+                if (!isset($class->properties[$property->name])) {
+                    $class->properties[$property->name] = $property;
+                }
+            }
+
+            foreach ($trait->methods as $method) {
+                if (!isset($class->methods[$method->name])) {
+                    $class->methods[$method->name] = $method;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param ClassDoc $class
+     */
     protected function handleClassInheritance($class)
     {
         $parents = $this->getParents($class);
@@ -222,33 +249,6 @@ class Context extends Component
                     }
 
                     $class->$attrName[$item->name] = $item;
-                }
-            }
-        }
-    }
-
-    /**
-     * @param ClassDoc $class
-     */
-    protected function handleTraitInheritance($class)
-    {
-        foreach ($class->traits as $traitName) {
-            if (!isset($this->traits[$traitName])) {
-                continue;
-            }
-
-            $trait = $this->traits[$traitName];
-            $trait->usedBy[] = $class->name;
-
-            foreach ($trait->properties as $property) {
-                if (!isset($class->properties[$property->name])) {
-                    $class->properties[$property->name] = $property;
-                }
-            }
-
-            foreach ($trait->methods as $method) {
-                if (!isset($class->methods[$method->name])) {
-                    $class->methods[$method->name] = $method;
                 }
             }
         }
