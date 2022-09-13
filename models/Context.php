@@ -229,12 +229,12 @@ class Context extends Component
      */
     protected function handleTraitInheritance($class)
     {
-        foreach ($class->traits as $trait) {
-            if (!isset($this->traits[$trait])) {
+        foreach ($class->traits as $traitName) {
+            if (!isset($this->traits[$traitName])) {
                 continue;
             }
 
-            $trait = $this->traits[$trait];
+            $trait = $this->traits[$traitName];
             $trait->usedBy[] = $class->name;
 
             foreach ($trait->properties as $property) {
