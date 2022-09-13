@@ -1,38 +1,41 @@
 <?php
 
-use yii\apidoc\models\ClassDoc;
-use yii\apidoc\models\InterfaceDoc;
-use yii\apidoc\models\TraitDoc;
+use yii\apidoc\helpers\ApiMarkdown;
 
-/* @var $types ClassDoc[]|InterfaceDoc[]|TraitDoc[] */
-/* @var $this yii\web\View */
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/**
+ * @var yii\apidoc\models\ClassDoc[]|yii\apidoc\models\InterfaceDoc[]|yii\apidoc\models\TraitDoc[] $types
+ * @var string|null $readme
+ * @var yii\web\View $this
+ */
 
+/** @var yii\apidoc\templates\bootstrap\ApiRenderer $renderer */
 $renderer = $this->context;
 
+ksort($types);
+
 if (isset($readme)) {
-    echo \yii\apidoc\helpers\ApiMarkdown::process($readme);
+    echo ApiMarkdown::process($readme);
 }
 ?>
 <h1>Class Reference</h1>
 
 <table class="summaryTable docIndex table table-bordered table-striped table-hover">
     <colgroup>
-        <col class="col-package" />
-        <col class="col-class" />
-        <col class="col-description" />
+        <col class="col-class">
+        <col class="col-description">
     </colgroup>
-    <tr>
-        <th>Class</th>
-        <th>Description</th>
-    </tr>
-<?php
-ksort($types);
-foreach ($types as $i => $class):
-?>
-    <tr>
-        <td><?= $renderer->createTypeLink($class, $class, $class->name) ?></td>
-        <td><?= \yii\apidoc\helpers\ApiMarkdown::process($class->shortDescription, $class, true) ?></td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Class</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php foreach ($types as $class): ?>
+        <tr>
+            <td><?= $renderer->createTypeLink($class, $class, $class->name) ?></td>
+            <td><?= ApiMarkdown::process($class->shortDescription, $class, true) ?></td>
+        </tr>
 <?php endforeach; ?>
+    </tbody>
 </table>
