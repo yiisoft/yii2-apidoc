@@ -118,6 +118,10 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->updateSubclassInterfacesTraits($class);
         }
+        // update implementedBy and usedBy for traits
+        foreach ($this->classes as $class) {
+            $this->handleTraitInheritance($class);
+        }
         foreach ($this->interfaces as $interface) {
             foreach ($interface->parentInterfaces as $pInterface) {
                 if (isset($this->interfaces[$pInterface])) {
@@ -132,10 +136,6 @@ class Context extends Component
         // inherit properties, methods, constants and events from parent classes
         foreach ($this->classes as $class) {
             $this->handleClassInheritance($class);
-        }
-        // update implementedBy and usedBy for traits
-        foreach ($this->classes as $class) {
-            $this->handleTraitInheritance($class);
         }
         // update implementedBy and usedBy for interfaces
         foreach ($this->classes as $class) {
@@ -214,11 +214,14 @@ class Context extends Component
 
             foreach ($attrNames as $attrName) {
                 foreach ($parent->$attrName as $item) {
-                    if (isset($class->$attrName[$item->name])) {
+                    if (
+                        isset($class->$attrName[$item->name]) &&
+                        !isset($this->traits[$class->$attrName[$item->name]->definedBy])
+                    ) {
                         continue;
                     }
 
-                    $class->$attrName += [$item->name => $item];
+                    $class->$attrName[$item->name] = $item;
                 }
             }
         }
