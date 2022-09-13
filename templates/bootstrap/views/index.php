@@ -14,6 +14,8 @@ use yii\web\View;
 /** @var ApiRenderer $renderer */
 $renderer = $this->context;
 
+ksort($types);
+
 if (isset($readme)) {
     echo ApiMarkdown::process($readme);
 }
