@@ -120,14 +120,7 @@ class Context extends Component
         }
         // update implementedBy and usedBy for traits
         foreach ($this->classes as $class) {
-            foreach ($class->traits as $trait) {
-                if (isset($this->traits[$trait])) {
-                    $trait = $this->traits[$trait];
-                    $trait->usedBy[] = $class->name;
-                    $class->properties = array_merge($trait->properties, $class->properties);
-                    $class->methods = array_merge($trait->methods, $class->methods);
-                }
-            }
+            $this->handleTraitInheritance($class);
         }
         foreach ($this->interfaces as $interface) {
             foreach ($interface->parentInterfaces as $pInterface) {
@@ -140,22 +133,24 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, constants and events from subclasses
+        // inherit properties, methods, constants and events from parent classes
         foreach ($this->classes as $class) {
             $this->handleClassInheritance($class);
         }
         // update implementedBy and usedBy for interfaces
         foreach ($this->classes as $class) {
             foreach ($class->interfaces as $interface) {
-                if (isset($this->interfaces[$interface])) {
-                    $this->interfaces[$interface]->implementedBy[] = $class->name;
-                    if ($class->isAbstract) {
-                        // add not implemented interface methods
-                        foreach ($this->interfaces[$interface]->methods as $method) {
-                            if (!isset($class->methods[$method->name])) {
-                                $class->methods[$method->name] = $method;
-                            }
-                        }
+                if (!isset($this->interfaces[$interface])) {
+                    continue;
+                }
+                $this->interfaces[$interface]->implementedBy[] = $class->name;
+                if (!$class->isAbstract) {
+                    continue;
+                }
+                // add not implemented interface methods
+                foreach ($this->interfaces[$interface]->methods as $method) {
+                    if (!isset($class->methods[$method->name])) {
+                        $class->methods[$method->name] = $method;
                     }
                 }
             }
@@ -205,6 +200,33 @@ class Context extends Component
     /**
      * @param ClassDoc $class
      */
+    protected function handleTraitInheritance($class)
+    {
+        foreach ($class->traits as $traitName) {
+            if (!isset($this->traits[$traitName])) {
+                continue;
+            }
+
+            $trait = $this->traits[$traitName];
+            $trait->usedBy[] = $class->name;
+
+            foreach ($trait->properties as $property) {
+                if (!isset($class->properties[$property->name])) {
+                    $class->properties[$property->name] = $property;
+                }
+            }
+
+            foreach ($trait->methods as $method) {
+                if (!isset($class->methods[$method->name])) {
+                    $class->methods[$method->name] = $method;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param ClassDoc $class
+     */
     protected function handleClassInheritance($class)
     {
         $parents = $this->getParents($class);
@@ -219,11 +241,14 @@ class Context extends Component
 
             foreach ($attrNames as $attrName) {
                 foreach ($parent->$attrName as $item) {
-                    if (isset($class->$attrName[$item->name])) {
+                    if (
+                        isset($class->$attrName[$item->name]) &&
+                        !isset($this->traits[$class->$attrName[$item->name]->definedBy])
+                    ) {
                         continue;
                     }
 
-                    $class->$attrName += [$item->name => $item];
+                    $class->$attrName[$item->name] = $item;
                 }
             }
         }
