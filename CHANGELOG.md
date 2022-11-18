@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.6 under development
+3.0.6 November 18, 2022
 -----------------------
 
 - Bug #288: Improve handling of trait inheritance - precedence, prevent methods' and properties' duplication (arogachev)
