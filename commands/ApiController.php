@@ -125,24 +125,15 @@ class ApiController extends BaseController
         $renderer->controller = $this;
         $renderer->render($context, $targetDir);
 
-        $hashAlgo = in_array('xxh3', hash_algos()) ? 'xxh3' : 'crc32';
         if (!empty($context->errors)) {
-            $errors = [];
-            foreach ($context->errors as $error) {
-                $errors[hash($hashAlgo, json_encode($error))] = $error;
-            }
-            $errors = array_values($errors);
+            $errors = array_map('unserialize', array_unique(array_map('serialize', $context->errors)));
             ArrayHelper::multisort($errors, 'file');
             file_put_contents($targetDir . '/errors.txt', print_r($errors, true));
             $this->stdout(count($errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
-            $warnings = [];
-            foreach ($context->warnings as $warning) {
-                $warnings[hash($hashAlgo, json_encode($warning))] = $warning;
-            }
-            $warnings = array_values($warnings);
+            $warnings = array_map('unserialize', array_unique(array_map('serialize', $context->warnings)));
             ArrayHelper::multisort($warnings, 'file');
             file_put_contents($targetDir . '/warnings.txt', print_r($warnings, true));
             $this->stdout(count($warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
