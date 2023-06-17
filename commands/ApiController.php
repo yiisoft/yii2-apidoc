@@ -125,16 +125,27 @@ class ApiController extends BaseController
         $renderer->controller = $this;
         $renderer->render($context, $targetDir);
 
+        $hashAlgo = in_array('xxh3', hash_algos()) ? 'xxh3' : 'crc32';
         if (!empty($context->errors)) {
-            ArrayHelper::multisort($context->errors, 'file');
-            file_put_contents($targetDir . '/errors.txt', print_r($context->errors, true));
-            $this->stdout(count($context->errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
+            $errors = [];
+            foreach ($context->errors as $error) {
+                $errors[hash($hashAlgo, json_encode($error))] = $error;
+            }
+            $errors = array_values($errors);
+            ArrayHelper::multisort($errors, 'file');
+            file_put_contents($targetDir . '/errors.txt', print_r($errors, true));
+            $this->stdout(count($errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
-            ArrayHelper::multisort($context->warnings, 'file');
-            file_put_contents($targetDir . '/warnings.txt', print_r($context->warnings, true));
-            $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
+            $warnings = [];
+            foreach ($context->warnings as $warning) {
+                $warnings[hash($hashAlgo, json_encode($warning))] = $warning;
+            }
+            $warnings = array_values($warnings);
+            ArrayHelper::multisort($warnings, 'file');
+            file_put_contents($targetDir . '/warnings.txt', print_r($warnings, true));
+            $this->stdout(count($warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
         }
 
         return 0;
