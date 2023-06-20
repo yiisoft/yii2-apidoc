@@ -126,15 +126,17 @@ class ApiController extends BaseController
         $renderer->render($context, $targetDir);
 
         if (!empty($context->errors)) {
-            ArrayHelper::multisort($context->errors, 'file');
-            file_put_contents($targetDir . '/errors.txt', print_r($context->errors, true));
-            $this->stdout(count($context->errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
+            $errors = array_map('unserialize', array_unique(array_map('serialize', $context->errors)));
+            ArrayHelper::multisort($errors, 'file');
+            file_put_contents($targetDir . '/errors.txt', print_r($errors, true));
+            $this->stdout(count($errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
-            ArrayHelper::multisort($context->warnings, 'file');
-            file_put_contents($targetDir . '/warnings.txt', print_r($context->warnings, true));
-            $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
+            $warnings = array_map('unserialize', array_unique(array_map('serialize', $context->warnings)));
+            ArrayHelper::multisort($warnings, 'file');
+            file_put_contents($targetDir . '/warnings.txt', print_r($warnings, true));
+            $this->stdout(count($warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
         }
 
         return 0;
