@@ -23,14 +23,14 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require --prefer-dist yiisoft/yii2-apidoc
+composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.6"
 ```
 
 The above command may not work on an existing project due to version conflicts that need to be resolved, so it
 is preferred to add the package manually to the `require` section of your composer.json:
 
 ```json
-"yiisoft/yii2-apidoc": "~2.1.0"
+"yiisoft/yii2-apidoc": "~3.0.6"
 ```
 
 afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
@@ -39,13 +39,14 @@ want to avoid updating unrelated packages.
 
 Usage
 -----
+This extension creates executable at `/vendor/bin`. Please do change directory to that directory if you  do not want to use full path i.e `/vendor/bin/apidoc` and use just the executable name as with below examples.
 
 This extension offers two commands:
 
 1)`api` to generate class API documentation. [phpDocumentor](https://www.phpdoc.org/) is used as a base framework
   so refer to its guide for the syntax.
 
-The output of `help api` command:
+The output of `help api` command (i.e `apidoc help api`):
 
 ```
 DESCRIPTION
@@ -106,7 +107,7 @@ OPTIONS
 
 2)`guide` to render nice HTML pages from markdown files such as the yii guide.
 
-The output of `help guide` command:
+The output of `help guide` command (i.e `apidoc help guide`):
 
 ```
 DESCRIPTION
