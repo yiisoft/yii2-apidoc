@@ -1,14 +1,14 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
 
-use yii\apidoc\helpers\PrettyPrinter;
-use yii\base\Object;
+use phpDocumentor\Reflection\Php\Argument;
+use yii\base\BaseObject;
 
 /**
  * Represents API documentation information for a [[FunctionDoc|function]] or [[MethodDoc|method]] `param`.
@@ -16,7 +16,7 @@ use yii\base\Object;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class ParamDoc extends Object
+class ParamDoc extends BaseObject
 {
     public $name;
     public $typeHint;
@@ -31,7 +31,7 @@ class ParamDoc extends Object
 
 
     /**
-     * @param \phpDocumentor\Reflection\FunctionReflector\ArgumentReflector $reflector
+     * @param Argument $reflector
      * @param Context $context
      * @param array $config
      */
@@ -39,18 +39,18 @@ class ParamDoc extends Object
     {
         parent::__construct($config);
 
-        if ($reflector === null) {
-            return;
+        if ($reflector !== null) {
+            $this->name = $reflector->getName();
+            $this->typeHint = (string) $reflector->getType();
+            $this->defaultValue = $reflector->getDefault();
+            $this->isOptional = $this->defaultValue !== null;
+            $this->isPassedByReference = $reflector->isByReference();
         }
 
-        $this->name = $reflector->getName();
-        $this->typeHint = $reflector->getType();
-        $this->isOptional = $reflector->getDefault() !== null;
+        $this->name = '$' . $this->name ;
 
-        // bypass $reflector->getDefault() for short array syntax
-        if ($reflector->getNode()->default) {
-            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getNode()->default);
+        if ($this->typeHint === 'mixed') {
+            $this->typeHint = '';
         }
-        $this->isPassedByReference = $reflector->isByRef();
     }
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\helpers;
@@ -36,7 +36,14 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     protected function renderApiLink($block)
     {
         // TODO allow break also on camel case
-        $latex = '\texttt{'.str_replace(['\\textbackslash', '::'], ['\allowbreak{}\\textbackslash', '\allowbreak{}::\allowbreak{}'], $this->escapeLatex(strip_tags($block[1]))).'}';
+        $latex = '\texttt{';
+        $latex .= str_replace(
+            ['\\textbackslash', '::'],
+            ['\allowbreak{}\\textbackslash', '\allowbreak{}::\allowbreak{}'],
+            $this->escapeLatex(strip_tags($block[1]))
+        );
+        $latex .= '}';
+
         return $latex;
     }
 
@@ -63,16 +70,51 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         return "$translation ";
     }
 
+    protected function renderHeadline($block)
+    {
+        foreach ($block['content'] as $i => &$item) {
+            if ($item[0] === 'inlineCode') {
+                unset($block['content'][$i]);
+            }
+        }
+
+        return parent::renderHeadline($block);
+    }
+
     /**
      * Renders a blockquote
      */
     protected function renderQuote($block)
     {
-        if (isset($block['blocktype'])) {
-            // TODO render nice icon for different block types: note, info, warning, tip
-            //$class = ' class="' . $block['blocktype'] . '"';
-        }
         return '\begin{quote}' . $this->renderAbsy($block['content']) . "\\end{quote}\n";
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function renderCode($block)
+    {
+        $language = $block['language'] ?? 'text';
+        // replace No-Break Space characters in code block, which do not render in LaTeX
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block['content']);
+
+        return implode("\n", [
+            "\\begin{minted}{" . "$language}",
+            $content,
+            '\end{minted}',
+            '',
+        ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function renderInlineCode($block)
+    {
+        // replace No-Break Space characters in code block, which do not render in LaTeX
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block[1]);
+
+        return '\\mintinline{text}{' . str_replace("\n", ' ', $content) . '}';
     }
 
     /**

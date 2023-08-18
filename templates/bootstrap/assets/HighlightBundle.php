@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\templates\bootstrap\assets;
@@ -19,6 +19,6 @@ class HighlightBundle extends \yii\web\AssetBundle
 {
     public $sourcePath = '@vendor/scrivo/highlight.php/styles';
     public $css = [
-        'solarized_light.css'
+        'solarized-light.css'
     ];
 }

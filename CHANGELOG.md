@@ -1,11 +1,127 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-2.1.1 under development
+3.0.7 under development
+-----------------------
+
+- Bug #293: Logged errors and warnings were duplicated in some cases (rhertogh)
+
+
+3.0.6 November 18, 2022
+-----------------------
+
+- Bug #288: Improve handling of trait inheritance - precedence, prevent methods' and properties' duplication (arogachev)
+
+
+3.0.5 April 21, 2022
+--------------------
+
+- Bug #284: Fix empty visibility in methods and properties (arogachev)
+
+
+3.0.4 March 29, 2022
+--------------------
+
+- Bug #282: Convert newlines to spaces and consider the first sentence ended only if the dot is followed by a space in `BaseDoc::extractFirstSentence()` (WinterSilence)
+
+
+3.0.3 February 19, 2022
+-----------------------
+
+- Bug #281: Fix encoding in non English guides (arogachev)
+
+
+3.0.2 February 16, 2022
+-----------------------
+
+- Bug #280: Do not cache `Context::getReflectionProject()` at instance level because it can cause apidoc cache to contain stale data (arogachev)
+
+
+3.0.1 February 08, 2022
+-----------------------
+
+- Bug #278: Fix error: Call to a member function `getNamespaceAliases()` on null (arogachev)
+
+
+3.0.0 January 14, 2022
+----------------------
+
+- Bug #34: Improved highlighting of PHP templates (arogachev)
+- Bug #128: Fixed extracting of first sentence from the text containing backticks (arogachev)
+- Bug #133: Fixed PHP Parser error with anonymous class (arogachev)
+- Bug #148: Fixed processing of code containing uniform variable syntax (arogachev)
+- Bug #155: Fixed processing of classes containing constants with visibility (arogachev)
+- Bug #162: Fixed skipping some of PHP files / classes (arogachev)
+- Bug #168: Fixed handling of inheritance (arogachev)
+- Bug #179: Fixed incorrect output when string type hint is used in method parameters (arogachev)
+- Bug #180: Fixed "All Classes" broken link (arogachev)
+- Bug #197: Adapted fixing of Markdown links for multiple links (arogachev)
+- Bug #199: Fixed processing of nullable return types (arogachev)
+- Bug #203: Add PHP 8 compatibility, raise minimum PHP version to 7.2 (bizley, arogachev)
+- Bug #210: Fixed invalid attempt to scan parent class of interface with `@inheritdoc` tag on a method (bizley)
+- Bug #213: Fixed error: "Call to undefined method `phpDocumentor\Reflection\Php\Argument::getNode()`" (arogachev)
+- Bug #218: Extended detection of `@inheritdoc` tag in `BaseDoc` (WinterSilence)
+- Bug #239: Do not show a "virtual" / "magic" method's full description if it matches short description (arogachev)
+- Bug #240: Fixed a bug when a "virtual" / "magic" property's full description was displayed instead of preview in 
+  properties list (arogachev)
+- Bug #241: Do not show a method's source code when it's empty (arogachev)
+- Enh #18: Added pretty print for arrays (arogachev)
+- Enh #36: Allow customizing "All classes url" and "Available since version" label for type in HTML API (arogachev)
+- Enh #126: Resolve static return type (arogachev)
+- Enh #134: Swapped listings package with minted for better code highlighting in PDF guide (arogachev)
+- Enh #140: Added support for multiple "since" tags (arogachev)
+- Enh #143: Do not include methods and properties marked as internal (arogachev)
+- Enh #146: Updated `nikic/php-parser` version (bizley, arogachev)
+- Enh #147: Added feature of viewing method source code without external links (arogachev)
+- Enh #159: Added support to relative links within a repository in HTML API (arogachev)
+- Enh #161: Render API link text in web guide (arogachev)
+- Enh #196: Added support for PHPDoc inline links (arogachev)
+- Enh #209: Added support for todos in properties and methods (arogachev)
+
+
+2.1.6 May 05, 2021
+------------------
+
+- Bug #206: Fixed invalid path to `solarized-light.css` in `HighlightBundle` (bu4ak)
+
+
+2.1.5 July 19, 2020
+-------------------
+
+- Bug #163: Do not stop on fatal errors during parsing source files (samdark)
+- Bug #198: Add missing initialization of `$contexts` in `ApiMarkdownTrait::parseApiLinks()` (samdark)
+
+
+2.1.4 May 02, 2020
+------------------
+
+- Enh #7, #132: Add support for `@property` and `@method` (samdark)
+
+
+2.1.3 February 12, 2020
+-----------------------
+
+- Bug #145: Fixed broken API links on property/method docs that were pulled in with @inheritdoc (brandonkelly)
+- Bug #187: Prevent getter/setter methods from affecting class-defined property docs (brandonkelly)
+- Enh #137: @since tags are now propagated to inherited methods/properties in the same package (brandonkelly)
+- Enh #185: Use HTTPS for www.php.net links (kamarton)
+
+
+2.1.2 August 20, 2019
+---------------------
+
+- Bug #172: Upgraded highlight.js dependency to 9.13.1 (samdark)
+- Bug #176: Prevent multiple TOC rendering in ApiMarkdown (machour)
+
+
+2.1.1 November 14, 2018
 -----------------------
 
 - Bug #149: Fixed crash on wrongly formatted API links (cebe, santosh-1265)
+- Bug #160: Fixed parsing of '{@inheritdoc}' tag (klimov-paul)
+- Bug: Usage of deprecated `yii\base\Object` changed to `yii\base\BaseObject` allowing compatibility with PHP 7.2 (klimov-paul)
 - Enh #38: Fixed display of default values given as octal or hex notation (hiqsol)
+- Enh #152: Set `@bower` and `@npm` aliases dependent on the existing directories (ricpelo)
 - Enh: Display TOC only if there is more than one headline (cebe)
 - Enh: Extracted markdown code highlighting to a trait `MarkdownHighlightTrait` (cebe)
 - Enh: Added "type" attribute to JSON renderer to keep information about whether an entry is a class, interface or trait (cebe)

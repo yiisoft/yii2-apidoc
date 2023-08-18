@@ -1,11 +1,15 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
+
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Php\Constant;
+use yii\apidoc\helpers\PrettyPrinter;
 
 /**
  * Represents API documentation information for a `constant`.
@@ -20,11 +24,12 @@ class ConstDoc extends BaseDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\ConstantReflector $reflector
+     * @param Constant $reflector
      * @param Context $context
      * @param array $config
+     * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
         parent::__construct($reflector, $context, $config);
 

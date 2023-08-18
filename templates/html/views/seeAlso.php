@@ -3,17 +3,20 @@
 /* @var $object yii\apidoc\models\BaseDoc */
 /* @var $this yii\web\View */
 
-$type = $object instanceof \yii\apidoc\models\TypeDoc ? $object : $object->definedBy;
+use yii\apidoc\helpers\ApiMarkdown;
+use yii\apidoc\models\TypeDoc;
+
+$type = $object instanceof TypeDoc ? $object : $object->definedBy;
 
 $see = [];
 foreach ($object->tags as $tag) {
-    /** @var $tag phpDocumentor\Reflection\DocBlock\Tag\SeeTag */
-    if (get_class($tag) == 'phpDocumentor\Reflection\DocBlock\Tag\SeeTag') {
+    /** @var $tag phpDocumentor\Reflection\DocBlock\Tags\See */
+    if (get_class($tag) == 'phpDocumentor\Reflection\DocBlock\Tags\See') {
         $ref = $tag->getReference();
         if (strpos($ref, '://') === false) {
             $ref = '[[' . $ref . ']]';
         }
-        $see[] = rtrim(\yii\apidoc\helpers\ApiMarkdown::process($ref . ' ' . $tag->getDescription(), $type, true), ". \r\n");
+        $see[] = rtrim(ApiMarkdown::process($ref . ' ' . $tag->getDescription(), $type, true), ". \r\n");
     }
 }
 if (empty($see)) {

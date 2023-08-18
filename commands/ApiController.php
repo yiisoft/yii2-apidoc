@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\commands;
@@ -30,6 +30,13 @@ class ApiController extends BaseController
      * @var string prefix to prepend to all guide file names.
      */
     public $guidePrefix = 'guide-';
+    /**
+     * @var string Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+     * within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+     * skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+     * left as is.
+     */
+    public $repoUrl;
 
     /**
      * @var string URL for the README to use for the index of the guide.
@@ -43,7 +50,7 @@ class ApiController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return int
+     * @return int status code.
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {
@@ -74,6 +81,8 @@ class ApiController extends BaseController
             }
         }
 
+        $renderer->repoUrl = rtrim($this->repoUrl, '/');
+
         // search for files to process
         if (($files = $this->searchFiles($sourceDirs)) === false) {
             return 1;
@@ -103,9 +112,14 @@ class ApiController extends BaseController
         Console::startProgress(0, $fileCount, 'Processing files... ', false);
         $done = 0;
         foreach ($files as $file) {
-            $context->addFile($file);
+            try {
+                $context->addFile($file);
+            } catch (\Exception $e) {
+                $context->errors[] = "Unable to process \"$file\": " . $e->getMessage();
+            }
             Console::updateProgress(++$done, $fileCount);
         }
+        $context->processFiles();
         Console::endProgress(true);
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
 
@@ -119,16 +133,20 @@ class ApiController extends BaseController
         $renderer->render($context, $targetDir);
 
         if (!empty($context->errors)) {
-            ArrayHelper::multisort($context->errors, 'file');
-            file_put_contents($targetDir . '/errors.txt', print_r($context->errors, true));
-            $this->stdout(count($context->errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
+            $errors = array_map('unserialize', array_unique(array_map('serialize', $context->errors)));
+            ArrayHelper::multisort($errors, 'file');
+            file_put_contents($targetDir . '/errors.txt', print_r($errors, true));
+            $this->stdout(count($errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
-            ArrayHelper::multisort($context->warnings, 'file');
-            file_put_contents($targetDir . '/warnings.txt', print_r($context->warnings, true));
-            $this->stdout(count($context->warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
+            $warnings = array_map('unserialize', array_unique(array_map('serialize', $context->warnings)));
+            ArrayHelper::multisort($warnings, 'file');
+            file_put_contents($targetDir . '/warnings.txt', print_r($warnings, true));
+            $this->stdout(count($warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
         }
+
+        return 0;
     }
 
     /**
@@ -160,7 +178,7 @@ class ApiController extends BaseController
 
     /**
      * @inheritdoc
-     * @return ApiRenderer
+     * @return ApiRenderer|false
      */
     protected function findRenderer($template)
     {
@@ -184,6 +202,6 @@ class ApiController extends BaseController
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'readmeUrl']);
+        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'readmeUrl', 'repoUrl']);
     }
 }

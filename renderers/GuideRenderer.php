@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\renderers;
@@ -25,7 +25,6 @@ abstract class GuideRenderer extends BaseRenderer
      * @param $targetDir
      */
     abstract public function render($files, $targetDir);
-
 
     /**
      * Loads guide structure from a set of files

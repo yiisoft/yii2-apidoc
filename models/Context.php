@@ -1,19 +1,23 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\FileReflector;
+use phpDocumentor\Reflection\DocBlockFactory;
+use phpDocumentor\Reflection\File\LocalFile;
+use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
+use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
+use phpDocumentor\Reflection\Php\Project;
+use phpDocumentor\Reflection\Php\ProjectFactory;
+use yii\apidoc\helpers\PrettyPrinter;
 use yii\base\Component;
 
 /**
- *
  * @author Carsten Brandt <mail@cebe.cc>
- * @since 2.0
  */
 class Context extends Component
 {
@@ -39,7 +43,6 @@ class Context extends Component
     public $errors = [];
     /**
      * @var array
-     * @since 2.0.6
      */
     public $warnings = [];
 
@@ -52,15 +55,28 @@ class Context extends Component
     public function getType($type)
     {
         $type = ltrim($type, '\\');
+
         if (isset($this->classes[$type])) {
             return $this->classes[$type];
-        } elseif (isset($this->interfaces[$type])) {
+        }
+        if (isset($this->interfaces[$type])) {
             return $this->interfaces[$type];
-        } elseif (isset($this->traits[$type])) {
+        }
+        if (isset($this->traits[$type])) {
             return $this->traits[$type];
         }
 
         return null;
+    }
+
+    public function processFiles()
+    {
+        $projectFiles = $this->getReflectionProject()->getFiles();
+        foreach ($this->files as $fileName => $hash) {
+            $reflection = $projectFiles[$fileName];
+
+            $this->parseFile($reflection, $fileName);
+        }
     }
 
     /**
@@ -70,10 +86,10 @@ class Context extends Component
     public function addFile($fileName)
     {
         $this->files[$fileName] = sha1_file($fileName);
+    }
 
-        $reflection = new FileReflector($fileName, true);
-        $reflection->process();
-
+    private function parseFile($reflection, $fileName)
+    {
         foreach ($reflection->getClasses() as $class) {
             $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
             $this->classes[$class->name] = $class;
@@ -88,9 +104,6 @@ class Context extends Component
         }
     }
 
-    /**
-     * Updates references
-     */
     public function updateReferences()
     {
         // update all subclass references
@@ -105,29 +118,9 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->updateSubclassInterfacesTraits($class);
         }
-        // update implementedBy and usedBy for interfaces and traits
+        // update implementedBy and usedBy for traits
         foreach ($this->classes as $class) {
-            foreach ($class->traits as $trait) {
-                if (isset($this->traits[$trait])) {
-                    $trait = $this->traits[$trait];
-                    $trait->usedBy[] = $class->name;
-                    $class->properties = array_merge($trait->properties, $class->properties);
-                    $class->methods = array_merge($trait->methods, $class->methods);
-                }
-            }
-            foreach ($class->interfaces as $interface) {
-                if (isset($this->interfaces[$interface])) {
-                    $this->interfaces[$interface]->implementedBy[] = $class->name;
-                    if ($class->isAbstract) {
-                        // add not implemented interface methods
-                        foreach ($this->interfaces[$interface]->methods as $method) {
-                            if (!isset($class->methods[$method->name])) {
-                                $class->methods[$method->name] = $method;
-                            }
-                        }
-                    }
-                }
-            }
+            $this->handleTraitInheritance($class);
         }
         foreach ($this->interfaces as $interface) {
             foreach ($interface->parentInterfaces as $pInterface) {
@@ -140,9 +133,27 @@ class Context extends Component
         foreach ($this->classes as $class) {
             $this->inheritDocs($class);
         }
-        // inherit properties, methods, contants and events to subclasses
+        // inherit properties, methods, constants and events from parent classes
         foreach ($this->classes as $class) {
-            $this->updateSubclassInheritance($class);
+            $this->handleClassInheritance($class);
+        }
+        // update implementedBy and usedBy for interfaces
+        foreach ($this->classes as $class) {
+            foreach ($class->interfaces as $interface) {
+                if (!isset($this->interfaces[$interface])) {
+                    continue;
+                }
+                $this->interfaces[$interface]->implementedBy[] = $class->name;
+                if (!$class->isAbstract) {
+                    continue;
+                }
+                // add not implemented interface methods
+                foreach ($this->interfaces[$interface]->methods as $method) {
+                    if (!isset($class->methods[$method->name])) {
+                        $class->methods[$method->name] = $method;
+                    }
+                }
+            }
         }
         foreach ($this->interfaces as $interface) {
             $this->updateSubInterfaceInheritance($interface);
@@ -172,6 +183,7 @@ class Context extends Component
     /**
      * Add implemented interfaces and used traits to subclasses
      * @param ClassDoc $class
+     * @deprecated Use handleClassInheritance() instead
      */
     protected function updateSubclassInheritance($class)
     {
@@ -186,22 +198,81 @@ class Context extends Component
     }
 
     /**
-     * Add methods to subinterfaces
-     * @param InterfaceDoc $class
+     * @param ClassDoc $class
      */
-    protected function updateSubInterfaceInheritance($interface)
+    protected function handleTraitInheritance($class)
     {
-        foreach ($interface->implementedBy as $subInterface) {
-            if (isset($this->interfaces[$subInterface])) {
-                $subInterface = $this->interfaces[$subInterface];
-                $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
-                $this->updateSubInterfaceInheritance($subInterface);
+        foreach ($class->traits as $traitName) {
+            if (!isset($this->traits[$traitName])) {
+                continue;
+            }
+
+            $trait = $this->traits[$traitName];
+            $trait->usedBy[] = $class->name;
+
+            foreach ($trait->properties as $property) {
+                if (!isset($class->properties[$property->name])) {
+                    $class->properties[$property->name] = $property;
+                }
+            }
+
+            foreach ($trait->methods as $method) {
+                if (!isset($class->methods[$method->name])) {
+                    $class->methods[$method->name] = $method;
+                }
             }
         }
     }
 
     /**
-     * Inhertit docsblocks using `@inheritDoc` tag.
+     * @param ClassDoc $class
+     */
+    protected function handleClassInheritance($class)
+    {
+        $parents = $this->getParents($class);
+        if (!$parents) {
+            return;
+        }
+
+        $attrNames = ['events', 'constants', 'properties', 'methods'];
+
+        foreach ($parents as $parent) {
+            $parent = $this->classes[$parent->name];
+
+            foreach ($attrNames as $attrName) {
+                foreach ($parent->$attrName as $item) {
+                    if (
+                        isset($class->$attrName[$item->name]) &&
+                        !isset($this->traits[$class->$attrName[$item->name]->definedBy])
+                    ) {
+                        continue;
+                    }
+
+                    $class->$attrName[$item->name] = $item;
+                }
+            }
+        }
+    }
+
+    /**
+     * Add methods to subinterfaces
+     * @param InterfaceDoc $interface
+     */
+    protected function updateSubInterfaceInheritance($interface)
+    {
+        foreach ($interface->implementedBy as $name) {
+            if (!isset($this->interfaces[$name])) {
+                continue;
+            }
+
+            $subInterface = $this->interfaces[$name];
+            $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+            $this->updateSubInterfaceInheritance($subInterface);
+        }
+    }
+
+    /**
+     * Inherit docsblocks using `@inheritDoc` tag.
      * @param ClassDoc $class
      * @see http://phpdoc.org/docs/latest/guides/inheritance.html
      */
@@ -215,21 +286,27 @@ class Context extends Component
                     $this->errors[] = [
                         'line' => $p->startLine,
                         'file' => $class->sourceFile,
-                        'message' => "Method {$p->name} has no parent to inherit from in {$class->name}.",
+                        'message' => "Property {$p->name} has no parent to inherit from in {$class->name}.",
                     ];
                     continue;
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'type', 'types'] as $property) {
+                foreach (['shortDescription', 'type', 'types', 'since'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
+                        // only copy @since if the package names are equal (or missing)
+                        if ($property === 'since' && $p->getPackageName() !== $inheritedProperty->getPackageName()) {
+                            continue;
+                        }
                         $p->$property = $inheritedProperty->$property;
                     }
                 }
                 // descriptions will be concatenated.
-                $p->description = trim($p->description) . "\n\n"
-                    . trim($inheritedProperty->description) . "\n\n"
-                    . $inheritTag->getContent();
+                $p->description = implode("\n\n", [
+                    trim($p->description),
+                    trim($inheritedProperty->description),
+                    $inheritTag->getDescription(),
+                ]);
 
                 $p->removeTag('inheritdoc');
             }
@@ -248,15 +325,21 @@ class Context extends Component
                     continue;
                 }
                 // set all properties that are empty.
-                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions'] as $property) {
+                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions', 'since'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
+                        // only copy @since if the package names are equal (or missing)
+                        if ($property === 'since' && $m->getPackageName() !== $inheritedMethod->getPackageName()) {
+                            continue;
+                        }
                         $m->$property = $inheritedMethod->$property;
                     }
                 }
                 // descriptions will be concatenated.
-                $m->description = trim($m->description) . "\n\n"
-                    . trim($inheritedMethod->description) . "\n\n"
-                    . $inheritTag->getContent();
+                $m->description = implode("\n\n", [
+                    trim($m->description),
+                    trim($inheritedMethod->description),
+                    $inheritTag->getDescription(),
+                ]);
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
@@ -298,7 +381,7 @@ class Context extends Component
         foreach($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
-                if ($cmethod->hasTag('inheritdoc')) {
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
                     $this->inheritDocs($candidate);
                 }
                 $methods[] = $cmethod;
@@ -362,12 +445,12 @@ class Context extends Component
     }
 
     /**
-     * Add properties for getters and setters if class is subclass of [[\yii\base\Object]].
+     * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
      * @param ClassDoc $class
      */
     protected function handlePropertyFeature($class)
     {
-        if (!$this->isSubclassOf($class, 'yii\base\Object')) {
+        if (!$this->isSubclassOf($class, 'yii\base\BaseObject')) {
             return;
         }
         foreach ($class->getPublicMethods() as $name => $method) {
@@ -376,19 +459,18 @@ class Context extends Component
             }
             if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                if (isset($class->properties[$propertyName])) {
-                    $property = $class->properties[$propertyName];
-                    if ($property->getter === null && $property->setter === null) {
-                        $this->errors[] = [
-                            'line' => $property->startLine,
-                            'file' => $class->sourceFile,
-                            'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
-                        ];
-                    }
-                    $property->getter = $method;
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property && $property->getter === null && $property->setter === null) {
+                    $this->errors[] = [
+                        'line' => $property->startLine,
+                        'file' => $class->sourceFile,
+                        'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
+                    ];
                 } else {
+                    // Override the setter-defined property if it exists already
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
                         'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
@@ -397,27 +479,32 @@ class Context extends Component
                         'types' => $method->returnTypes,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
-                        'getter' => $method
+                        'since' => $method->since,
+                        'getter' => $method,
+                        'setter' => isset($property->setter) ? $property->setter : null,
                         // TODO set default value
                     ]);
                 }
             }
             if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
                 $propertyName = '$' . lcfirst(substr($method->name, 3));
-                if (isset($class->properties[$propertyName])) {
-                    $property = $class->properties[$propertyName];
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property) {
                     if ($property->getter === null && $property->setter === null) {
                         $this->errors[] = [
                             'line' => $property->startLine,
                             'file' => $class->sourceFile,
                             'message' => "Property $propertyName conflicts with a defined setter {$method->name} in {$class->name}.",
                         ];
+                    } else {
+                        // Just set the setter
+                        $property->setter = $method;
                     }
-                    $property->setter = $method;
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
                     $class->properties[$propertyName] = new PropertyDoc(null, $this, [
                         'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
@@ -426,7 +513,8 @@ class Context extends Component
                         'types' => $param->types,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,
-                        'setter' => $method
+                        'since' => $method->since,
+                        'setter' => $method,
                     ]);
                 }
             }
@@ -484,5 +572,22 @@ class Context extends Component
             }
         }
         return false;
+    }
+
+    public function getReflectionProject()
+    {
+        $files = [];
+        foreach ($this->files as $fileName => $hash) {
+            $files[] = new LocalFile($fileName);
+        }
+
+        $projectFactory = ProjectFactory::createInstance();
+        $docBlockFactory = DocBlockFactory::createInstance();
+        $priority = 1200;
+
+        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
+        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
+
+        return $projectFactory->create('ApiDoc', $files);
     }
 }

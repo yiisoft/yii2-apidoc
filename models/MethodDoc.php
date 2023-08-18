@@ -1,11 +1,14 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
+
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Method;
 
 /**
  * Represents API documentation information for a `method`.
@@ -21,10 +24,14 @@ class MethodDoc extends FunctionDoc
     public $visibility;
     // will be set by creating class
     public $definedBy;
+    /**
+     * @var string
+     */
+    public $sourceCode = '';
 
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\MethodReflector $reflector
+     * @param Class_|Method $reflector
      * @param Context $context
      * @param array $config
      */
@@ -40,6 +47,11 @@ class MethodDoc extends FunctionDoc
         $this->isFinal = $reflector->isFinal();
         $this->isStatic = $reflector->isStatic();
 
-        $this->visibility = $reflector->getVisibility();
+        $this->visibility = (string) $reflector->getVisibility();
+
+        $lines = file($this->sourceFile);
+        for ($i = $this->startLine - 1; $i <= $this->endLine - 1; $i++) {
+            $this->sourceCode .= substr($lines[$i], 4);
+        }
     }
 }

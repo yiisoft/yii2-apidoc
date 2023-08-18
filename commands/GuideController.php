@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\commands;
@@ -39,7 +39,7 @@ class GuideController extends BaseController
      * Renders API documentation files
      * @param array $sourceDirs
      * @param string $targetDir
-     * @return int
+     * @return int status code.
      */
     public function actionIndex(array $sourceDirs, $targetDir)
     {
@@ -103,6 +103,8 @@ class GuideController extends BaseController
             }
         }
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+
+        return 0;
     }
 
 
@@ -122,7 +124,7 @@ class GuideController extends BaseController
 
     /**
      * @inheritdoc
-     * @return GuideRenderer
+     * @return GuideRenderer|false
      */
     protected function findRenderer($template)
     {

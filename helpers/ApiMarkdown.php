@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\helpers;
@@ -76,10 +76,14 @@ class ApiMarkdown extends GithubMarkdown
                 $toc[] = '<li>' . Html::a(strip_tags($heading['title']), '#' . $heading['id']) . '</li>';
             }
             $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
-            if (strpos($content, '</h1>') !== false)
-                $content = str_replace('</h1>', "</h1>\n" . $toc, $content);
-            else
+
+            $needle = '</h1>';
+            $pos = strpos($content, $needle);
+            if ($pos !== false) {
+                $content = substr_replace($content, "$needle\n$toc", $pos, strlen($needle));
+            } else {
                 $content = $toc . $content;
+            }
         }
         return $content;
     }
@@ -121,14 +125,44 @@ class ApiMarkdown extends GithubMarkdown
      */
     protected function renderLink($block)
     {
-        $result = parent::renderLink($block);
+        $url = $block['url'];
+        if (!$url) {
+            static::$renderer->apiContext->errors[] = [
+                'line' => null,
+                'file' => null,
+                'message' => "Using empty link.",
+            ];
 
+            return parent::renderLink($block);
+        }
+
+        $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
-        $result = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function($match) {
-            return 'href="' . static::$renderer->generateGuideUrl($match[1]) . '"';
-        }, $result, 1);
+        $guideLinkHtml = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function ($matches) {
+            return 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"';
+        }, $linkHtml, 1);
+        if ($guideLinkHtml !== $linkHtml) {
+            return $guideLinkHtml;
+        }
 
-        return $result;
+        if (!property_exists(static::$renderer, 'repoUrl')) {
+            return $linkHtml;
+        }
+
+        $repoUrl = static::$renderer->repoUrl;
+        if (!$repoUrl) {
+            static::$renderer->apiContext->errors[] = [
+                'line' => null,
+                'file' => null,
+                'message' => "Using relative link ($url) but repoUrl is not set.",
+            ];
+
+            return $linkHtml;
+        }
+
+        return preg_replace_callback('/href="(.+)"/i', function ($matches) use ($repoUrl) {
+            return 'href="' . $repoUrl . '/' . $matches[1] . '"';
+        }, $linkHtml, 1);
     }
 
     /**

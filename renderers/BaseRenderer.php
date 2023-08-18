@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\renderers;
@@ -58,6 +58,41 @@ abstract class BaseRenderer extends Component
      */
     public $readmeUrl;
 
+    /**
+     * @var string[]
+     */
+    private $phpTypes = [
+        'callable',
+        'array',
+        'string',
+        'boolean',
+        'bool',
+        'integer',
+        'int',
+        'float',
+        'object',
+        'resource',
+        'null',
+        'false',
+        'true',
+    ];
+    /**
+     * @var string[]
+     */
+    private $phpTypeAliases = [
+        'true' => 'boolean',
+        'false' => 'boolean',
+        'bool' => 'boolean',
+        'int' => 'integer',
+    ];
+    /**
+     * @var string[]
+     */
+    private $phpTypeDisplayAliases = [
+        'bool' => 'boolean',
+        'int' => 'integer',
+    ];
+
     public function init()
     {
         ApiMarkdown::$renderer = $this;
@@ -67,8 +102,8 @@ abstract class BaseRenderer extends Component
     /**
      * creates a link to a type (class, interface or trait)
      * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[] $types
+     * @param BaseDoc|null $context
      * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
-     * @param BaseDoc $context
      * @param array $options additional HTML attributes for the link.
      * @return string
      */
@@ -96,53 +131,31 @@ abstract class BaseRenderer extends Component
                     $type = $t;
                 } elseif (!empty($type) && $type[0] !== '\\' && ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null) {
                     $type = $t;
-                } else {
-                    ltrim($type, '\\');
                 }
             }
+
+            if (is_object($type) && method_exists($type, '__toString')) {
+                $type = (string) $type;
+            }
+
             if (is_string($type)) {
                 $linkText = ltrim($type, '\\');
                 if ($title !== null) {
                     $linkText = $title;
                     $title = null;
                 }
-                $phpTypes = [
-                    'callable',
-                    'array',
-                    'string',
-                    'boolean',
-                    'bool',
-                    'integer',
-                    'int',
-                    'float',
-                    'object',
-                    'resource',
-                    'null',
-                    'false',
-                    'true',
-                ];
-                $phpTypeAliases = [
-                    'true' => 'boolean',
-                    'false' => 'boolean',
-                    'bool' => 'boolean',
-                    'int' => 'integer',
-                ];
-                $phpTypeDisplayAliases = [
-                    'bool' => 'boolean',
-                    'int' => 'integer',
-                ];
                 // check if it is PHP internal class
                 if (((class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
                     ($reflection = new \ReflectionClass($type)) && $reflection->isInternal())) {
-                    $links[] = $this->generateLink($linkText, 'http://www.php.net/class.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
-                } elseif (in_array($type, $phpTypes)) {
-                    if (isset($phpTypeDisplayAliases[$type])) {
-                        $linkText = $phpTypeDisplayAliases[$type];
+                    $links[] = $this->generateLink($linkText, 'https://www.php.net/class.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
+                } elseif (in_array($type, $this->phpTypes)) {
+                    if (isset($this->phpTypeDisplayAliases[$type])) {
+                        $linkText = $this->phpTypeDisplayAliases[$type];
                     }
-                    if (isset($phpTypeAliases[$type])) {
-                        $type = $phpTypeAliases[$type];
+                    if (isset($this->phpTypeAliases[$type])) {
+                        $type = $this->phpTypeAliases[$type];
                     }
-                    $links[] = $this->generateLink($linkText, 'http://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
+                    $links[] = $this->generateLink($linkText, 'https://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
                 } else {
                     $links[] = $type . $postfix;
                 }
@@ -160,13 +173,46 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * creates a link to a subject
-     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
-     * @param string $title
-     * @param array $options additional HTML attributes for the link.
+     * @param MethodDoc $method
+     * @param TypeDoc $type
      * @return string
      */
-    public function createSubjectLink($subject, $title = null, $options = [])
+    public function createMethodReturnTypeLink($method, $type)
+    {
+        if (!($type instanceof ClassDoc) || $type->isAbstract) {
+            return $this->createTypeLink($method->returnTypes, $type);
+        }
+
+        $returnTypes = [];
+        foreach ($method->returnTypes as $returnType) {
+            if ($returnType !== 'static' && $returnType !== 'static[]') {
+                $returnTypes[] = $returnType;
+
+                continue;
+            }
+
+            $context = $this->apiContext;
+            if (isset($context->interfaces[$method->definedBy]) || isset($context->traits[$method->definedBy])) {
+                $replacement = $type->name;
+            } else {
+                $replacement = $method->definedBy;
+            }
+
+            $returnTypes[] = str_replace('static', $replacement, $returnType);
+        }
+
+        return $this->createTypeLink($returnTypes, $type);
+    }
+
+    /**
+     * creates a link to a subject
+     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
+     * @param string|null $title
+     * @param array $options additional HTML attributes for the link.
+     * @param TypeDoc|null $type
+     * @return string
+     */
+    public function createSubjectLink($subject, $title = null, $options = [], $type = null)
     {
         if ($title === null) {
             if ($subject instanceof MethodDoc) {
@@ -175,19 +221,23 @@ abstract class BaseRenderer extends Component
                 $title = $subject->name;
             }
         }
-        if (($type = $this->apiContext->getType($subject->definedBy)) === null) {
-            return $subject->name;
-        } else {
-            $link = $this->generateApiUrl($type->name);
-            if ($subject instanceof MethodDoc) {
-                $link .= '#' . $subject->name . '()';
-            } else {
-                $link .= '#' . $subject->name;
-            }
-            $link .= '-detail';
 
-            return $this->generateLink($title, $link, $options);
+        if (!$type) {
+            $type = $this->apiContext->getType($subject->definedBy);
         }
+
+        if (!$type) {
+            return $subject->name;
+        }
+
+        $link = $this->generateApiUrl($type->name) . '#' . $subject->name;
+        if ($subject instanceof MethodDoc) {
+             $link .= '()';
+        }
+
+        $link .= '-detail';
+
+        return $this->generateLink($title, $link, $options);
     }
 
     /**
@@ -237,7 +287,7 @@ abstract class BaseRenderer extends Component
     public function generateGuideUrl($file)
     {
         //skip parsing external url
-        if ( (strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false) ) {
+        if ((strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false) ) {
             return $file;
         }
 

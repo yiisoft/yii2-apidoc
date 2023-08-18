@@ -1,11 +1,13 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
+
+use phpDocumentor\Reflection\Php\Interface_;
 
 /**
  * Represents API documentation information for an `interface`.
@@ -16,12 +18,15 @@ namespace yii\apidoc\models;
 class InterfaceDoc extends TypeDoc
 {
     public $parentInterfaces = [];
-    // will be set by Context::updateReferences()
+    /**
+     * @var string[] Class names
+     * @see Context::updateReferences() for initialization
+     */
     public $implementedBy = [];
 
 
     /**
-     * @param \phpDocumentor\Reflection\InterfaceReflector $reflector
+     * @param Interface_ $reflector
      * @param Context $context
      * @param array $config
      */
@@ -33,15 +38,18 @@ class InterfaceDoc extends TypeDoc
             return;
         }
 
-        foreach ($reflector->getParentInterfaces() as $interface) {
+        foreach ($reflector->getParents() as $interface) {
             $this->parentInterfaces[] = ltrim($interface, '\\');
         }
 
         foreach ($this->methods as $method) {
             $method->isAbstract = true;
         }
+    }
 
+    protected function initProperties($reflector, $context)
+    {
         // interface can not have properties
-        $this->properties = null;
+        $this->properties = [];
     }
 }

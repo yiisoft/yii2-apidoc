@@ -2,8 +2,8 @@
 
 guide.pdf: guide-mod.tex main.tex title.tex
 	# run pdflatex twice to generate TOC correctly
-	pdflatex -halt-on-error main.tex
-	pdflatex -halt-on-error main.tex
+	pdflatex -halt-on-error -shell-escape main.tex
+	pdflatex -halt-on-error -shell-escape main.tex
 	mv main.pdf guide.pdf
 
 guide-mod.tex: guide.tex main.tex

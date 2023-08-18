@@ -7,7 +7,9 @@ use yii\apidoc\models\TraitDoc;
 /* @var $types ClassDoc[]|InterfaceDoc[]|TraitDoc[] */
 /* @var $this yii\web\View */
 
-?><h1>Class Reference</h1>
+ksort($types);
+?>
+<h1>Class Reference</h1>
 
 <table class="summaryTable docIndex">
     <colgroup>
@@ -19,10 +21,7 @@ use yii\apidoc\models\TraitDoc;
         <th>Class</th>
         <th>Description</th>
     </tr>
-<?php
-ksort($types);
-foreach ($types as $i => $class):
-?>
+<?php foreach ($types as $i => $class): ?>
     <tr>
         <td><?= $this->context->createTypeLink($class, $class, $class->name) ?></td>
         <td><?= \yii\apidoc\helpers\ApiMarkdown::process($class->shortDescription, $class, true) ?></td>

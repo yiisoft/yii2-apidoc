@@ -1,12 +1,13 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\templates\html;
 
+use Highlight\Highlighter;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\PropertyDoc;
@@ -16,7 +17,6 @@ use yii\apidoc\renderers\ApiRenderer as BaseApiRenderer;
 use yii\base\ViewContextInterface;
 use yii\helpers\Console;
 use yii\helpers\Html;
-use yii\helpers\StringHelper;
 use yii\web\AssetManager;
 use yii\web\View;
 use Yii;
@@ -24,7 +24,7 @@ use Yii;
 /**
  * The base class for HTML API documentation renderers.
  *
- * @property View $view The view instance. This property is read-only.
+ * @property-read View $view The view instance.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -43,14 +43,28 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * @var string path or alias of the view file to use for rendering the index page.
      */
     public $indexView = '@yii/apidoc/templates/html/views/index.php';
+    /**
+     * @var string
+     */
+    public $allClassesUrl = 'index';
+    /**
+     * @var string
+     */
+    public $typeAvailableSinceVersionLabel = 'Available since version';
 
     /**
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
@@ -84,7 +98,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      * Renders a given [[Context]].
      *
      * @param Context $context the api documentation context to render.
-     * @param $targetDir
+     * @param string $targetDir
      */
     public function render($context, $targetDir)
     {
@@ -97,12 +111,15 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         if ($this->controller !== null) {
             Console::startProgress(0, $typeCount, 'Rendering files: ', false);
         }
+
         $done = 0;
+        $higlighter = new Highlighter;
+
         foreach ($types as $type) {
             $fileContent = $this->renderWithLayout($this->typeView, [
                 'type' => $type,
-                'apiContext' => $context,
                 'types' => $types,
+                'highlighter' => $higlighter,
             ]);
             file_put_contents($targetDir . '/' . $this->generateFileName($type->name), $fileContent);
 
@@ -111,10 +128,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             }
         }
 
-        $indexFileContent = $this->renderWithLayout($this->indexView, [
-            'apiContext' => $context,
-            'types' => $types,
-        ]);
+        $indexFileContent = $this->renderWithLayout($this->indexView, ['types' => $types]);
         file_put_contents($targetDir . '/index.html', $indexFileContent);
 
         if ($this->controller !== null) {
@@ -135,11 +149,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         $output = $this->getView()->render($viewFile, $params, $this);
         if ($this->layout !== false) {
             $params['content'] = $output;
-
             return $this->getView()->renderFile($this->layout, $params, $this);
-        } else {
-            return $output;
         }
+
+        return $output;
     }
 
     /**
@@ -222,6 +235,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
     /**
      * @param PropertyDoc $property
+     * @param mixed $context
      * @return string
      */
     public function renderPropertySignature($property, $context = null)

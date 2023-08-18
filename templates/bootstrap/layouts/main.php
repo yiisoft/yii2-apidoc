@@ -6,6 +6,7 @@ use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
 /* @var $this yii\web\View */
+/* @var $content string */
 
 \yii\apidoc\templates\bootstrap\assets\AssetBundle::register($this);
 
@@ -28,7 +29,7 @@ $this->beginPage();
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="language" content="en" />
-    <?= Html::csrfMetaTags() ?>
+    <?php $this->registerCsrfMetaTags() ?>
     <?php $this->head() ?>
     <title><?php if (isset($type)) {
             echo Html::encode(StringHelper::basename($type->name) . ", {$type->name} - {$this->context->pageTitle}");

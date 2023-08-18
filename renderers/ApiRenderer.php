@@ -1,13 +1,14 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\renderers;
 
 use Yii;
+use yii\apidoc\commands\ApiController;
 use yii\apidoc\models\Context;
 
 /**
@@ -18,6 +19,13 @@ use yii\apidoc\models\Context;
  */
 abstract class ApiRenderer extends BaseRenderer
 {
+    /**
+     * @var string
+     * @see ApiController::$repoUrl
+     */
+    public $repoUrl;
+
+
     /**
      * Renders a given [[Context]].
      *

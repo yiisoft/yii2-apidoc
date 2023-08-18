@@ -1,14 +1,14 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\templates\html;
 
+use DOMDocument;
 use yii\apidoc\helpers\ApiMarkdown;
-use yii\console\Controller;
 use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
 use Yii;
@@ -19,7 +19,7 @@ use yii\web\View;
 
 /**
  *
- * @property View $view The view instance. This property is read-only.
+ * @property-read View $view The view instance.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -32,6 +32,9 @@ abstract class GuideRenderer extends BaseGuideRenderer
      * @var View
      */
     private $_view;
+    /**
+     * @var string
+     */
     private $_targetDir;
 
 
@@ -161,8 +164,21 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     protected function fixMarkdownLinks($content)
     {
-        $content = preg_replace('/href\s*=\s*"([^"\/]+)\.md(#.*)?"/i', 'href="' . $this->guidePrefix . '\1.html\2"', $content);
-        return $content;
+        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
+        $doc = new DOMDocument();
+        $doc->loadHTML($content);
+
+        foreach ($doc->getElementsByTagName('a') as $link) {
+            $href = $link->getAttribute('href');
+            if (strpos($href, '.md') === false) {
+                continue;
+            }
+
+            $href = $this->guidePrefix . str_replace('.md', '.html', $href);
+            $link->setAttribute('href', $href);
+        }
+
+        return $doc->saveHTML();
     }
 
     /**

@@ -1,20 +1,22 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\VarTag;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\Php\Property;
 use yii\apidoc\helpers\PrettyPrinter;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `property`.
  *
- * @property bool $isReadOnly If property is read only. This property is read-only.
- * @property bool $isWriteOnly If property is write only. This property is read-only.
+ * @property-read bool $isReadOnly If property is read only.
+ * @property-read bool $isWriteOnly If property is write only.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -50,7 +52,7 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\PropertyReflector $reflector
+     * @param Property $reflector
      * @param Context $context
      * @param array $config
      */
@@ -62,23 +64,20 @@ class PropertyDoc extends BaseDoc
             return;
         }
 
-        $this->visibility = $reflector->getVisibility();
+        $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-
-        // bypass $reflector->getDefault() for short array syntax
-        if ($reflector->getNode()->default) {
-            $this->defaultValue = PrettyPrinter::getRepresentationOfValue($reflector->getNode()->default);
-        }
+        $this->defaultValue = $reflector->getDefault();
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
             if ($tag->getName() === 'inheritdoc') {
                 $hasInheritdoc = true;
             }
-            if ($tag instanceof VarTag) {
-                $this->type = $tag->getType();
-                $this->types = $tag->getTypes();
-                $this->description = static::mbUcFirst($tag->getDescription());
+            if ($tag instanceof Var_) {
+                $this->type = (string) $tag->getType();
+                $this->types = $this->splitTypes($tag->getType());
+
+                $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             }
         }

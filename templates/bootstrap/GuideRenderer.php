@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\templates\bootstrap;
@@ -31,14 +31,11 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
     {
         $types = array_merge($this->apiContext->classes, $this->apiContext->interfaces, $this->apiContext->traits);
 
-        $extTypes = [];
         foreach ($this->extensions as $k => $ext) {
             $extType = $this->filterTypes($types, $ext);
             if (empty($extType)) {
                 unset($this->extensions[$k]);
-                continue;
             }
-            $extTypes[$ext] = $extType;
         }
 
         parent::render($files, $targetDir);

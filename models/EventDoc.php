@@ -1,13 +1,16 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tag\ReturnTag;
+use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
+use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for an `event`.
@@ -22,11 +25,12 @@ class EventDoc extends ConstDoc
 
 
     /**
-     * @param \phpDocumentor\Reflection\ClassReflector\ConstantReflector $reflector
+     * @param Class_|Constant $reflector
      * @param Context $context
      * @param array $config
+     * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
         parent::__construct($reflector, $context, $config);
 
@@ -35,14 +39,25 @@ class EventDoc extends ConstDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag->getName() == 'event') {
-                $eventTag = new ReturnTag('event', $tag->getContent(), $tag->getDocBlock(), $tag->getLocation());
-                $this->type = $eventTag->getType();
-                $this->types = $eventTag->getTypes();
-                $this->description = static::mbUcFirst($eventTag->getDescription());
-                $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
-                unset($this->tags[$i]);
+            if ($tag->getName() != 'event') {
+                continue;
             }
+
+            $parts = explode(' ', trim($tag->getDescription()), 2);
+            $className = $parts[0];
+            $this->description = StringHelper::mb_ucfirst($parts[1]);
+
+            if (strpos($className, '\\') !== false)  {
+                $this->type = $className;
+            } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
+                $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];
+            } else {
+                $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
+            }
+
+            $this->types = [$this->type];
+            $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            unset($this->tags[$i]);
         }
     }
 }

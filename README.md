@@ -12,6 +12,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-apidoc/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
+[![Build Status](https://github.com/yiisoft/yii2-apidoc/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-apidoc/actions)
 
 
 Installation
@@ -22,33 +23,154 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require --prefer-dist yiisoft/yii2-apidoc
+composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.6"
 ```
 
-The above command may not work on an existing project due to version conflicts that need to be resolved, so it is preferred to add the package manually to the require section of your composer.json:
+The above command may not work on an existing project due to version conflicts that need to be resolved, so it
+is preferred to add the package manually to the `require` section of your composer.json:
 
 ```json
-"yiisoft/yii2-apidoc": "~2.1.0"
+"yiisoft/yii2-apidoc": "~3.0.6"
 ```
 
-afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you want to avoid updating unrelated packages.
+afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
+want to avoid updating unrelated packages.
 
 
 Usage
 -----
+This extension creates executable at `/vendor/bin`. Please do change directory to that directory if you  do not want to use full path i.e `/vendor/bin/apidoc` and use just the executable name as with below examples.
 
 This extension offers two commands:
 
-- `api` to generate class API documentation.
-- `guide` to render nice HTML pages from markdown files such as the yii guide.
+1)`api` to generate class API documentation. [phpDocumentor](https://www.phpdoc.org/) is used as a base framework
+  so refer to its guide for the syntax.
 
-Simple usage for stand alone class documentation:
+The output of `help api` command (i.e `apidoc help api`):
+
+```
+DESCRIPTION
+
+Renders API documentation files
+
+
+USAGE
+
+apidoc api <sourceDirs> <targetDir> [...options...]
+
+- sourceDirs (required): array
+
+- targetDir (required): string
+
+
+OPTIONS
+
+--appconfig: string
+  custom application configuration file path.
+  If not set, default application configuration is used.
+
+--color: boolean, 0 or 1
+  whether to enable ANSI color in the output.
+  If not set, ANSI color will only be enabled for terminals that support it.
+
+--exclude: string|array
+  files to exclude.
+
+--guide: string
+  url to where the guide files are located
+
+--guide-prefix: string (defaults to 'guide-')
+  prefix to prepend to all guide file names.
+
+--help, -h: boolean, 0 or 1 (defaults to 0)
+  whether to display help information about current command.
+
+--interactive: boolean, 0 or 1 (defaults to 1)
+  whether to run the command interactively.
+
+--page-title: string
+
+--repo-url: string
+  Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+  within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
+  skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
+  left as is.
+
+--silent-exit-on-exception: boolean, 0 or 1
+  if true - script finish with `ExitCode::OK` in case of exception.
+  false - `ExitCode::UNSPECIFIED_ERROR`.
+  Default: `YII_ENV_TEST`
+
+--template: string (defaults to 'bootstrap')
+  template to use for rendering
+```
+
+2)`guide` to render nice HTML pages from markdown files such as the yii guide.
+
+The output of `help guide` command (i.e `apidoc help guide`):
+
+```
+DESCRIPTION
+
+Renders API documentation files
+
+
+USAGE
+
+apidoc guide <sourceDirs> <targetDir> [...options...]
+
+- sourceDirs (required): array
+
+- targetDir (required): string
+
+
+OPTIONS
+
+--api-docs: string
+  path or URL to the api docs to allow links to classes and properties/methods.
+
+--appconfig: string
+  custom application configuration file path.
+  If not set, default application configuration is used.
+
+--color: boolean, 0 or 1
+  whether to enable ANSI color in the output.
+  If not set, ANSI color will only be enabled for terminals that support it.
+
+--exclude: string|array
+  files to exclude.
+
+--guide-prefix: string (defaults to 'guide-')
+  prefix to prepend to all output file names generated for the guide.
+
+--help, -h: boolean, 0 or 1 (defaults to 0)
+  whether to display help information about current command.
+
+--interactive: boolean, 0 or 1 (defaults to 1)
+  whether to run the command interactively.
+
+--page-title: string
+
+--silent-exit-on-exception: boolean, 0 or 1
+  if true - script finish with `ExitCode::OK` in case of exception.
+  false - `ExitCode::UNSPECIFIED_ERROR`.
+  Default: `YII_ENV_TEST`
+
+--template: string (defaults to 'bootstrap')
+  template to use for rendering
+```
+
+Simple usage for stand-alone class documentation:
 
     vendor/bin/apidoc api source/directory ./output
 
-Simple usage for stand alone guide documentation:
+Simple usage for stand-alone guide documentation:
 
     vendor/bin/apidoc guide source/docs ./output
+
+Note that in order to generate a proper index file, the `README.md` file containing links to guide sections must be 
+present. An example of such file can be found 
+in the [yii2 repository](https://raw.githubusercontent.com/yiisoft/yii2/master/docs/guide/README.md).
 
 You can combine them to generate class API and guide documentation in one place:
 
@@ -57,11 +179,11 @@ You can combine them to generate class API and guide documentation in one place:
     # generate the guide (order is important to allow the guide to link to the apidoc)
     vendor/bin/apidoc guide source/docs ./output
 
-By default the `bootstrap` template will be used. You can choose a different template with the `--template=name` parameter.
-Currently there is only the `bootstrap` template available.
+By default, the `bootstrap` template will be used. You can choose a different template with the `--template=name` parameter.
+Currently, there is only the `bootstrap` template available.
 
 You may also add the `yii\apidoc\commands\ApiController` and `GuideController` to your console application command map
-and run them inside of your applications console app.
+and run them inside your application's console app.
 
 ### Generating docs from multiple sources
 
@@ -96,7 +218,13 @@ cd $APIDOC_PATH
 
 ### Creating a PDF of the guide
 
-You need `pdflatex` and GNU `make` for this.
+Prerequisites:
+
+- `pdflatex`.
+- [Pygments](https://pygments.org/).
+- GNU `make`.
+
+Generation:
 
 ```
 vendor/bin/apidoc guide source/docs ./output --template=pdf
@@ -109,7 +237,7 @@ If all runs without errors the PDF will be `guide.pdf` in the `output` dir.
 Special Markdown Syntax
 -----------------------
 
-We have a special Syntax for linking to classes in the API documentation.
+We have a special Syntax for linking to a class in the API documentation.
 See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md#markdown) for details.
 
 Generating documentation for your own project

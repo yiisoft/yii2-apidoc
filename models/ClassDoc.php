@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yii\apidoc\models;
@@ -10,22 +10,37 @@ namespace yii\apidoc\models;
 /**
  * Represents API documentation information for a `class`.
  *
- * @property EventDoc[] $nativeEvents This property is read-only.
+ * @property-read EventDoc[] $nativeEvents
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
 class ClassDoc extends TypeDoc
 {
+    /**
+     * @var string
+     */
     public $parentClass;
+    /**
+     * @var bool
+     */
     public $isAbstract;
+    /**
+     * @var bool
+     */
     public $isFinal;
     /**
      * @var string[]
      */
     public $interfaces = [];
+    /**
+     * @var string[]
+     */
     public $traits = [];
     // will be set by Context::updateReferences()
+    /**
+     * @var string[]
+     */
     public $subclasses = [];
     /**
      * @var EventDoc[]
@@ -86,7 +101,7 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParentClass(), '\\');
+        $this->parentClass = ltrim($reflector->getParent(), '\\');
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
@@ -96,13 +111,13 @@ class ClassDoc extends TypeDoc
         foreach ($reflector->getInterfaces() as $interface) {
             $this->interfaces[] = ltrim($interface, '\\');
         }
-        foreach ($reflector->getTraits() as $trait) {
+        foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
         }
         foreach ($reflector->getConstants() as $constantReflector) {
-            $docblock = $constantReflector->getDocBlock();
-            if ($docblock !== null && count($docblock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector);
+            $docBlock = $constantReflector->getDocBlock();
+            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
+                $event = new EventDoc($constantReflector, null, null, $docBlock);
                 $event->definedBy = $this->name;
                 $this->events[$event->name] = $event;
             } else {
