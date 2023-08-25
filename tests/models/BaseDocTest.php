@@ -1,8 +1,8 @@
 <?php
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yiiunit\apidoc\models;
@@ -17,18 +17,18 @@ class BaseDocTest extends TestCase
      */
     public function testExtractFirstSentenceWithBackticks()
     {
-        $initialText = 'fallback host info (e.g. `http://www.yiiframework.com`) used when '
+        $initialText = 'fallback host info (e.g. `https://www.yiiframework.com`) used when '
             . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid. This value will replace '
             . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] before [[$denyCallback]] is called to make sure that '
             . 'an invalid host will not be used for further processing. You can set it to `null` to leave '
             . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] untouched. Default value is empty string (this will '
             . 'result creating relative URLs instead of absolute).';
         $actualFirstSentence = BaseDoc::extractFirstSentence($initialText);
-        $expectedFirstSentence = 'fallback host info (e.g. `http://www.yiiframework.com`) used when '
+        $expectedFirstSentence = 'fallback host info (e.g. `https://www.yiiframework.com`) used when '
             . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.';
         $this->assertEquals($expectedFirstSentence, $actualFirstSentence);
     }
-    
+
     /**
      * @link https://github.com/yiisoft/yii2-apidoc/pull/282
      */
