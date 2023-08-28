@@ -6,7 +6,7 @@
     <br>
 </p>
 
-This extension provides an API documentation generator for the [Yii framework 2.0](http://www.yiiframework.com).
+This extension provides an API documentation generator for the [Yii framework 2.0](https://www.yiiframework.com).
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
@@ -18,7 +18,7 @@ For license information check the [LICENSE](LICENSE.md)-file.
 Installation
 ------------
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
 Either run
 
