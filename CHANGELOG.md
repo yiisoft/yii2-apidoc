@@ -1,7 +1,7 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.7 under development
+3.0.7 February 13, 2025
 -----------------------
 
 - Bug #293: Logged errors and warnings were duplicated in some cases (rhertogh)
