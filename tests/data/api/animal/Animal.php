@@ -43,4 +43,14 @@ abstract class Animal extends BaseObject
     {
         return time() - $this->birthDate;
     }
+
+    /**
+     * Checks whether the animal is older than the specified time.
+     * @param int $date date as a UNIX timestamp.
+     * @return bool
+     */
+    public function isOlder($date)
+    {
+        return $this->getAge() > $date;
+    }
 }
