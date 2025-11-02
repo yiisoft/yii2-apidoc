@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 3.0.8 under development
 -----------------------
 
-- Bug #311: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
+- Bug #314: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
 
 
 3.0.7 February 13, 2025
