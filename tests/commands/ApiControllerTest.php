@@ -118,6 +118,31 @@ HTML
             , $animalContent
         );
 
+        $this->assertContainsWithoutIndent(
+            <<<HTML
+<tr id="isOlder()" class="">
+    <td><a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">isOlder()</a></td>
+    <td>Checks whether the animal is older than the specified time.</td>
+    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+</tr>
+HTML
+            , $animalContent
+        );
+
+        $this->assertContainsWithoutIndent(
+            <<<HTML
+<tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="https://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">isOlder</a></strong> ( <span style="color: #0000BB">\$date</span> )</td></tr>
+<tr>
+    <td class="param-name-col"><span style="color: #0000BB">\$date</span></td>
+    <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+    <td class="param-desc-col">
+       <p>Date as a UNIX timestamp.</p>
+    </td>
+</tr>
+HTML
+            , $animalContent
+        );
+
         // Class `Dog` :
         $dogFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-dog.html';
         $this->assertTrue(file_exists($dogFile));
