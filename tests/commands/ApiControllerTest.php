@@ -77,6 +77,25 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('Animal is a base class for animals.', $animalContent);
         $this->assertContainsWithoutIndent(
             <<<HTML
+    <td colspan="3" class="signature">
+        <span class="signature-defs">public</span> <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span> <strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getSomething()-detail">getSomething</a></strong> ( <span style="color: #0000BB">\$test</span> )
+    </td>
+</tr>
+<tr>
+    <td class="param-name-col"><span style="color: #0000BB">\$test</span></td>
+    <td class="param-type-col"></td>
+    <td class="param-desc-col">   </td>
+</tr>
+<tr>
+    <th class="param-name-col">return</th>
+    <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+    <td class="param-desc-col"></td>
+</tr>
+HTML
+            , $animalContent
+        );
+        $this->assertContainsWithoutIndent(
+            <<<HTML
 <tr id="\$name" class="">
     <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$name-detail">\$name</a></td>
     <td><a href="https://www.php.net/language.types.string">string</a></td>

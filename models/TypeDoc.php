@@ -223,19 +223,33 @@ class TypeDoc extends BaseDoc
             if ($tag instanceof Method) {
                 $params = [];
 
-                foreach ($tag->getParameters() as $parameter) {
-                    $argumentType = (string) $parameter->getType();
+                if (PHP_VERSION_ID >= 70400) {
+                    foreach ($tag->getParameters() as $parameter) {
+                        $argumentType = (string) $parameter->getType();
 
-                    $params[] = new ParamDoc(null, $context, [
-                        'sourceFile' => $this->sourceFile,
-                        'name' => $parameter->getName(),
-                        'typeHint' => $argumentType,
-                        'type' => $argumentType,
-                        'types' => [],
-                    ]);
+                        $params[] = new ParamDoc(null, $context, [
+                            'sourceFile' => $this->sourceFile,
+                            'name' => $parameter->getName(),
+                            'typeHint' => $argumentType,
+                            'type' => $argumentType,
+                            'types' => [],
+                        ]);
+                    }
+                } else {
+                  foreach ($tag->getArguments() as $parameter) {
+                        $argumentType = (string) $parameter['type'];
+
+                        $params[] = new ParamDoc(null, $context, [
+                            'sourceFile' => $this->sourceFile,
+                            'name' => $parameter['name'],
+                            'typeHint' => $argumentType,
+                            'type' => $argumentType,
+                            'types' => [],
+                        ]);
+                    }
                 }
 
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
 
                 $method = new MethodDoc(null, $context, [
