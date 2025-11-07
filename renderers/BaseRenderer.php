@@ -347,10 +347,8 @@ abstract class BaseRenderer extends Component
 
     /**
      * @param BaseDoc|string $type
-     * @param string $title
-     * @param array $options
      */
-    private function createTypeLinkByType($type, $title = null, $options = []): ?string
+    private function createTypeLinkByType($type, ?string $title = null, array $options = []): ?string
     {
         if (is_string($type)) {
             $linkText = ltrim($type, '\\');
