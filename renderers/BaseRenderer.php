@@ -395,7 +395,7 @@ abstract class BaseRenderer extends Component
                 $title = null;
             }
 
-            return$this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
+            return $this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
         }
 
         return null;
