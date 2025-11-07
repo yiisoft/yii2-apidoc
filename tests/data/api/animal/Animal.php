@@ -39,10 +39,6 @@ abstract class Animal extends BaseObject
      */
     public $birthDate;
     /**
-     * @var value-of<self::COLORS>
-     */
-    public $color;
-    /**
      * @var callable(mixed): bool
      */
     public $someCallable;
