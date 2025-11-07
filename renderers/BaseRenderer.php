@@ -111,15 +111,15 @@ abstract class BaseRenderer extends Component
         if ($types === null) {
             return '';
         }
+
         if (!is_array($types)) {
             $types = [$types];
-        }
-        if (count($types) > 1) {
+        } elseif (count($types) > 1) {
             $title = null;
         }
+
         $links = [];
         foreach ($types as $type) {
-            $postfix = '';
             if (is_string($type) && $type !== '' && !in_array($type, $this->phpTypes)) {
                 if (strpos($type, 'list<') !== false) {
                     $listTypes = $this->createTypeLink(
@@ -172,12 +172,6 @@ abstract class BaseRenderer extends Component
 
                     $links[] = "class-string&lt;{$classStringTypes}&gt;";
                     break;
-                } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
-                    $type = 'array';
-                } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
-                    $type = 'object';
-                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
-                    $type = 'integer';
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
                         $this->extractTypesFromArrayWithParenthesesType($type),
@@ -189,8 +183,14 @@ abstract class BaseRenderer extends Component
                     $links[] = "({$arrayTypes})[]";
                     break;
                 } elseif (substr_compare($type, '[]', -2, 2) === 0) {
-                    $postfix = '[]';
-                    $type = substr($type, 0, -2);
+                    $links[] = $this->createTypeLink(substr($type, 0, -2)) . '[]';
+                    break;
+                } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
+                    $type = 'array';
+                } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
+                    $type = 'object';
+                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
+                    $type = 'integer';
                 } elseif ($type === '$this' && $context instanceof TypeDoc) {
                     $title = '$this';
                     $type = $context;
@@ -208,34 +208,9 @@ abstract class BaseRenderer extends Component
                 $type = (string) $type;
             }
 
-            if (is_string($type)) {
-                $linkText = ltrim($type, '\\');
-                if ($title !== null) {
-                    $linkText = $title;
-                    $title = null;
-                }
-                // check if it is PHP internal class
-                if (((class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
-                    ($reflection = new \ReflectionClass($type)) && $reflection->isInternal())) {
-                    $links[] = $this->generateLink($linkText, 'https://www.php.net/class.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
-                } elseif (in_array($type, $this->phpTypes)) {
-                    if (isset($this->phpTypeDisplayAliases[$type])) {
-                        $linkText = $this->phpTypeDisplayAliases[$type];
-                    }
-                    if (isset($this->phpTypeAliases[$type])) {
-                        $type = $this->phpTypeAliases[$type];
-                    }
-                    $links[] = $this->generateLink($linkText, 'https://www.php.net/language.types.' . strtolower(ltrim($type, '\\')), $options) . $postfix;
-                } else {
-                    $links[] = $type . $postfix;
-                }
-            } elseif ($type instanceof BaseDoc) {
-                $linkText = $type->name;
-                if ($title !== null) {
-                    $linkText = $title;
-                    $title = null;
-                }
-                $links[] = $this->generateLink($linkText, $this->generateApiUrl($type->name), $options) . $postfix;
+            $link = $this->createTypeLinkByType($type, $title, $options);
+            if ($link !== null) {
+                $links[] = $link;
             }
         }
 
@@ -368,6 +343,64 @@ abstract class BaseRenderer extends Component
         }
 
         return rtrim($this->guideUrl, '/') . '/' . $this->guidePrefix . basename($file, '.md') . '.html' . $hash;
+    }
+
+    /**
+     * @param BaseDoc|string $type
+     * @param string $title
+     * @param array $options
+     */
+    private function createTypeLinkByType($type, $title = null, $options = []): ?string
+    {
+        if (is_string($type)) {
+            $linkText = ltrim($type, '\\');
+            if ($title !== null) {
+                $linkText = $title;
+                $title = null;
+            }
+
+            // check if it is PHP internal class
+            if (
+                (class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
+                ($reflection = new \ReflectionClass($type)) && $reflection->isInternal()
+            ) {
+                return $this->generateLink(
+                    $linkText,
+                    'https://www.php.net/class.' . strtolower(ltrim($type, '\\')),
+                    $options
+                );
+            }
+
+            if (in_array($type, $this->phpTypes)) {
+                if (isset($this->phpTypeDisplayAliases[$type])) {
+                    $linkText = $this->phpTypeDisplayAliases[$type];
+                }
+
+                if (isset($this->phpTypeAliases[$type])) {
+                    $type = $this->phpTypeAliases[$type];
+                }
+
+                return $this->generateLink(
+                    $linkText,
+                    'https://www.php.net/language.types.' . strtolower(ltrim($type, '\\')),
+                    $options
+                );
+            }
+
+            return $type;
+        }
+
+        if ($type instanceof BaseDoc) {
+            $linkText = $type->name;
+            if ($title !== null) {
+                $linkText = $title;
+                $title = null;
+            }
+
+            return$this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
+        }
+
+        return null;
     }
 
     /**
