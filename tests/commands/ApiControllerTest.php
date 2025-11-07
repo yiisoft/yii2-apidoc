@@ -10,6 +10,7 @@ namespace yiiunit\apidoc\commands;
 
 use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
+use yii\helpers\FileHelper;
 use yiiunit\apidoc\support\controllers\ApiControllerMock;
 use yiiunit\apidoc\TestCase;
 
@@ -70,6 +71,7 @@ class ApiControllerTest extends TestCase
         $this->assertNotEmpty($output);
         $this->assertStringContainsString('generating search index...done.', $output);
 
+        $filesCount = 0;
         $outputPath = Yii::getAlias('@runtime');
 
         foreach (glob("{$outputPath}/yiiunit-apidoc-data-api*") as $filePath) {
@@ -77,6 +79,11 @@ class ApiControllerTest extends TestCase
             // Deleting dynamic content
             $fileContent = preg_replace('/<p\s+class="pull-right">.*?<\/p>/is', '', $fileContent);
             $this->assertMatchesHtmlSnapshot($fileContent);
+            $filesCount++;
         }
+
+        $sourceFilesCount = count(FileHelper::findFiles(dirname(__DIR__). '/data/api', ['recursive' => true]));
+
+        $this->assertSame($sourceFilesCount, $filesCount);
     }
 }
