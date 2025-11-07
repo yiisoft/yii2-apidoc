@@ -194,13 +194,13 @@ abstract class BaseRenderer extends Component
                 } elseif ($type === '$this' && $context instanceof TypeDoc) {
                     $title = '$this';
                     $type = $context;
-                } elseif (($t = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
-                    $type = $t;
+                } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
+                    $type = $typeDoc;
                 } elseif (
                     $type[0] !== '\\' &&
-                    ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
+                    ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
                 ) {
-                    $type = $t;
+                    $type = $typeDoc;
                 }
             }
 
