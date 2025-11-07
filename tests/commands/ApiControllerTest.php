@@ -66,7 +66,8 @@ class ApiControllerTest extends TestCase
 
     public function testGenerateBootstrap()
     {
-        $output = $this->generateApi(Yii::getAlias('@yiiunit/apidoc/data/api'), '@runtime', ['template' => 'bootstrap']);
+        $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');
+        $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => 'bootstrap']);
 
         $this->assertNotEmpty($output);
         $this->assertStringContainsString('generating search index...done.', $output);
@@ -82,7 +83,7 @@ class ApiControllerTest extends TestCase
             $filesCount++;
         }
 
-        $sourceFilesCount = count(FileHelper::findFiles(dirname(__DIR__). '/data/api', ['recursive' => true]));
+        $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true]));
 
         $this->assertSame($sourceFilesCount, $filesCount);
     }
