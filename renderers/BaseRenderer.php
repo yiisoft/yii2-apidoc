@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\renderers;
 
-use Yii;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
 use yii\apidoc\models\BaseDoc;
@@ -69,6 +69,10 @@ abstract class BaseRenderer extends Component
         'null',
         'false',
         'true',
+        'iterable',
+        'mixed',
+        'never',
+        'void',
     ];
     /**
      * @var string[]
@@ -96,7 +100,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a type (class, interface or trait)
-     * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[] $types
+     * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[]|null $types
      * @param BaseDoc|null $context
      * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
      * @param array $options additional HTML attributes for the link.
@@ -104,6 +108,9 @@ abstract class BaseRenderer extends Component
      */
     public function createTypeLink($types, $context = null, $title = null, $options = [])
     {
+        if ($types === null){
+            return '';
+        }
         if (!is_array($types)) {
             $types = [$types];
         }
@@ -114,9 +121,74 @@ abstract class BaseRenderer extends Component
         foreach ($types as $type) {
             $postfix = '';
             if (is_string($type)) {
-                if (!empty($type) && substr_compare($type, '[]', -2, 2) === 0) {
-                    $postfix = '[]';
-                    $type = substr($type, 0, -2);
+                if ($type !== '' && !in_array($type, $this->phpTypes)) {
+                    if (strpos($type, 'list<') !== false) {
+                        $listTypes = $this->createTypeLink(
+                            $this->extractTypesFromListType($type),
+                            $context,
+                            $title,
+                            $options
+                        );
+
+                        $links[] = preg_replace('/^(non-empty-list|list)<.*?>$/', "$1&lt;{$listTypes}&gt;", $type);
+                        break;
+                    } elseif (strpos($type, 'array<') !== false) {
+                        $arrayTypes = $this->extractTypesFromArrayType($type);
+                        $valueTypes = $this->createTypeLink(
+                            $arrayTypes['valueTypes'],
+                            $context,
+                            $title,
+                            $options
+                        );
+
+                        if ($arrayTypes['keyTypes']) {
+                            $keyTypes = $this->createTypeLink(
+                                $arrayTypes['keyTypes'],
+                                $context,
+                                $title,
+                                $options
+                            );
+
+                            $links[] = preg_replace(
+                                '/^(non-empty-array|array)<.*?>$/',
+                                "$1&lt;{$keyTypes}, {$valueTypes}&gt;",
+                                $type
+                            );
+                        } else {
+                            $links[] = preg_replace(
+                                '/^(non-empty-array|array)<.*?>$/',
+                                "$1&lt;{$valueTypes}&gt;",
+                                $type
+                            );
+                        }
+
+                        break;
+                    } elseif (substr_compare($type, 'class-string<', 0, 13) === 0) {
+                        $classStringTypes = $this->createTypeLink(
+                            $this->extractTypesFromClassStringType($type),
+                            $context,
+                            $title,
+                            $options
+                        );
+
+                        $links[] = "class-string&lt;{$classStringTypes}&gt;";
+                        break;
+                    } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
+                        $type = 'integer';
+                    } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
+                        $arrayTypes = $this->createTypeLink(
+                            $this->extractTypesFromArrayWithParenthesesType($type),
+                            $context,
+                            $title,
+                            $options
+                        );
+
+                        $links[] = "({$arrayTypes})[]";
+                        break;
+                    } elseif (substr_compare($type, '[]', -2, 2) === 0) {
+                        $postfix = '[]';
+                        $type = substr($type, 0, -2);
+                    }
                 }
 
                 if ($type === '$this' && $context instanceof TypeDoc) {
@@ -164,7 +236,7 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        return implode('|', $links);
+        return implode('|', array_unique($links));
     }
 
     /**
@@ -227,7 +299,7 @@ abstract class BaseRenderer extends Component
 
         $link = $this->generateApiUrl($type->name) . '#' . $subject->name;
         if ($subject instanceof MethodDoc) {
-             $link .= '()';
+            $link .= '()';
         }
 
         $link .= '-detail';
@@ -282,7 +354,7 @@ abstract class BaseRenderer extends Component
     public function generateGuideUrl($file)
     {
         //skip parsing external url
-        if ((strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false) ) {
+        if ((strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false)) {
             return $file;
         }
 
@@ -293,5 +365,65 @@ abstract class BaseRenderer extends Component
         }
 
         return rtrim($this->guideUrl, '/') . '/' . $this->guidePrefix . basename($file, '.md') . '.html' . $hash;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function extractTypesFromArrayWithParenthesesType(string $type): array
+    {
+        preg_match('/^\((.+)\)\[\]$/', $type, $matches);
+
+        return $this->extractTypesFromUnionType($matches[1]);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function extractTypesFromListType(string $type): array
+    {
+        preg_match('/(?:non-empty-)?(?:list)<([^>]+)>/', $type, $matches);
+
+        return $this->extractTypesFromUnionType($matches[1]);
+    }
+
+    /**
+     * @return array{
+     *     keyTypes: string[],
+     *     valueTypes: string[],
+     * }
+     */
+    private function extractTypesFromArrayType(string $type): array
+    {
+        preg_match('/(?:non-empty-)?(?:array)<([^>]+)>/', $type, $matches);
+
+        $arrayTypes = explode(',', $matches[1]);
+        if (isset($arrayTypes[1])) {
+            $keyTypes = $this->extractTypesFromUnionType($arrayTypes[0]);
+            $valueTypes = $this->extractTypesFromUnionType(ltrim($arrayTypes[1]));
+        } else {
+            $keyTypes = [];
+            $valueTypes = $this->extractTypesFromUnionType($arrayTypes[0]);
+        }
+
+        return [
+            'keyTypes' => $keyTypes,
+            'valueTypes' => $valueTypes,
+        ];
+    }
+
+    private function extractTypesFromClassStringType(string $classString): ?string
+    {
+        preg_match('/^class-string<([^>]+)>$/', $classString, $matches);
+
+        return $matches[1];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function extractTypesFromUnionType(string $type): array
+    {
+        return array_map('trim', explode('|', $type));
     }
 }

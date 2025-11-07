@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -19,6 +20,14 @@ use yii\base\BaseObject;
  */
 abstract class Animal extends BaseObject
 {
+    const COLOR_GREY = 'grey';
+    const COLOR_WHITE = 'white';
+
+    const COLORS = [
+        self::COLOR_GREY,
+        self::COLOR_WHITE
+    ];
+
     /**
      * @var string animal name.
      */
@@ -27,7 +36,10 @@ abstract class Animal extends BaseObject
      * @var int animal birth date as a UNIX timestamp.
      */
     public $birthDate;
-
+    /**
+     * @var value-of<self::COLORS>
+     */
+    public $color;
 
     /**
      * Renders animal description.
@@ -52,5 +64,16 @@ abstract class Animal extends BaseObject
     public function isOlder($date)
     {
         return $this->getAge() > $date;
+    }
+
+    /**
+     * @return array{name: string, birthDate: int}
+     */
+    public function asArray()
+    {
+        return [
+            'name' => $this->name,
+            'birthDate' => $this->birthDate,
+        ];
     }
 }
