@@ -101,7 +101,7 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParent(), '\\');
+        $this->parentClass = ltrim($reflector->getParent() ?? '', '\\');
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
