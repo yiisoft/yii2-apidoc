@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,6 +8,7 @@
 
 namespace yiiunit\apidoc\commands;
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
 use yiiunit\apidoc\support\controllers\ApiControllerMock;
 use yiiunit\apidoc\TestCase;
@@ -16,6 +18,8 @@ use yiiunit\apidoc\TestCase;
  */
 class ApiControllerTest extends TestCase
 {
+    use MatchesSnapshots;
+
     /**
      * {@inheritdoc}
      */
@@ -68,111 +72,11 @@ class ApiControllerTest extends TestCase
 
         $outputPath = Yii::getAlias('@runtime');
 
-        // Class `Animal` :
-        $animalFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-animal.html';
-        $this->assertTrue(file_exists($animalFile));
-        $animalContent = file_get_contents($animalFile);
-        $this->assertStringContainsString('<h1>Abstract Class yiiunit\apidoc\data\api\animal\Animal</h1>', $animalContent);
-        $this->assertStringContainsString('<th>Available since version</th><td>1.0</td>', $animalContent);
-        $this->assertStringContainsString('Animal is a base class for animals.', $animalContent);
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-    <td colspan="3" class="signature">
-        <span class="signature-defs">public</span> <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span> <strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getSomething()-detail">getSomething</a></strong> ( <span style="color: #0000BB">\$test</span> )
-    </td>
-</tr>
-<tr>
-    <td class="param-name-col"><span style="color: #0000BB">\$test</span></td>
-    <td class="param-type-col"></td>
-    <td class="param-desc-col">   </td>
-</tr>
-<tr>
-    <th class="param-name-col">return</th>
-    <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
-    <td class="param-desc-col"></td>
-</tr>
-HTML
-            , $animalContent
-        );
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr id="\$name" class="">
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$name-detail">\$name</a></td>
-    <td><a href="https://www.php.net/language.types.string">string</a></td>
-    <td>Animal name.</td>
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
-</tr>
-HTML
-            , $animalContent
-        );
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr id="\$birthDate" class="">
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html#\$birthDate-detail">\$birthDate</a></td>
-    <td><a href="https://www.php.net/language.types.integer">integer</a></td>
-    <td>Animal birth date as a UNIX timestamp.</td>
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
-</tr>
-HTML
-            , $animalContent
-        );
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr id="getAge()" class="">
-<td><a href="yiiunit-apidoc-data-api-animal-animal.html#getAge()-detail">getAge()</a></td>
-<td>Returns animal age in seconds.</td>
-<td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
-</tr>
-HTML
-            , $animalContent
-        );
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr id="render()" class="">
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html#render()-detail">render()</a></td>
-    <td>Renders animal description.</td>
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
-</tr>
-HTML
-            , $animalContent
-        );
-
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr id="isOlder()" class="">
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">isOlder()</a></td>
-    <td>Checks whether the animal is older than the specified time.</td>
-    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
-</tr>
-HTML
-            , $animalContent
-        );
-
-        $this->assertContainsWithoutIndent(
-            <<<HTML
-<tr><td colspan="3" class="signature"><span class="signature-defs">public</span> <span class="signature-type"><a href="https://www.php.net/language.types.boolean">boolean</a></span> <strong><a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">isOlder</a></strong> ( <span style="color: #0000BB">\$date</span> )</td></tr>
-<tr>
-    <td class="param-name-col"><span style="color: #0000BB">\$date</span></td>
-    <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
-    <td class="param-desc-col">
-       <p>Date as a UNIX timestamp.</p>
-    </td>
-</tr>
-HTML
-            , $animalContent
-        );
-
-        // Class `Dog` :
-        $dogFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-dog.html';
-        $this->assertTrue(file_exists($dogFile));
-        $dogContent = file_get_contents($dogFile);
-        $this->assertStringContainsString('<th>Available since version</th><td>1.1</td>', $dogContent);
-        $this->assertStringNotContainsString('@inheritdoc', $dogContent);
-
-        // Class `Cat` :
-        $catFile = $outputPath . DIRECTORY_SEPARATOR . 'yiiunit-apidoc-data-api-animal-cat.html';
-        $this->assertTrue(file_exists($catFile));
-        $catContent = file_get_contents($catFile);
-        $this->assertStringNotContainsString('@inheritdoc', $catContent);
+        foreach (glob("{$outputPath}/yiiunit-apidoc-data-api*") as $filePath) {
+            $fileContent = file_get_contents($filePath);
+            // Deleting dynamic content
+            $fileContent = preg_replace('/<p\s+class="pull-right">.*?<\/p>/is', '', $fileContent);
+            $this->assertMatchesHtmlSnapshot($fileContent);
+        }
     }
 }
