@@ -120,87 +120,86 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             $postfix = '';
-            if (is_string($type)) {
-                if ($type !== '' && !in_array($type, $this->phpTypes)) {
-                    if (strpos($type, 'list<') !== false) {
-                        $listTypes = $this->createTypeLink(
-                            $this->extractTypesFromListType($type),
+            if (is_string($type) && $type !== '' && !in_array($type, $this->phpTypes)) {
+                if (strpos($type, 'list<') !== false) {
+                    $listTypes = $this->createTypeLink(
+                        $this->extractTypesFromListType($type),
+                        $context,
+                        $title,
+                        $options
+                    );
+
+                    $links[] = preg_replace('/^(non-empty-list|list)<.*?>$/', "$1&lt;{$listTypes}&gt;", $type);
+                    break;
+                } elseif (strpos($type, 'array<') !== false) {
+                    $arrayTypes = $this->extractTypesFromArrayType($type);
+                    $valueTypes = $this->createTypeLink(
+                        $arrayTypes['valueTypes'],
+                        $context,
+                        $title,
+                        $options
+                    );
+
+                    if ($arrayTypes['keyTypes']) {
+                        $keyTypes = $this->createTypeLink(
+                            $arrayTypes['keyTypes'],
                             $context,
                             $title,
                             $options
                         );
 
-                        $links[] = preg_replace('/^(non-empty-list|list)<.*?>$/', "$1&lt;{$listTypes}&gt;", $type);
-                        break;
-                    } elseif (strpos($type, 'array<') !== false) {
-                        $arrayTypes = $this->extractTypesFromArrayType($type);
-                        $valueTypes = $this->createTypeLink(
-                            $arrayTypes['valueTypes'],
-                            $context,
-                            $title,
-                            $options
+                        $links[] = preg_replace(
+                            '/^(non-empty-array|array)<.*?>$/',
+                            "$1&lt;{$keyTypes}, {$valueTypes}&gt;",
+                            $type
                         );
-
-                        if ($arrayTypes['keyTypes']) {
-                            $keyTypes = $this->createTypeLink(
-                                $arrayTypes['keyTypes'],
-                                $context,
-                                $title,
-                                $options
-                            );
-
-                            $links[] = preg_replace(
-                                '/^(non-empty-array|array)<.*?>$/',
-                                "$1&lt;{$keyTypes}, {$valueTypes}&gt;",
-                                $type
-                            );
-                        } else {
-                            $links[] = preg_replace(
-                                '/^(non-empty-array|array)<.*?>$/',
-                                "$1&lt;{$valueTypes}&gt;",
-                                $type
-                            );
-                        }
-
-                        break;
-                    } elseif (substr_compare($type, 'class-string<', 0, 13) === 0) {
-                        $classStringTypes = $this->createTypeLink(
-                            $this->extractTypesFromClassStringType($type),
-                            $context,
-                            $title,
-                            $options
+                    } else {
+                        $links[] = preg_replace(
+                            '/^(non-empty-array|array)<.*?>$/',
+                            "$1&lt;{$valueTypes}&gt;",
+                            $type
                         );
-
-                        $links[] = "class-string&lt;{$classStringTypes}&gt;";
-                        break;
-                    } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
-                        $type = 'array';
-                    } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
-                        $type = 'object';
-                    } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
-                        $type = 'integer';
-                    } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
-                        $arrayTypes = $this->createTypeLink(
-                            $this->extractTypesFromArrayWithParenthesesType($type),
-                            $context,
-                            $title,
-                            $options
-                        );
-
-                        $links[] = "({$arrayTypes})[]";
-                        break;
-                    } elseif (substr_compare($type, '[]', -2, 2) === 0) {
-                        $postfix = '[]';
-                        $type = substr($type, 0, -2);
                     }
-                }
 
-                if ($type === '$this' && $context instanceof TypeDoc) {
+                    break;
+                } elseif (substr_compare($type, 'class-string<', 0, 13) === 0) {
+                    $classStringTypes = $this->createTypeLink(
+                        $this->extractTypesFromClassStringType($type),
+                        $context,
+                        $title,
+                        $options
+                    );
+
+                    $links[] = "class-string&lt;{$classStringTypes}&gt;";
+                    break;
+                } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
+                    $type = 'array';
+                } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
+                    $type = 'object';
+                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
+                    $type = 'integer';
+                } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
+                    $arrayTypes = $this->createTypeLink(
+                        $this->extractTypesFromArrayWithParenthesesType($type),
+                        $context,
+                        $title,
+                        $options
+                    );
+
+                    $links[] = "({$arrayTypes})[]";
+                    break;
+                } elseif (substr_compare($type, '[]', -2, 2) === 0) {
+                    $postfix = '[]';
+                    $type = substr($type, 0, -2);
+                } elseif ($type === '$this' && $context instanceof TypeDoc) {
                     $title = '$this';
                     $type = $context;
                 } elseif (($t = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $type = $t;
-                } elseif (!empty($type) && $type[0] !== '\\' && ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null) {
+                } elseif (
+                    $type[0] !== '\\' &&
+                    ($t = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
+                ) {
                     $type = $t;
                 }
             }
