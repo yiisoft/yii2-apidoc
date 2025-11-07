@@ -173,6 +173,10 @@ abstract class BaseRenderer extends Component
 
                         $links[] = "class-string&lt;{$classStringTypes}&gt;";
                         break;
+                    } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
+                        $type = 'array';
+                    } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
+                        $type = 'object';
                     } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
                         $type = 'integer';
                     } elseif (substr_compare($type, ')[]', -3, 3) === 0) {

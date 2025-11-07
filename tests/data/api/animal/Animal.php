@@ -76,4 +76,12 @@ abstract class Animal extends BaseObject
             'birthDate' => $this->birthDate,
         ];
     }
+
+    /**
+     * @return object{name: string, birthDate: int}
+     */
+    public function asStdClass()
+    {
+        return (object) $this->asArray();
+    }
 }
