@@ -40,6 +40,14 @@ abstract class Animal extends BaseObject
      * @var value-of<self::COLORS>
      */
     public $color;
+    /**
+     * @var callable(mixed): bool
+     */
+    public $someCallable;
+    /**
+     * @var \Closure(mixed): bool
+     */
+    public $someClosure;
 
     /**
      * Renders animal description.
