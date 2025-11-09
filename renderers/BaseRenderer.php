@@ -167,74 +167,7 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if (
-                    substr_compare($type, 'list<', 0, 5) === 0 ||
-                    ($isNonEmptyList = (substr_compare($type, 'non-empty-list<', 0, 15) === 0))
-                ) {
-                    $listTypes = $this->createTypeLink(
-                        $this->extractTypesFromListType($type),
-                        $context,
-                        $title,
-                        $options
-                    );
-
-                    $phpstanTypeLink = $this->generateLink(
-                        !empty($isNonEmptyList) ? 'non-empty-list' : 'list',
-                        self::PHPSTAN_TYPE_BASE_URL . 'lists',
-                        $options
-                    );
-
-                    $links[] = "{$phpstanTypeLink}&lt;{$listTypes}&gt;";
-                    break;
-                } elseif (
-                    substr_compare($type, 'array<', 0, 6) === 0 ||
-                    ($isNonEmptyArray = (substr_compare($type, 'non-empty-array<', 0, 16) === 0))
-                ) {
-                    $arrayTypes = $this->extractTypesFromArrayType($type);
-                    $valueTypes = $this->createTypeLink(
-                        $arrayTypes['valueTypes'],
-                        $context,
-                        $title,
-                        $options
-                    );
-
-                    $phpstanTypeLink = $this->generateLink(
-                        !empty($isNonEmptyArray) ? 'non-empty-array' : 'array',
-                        self::PHPSTAN_TYPE_BASE_URL . 'general-arrays',
-                        $options,
-                    );
-
-                    if ($arrayTypes['keyTypes']) {
-                        $keyTypes = $this->createTypeLink(
-                            $arrayTypes['keyTypes'],
-                            $context,
-                            $title,
-                            $options
-                        );
-
-                        $links[] = "{$phpstanTypeLink}&lt;{$keyTypes}, {$valueTypes}&gt;";
-                    } else {
-                        $links[] = "{$phpstanTypeLink}&lt;{$valueTypes}&gt";
-                    }
-
-                    break;
-                } elseif (substr_compare($type, 'class-string<', 0, 13) === 0) {
-                    $classStringTypes = $this->createTypeLink(
-                        $this->extractTypesFromClassStringType($type),
-                        $context,
-                        $title,
-                        $options
-                    );
-
-                    $phpstanTypeLink = $this->generateLink(
-                        'class-string',
-                        self::PHPSTAN_TYPE_BASE_URL . 'class-string',
-                        $options
-                    );
-
-                    $links[] = "{$phpstanTypeLink}&lt;{$classStringTypes}&gt;";
-                    break;
-                } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
+                if (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
                         $this->extractTypesFromArrayWithParenthesesType($type),
                         $context,
@@ -247,12 +180,12 @@ abstract class BaseRenderer extends Component
                 } elseif (substr_compare($type, '[]', -2, 2) === 0) {
                     $links[] = $this->createTypeLink(substr($type, 0, -2)) . '[]';
                     break;
+                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
+                    $type = 'integer';
                 } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
                     $type = 'array';
                 } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
                     $type = 'object';
-                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
-                    $type = 'integer';
                 } elseif ($type === '$this' && $context instanceof TypeDoc) {
                     $title = '$this';
                     $type = $context;
@@ -263,6 +196,34 @@ abstract class BaseRenderer extends Component
                     ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
                 ) {
                     $type = $typeDoc;
+                } elseif (strpos($type, '<') !== false && strpos($type, '>')) {
+                    $genericTypes = $this->extractGenericTypes($type);
+                    $typesLinks = [];
+
+                    foreach ($genericTypes as $genericType) {
+                        $typesLinks[] = $this->createTypeLink(
+                            $this->extractTypesFromUnionType($genericType),
+                            $context,
+                            $title,
+                            $options
+                        );
+                    }
+
+
+                    $mainType = substr($type, 0, strpos($type, '<'));
+                    if ($mainType === 'array') {
+                        $mainTypeLink = $this->generateLink(
+                            'array',
+                            self::PHPSTAN_TYPE_BASE_URL . 'general-arrays',
+                            $options
+                        );
+                    } else {
+                        $mainTypeLink = $this->createTypeLink($mainType, $context, $title, $options);
+                    }
+
+                    $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
+
+                    break;
                 }
             }
 
@@ -276,6 +237,7 @@ abstract class BaseRenderer extends Component
             }
         }
 
+        // TODO: add support for intersection types
         return implode('|', array_unique($links));
     }
 
@@ -486,50 +448,18 @@ abstract class BaseRenderer extends Component
     /**
      * @return string[]
      */
-    private function extractTypesFromListType(string $type): array
+    private function extractTypesFromUnionType(string $type): array
     {
-        preg_match('/(?:non-empty-)?(?:list)<([^>]+)>/', $type, $matches);
-
-        return $this->extractTypesFromUnionType($matches[1]);
-    }
-
-    /**
-     * @return array{
-     *     keyTypes: string[],
-     *     valueTypes: string[],
-     * }
-     */
-    private function extractTypesFromArrayType(string $type): array
-    {
-        preg_match('/(?:non-empty-)?(?:array)<([^>]+)>/', $type, $matches);
-
-        $arrayTypes = explode(',', $matches[1]);
-        if (isset($arrayTypes[1])) {
-            $keyTypes = $this->extractTypesFromUnionType($arrayTypes[0]);
-            $valueTypes = $this->extractTypesFromUnionType(ltrim($arrayTypes[1]));
-        } else {
-            $keyTypes = [];
-            $valueTypes = $this->extractTypesFromUnionType($arrayTypes[0]);
-        }
-
-        return [
-            'keyTypes' => $keyTypes,
-            'valueTypes' => $valueTypes,
-        ];
-    }
-
-    private function extractTypesFromClassStringType(string $classString): ?string
-    {
-        preg_match('/^class-string<([^>]+)>$/', $classString, $matches);
-
-        return $matches[1];
+        return array_map('trim', explode('|', $type));
     }
 
     /**
      * @return string[]
      */
-    private function extractTypesFromUnionType(string $type): array
+    private function extractGenericTypes(string $type): array
     {
-        return array_map('trim', explode('|', $type));
+        preg_match('/.*<([^>]+)>/', $type, $matches);
+
+        return array_map('trim', explode(',', $matches[1]));
     }
 }
