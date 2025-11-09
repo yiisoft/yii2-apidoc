@@ -63,6 +63,9 @@ abstract class BaseRenderer extends Component
         'void',
     ];
 
+    /**
+     * @var array<string, string[]>
+     */
     private const PHPSTAN_TYPES_DOC_LINKS = [
         'basic-types' => [
             'array-key',
@@ -176,26 +179,31 @@ abstract class BaseRenderer extends Component
                     );
 
                     $links[] = "({$arrayTypes})[]";
-                    break;
+                    continue;
                 } elseif (substr_compare($type, '[]', -2, 2) === 0) {
                     $links[] = $this->createTypeLink(substr($type, 0, -2)) . '[]';
-                    break;
+                    continue;
                 } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
-                    $type = 'integer';
+                    $links[] = $this->createTypeLink('integer', $context, $title, $options);
+                    continue;
                 } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
-                    $type = 'array';
+                    $links[] = $this->createTypeLink('array', $context, $title, $options);
+                    continue;
                 } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
-                    $type = 'object';
+                    $links[] = $this->createTypeLink('object', $context, $title, $options);
+                    continue;
                 } elseif ($type === '$this' && $context instanceof TypeDoc) {
-                    $title = '$this';
-                    $type = $context;
+                    $links[] = $this->createTypeLink($context, $context, '$this', $options);
+                    continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
-                    $type = $typeDoc;
+                    $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
+                    continue;
                 } elseif (
                     $type[0] !== '\\' &&
                     ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
                 ) {
-                    $type = $typeDoc;
+                    $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
+                    continue;
                 } elseif (strpos($type, '<') !== false && strpos($type, '>')) {
                     $genericTypes = $this->extractGenericTypes($type);
                     $typesLinks = [];
@@ -222,8 +230,7 @@ abstract class BaseRenderer extends Component
                     }
 
                     $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
-
-                    break;
+                    continue;
                 }
             }
 
