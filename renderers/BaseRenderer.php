@@ -36,26 +36,10 @@ abstract class BaseRenderer extends Component
      */
     const GUIDE_PREFIX = 'guide-';
 
-    public $guidePrefix = 'guide-';
-    public $apiUrl;
-    /**
-     * @var string string to use as the title of the generated page.
-     */
-    public $pageTitle;
-    /**
-     * @var Context the [[Context]] currently being rendered.
-     */
-    public $apiContext;
-    /**
-     * @var Controller the apidoc controller instance. Can be used to control output.
-     */
-    public $controller;
-    public $guideUrl;
-
     /**
      * @var string[]
      */
-    private $phpTypes = [
+    private const PHP_TYPES = [
         'callable',
         'array',
         'string',
@@ -74,23 +58,40 @@ abstract class BaseRenderer extends Component
         'never',
         'void',
     ];
+
     /**
      * @var string[]
      */
-    private $phpTypeAliases = [
+    private const PHP_TYPE_ALIASES = [
         'true' => 'boolean',
         'false' => 'boolean',
         'bool' => 'boolean',
         'int' => 'integer',
     ];
+
     /**
      * @var string[]
      */
-    private $phpTypeDisplayAliases = [
+    private const PHP_TYPE_DISPLAY_ALIASES = [
         'bool' => 'boolean',
         'int' => 'integer',
     ];
 
+    public $guidePrefix = 'guide-';
+    public $apiUrl;
+    /**
+     * @var string string to use as the title of the generated page.
+     */
+    public $pageTitle;
+    /**
+     * @var Context the [[Context]] currently being rendered.
+     */
+    public $apiContext;
+    /**
+     * @var Controller the apidoc controller instance. Can be used to control output.
+     */
+    public $controller;
+    public $guideUrl;
 
     public function init()
     {
@@ -120,7 +121,7 @@ abstract class BaseRenderer extends Component
 
         $links = [];
         foreach ($types as $type) {
-            if (is_string($type) && $type !== '' && !in_array($type, $this->phpTypes)) {
+            if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
                 if (strpos($type, 'list<') !== false) {
                     $listTypes = $this->createTypeLink(
                         $this->extractTypesFromListType($type),
@@ -369,13 +370,13 @@ abstract class BaseRenderer extends Component
                 );
             }
 
-            if (in_array($type, $this->phpTypes)) {
-                if (isset($this->phpTypeDisplayAliases[$type])) {
-                    $linkText = $this->phpTypeDisplayAliases[$type];
+            if (in_array($type, self::PHP_TYPES)) {
+                if (isset(self::PHP_TYPE_DISPLAY_ALIASES[$type])) {
+                    $linkText = self::PHP_TYPE_DISPLAY_ALIASES[$type];
                 }
 
-                if (isset($this->phpTypeAliases[$type])) {
-                    $type = $this->phpTypeAliases[$type];
+                if (isset(self::PHP_TYPE_ALIASES[$type])) {
+                    $type = self::PHP_TYPE_ALIASES[$type];
                 }
 
                 return $this->generateLink(
