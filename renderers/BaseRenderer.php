@@ -38,6 +38,7 @@ abstract class BaseRenderer extends Component
 
     private const PHP_CLASS_BASE_URL = 'https://www.php.net/class.';
     private const PHP_TYPE_BASE_URL = 'https://www.php.net/language.types.';
+    private const PHPSTAN_TYPE_BASE_URL = 'https://phpstan.org/writing-php-code/phpdoc-types#';
 
     /**
      * @var string[]
@@ -60,6 +61,47 @@ abstract class BaseRenderer extends Component
         'mixed',
         'never',
         'void',
+    ];
+
+    private const PHPSTAN_TYPES_DOC_LINKS = [
+        'basic-types' => [
+            'array-key',
+            'double',
+            'number',
+            'scalar',
+        ],
+        'integer-ranges' => [
+            'positive-int',
+            'negative-int',
+            'non-positive-int',
+            'non-negative-int',
+            'non-zero-int',
+        ],
+        'bottom-type' => [
+            'never',
+            'never-return',
+            'never-returns',
+            'no-return',
+        ],
+        'other-advanced-string-types' => [
+            'callable-string',
+            'numeric-string',
+            'non-empty-string',
+            'non-falsy-string',
+            'truthy-string',
+            'literal-string',
+            'lowercase-string',
+        ],
+        'class-string' => [
+            'class-string',
+        ],
+        'general-arrays' => [
+            'non-empty-array',
+        ],
+        'lists' => [
+            'list',
+            'non-empty-list',
+        ],
     ];
 
     /**
@@ -125,7 +167,10 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if (strpos($type, 'list<') !== false) {
+                if (
+                    substr_compare($type, 'list<', 0, 5) === 0 ||
+                    ($isNonEmptyList = (substr_compare($type, 'non-empty-list<', 0, 15) === 0))
+                ) {
                     $listTypes = $this->createTypeLink(
                         $this->extractTypesFromListType($type),
                         $context,
@@ -133,15 +178,30 @@ abstract class BaseRenderer extends Component
                         $options
                     );
 
-                    $links[] = preg_replace('/^(non-empty-list|list)<.*?>$/', "$1&lt;{$listTypes}&gt;", $type);
+                    $phpstanTypeLink = $this->generateLink(
+                        !empty($isNonEmptyList) ? 'non-empty-list' : 'list',
+                        self::PHPSTAN_TYPE_BASE_URL . 'lists',
+                        $options
+                    );
+
+                    $links[] = "{$phpstanTypeLink}&lt;{$listTypes}&gt;";
                     break;
-                } elseif (strpos($type, 'array<') !== false) {
+                } elseif (
+                    substr_compare($type, 'array<', 0, 6) === 0 ||
+                    ($isNonEmptyArray = (substr_compare($type, 'non-empty-array<', 0, 16) === 0))
+                ) {
                     $arrayTypes = $this->extractTypesFromArrayType($type);
                     $valueTypes = $this->createTypeLink(
                         $arrayTypes['valueTypes'],
                         $context,
                         $title,
                         $options
+                    );
+
+                    $phpstanTypeLink = $this->generateLink(
+                        !empty($isNonEmptyArray) ? 'non-empty-array' : 'array',
+                        self::PHPSTAN_TYPE_BASE_URL . 'general-arrays',
+                        $options,
                     );
 
                     if ($arrayTypes['keyTypes']) {
@@ -152,17 +212,9 @@ abstract class BaseRenderer extends Component
                             $options
                         );
 
-                        $links[] = preg_replace(
-                            '/^(non-empty-array|array)<.*?>$/',
-                            "$1&lt;{$keyTypes}, {$valueTypes}&gt;",
-                            $type
-                        );
+                        $links[] = "{$phpstanTypeLink}&lt;{$keyTypes}, {$valueTypes}&gt;";
                     } else {
-                        $links[] = preg_replace(
-                            '/^(non-empty-array|array)<.*?>$/',
-                            "$1&lt;{$valueTypes}&gt;",
-                            $type
-                        );
+                        $links[] = "{$phpstanTypeLink}&lt;{$valueTypes}&gt";
                     }
 
                     break;
@@ -174,7 +226,13 @@ abstract class BaseRenderer extends Component
                         $options
                     );
 
-                    $links[] = "class-string&lt;{$classStringTypes}&gt;";
+                    $phpstanTypeLink = $this->generateLink(
+                        'class-string',
+                        self::PHPSTAN_TYPE_BASE_URL . 'class-string',
+                        $options
+                    );
+
+                    $links[] = "{$phpstanTypeLink}&lt;{$classStringTypes}&gt;";
                     break;
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
@@ -387,6 +445,16 @@ abstract class BaseRenderer extends Component
                     self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
                     $options
                 );
+            }
+
+            foreach (self::PHPSTAN_TYPES_DOC_LINKS as $phpstanDocLink => $phpstanTypes) {
+                if (in_array($type, $phpstanTypes)) {
+                    return $this->generateLink(
+                        $type,
+                        self::PHPSTAN_TYPE_BASE_URL . $phpstanDocLink,
+                        $options
+                    );
+                }
             }
 
             return $type;
