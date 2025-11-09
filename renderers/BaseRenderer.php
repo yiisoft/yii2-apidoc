@@ -36,6 +36,9 @@ abstract class BaseRenderer extends Component
      */
     const GUIDE_PREFIX = 'guide-';
 
+    private const PHP_CLASS_BASE_URL = 'https://www.php.net/class.';
+    private const PHP_TYPE_BASE_URL = 'https://www.php.net/language.types.';
+
     /**
      * @var string[]
      */
@@ -365,7 +368,7 @@ abstract class BaseRenderer extends Component
             ) {
                 return $this->generateLink(
                     $linkText,
-                    'https://www.php.net/class.' . strtolower(ltrim($type, '\\')),
+                    self::PHP_CLASS_BASE_URL . strtolower(ltrim($type, '\\')),
                     $options
                 );
             }
@@ -381,7 +384,7 @@ abstract class BaseRenderer extends Component
 
                 return $this->generateLink(
                     $linkText,
-                    'https://www.php.net/language.types.' . strtolower(ltrim($type, '\\')),
+                    self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
                     $options
                 );
             }
