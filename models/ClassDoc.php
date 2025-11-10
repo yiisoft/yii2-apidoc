@@ -18,7 +18,7 @@ namespace yii\apidoc\models;
 class ClassDoc extends TypeDoc
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $parentClass;
     /**
@@ -101,7 +101,8 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParent() ?? '', '\\');
+        $reflectorParent = $reflector->getParent();
+        $this->parentClass = $reflectorParent !== null ? ltrim($reflectorParent, '\\') : null;
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
