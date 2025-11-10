@@ -28,10 +28,25 @@ class FunctionDoc extends BaseDoc
      * @var ParamDoc[]
      */
     public $params = [];
+    /**
+     * @var array<string, Description|null>
+     */
     public $exceptions = [];
+    /**
+     * @var string|null
+     */
     public $return;
+    /**
+     * @var string|null
+     */
     public $returnType;
+    /**
+     * @var string[]|null
+     */
     public $returnTypes;
+    /**
+     * @var bool
+     */
     public $isReturnByReference;
 
 
@@ -50,6 +65,9 @@ class FunctionDoc extends BaseDoc
         }
 
         $this->isReturnByReference = $reflector->getHasReturnByReference();
+
+        $this->returnType = (string) $reflector->getReturnType();
+        $this->returnTypes = [$this->returnType];
 
         foreach ($reflector->getArguments() as $arg) {
             $arg = new ParamDoc($this, $arg, $context, ['sourceFile' => $this->sourceFile]);

@@ -167,6 +167,12 @@ abstract class Animal extends BaseObject
         return $this;
     }
 
+    public function setBirthDate(int $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+        return $this;
+    }
+
     /**
      * @return static
      */
