@@ -1,6 +1,6 @@
 <?php
 
-namespace yiiunit\apidoc\data\api\ar;
+namespace yiiunit\apidoc\data\api\db;
 
 /**
  * ActiveRelationTrait implements the common methods and properties for active record relational queries.

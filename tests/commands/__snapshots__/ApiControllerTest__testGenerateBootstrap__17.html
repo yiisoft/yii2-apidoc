@@ -22,7 +22,10 @@
 <span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Yii Framework 2.0 API Documentation</a>
 </div>
 <div id="w75-collapse" class="collapse navbar-collapse">
-<ul id="w76" class="navbar-nav nav"><li><a href="./index.html">Class reference</a></li></ul>
+<ul id="w76" class="navbar-nav nav">
+<li><a href="./index.html">Class reference</a></li>
+<li><a href="./guide-README.html">Guide</a></li>
+</ul>
 <div class="navbar-form navbar-left" role="search">
   <div class="form-group">
     <input id="searchbox" type="text" class="form-control" placeholder="Search">
@@ -82,11 +85,25 @@ yii\base\Component</td>
 <th>Implements</th>
 <td><a href="https://www.php.net/class.iterator">Iterator</a></td>
 </tr>
-                                    </table>
+                                    <tr>
+<th>Available since version</th>
+<td>2.0</td>
+</tr>
+            </table>
 
 <div class="class-description">
     <p><strong>BatchQueryResult represents a batch query from which you can retrieve data in batches.</strong></p>
-    
+    <p>You usually do not instantiate BatchQueryResult directly. Instead, you obtain it by
+calling <span class="broken-link">Query::batch()</span> or <span class="broken-link">Query::each()</span>. Because BatchQueryResult implements the <a href="https://www.php.net/class.iterator">Iterator</a> interface,
+you can iterate it to obtain a batch of data in each iteration. For example,</p>
+<pre><code class="hljs php">$query = (<span class="hljs-keyword">new</span> Query)-&gt;from(<span class="hljs-string">'user'</span>);
+<span class="hljs-keyword">foreach</span> ($query-&gt;batch() <span class="hljs-keyword">as</span> $i =&gt; $users) {
+    <span class="hljs-comment">// $users represents the rows in the $i-th batch</span>
+}
+<span class="hljs-keyword">foreach</span> ($query-&gt;each() <span class="hljs-keyword">as</span> $user) {
+}
+</code></pre>
+
     </div>
 
 

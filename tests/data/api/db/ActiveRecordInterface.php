@@ -1,5 +1,5 @@
 <?php
 
-namespace yiiunit\apidoc\data\api\ar;
+namespace yiiunit\apidoc\data\api\db;
 
 interface ActiveRecordInterface {}
