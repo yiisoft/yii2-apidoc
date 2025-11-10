@@ -18,6 +18,9 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @template TParent of (BaseDoc|null)
+ * @extends BaseDoc<TParent>
  */
 class FunctionDoc extends BaseDoc
 {
@@ -33,13 +36,14 @@ class FunctionDoc extends BaseDoc
 
 
     /**
+     * @param TParent $parent
      * @param Method $reflector
      * @param Context $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
@@ -48,7 +52,7 @@ class FunctionDoc extends BaseDoc
         $this->isReturnByReference = $reflector->getHasReturnByReference();
 
         foreach ($reflector->getArguments() as $arg) {
-            $arg = new ParamDoc($arg, $context, ['sourceFile' => $this->sourceFile]);
+            $arg = new ParamDoc($this, $arg, $context, ['sourceFile' => $this->sourceFile]);
             $this->params[$arg->name] = $arg;
         }
 

@@ -20,6 +20,8 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @extends BaseDoc<ClassDoc|TraitDoc>
  */
 class PropertyDoc extends BaseDoc
 {
@@ -52,13 +54,14 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
+     * @param ClassDoc|TraitDoc $parent
      * @param Property $reflector
      * @param Context $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;

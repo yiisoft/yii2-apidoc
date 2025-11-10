@@ -117,11 +117,11 @@ class ClassDoc extends TypeDoc
         foreach ($reflector->getConstants() as $constantReflector) {
             $docBlock = $constantReflector->getDocBlock();
             if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector, null, null, $docBlock);
+                $event = new EventDoc($this, $constantReflector, null, null, $docBlock);
                 $event->definedBy = $this->name;
                 $this->events[$event->name] = $event;
             } else {
-                $constant = new ConstDoc($constantReflector);
+                $constant = new ConstDoc($this, $constantReflector);
                 $constant->definedBy = $this->name;
                 $this->constants[$constant->name] = $constant;
             }

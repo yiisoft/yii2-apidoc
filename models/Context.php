@@ -468,7 +468,7 @@ class Context extends Component
                     ];
                 } else {
                     // Override the setter-defined property if it exists already
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
@@ -502,7 +502,7 @@ class Context extends Component
                     }
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,

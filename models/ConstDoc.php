@@ -16,6 +16,8 @@ use yii\apidoc\helpers\PrettyPrinter;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @extends BaseDoc<ClassDoc|TraitDoc>
  */
 class ConstDoc extends BaseDoc
 {
@@ -24,14 +26,15 @@ class ConstDoc extends BaseDoc
 
 
     /**
+     * @param ClassDoc|TraitDoc $parent
      * @param Constant $reflector
      * @param Context $context
      * @param array $config
      * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;

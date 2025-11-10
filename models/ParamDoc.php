@@ -28,16 +28,22 @@ class ParamDoc extends BaseObject
     public $type;
     public $types;
     public $sourceFile;
-
+    /**
+     * @var FunctionDoc|MethodDoc
+     */
+    public $parent;
 
     /**
+     * @param FunctionDoc|MethodDoc $parent
      * @param Argument $reflector
      * @param Context $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
         parent::__construct($config);
+
+        $this->parent = $parent;
 
         if ($reflector !== null) {
             $this->name = $reflector->getName();

@@ -25,14 +25,15 @@ class EventDoc extends ConstDoc
 
 
     /**
+     * @param ClassDoc|TraitDoc $parent
      * @param Class_|Constant $reflector
      * @param Context $context
      * @param array $config
      * @param DocBlock $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;

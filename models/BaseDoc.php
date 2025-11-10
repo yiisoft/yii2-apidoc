@@ -23,6 +23,8 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @template TParent of (self|null)
  */
 class BaseDoc extends BaseObject
 {
@@ -59,7 +61,10 @@ class BaseDoc extends BaseObject
      * @var array<string, Template>
      */
     public $templates = [];
-
+    /**
+     * @var TParent
+     */
+    public $parent = null;
 
     /**
      * @param Type|null $aggregatedType
@@ -140,13 +145,16 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * @param Class_ $reflector
-     * @param Context $context
+     * @param TParent $parent
+     * @param Class_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent = null, $reflector = null, $context = null, $config = [])
     {
         parent::__construct($config);
+
+        $this->parent = $parent;
 
         if ($reflector === null) {
             return;

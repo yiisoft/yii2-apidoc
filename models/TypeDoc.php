@@ -27,6 +27,8 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @extends BaseDoc<null>
  */
 class TypeDoc extends BaseDoc
 {
@@ -186,7 +188,7 @@ class TypeDoc extends BaseDoc
      */
     public function __construct($reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct(null, $reflector, $context, $config);
 
         $this->namespace = trim(StringHelper::dirname($this->name), '\\');
 
@@ -204,7 +206,7 @@ class TypeDoc extends BaseDoc
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
                 $name = '$' . $tag->getVariableName();
 
-                $property = new PropertyDoc(null, $context, [
+                $property = new PropertyDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $name,
                     'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $name,
@@ -226,7 +228,7 @@ class TypeDoc extends BaseDoc
                 foreach ($tag->getParameters() as $parameter) {
                     $argumentType = (string) $parameter->getType();
 
-                    $params[] = new ParamDoc(null, $context, [
+                    $params[] = new ParamDoc($tag, null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
                         'typeHint' => $argumentType,
@@ -238,7 +240,7 @@ class TypeDoc extends BaseDoc
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
 
-                $method = new MethodDoc(null, $context, [
+                $method = new MethodDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getMethodName(),
                     'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $tag->getMethodName(),
@@ -264,7 +266,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ((string) $methodReflector->getVisibility() !== 'private') {
-                $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $method = new MethodDoc($this, $methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
             }
@@ -283,7 +285,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ((string) $propertyReflector->getVisibility() !== 'private') {
-                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $property = new PropertyDoc($this, $propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $property->definedBy = $this->name;
                 $this->properties[$property->name] = $property;
             }

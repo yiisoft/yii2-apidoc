@@ -518,7 +518,7 @@ abstract class BaseRenderer extends Component
 
         $template = $context->templates[$this->getFqcnLastPart($type)] ?? null;
         if ($template === null) {
-            return null;
+            return $context->parent !== null ? $this->getTemplateType($type, $context->parent) : null;
         }
 
         return (string) $template->getBound();

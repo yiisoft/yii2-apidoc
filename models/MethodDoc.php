@@ -15,6 +15,8 @@ use phpDocumentor\Reflection\Php\Method;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @extends FunctionDoc<ClassDoc|TraitDoc|InterfaceDoc>
  */
 class MethodDoc extends FunctionDoc
 {
@@ -31,13 +33,14 @@ class MethodDoc extends FunctionDoc
 
 
     /**
+     * @param ClassDoc|TraitDoc|InterfaceDoc $parent
      * @param Class_|Method $reflector
      * @param Context $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
