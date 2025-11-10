@@ -83,6 +83,7 @@ class ApiControllerTest extends TestCase
             $fileContent = preg_replace('/<script\s+src=".*?"><\/script>/is', '', $fileContent);
             $fileContent = preg_replace('/<link\s+href=".*?" rel="stylesheet">/is', '', $fileContent);
             $fileContent = preg_replace('/\s+id\s*=\s*(["\'])[^"\']*\1/i', '', $fileContent);
+            $fileContent = preg_replace('/\s+href\s*=\s*(["\'])#navigation[^"\']*\1/i', '', $fileContent);
 
             $this->assertMatchesHtmlSnapshot($fileContent);
             $filesCount++;
