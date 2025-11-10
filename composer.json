@@ -33,7 +33,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "spatie/phpunit-snapshot-assertions": "^3.0"
+        "spatie/phpunit-snapshot-assertions": "^3.0 || ^4.0"
     },
     "repositories": [
         {
