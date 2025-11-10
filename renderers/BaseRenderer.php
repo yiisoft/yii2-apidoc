@@ -211,23 +211,13 @@ abstract class BaseRenderer extends Component
                     $links[] = $this->createTypeLink($context, $context, '$this', $options);
                     continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
-                    $links[] = $this->createTypeLink(
-                        $typeDoc,
-                        $context,
-                        $this->getFqcnLastPart($typeDoc->name),
-                        $options
-                    );
+                    $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                     continue;
                 } elseif (
                     $type[0] !== '\\' &&
                     ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
                 ) {
-                    $links[] = $this->createTypeLink(
-                        $typeDoc,
-                        $context,
-                        $this->getFqcnLastPart($typeDoc->name),
-                        $options
-                    );
+                    $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                     continue;
                 } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
                     $links[] = $this->createTypeLink(

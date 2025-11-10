@@ -130,6 +130,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         if (empty($runtimePath)) {
             return;
         }
-        FileHelper::removeDirectory($runtimePath);
+        // FileHelper::removeDirectory($runtimePath);
     }
 }
