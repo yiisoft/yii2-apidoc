@@ -10,6 +10,7 @@ namespace yii\apidoc\renderers;
 
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
+use yii\apidoc\helpers\TypeHelper;
 use yii\apidoc\models\BaseDoc;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\ConstDoc;
@@ -170,7 +171,11 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if (substr_compare($type, ')[]', -3, 3) === 0) {
+                if (TypeHelper::isConditionalType($type)) {
+                    $possibleTypes = $this->getPossibleTypesFromConditionType($type);
+                    $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
+                    continue;
+                } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
                         $this->extractTypesFromArrayWithParenthesesType($type),
                         $context,
@@ -185,8 +190,7 @@ abstract class BaseRenderer extends Component
                     $templateType = $this->getTemplateType($arrayElementType, $context);
 
                     if ($templateType !== null) {
-                        $templateType = $context->templates[$this->getFqcnLastPart($arrayElementType)];
-                        $templateTypes = $this->extractTypesFromUnionType((string) $templateType->getBound());
+                        $templateTypes = $this->extractTypesFromUnionType($templateType);
                         $typeLink = $this->createTypeLink($templateTypes, $context, $title, $options);
 
                         if (count($templateTypes) > 1) {
@@ -206,9 +210,6 @@ abstract class BaseRenderer extends Component
                     continue;
                 } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
                     $links[] = $this->createTypeLink('object', $context, $title, $options);
-                    continue;
-                } elseif ($type === '$this' && $context instanceof TypeDoc) {
-                    $links[] = $this->createTypeLink($context, $context, '$this', $options);
                     continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
@@ -279,7 +280,7 @@ abstract class BaseRenderer extends Component
     public function createMethodReturnTypeLink($method, $type)
     {
         if (!($type instanceof ClassDoc) || $type->isAbstract) {
-            return $this->createTypeLink($method->returnTypes, $type);
+            return $this->createTypeLink($method->returnTypes, $method);
         }
 
         $returnTypes = [];
@@ -300,7 +301,7 @@ abstract class BaseRenderer extends Component
             $returnTypes[] = str_replace('static', $replacement, $returnType);
         }
 
-        return $this->createTypeLink($returnTypes, $type);
+        return $this->createTypeLink($returnTypes, $method);
     }
 
     /**
@@ -496,13 +497,16 @@ abstract class BaseRenderer extends Component
     private function getFqcnLastPart(string $fqcn): string
     {
         $backslashPosition = strrpos($fqcn, '\\');
+        if ($backslashPosition === false) {
+            return $fqcn;
+        }
 
         return substr($fqcn, $backslashPosition + 1);
     }
 
     private function getTemplateType(string $type, ?BaseDoc $context): ?string
     {
-        if ($type[0] !== '\\' || $context === null) {
+        if ($context === null) {
             return null;
         }
 
@@ -512,5 +516,47 @@ abstract class BaseRenderer extends Component
         }
 
         return (string) $template->getBound();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPossibleTypesFromConditionType(string $conditionalType): array
+    {
+        $possibleTypes = [];
+
+        $processBranch = function (string $branch) use (&$possibleTypes, &$processBranch) {
+            $branch = trim(preg_replace('/\s+/', '', $branch));
+
+            if (strpos($branch, '?') !== false) {
+                $parts = explode('?', $branch, 2);
+                $trueFalseParts = explode(':', $parts[1], 2);
+
+                if (count($trueFalseParts) === 2) {
+                    $processBranch($trueFalseParts[0]);
+                    $processBranch($trueFalseParts[1]);
+                } else {
+                    $possibleTypes[] = $branch;
+                }
+            } else {
+                $possibleTypes[] = $branch;
+            }
+        };
+
+        $mainParts = explode('?', trim($conditionalType, '()'));
+        if (count($mainParts) === 2) {
+            $trueFalseParts = explode(':', $mainParts[1], 2);
+
+            if (count($trueFalseParts) === 2) {
+                $processBranch($trueFalseParts[0]);
+                $processBranch($trueFalseParts[1]);
+            } else {
+                $possibleTypes[] = $conditionalType;
+            }
+        } else {
+            $possibleTypes[] = $conditionalType;
+        }
+
+        return array_unique($possibleTypes);
     }
 }

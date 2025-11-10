@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -10,11 +11,14 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use yii\apidoc\helpers\ApiMarkdownTrait;
+use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\models\types\ConditionalReturnType;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -59,10 +63,14 @@ class BaseDoc extends BaseObject
     public $todos = [];
     /**
      * @var array<string, Template>
+     *
+     * @since 4.0
      */
     public $templates = [];
     /**
      * @var TParent
+     *
+     * @since 4.0
      */
     public $parent = null;
 
@@ -217,6 +225,25 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Template) {
                 $this->templates[$tag->getTemplateName()] = $tag;
                 unset($this->tags[$i]);
+            } elseif ($tag instanceof Return_ && (string) $tag->getType() === 'mixed') {
+                $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
+                $lines = file($this->sourceFile);
+
+                $i = $docBlockEndLineNumber;
+                while ($i > 0) {
+                    if (strpos($lines[$i], '@return') !== false) {
+                        preg_match('/@return\s+(\((.*?)\)|([\w\\<>|?:,\[\]]+))(?=\s|$)/', $lines[$i], $matches);
+
+                        if ($matches[1] !== 'mixed' && TypeHelper::isConditionalType($matches[1])) {
+                            $this->tags[$i] = new Return_(
+                                new ConditionalReturnType($matches[1]),
+                                $tag->getDescription()
+                            );
+                        }
+                    }
+
+                    $i--;
+                }
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);
@@ -264,7 +291,8 @@ class BaseDoc extends BaseObject
             if ($length >= $pos + 2) {
                 $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
-                if ($abbrev === 'e.g.' ||
+                if (
+                    $abbrev === 'e.g.' ||
                     $abbrev === 'i.e.' ||
                     mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {

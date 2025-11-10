@@ -272,7 +272,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = (empty($param->typeHint) ? '' : '<span class="signature-type">' . $this->createTypeLink($param->typeHint, $context) . '</span> ')
+            $params[] = (empty($param->typeHint) ? '' : '<span class="signature-type">' . $this->createTypeLink($param->typeHint, $method) . '</span> ')
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . ApiMarkdown::highlight(
                     $param->name
@@ -292,7 +292,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
             . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
-            . ($this->createTypeLink($method->returnType === null ? 'void' : $method->returnTypes, $context)) . '</span> '
+            . ($this->createTypeLink($method->returnType === null ? 'void' : $method->returnTypes, $method)) . '</span> '
             . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
     }
