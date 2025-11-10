@@ -46,7 +46,7 @@ ArrayHelper::multisort($events, 'name');
 
                 <span class="detail-header-tag small">
                     event of type
-                    <?= $renderer->createTypeLink($event->types) ?>
+                    <?= $renderer->createTypeLink($event->types, $type) ?>
                     <?= !empty($event->since) ? "(available since version $event->since)" : '' ?>
                 </span>
             </div>

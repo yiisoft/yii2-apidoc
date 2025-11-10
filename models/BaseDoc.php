@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
+use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use yii\apidoc\helpers\ApiMarkdownTrait;
@@ -54,6 +55,10 @@ class BaseDoc extends BaseObject
      * @var Generic[]
      */
     public $todos = [];
+    /**
+     * @var array<string, Template>
+     */
+    public $templates = [];
 
 
     /**
@@ -200,6 +205,9 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Deprecated) {
                 $this->deprecatedSince = $tag->getVersion();
                 $this->deprecatedReason = (string) $tag->getDescription();
+                unset($this->tags[$i]);
+            } elseif ($tag instanceof Template) {
+                $this->templates[$tag->getTemplateName()] = $tag;
                 unset($this->tags[$i]);
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;

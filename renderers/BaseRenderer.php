@@ -181,7 +181,22 @@ abstract class BaseRenderer extends Component
                     $links[] = "({$arrayTypes})[]";
                     continue;
                 } elseif (substr_compare($type, '[]', -2, 2) === 0) {
-                    $links[] = $this->createTypeLink(substr($type, 0, -2)) . '[]';
+                    $arrayElementType = substr($type, 0, -2);
+                    $templateType = $this->getTemplateType($arrayElementType, $context);
+
+                    if ($templateType !== null) {
+                        $templateType = $context->templates[$this->getFqcnLastPart($arrayElementType)];
+                        $templateTypes = $this->extractTypesFromUnionType((string) $templateType->getBound());
+                        $typeLink = $this->createTypeLink($templateTypes, $context, $title, $options);
+
+                        if (count($templateTypes) > 1) {
+                            $links[] = "({$typeLink})[]";
+                        } else {
+                            $links[] =  "{$typeLink}[]";
+                        }
+                    } else {
+                        $links[] = $this->createTypeLink($arrayElementType, $context, $title, $options) . '[]';
+                    }
                     continue;
                 } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
                     $links[] = $this->createTypeLink('integer', $context, $title, $options);
@@ -196,13 +211,31 @@ abstract class BaseRenderer extends Component
                     $links[] = $this->createTypeLink($context, $context, '$this', $options);
                     continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
-                    $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
+                    $links[] = $this->createTypeLink(
+                        $typeDoc,
+                        $context,
+                        $this->getFqcnLastPart($typeDoc->name),
+                        $options
+                    );
                     continue;
                 } elseif (
                     $type[0] !== '\\' &&
                     ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
                 ) {
-                    $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
+                    $links[] = $this->createTypeLink(
+                        $typeDoc,
+                        $context,
+                        $this->getFqcnLastPart($typeDoc->name),
+                        $options
+                    );
+                    continue;
+                } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
+                    $links[] = $this->createTypeLink(
+                        $this->extractTypesFromUnionType($templateType),
+                        $context,
+                        $title,
+                        $options
+                    );
                     continue;
                 } elseif (strpos($type, '<') !== false && strpos($type, '>')) {
                     $genericTypes = $this->extractGenericTypes($type);
@@ -329,7 +362,7 @@ abstract class BaseRenderer extends Component
         if ($context instanceof TypeDoc) {
             return $context->namespace;
         }
-        if ($context->hasProperty('definedBy')) {
+        if ($context->hasProperty('definedBy') && method_exists($context, '__toString')) {
             $type = $this->apiContext->getType($context);
             if ($type !== null) {
                 return $type->namespace;
@@ -468,5 +501,26 @@ abstract class BaseRenderer extends Component
         preg_match('/.*<([^>]+)>/', $type, $matches);
 
         return array_map('trim', explode(',', $matches[1]));
+    }
+
+    private function getFqcnLastPart(string $fqcn): string
+    {
+        $backslashPosition = strrpos($fqcn, '\\');
+
+        return substr($fqcn, $backslashPosition + 1);
+    }
+
+    private function getTemplateType(string $type, ?BaseDoc $context): ?string
+    {
+        if ($type[0] !== '\\' || $context === null) {
+            return null;
+        }
+
+        $template = $context->templates[$this->getFqcnLastPart($type)] ?? null;
+        if ($template === null) {
+            return null;
+        }
+
+        return (string) $template->getBound();
     }
 }

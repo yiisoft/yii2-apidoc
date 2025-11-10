@@ -40,14 +40,14 @@ ArrayHelper::multisort($events, 'name');
         <?php foreach ($events as $event) { ?>
             <tr id="<?= $event->name ?>" class="<?= $event->definedBy !== $type->name ? 'inherited' : '' ?>">
                 <td><?= $renderer->createSubjectLink($event, null, [], $type) ?></td>
-                <td><?= $renderer->createTypeLink($event->types) ?></td>
+                <td><?= $renderer->createTypeLink($event->types, $type) ?></td>
                 <td>
                     <?= ApiMarkdown::process($event->shortDescription, $event->definedBy, true) ?>
                     <?php if (!empty($event->since)) { ?>
                         (available since version <?= $event->since ?>)
                     <?php } ?>
                 </td>
-                <td><?= $renderer->createTypeLink($event->definedBy) ?></td>
+                <td><?= $renderer->createTypeLink($event->definedBy, $type) ?></td>
             </tr>
         <?php } ?>
     </table>

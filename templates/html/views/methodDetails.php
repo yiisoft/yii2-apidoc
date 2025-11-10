@@ -92,7 +92,7 @@ ArrayHelper::multisort($methods, 'name');
                     <?php foreach ($method->params as $param) { ?>
                         <tr>
                             <td class="param-name-col"><?= ApiMarkdown::highlight($param->name, 'php') ?></td>
-                            <td class="param-type-col"><?= $renderer->createTypeLink($param->types) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($param->types, $method) ?></td>
                             <td class="param-desc-col">
                                <?= ApiMarkdown::process($param->description, $method->definedBy) ?>
                             </td>
@@ -112,7 +112,7 @@ ArrayHelper::multisort($methods, 'name');
                     <?php foreach ($method->exceptions as $exception => $description) { ?>
                         <tr>
                             <th class="param-name-col">throws</th>
-                            <td class="param-type-col"><?= $renderer->createTypeLink($exception) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($exception, $method) ?></td>
                             <td class="param-desc-col">
                                 <?= ApiMarkdown::process($description, $method->definedBy) ?>
                             </td>
