@@ -77,8 +77,12 @@ class ApiControllerTest extends TestCase
 
         foreach (glob("{$outputPath}/yiiunit-apidoc-data-api*") as $filePath) {
             $fileContent = file_get_contents($filePath);
+
             // Deleting dynamic content
             $fileContent = preg_replace('/<p\s+class="pull-right">.*?<\/p>/is', '', $fileContent);
+            $fileContent = preg_replace('/<script\s+src=".*?"><\/script>/is', '', $fileContent);
+            $fileContent = preg_replace('/<link\s+href=".*?" rel="stylesheet">/is', '', $fileContent);
+
             $this->assertMatchesHtmlSnapshot($fileContent);
             $filesCount++;
         }
