@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -13,6 +14,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
+use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\models\types\ConditionalReturnType;
 use yii\helpers\StringHelper;
 
 /**
@@ -203,7 +206,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $name = '$' . $tag->getVariableName();
 
                 $property = new PropertyDoc($this, null, $context, [
@@ -237,6 +240,35 @@ class TypeDoc extends BaseDoc
                     ]);
                 }
 
+                $returnType = $tag->getReturnType();
+
+                if ((string) $returnType === 'mixed') {
+                    $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
+                    $lines = file($this->sourceFile);
+
+                    $docBlockIterator = $docBlockEndLineNumber;
+                    while ($docBlockIterator > 0) {
+                        if (
+                            strpos($lines[$docBlockIterator], '@method') !== false &&
+                            strpos($lines[$docBlockIterator], $tag->getMethodName() . '(') !== false
+                        ) {
+                            preg_match(
+                                '/@method\s+(\(.*?\)|\S+)(?=\s*[a-zA-Z_])/U',
+                                $lines[$docBlockIterator],
+                                $matches
+                            );
+
+                            if ($matches[1] !== 'mixed' && TypeHelper::isConditionalType($matches[1])) {
+                                $returnType = new ConditionalReturnType($matches[1]);
+                            }
+
+                            break;
+                        }
+
+                        $docBlockIterator--;
+                    }
+                }
+
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
 
@@ -250,8 +282,8 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => (string) $tag->getReturnType(),
-                    'returnTypes' => $this->splitTypes($tag->getReturnType()),
+                    'returnType' => (string) $returnType,
+                    'returnTypes' => $this->splitTypes($returnType),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

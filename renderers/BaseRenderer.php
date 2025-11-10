@@ -172,7 +172,7 @@ abstract class BaseRenderer extends Component
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
                 if (TypeHelper::isConditionalType($type)) {
-                    $possibleTypes = $this->getPossibleTypesFromConditionType($type);
+                    $possibleTypes = TypeHelper::getPossibleTypesFromConditionType($type);
                     $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
                     continue;
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
@@ -228,8 +228,8 @@ abstract class BaseRenderer extends Component
                         $options
                     );
                     continue;
-                } elseif (strpos($type, '<') !== false && strpos($type, '>')) {
-                    $genericTypes = $this->extractGenericTypes($type);
+                } elseif (strpos($type, '<') !== false && strpos($type, '>') !== false) {
+                    $genericTypes = TypeHelper::extractGenericTypes($type);
                     $typesLinks = [];
 
                     foreach ($genericTypes as $genericType) {
@@ -240,7 +240,6 @@ abstract class BaseRenderer extends Component
                             $options
                         );
                     }
-
 
                     $mainType = substr($type, 0, strpos($type, '<'));
                     if ($mainType === 'array') {
@@ -484,16 +483,6 @@ abstract class BaseRenderer extends Component
         return array_map('trim', explode('|', $type));
     }
 
-    /**
-     * @return string[]
-     */
-    private function extractGenericTypes(string $type): array
-    {
-        preg_match('/.*<([^>]+)>/', $type, $matches);
-
-        return array_map('trim', explode(',', $matches[1]));
-    }
-
     private function getFqcnLastPart(string $fqcn): string
     {
         $backslashPosition = strrpos($fqcn, '\\');
@@ -516,47 +505,5 @@ abstract class BaseRenderer extends Component
         }
 
         return (string) $template->getBound();
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getPossibleTypesFromConditionType(string $conditionalType): array
-    {
-        $possibleTypes = [];
-
-        $processBranch = function (string $branch) use (&$possibleTypes, &$processBranch) {
-            $branch = trim(preg_replace('/\s+/', '', $branch));
-
-            if (strpos($branch, '?') !== false) {
-                $parts = explode('?', $branch, 2);
-                $trueFalseParts = explode(':', $parts[1], 2);
-
-                if (count($trueFalseParts) === 2) {
-                    $processBranch($trueFalseParts[0]);
-                    $processBranch($trueFalseParts[1]);
-                } else {
-                    $possibleTypes[] = $branch;
-                }
-            } else {
-                $possibleTypes[] = $branch;
-            }
-        };
-
-        $mainParts = explode('?', trim($conditionalType, '()'));
-        if (count($mainParts) === 2) {
-            $trueFalseParts = explode(':', $mainParts[1], 2);
-
-            if (count($trueFalseParts) === 2) {
-                $processBranch($trueFalseParts[0]);
-                $processBranch($trueFalseParts[1]);
-            } else {
-                $possibleTypes[] = $conditionalType;
-            }
-        } else {
-            $possibleTypes[] = $conditionalType;
-        }
-
-        return array_unique($possibleTypes);
     }
 }

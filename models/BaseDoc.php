@@ -229,20 +229,26 @@ class BaseDoc extends BaseObject
                 $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
                 $lines = file($this->sourceFile);
 
-                $i = $docBlockEndLineNumber;
-                while ($i > 0) {
-                    if (strpos($lines[$i], '@return') !== false) {
-                        preg_match('/@return\s+(\((.*?)\)|([\w\\<>|?:,\[\]]+))(?=\s|$)/', $lines[$i], $matches);
+                $docBlockIterator = $docBlockEndLineNumber;
+                while ($docBlockIterator > 0) {
+                    if (strpos($lines[$docBlockIterator], '@return') !== false) {
+                        preg_match(
+                            '/@return\s+(\((.*?)\)|([\w\\<>|?:,\[\]]+))(?=\s|$)/',
+                            $lines[$docBlockIterator],
+                            $matches
+                        );
 
                         if ($matches[1] !== 'mixed' && TypeHelper::isConditionalType($matches[1])) {
-                            $this->tags[$i] = new Return_(
+                            $this->tags[$docBlockIterator] = new Return_(
                                 new ConditionalReturnType($matches[1]),
                                 $tag->getDescription()
                             );
                         }
+
+                        break;
                     }
 
-                    $i--;
+                    $docBlockIterator--;
                 }
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;
