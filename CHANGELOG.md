@@ -5,7 +5,7 @@ Yii Framework 2 apidoc extension Change Log
 -----------------------
 
 - Bug #313: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
-- Bug #317: Fix `trim` deprecation error `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
+- Bug #317: Fix `trim` deprecation errors `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
 
 
 3.0.7 February 13, 2025
