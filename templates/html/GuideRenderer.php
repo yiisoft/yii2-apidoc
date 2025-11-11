@@ -12,6 +12,7 @@ use yii\apidoc\helpers\ApiMarkdown;
 use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
 use Yii;
+use yii\apidoc\helpers\EncodingHelper;
 use yii\helpers\Html;
 use yii\helpers\Markdown;
 use yii\web\AssetManager;
@@ -164,7 +165,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     protected function fixMarkdownLinks($content)
     {
-        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
+        $content = EncodingHelper::convertToUtf8WithHtmlEntities($content);
         $doc = new DOMDocument();
         $doc->loadHTML($content);
 
