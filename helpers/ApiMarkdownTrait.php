@@ -212,7 +212,7 @@ trait ApiMarkdownTrait
         }
 
         $title = Markdown::process($title);
-        $title = mb_convert_encoding($title, 'HTML-ENTITIES', 'UTF-8');
+        $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
         $doc = new DOMDocument();
         $doc->loadHTML($title);
 
