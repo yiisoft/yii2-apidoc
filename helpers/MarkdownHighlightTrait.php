@@ -78,8 +78,14 @@ trait MarkdownHighlightTrait
                 $text = substr($text, 0, $pos) . substr($text, $pos + 6);
             }
         }
-        // remove <code><span style="color: #000000">\n and </span>tags added by php
-        $text = substr(trim($text), 36, -16);
+
+        // Remove prefixes and suffixes added by php
+        if (PHP_VERSION_ID >= 80300) {
+            // The `highlight_string` result format has changed since PHP8.3
+            $text = substr($text, 34, -13);
+        } else {
+            $text = substr($text, 36, -16);
+        }
 
         return $text;
     }

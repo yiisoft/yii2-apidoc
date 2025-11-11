@@ -86,6 +86,12 @@ class ApiControllerTest extends TestCase
             $fileContent = preg_replace('/\s+href\s*=\s*(["\'])#[^"\']*\1/i', '', $fileContent);
             $fileContent = preg_replace('/\s+data-target\s*=\s*(["\'])#[^"\']*\1/i', '', $fileContent);
 
+            // The `highlight_string` result format has changed since PHP8.3
+            // To prevent the tests from breaking, we remove some spaces.
+            $fileContent = str_replace('> $', '>$', $fileContent);
+            $fileContent = str_replace('> <', '><', $fileContent);
+            $fileContent = str_replace('=&nbsp;', '= ', $fileContent);
+
             $this->assertMatchesHtmlSnapshot($fileContent);
             $filesCount++;
         }
