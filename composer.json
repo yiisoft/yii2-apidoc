@@ -32,7 +32,7 @@
         "scrivo/highlight.php": "^9.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
+        "phpunit/phpunit": "^8.5",
         "spatie/phpunit-snapshot-assertions": "^3.0 || ^4.0"
     },
     "repositories": [
