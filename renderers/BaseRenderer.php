@@ -168,16 +168,18 @@ abstract class BaseRenderer extends Component
             $title = null;
         }
 
+        $typeHelper = new TypeHelper();
+
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if (TypeHelper::isConditionalType($type)) {
-                    $possibleTypes = TypeHelper::getPossibleTypesFromConditionType($type);
+                if ($typeHelper->isConditionalType($type)) {
+                    $possibleTypes = $typeHelper->getPossibleTypesByConditionalType($type);
                     $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
                     continue;
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
-                        $this->extractTypesFromArrayWithParenthesesType($type),
+                        $typeHelper->getTypesByArrayType($type),
                         $context,
                         $title,
                         $options
@@ -190,7 +192,7 @@ abstract class BaseRenderer extends Component
                     $templateType = $this->getTemplateType($arrayElementType, $context);
 
                     if ($templateType !== null) {
-                        $templateTypes = $this->extractTypesFromUnionType($templateType);
+                        $templateTypes = $typeHelper->getChildTypesByType($templateType);
                         $typeLink = $this->createTypeLink($templateTypes, $context, $title, $options);
 
                         if (count($templateTypes) > 1) {
@@ -222,19 +224,19 @@ abstract class BaseRenderer extends Component
                     continue;
                 } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
                     $links[] = $this->createTypeLink(
-                        $this->extractTypesFromUnionType($templateType),
+                        $typeHelper->getChildTypesByType($templateType),
                         $context,
                         $title,
                         $options
                     );
                     continue;
                 } elseif (strpos($type, '<') !== false && strpos($type, '>') !== false) {
-                    $genericTypes = TypeHelper::extractGenericTypes($type);
+                    $genericTypes = $typeHelper->getGenericTypes($type);
                     $typesLinks = [];
 
                     foreach ($genericTypes as $genericType) {
                         $typesLinks[] = $this->createTypeLink(
-                            $this->extractTypesFromUnionType($genericType),
+                            $genericType,
                             $context,
                             $title,
                             $options
@@ -463,24 +465,6 @@ abstract class BaseRenderer extends Component
         }
 
         return null;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function extractTypesFromArrayWithParenthesesType(string $type): array
-    {
-        preg_match('/^\((.+)\)\[\]$/', $type, $matches);
-
-        return $this->extractTypesFromUnionType($matches[1]);
-    }
-
-    /**
-     * @return string[]
-     */
-    private function extractTypesFromUnionType(string $type): array
-    {
-        return array_map('trim', explode('|', $type));
     }
 
     private function getFqcnLastPart(string $fqcn): string

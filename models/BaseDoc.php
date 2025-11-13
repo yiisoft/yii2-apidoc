@@ -63,14 +63,10 @@ class BaseDoc extends BaseObject
     public $todos = [];
     /**
      * @var array<string, Template>
-     *
-     * @since 4.0
      */
     public $templates = [];
     /**
      * @var TParent
-     *
-     * @since 4.0
      */
     public $parent = null;
 
@@ -205,6 +201,8 @@ class BaseDoc extends BaseObject
 
         $this->phpDocContext = $docBlock->getContext();
 
+        $typeHelper = new TypeHelper();
+
         $this->tags = $docBlock->getTags();
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Since) {
@@ -238,7 +236,7 @@ class BaseDoc extends BaseObject
                             $matches
                         );
 
-                        if ($matches[1] !== 'mixed' && TypeHelper::isConditionalType($matches[1])) {
+                        if ($matches[1] !== 'mixed' && $typeHelper->isConditionalType($matches[1])) {
                             $this->tags[$docBlockIterator] = new Return_(
                                 new ConditionalReturnType($matches[1]),
                                 $tag->getDescription()

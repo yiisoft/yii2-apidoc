@@ -14,7 +14,6 @@ use phpDocumentor\Reflection\Type;
  * The Value object representing the conditional return type.
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
- * @since 4.0
  */
 class ConditionalReturnType implements Type
 {

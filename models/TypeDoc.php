@@ -242,6 +242,8 @@ class TypeDoc extends BaseDoc
 
                 $returnType = $tag->getReturnType();
 
+                $typeHelper = new TypeHelper();
+
                 if ((string) $returnType === 'mixed') {
                     $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
                     $lines = file($this->sourceFile);
@@ -258,7 +260,7 @@ class TypeDoc extends BaseDoc
                                 $matches
                             );
 
-                            if ($matches[1] !== 'mixed' && TypeHelper::isConditionalType($matches[1])) {
+                            if ($matches[1] !== 'mixed' && $typeHelper->isConditionalType($matches[1])) {
                                 $returnType = new ConditionalReturnType($matches[1]);
                             }
 
