@@ -23,4 +23,9 @@ class Cat extends Animal
         // this method has `inheritdoc` tag in brackets
         return 'This is a cat';
     }
+
+    public function methodWithoutDocAndTypeHints()
+    {
+        return '';
+    }
 }

@@ -70,23 +70,28 @@ class PropertyDoc extends BaseDoc
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
-            if ($tag->getName() === 'inheritdoc') {
-                $hasInheritdoc = true;
-            }
             if ($tag instanceof Var_) {
                 $this->type = (string) $tag->getType();
                 $this->types = $this->splitTypes($tag->getType());
 
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            } elseif ($this->isInheritdocTag($tag)) {
+                $hasInheritdoc = true;
             }
         }
+
         if (empty($this->shortDescription) && $context !== null && !$hasInheritdoc) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
                 'message' => "No short description for element '{$this->name}'",
             ];
+        }
+
+        if (!$hasInheritdoc && $this->type === null) {
+            $this->type = (string) $reflector->getType();
+            $this->types = [$this->type];
         }
     }
 }
