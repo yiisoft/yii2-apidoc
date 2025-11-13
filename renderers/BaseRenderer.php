@@ -207,12 +207,6 @@ abstract class BaseRenderer extends Component
                 } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
                     $links[] = $this->createTypeLink('integer', $context, $title, $options);
                     continue;
-                } elseif (substr_compare($type, 'array{', 0, 6) === 0) {
-                    $links[] = $this->createTypeLink('array', $context, $title, $options);
-                    continue;
-                } elseif (substr_compare($type, 'object{', 0, 7) === 0) {
-                    $links[] = $this->createTypeLink('object', $context, $title, $options);
-                    continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                     continue;
@@ -230,8 +224,8 @@ abstract class BaseRenderer extends Component
                         $options
                     );
                     continue;
-                } elseif (strpos($type, '<') !== false && strpos($type, '>') !== false) {
-                    $genericTypes = $typeHelper->getGenericTypes($type);
+                } elseif ($typeHelper->isGenericType($type)) {
+                    $genericTypes = $typeHelper->getTypesByGenericType($type);
                     $typesLinks = [];
 
                     foreach ($genericTypes as $genericType) {
@@ -267,6 +261,14 @@ abstract class BaseRenderer extends Component
             if ($link !== null) {
                 $links[] = $link;
             }
+        }
+
+        foreach ($typeHelper->getExceptions() as $exception) {
+            $this->apiContext->errors[] = [
+                'line' => $exception->getLine(),
+                'file' => $exception->getFile(),
+                'message' => $exception->getMessage(),
+            ];
         }
 
         // TODO: add support for intersection types

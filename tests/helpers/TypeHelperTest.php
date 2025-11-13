@@ -38,31 +38,31 @@ class TypeHelperTest extends TestCase
     public static function provideIsConditionalTypeData(): array
     {
         return [
-            'conditional type with parentheses' => [
+            'conditional with parentheses' => [
                 '($first is true ? string[] : string)',
                 true,
             ],
-            'conditional type without parentheses' => [
+            'conditional without parentheses' => [
                 '$first is true ? string[] : string',
                 false,
             ],
-            'nested conditional types' => [
+            'nested conditionals' => [
                 '($value is true ? (T is array ? static<T> : static<array<string, mixed>>) : static<T>)',
                 true,
             ],
-            'incomplete conditional type' => [
+            'incomplete conditional' => [
                 '($value is true ? (T is array ? static<T> : static<array<string, mixed>>))',
                 false,
             ],
-            'conditional type with invalid parentheses' => [
+            'conditional with invalid parentheses' => [
                 '($first is true ? string[] : string',
                 false,
             ],
-            'scalar type' => [
+            'scalar' => [
                 'string',
                 false,
             ],
-            'array type' => [
+            'array' => [
                 'array<string, mixed>',
                 false,
             ],
@@ -74,35 +74,69 @@ class TypeHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetGenericTypesData
+     * @dataProvider provideIsGenericTypeData
+     */
+    public function testIsGenericType(string $string, bool $expectedResult): void
+    {
+        $result = $this->typeHelper->isGenericType($string);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public static function provideIsGenericTypeData(): array
+    {
+        return [
+            'generic array' => [
+                'array<string, mixed>',
+                true,
+            ],
+            'scalar' => [
+                'string',
+                false,
+            ],
+            'basic array' => [
+                'array',
+                false,
+            ],
+            'empty string' => [
+                '',
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetTypesByGenericTypeData
      *
      * @param string[] $expectedResult
      */
-    public function testGetGenericTypes(string $string, array $expectedResult): void
+    public function testGetTypesByGenericType(string $string, array $expectedResult): void
     {
-        $result = $this->typeHelper->getGenericTypes($string);
+        $result = $this->typeHelper->getTypesByGenericType($string);
         $this->assertSame($expectedResult, $result);
     }
 
     /**
      * @return array<string, array{string, string[]}
      */
-    public static function provideGetGenericTypesData(): array
+    public static function provideGetTypesByGenericTypeData(): array
     {
         return [
-            'array with generics' => [
+            'generic array' => [
                 'array<string, mixed>',
                 ['string', 'mixed'],
             ],
-            'array without generics' => [
+            'basic array' => [
                 'array',
                 [],
             ],
-            'some class with generics' => [
+            'generic class' => [
                 'Action<Controller>',
                 ['Controller'],
             ],
-            'some class without generics' => [
+            'basic class' => [
                 'Action',
                 [],
             ],
@@ -178,7 +212,7 @@ class TypeHelperTest extends TestCase
                 'string[]',
                 ['string'],
             ],
-            'arrays with generics' => [
+            'generic array' => [
                 'array<string, mixed>[]',
                 ['array<string, mixed>'],
             ],
@@ -210,11 +244,11 @@ class TypeHelperTest extends TestCase
                 'string',
                 ['string'],
             ],
-            'array with generics' => [
+            'generic array' => [
                 'array<string, mixed>',
                 ['array<string, mixed>'],
             ],
-            'union type' => [
+            'union' => [
                 'string|int|float',
                 ['string', 'int', 'float'],
             ],

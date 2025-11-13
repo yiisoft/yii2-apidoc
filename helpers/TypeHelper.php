@@ -34,7 +34,7 @@ class TypeHelper
     private Lexer $lexer;
 
     /** @var Throwable[] */
-    private array $errors = [];
+    private array $exceptions = [];
 
     /**
      * @param array{lines?: bool, indexes?: bool, comments?: bool} $usedAttributes
@@ -51,9 +51,9 @@ class TypeHelper
     /**
      * @return Throwable[]
      */
-    public function getErrors(): array
+    public function getExceptions(): array
     {
-        return $this->errors;
+        return $this->exceptions;
     }
 
     public function isConditionalType(string $type): bool
@@ -63,10 +63,17 @@ class TypeHelper
         return $parsedType instanceof ConditionalTypeForParameterNode;
     }
 
+    public function isGenericType(string $type): bool
+    {
+        $parsedType = $this->parseType($type);
+
+        return $parsedType instanceof GenericTypeNode;
+    }
+
     /**
      * @return string[]
      */
-    public function getGenericTypes(string $type): array
+    public function getTypesByGenericType(string $type): array
     {
         $parsedType = $this->parseType($type);
         if (!$parsedType instanceof GenericTypeNode) {
@@ -130,7 +137,7 @@ class TypeHelper
         try {
             return $this->typeParser->parse($tokens);
         } catch (Throwable $e) {
-            $this->errors[] = $e;
+            $this->exceptions[] = $e;
 
             return null;
         }
