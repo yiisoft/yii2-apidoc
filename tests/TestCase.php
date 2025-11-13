@@ -126,7 +126,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function removeRuntimeDirectory()
     {
-        $runtimePath = Yii::getAlias('@runtime');
+        $runtimePath = Yii::getAlias('@runtime', false);
         if (empty($runtimePath)) {
             return;
         }
