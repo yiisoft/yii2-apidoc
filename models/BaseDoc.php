@@ -32,6 +32,9 @@ use yii\helpers\StringHelper;
  */
 class BaseDoc extends BaseObject
 {
+    private const PHPSTAN_TYPE_ANNOTATION_NAME = 'phpstan-type';
+    private const PSALM_TYPE_ANNOTATION_NAME = 'psalm-type';
+
     /**
      * @var \phpDocumentor\Reflection\Types\Context
      */
@@ -69,6 +72,14 @@ class BaseDoc extends BaseObject
      * @var TParent
      */
     public $parent = null;
+    /**
+     * @var array<string, PseudoTypeDoc>
+     */
+    public array $phpStanTypes = [];
+    /**
+     * @var array<string, PseudoTypeDoc>
+     */
+    public array $psalmTypes = [];
 
     /**
      * @param Type|null $aggregatedType
@@ -251,6 +262,28 @@ class BaseDoc extends BaseObject
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);
+            } elseif ($tag instanceof Generic) {
+                if ($tag->getName() === self::PHPSTAN_TYPE_ANNOTATION_NAME) {
+                    $tagData = explode(' ', trim($tag->getDescription()), 2);
+                    $phpStanType = new PseudoTypeDoc(
+                        PseudoTypeDoc::TYPE_PHPSTAN,
+                        $this,
+                        trim($tagData[0]),
+                        trim($tagData[1])
+                    );
+                    $this->phpStanTypes[$phpStanType->name] = $phpStanType;
+                    unset($this->tags[$i]);
+                } elseif ($tag->getName() === self::PSALM_TYPE_ANNOTATION_NAME) {
+                    $tagData = explode('=', trim($tag->getDescription()), 2);
+                    $psalmType = new PseudoTypeDoc(
+                        PseudoTypeDoc::TYPE_PSALM,
+                        $this,
+                        trim($tagData[0]),
+                        trim($tagData[1])
+                    );
+                    $this->psalmTypes[$psalmType->name] = $psalmType;
+                    unset($this->tags[$i]);
+                }
             }
         }
 

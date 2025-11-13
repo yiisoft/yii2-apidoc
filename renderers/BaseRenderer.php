@@ -19,6 +19,7 @@ use yii\apidoc\models\EventDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\PropertyDoc;
+use yii\apidoc\models\PseudoTypeDoc;
 use yii\apidoc\models\TraitDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\base\Component;
@@ -150,7 +151,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a type (class, interface or trait)
-     * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[]|null $types
+     * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|string|string[] $types
      * @param BaseDoc|null $context
      * @param string $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
      * @param array $options additional HTML attributes for the link.
@@ -158,10 +159,6 @@ abstract class BaseRenderer extends Component
      */
     public function createTypeLink($types, $context = null, $title = null, $options = [])
     {
-        if ($types === null) {
-            return '';
-        }
-
         if (!is_array($types)) {
             $types = [$types];
         } elseif (count($types) > 1) {
@@ -223,6 +220,12 @@ abstract class BaseRenderer extends Component
                         $title,
                         $options
                     );
+                    continue;
+                } elseif (($phpStanType = $this->getPhpStanType($type, $context)) !== null) {
+                    $links[] = $this->createSubjectLink($phpStanType);
+                    continue;
+                } elseif (($psalmType = $this->getPsalmType($type, $context)) !== null) {
+                    $links[] = $this->createSubjectLink($psalmType);
                     continue;
                 } elseif ($typeHelper->isGenericType($type)) {
                     $genericTypes = $typeHelper->getTypesByGenericType($type);
@@ -309,7 +312,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a subject
-     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
+     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc|PseudoTypeDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @param TypeDoc|null $type
@@ -317,6 +320,11 @@ abstract class BaseRenderer extends Component
      */
     public function createSubjectLink($subject, $title = null, $options = [], $type = null)
     {
+        if ($subject instanceof PseudoTypeDoc) {
+            $href = $this->generateApiUrl($subject->parent->name) . "#{$subject->type}-type-{$subject->name}";
+            return $this->generateLink($subject->name, $href, $options);
+        }
+
         if ($title === null) {
             if ($subject instanceof MethodDoc) {
                 $title = $subject->name . '()';
@@ -477,6 +485,34 @@ abstract class BaseRenderer extends Component
         }
 
         return substr($fqcn, $backslashPosition + 1);
+    }
+
+    private function getPhpStanType(string $type, ?BaseDoc $context): ?PseudoTypeDoc
+    {
+        if ($context === null) {
+            return null;
+        }
+
+        $phpStanType = $context->phpStanTypes[$this->getFqcnLastPart($type)] ?? null;
+        if ($phpStanType === null) {
+            return $context->parent !== null ? $this->getPhpStanType($type, $context->parent) : null;
+        }
+
+        return $phpStanType;
+    }
+
+    private function getPsalmType(string $type, ?BaseDoc $context): ?PseudoTypeDoc
+    {
+        if ($context === null) {
+            return null;
+        }
+
+        $psalmType = $context->psalmTypes[$this->getFqcnLastPart($type)] ?? null;
+        if ($psalmType === null) {
+            return $context->parent !== null ? $this->getPsalmType($type, $context->parent) : null;
+        }
+
+        return $psalmType;
     }
 
     private function getTemplateType(string $type, ?BaseDoc $context): ?string
