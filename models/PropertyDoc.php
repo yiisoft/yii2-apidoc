@@ -9,7 +9,6 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
-use yii\apidoc\helpers\PrettyPrinter;
 use yii\helpers\StringHelper;
 
 /**
