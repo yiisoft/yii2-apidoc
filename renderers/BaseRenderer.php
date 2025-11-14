@@ -69,6 +69,10 @@ abstract class BaseRenderer extends Component
         'null',
         'false',
         'true',
+        'iterable',
+        'mixed',
+        'never',
+        'void',
     ];
     /**
      * @var string[]

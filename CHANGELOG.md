@@ -8,6 +8,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #317: Fix `trim` deprecation errors `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
 - Bug #318: Fix deprecation errors `mb_convert_encoding(): Handling HTML entities via mbstring is deprecated` (mspirkov)
 - Enh #319: Determining types by type hints for properties, methods and params (mspirkov)
+- Enh #320: Expand the list of built-in PHP types (mspirkov)
 - Bug #311: Support `nikic/php-parser` v5 (mspirkov)
 - Bug #324: Raise minimum PHP version to 7.4 (mspirkov)
 - Bug #325: Fix deprecation errors `The Default value will become of type Expression by default` (mspirkov)
