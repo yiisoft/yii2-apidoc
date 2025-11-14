@@ -13,8 +13,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: [ubuntu-latest]
-                php: ['7.4', '8.0', '8.1', '8.2']
-
+                php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
         steps:
             - name: Checkout
               uses: actions/checkout@v5
@@ -33,15 +32,9 @@ jobs:
                   restore-keys: ${{ runner.os }}-composer-
             - name: Install dependencies
               run: composer update $DEFAULT_COMPOSER_FLAGS
-            - name: Run unit tests with coverage
-              run: vendor/bin/phpunit --verbose --coverage-clover=coverage.clover --colors=always
-              if: matrix.php == '7.1'
-            - name: Run unit tests without coverage
-              run: vendor/bin/phpunit --verbose --colors=always
-              if: matrix.php != '7.1'
-            - name: Upload code coverage
-              run: |
-                  wget https://scrutinizer-ci.com/ocular.phar
-                  php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-              if: matrix.php == '7.1'
-              continue-on-error: true # if is fork
+            - name: Run unit tests PHP 7.x.
+              run: vendor/bin/phpunit -c phpunit-7x.xml.dist
+              if: matrix.php == '7.4'
+            - name: Run unit tests PHP 8.x.
+              run: vendor/bin/phpunit
+              if: matrix.php != '7.4'
