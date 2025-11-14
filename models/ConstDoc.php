@@ -9,7 +9,6 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\Constant;
-use yii\apidoc\helpers\PrettyPrinter;
 
 /**
  * Represents API documentation information for a `constant`.

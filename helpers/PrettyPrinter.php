@@ -27,7 +27,8 @@ class PrettyPrinter extends BasePrettyPrinter
      * @param string $string
      * @return string
      */
-    protected function pSingleQuotedString(string $string) {
+    protected function pSingleQuotedString(string $string): string
+    {
         return '\'' . preg_replace("/'|\\\\(?=[\\\\']|$)/", '\\\\$0', $string) . '\'';
     }
 
@@ -36,7 +37,7 @@ class PrettyPrinter extends BasePrettyPrinter
      * @param bool $trailingComma
      * @return string
      */
-    protected function pMaybeMultiline(array $nodes, bool $trailingComma = false)
+    protected function pMaybeMultiline(array $nodes, bool $trailingComma = false): string
     {
         foreach ($nodes as $node) {
             $node->setAttribute('comments', []);
