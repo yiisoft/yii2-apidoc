@@ -9,7 +9,6 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
-use yii\apidoc\helpers\PrettyPrinter;
 use yii\helpers\StringHelper;
 
 /**
@@ -27,6 +26,9 @@ class PropertyDoc extends BaseDoc
     public $isStatic;
     public $type;
     public $types;
+    /**
+     * @var string|null
+     */
     public $defaultValue;
     // will be set by creating class
     public $getter;
@@ -66,27 +68,38 @@ class PropertyDoc extends BaseDoc
 
         $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-        $this->defaultValue = $reflector->getDefault();
+
+        if (PHP_VERSION_ID >= 80100) {
+            $reflectorDefault = $reflector->getDefault(false);
+            $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
+        } else {
+            $this->defaultValue = $reflector->getDefault();
+        }
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
-            if ($tag->getName() === 'inheritdoc') {
-                $hasInheritdoc = true;
-            }
             if ($tag instanceof Var_) {
                 $this->type = (string) $tag->getType();
                 $this->types = $this->splitTypes($tag->getType());
 
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            } elseif ($this->isInheritdocTag($tag)) {
+                $hasInheritdoc = true;
             }
         }
+
         if (empty($this->shortDescription) && $context !== null && !$hasInheritdoc) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
                 'message' => "No short description for element '{$this->name}'",
             ];
+        }
+
+        if (!$hasInheritdoc && $this->type === null) {
+            $this->type = (string) $reflector->getType();
+            $this->types = [$this->type];
         }
     }
 }

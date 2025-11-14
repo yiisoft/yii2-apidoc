@@ -30,6 +30,9 @@ abstract class Animal extends BaseObject
      */
     public $birthDate;
 
+    public string $propertyWithoutDoc = '';
+
+    public $propertyWithoutDocAndTypeHint = '';
 
     /**
      * Renders animal description.
@@ -54,5 +57,11 @@ abstract class Animal extends BaseObject
     public function isOlder($date)
     {
         return $this->getAge() > $date;
+    }
+
+    public function setBirthDate(int $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+        return $this;
     }
 }

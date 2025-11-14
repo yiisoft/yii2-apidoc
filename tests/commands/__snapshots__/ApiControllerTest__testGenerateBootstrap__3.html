@@ -116,6 +116,18 @@ yii\base\BaseObject</td>
                     <td>Animal name.</td>
                     <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
                 </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24propertyWithoutDoc-detail">$propertyWithoutDoc</a></td>
+                    <td><a href="https://www.php.net/language.types.string">string</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24propertyWithoutDocAndTypeHint-detail">$propertyWithoutDocAndTypeHint</a></td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
                         </table>
 </div>
 
@@ -157,6 +169,11 @@ yii\base\BaseObject</td>
                     <td><a href="yiiunit-apidoc-data-api-animal-dog.html#render()-detail">render()</a></td>
                     <td>Renders animal description.</td>
                     <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#setBirthDate()-detail">setBirthDate()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
                 </tr>
                         </table>
 </div>
@@ -378,6 +395,63 @@ yii\base\BaseObject</td>
 </span>{
     <span class="hljs-comment">// this method has `inheritdoc` tag without brackets</span>
     <span class="hljs-keyword">return</span><span class="hljs-string">'This is a dog'</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#setBirthDate()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                setBirthDate()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#setBirthDate()-detail">yiiunit\apidoc\data\api\animal\Animal::setBirthDate()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span> <span class="signature-type">self</span> <strong><a href="yiiunit-apidoc-data-api-animal-animal.html#setBirthDate()-detail">setBirthDate</a></strong> ( <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span> <span style="color: #0000BB">$birthDate</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$birthDate</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSetBirthDate">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setBirthDate</span><span class="hljs-params">(int $birthDate)</span>: <span class="hljs-title">self</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;birthDate = $birthDate;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>;
 }
 </code>
             </pre>
