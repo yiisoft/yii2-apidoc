@@ -27,6 +27,9 @@ class PropertyDoc extends BaseDoc
     public $isStatic;
     public $type;
     public $types;
+    /**
+     * @var string|null
+     */
     public $defaultValue;
     // will be set by creating class
     public $getter;
@@ -66,7 +69,13 @@ class PropertyDoc extends BaseDoc
 
         $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-        $this->defaultValue = $reflector->getDefault();
+
+        if (PHP_VERSION_ID >= 80100) {
+            $reflectorDefault = $reflector->getDefault(false);
+            $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
+        } else {
+            $this->defaultValue = $reflector->getDefault();
+        }
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
