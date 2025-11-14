@@ -33,10 +33,10 @@ jobs:
             - name: Install dependencies
               run: composer update $DEFAULT_COMPOSER_FLAGS
             - name: Run unit tests with coverage
-              run: vendor/bin/phpunit --verbose --coverage-clover=coverage.clover --colors=always
+              run: vendor/bin/phpunit --coverage-clover=coverage.clover --colors=always
               if: matrix.php == '7.1'
             - name: Run unit tests without coverage
-              run: vendor/bin/phpunit --verbose --colors=always
+              run: vendor/bin/phpunit --colors=always
               if: matrix.php != '7.1'
             - name: Upload code coverage
               run: |
