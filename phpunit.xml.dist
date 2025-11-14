@@ -2,7 +2,13 @@
 <phpunit
     bootstrap="./tests/bootstrap.php"
     colors="true"
-    stopOnFailure="false">
+    stopOnFailure="false"
+    failOnRisky="true"
+    failOnWarning="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+>
     <testsuites>
         <testsuite name="Test Suite">
             <directory>./tests</directory>
