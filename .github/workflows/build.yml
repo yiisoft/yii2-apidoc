@@ -35,6 +35,6 @@ jobs:
             - name: Run unit tests PHP 7.x.
               run: vendor/bin/phpunit -c phpunit-7x.xml.dist
               if: matrix.php == '7.4'
-            - name: Run unit tests PHP 7.x.
+            - name: Run unit tests PHP 8.x.
               run: vendor/bin/phpunit
               if: matrix.php != '7.4'
