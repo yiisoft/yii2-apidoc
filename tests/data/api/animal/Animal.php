@@ -26,7 +26,7 @@ abstract class Animal extends BaseObject
 
     public const COLORS = [
         self::COLOR_GREY,
-        self::COLOR_WHITE
+        self::COLOR_WHITE,
     ];
 
     /**
