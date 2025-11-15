@@ -76,6 +76,7 @@ abstract class BaseRenderer extends Component
             'scalar',
         ],
         'integer-ranges' => [
+            'int',
             'positive-int',
             'negative-int',
             'non-positive-int',
@@ -101,6 +102,7 @@ abstract class BaseRenderer extends Component
             'class-string',
         ],
         'general-arrays' => [
+            'array',
             'non-empty-array',
         ],
         'lists' => [
@@ -245,15 +247,12 @@ abstract class BaseRenderer extends Component
                     }
 
                     $mainType = substr($type, 0, strpos($type, '<'));
-                    if ($mainType === 'array') {
-                        $mainTypeLink = $this->generateLink(
-                            'array',
-                            self::PHPSTAN_TYPE_BASE_URL . 'general-arrays',
-                            $options
-                        );
-                    } else {
-                        $mainTypeLink = $this->createTypeLink($mainType, $context, $title, $options);
-                    }
+                    $mainTypeLink = $this->createTypeLink(
+                        $mainType,
+                        $context,
+                        $title,
+                        array_merge($options, ['forcePhpStanLink' => true])
+                    );
 
                     $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
                     continue;
@@ -414,6 +413,13 @@ abstract class BaseRenderer extends Component
      */
     private function createTypeLinkByType($type, ?string $title = null, array $options = []): ?string
     {
+        if (isset($options['forcePhpStanLink'])) {
+            $isForcePhpStanLink = $options['forcePhpStanLink'];
+            unset($options['forcePhpStanLink']);
+        } else {
+            $isForcePhpStanLink = false;
+        }
+
         if (is_string($type)) {
             $linkText = ltrim($type, '\\');
             if ($title !== null) {
@@ -433,33 +439,15 @@ abstract class BaseRenderer extends Component
                 );
             }
 
-            if (in_array($type, self::PHP_TYPES)) {
-                if (isset(self::PHP_TYPE_DISPLAY_ALIASES[$type])) {
-                    $linkText = self::PHP_TYPE_DISPLAY_ALIASES[$type];
-                }
-
-                if (isset(self::PHP_TYPE_ALIASES[$type])) {
-                    $type = self::PHP_TYPE_ALIASES[$type];
-                }
-
-                return $this->generateLink(
-                    $linkText,
-                    self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
-                    $options
-                );
+            if ($isForcePhpStanLink) {
+                $link = $this->generatePhpStanTypeLink($type, $options);
+                $link ??= $this->generatePhpTypeLink($type, $linkText, $options);
+            } else {
+                $link = $this->generatePhpTypeLink($type, $linkText, $options);
+                $link ??= $this->generatePhpStanTypeLink($type, $options);
             }
 
-            foreach (self::PHPSTAN_TYPES_DOC_LINKS as $phpstanDocLink => $phpstanTypes) {
-                if (in_array($type, $phpstanTypes)) {
-                    return $this->generateLink(
-                        $type,
-                        self::PHPSTAN_TYPE_BASE_URL . $phpstanDocLink,
-                        $options
-                    );
-                }
-            }
-
-            return $type;
+            return $link ?? $type;
         }
 
         if ($type instanceof BaseDoc) {
@@ -525,5 +513,41 @@ abstract class BaseRenderer extends Component
         }
 
         return (string) $template->getBound();
+    }
+
+    private function generatePhpTypeLink(string $type, string $linkText, array $options): ?string
+    {
+        if (in_array($type, self::PHP_TYPES)) {
+            if (isset(self::PHP_TYPE_DISPLAY_ALIASES[$type])) {
+                $linkText = self::PHP_TYPE_DISPLAY_ALIASES[$type];
+            }
+
+            if (isset(self::PHP_TYPE_ALIASES[$type])) {
+                $type = self::PHP_TYPE_ALIASES[$type];
+            }
+
+            return $this->generateLink(
+                $linkText,
+                self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
+                $options
+            );
+        }
+
+        return null;
+    }
+
+    private function generatePhpStanTypeLink(string $type, array $options): ?string
+    {
+        foreach (self::PHPSTAN_TYPES_DOC_LINKS as $phpstanDocLink => $phpstanTypes) {
+            if (in_array($type, $phpstanTypes)) {
+                return $this->generateLink(
+                    $type,
+                    self::PHPSTAN_TYPE_BASE_URL . $phpstanDocLink,
+                    $options
+                );
+            }
+        }
+
+        return null;
     }
 }
