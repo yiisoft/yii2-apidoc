@@ -14,6 +14,7 @@ use yii\apidoc\renderers\GuideRenderer;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
 use Yii;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\helpers\Json;
 
 /**

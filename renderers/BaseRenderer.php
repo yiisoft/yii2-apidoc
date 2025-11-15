@@ -10,7 +10,7 @@ namespace yii\apidoc\renderers;
 
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
-use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\BaseDoc;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\ConstDoc;
@@ -143,6 +143,15 @@ abstract class BaseRenderer extends Component
     public $controller;
     public $guideUrl;
 
+    private TypeAnalyzer $typeAnalyzer;
+
+    public function __construct($config = [])
+    {
+        parent::__construct($config);
+
+        $this->typeAnalyzer = new TypeAnalyzer();
+    }
+
     public function init()
     {
         ApiMarkdown::$renderer = $this;
@@ -165,18 +174,16 @@ abstract class BaseRenderer extends Component
             $title = null;
         }
 
-        $typeHelper = new TypeHelper();
-
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if ($typeHelper->isConditionalType($type)) {
-                    $possibleTypes = $typeHelper->getPossibleTypesByConditionalType($type);
+                if ($this->typeAnalyzer->isConditionalType($type)) {
+                    $possibleTypes = $this->typeAnalyzer->getPossibleTypesByConditionalType($type);
                     $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
                     continue;
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
-                        $typeHelper->getTypesByArrayType($type),
+                        $this->typeAnalyzer->getTypesByArrayType($type),
                         $context,
                         $title,
                         $options
@@ -189,7 +196,7 @@ abstract class BaseRenderer extends Component
                     $templateType = $this->getTemplateType($arrayElementType, $context);
 
                     if ($templateType !== null) {
-                        $templateTypes = $typeHelper->getChildTypesByType($templateType);
+                        $templateTypes = $this->typeAnalyzer->getChildTypesByType($templateType);
                         $typeLink = $this->createTypeLink($templateTypes, $context, $title, $options);
 
                         if (count($templateTypes) > 1) {
@@ -215,7 +222,7 @@ abstract class BaseRenderer extends Component
                     continue;
                 } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
                     $links[] = $this->createTypeLink(
-                        $typeHelper->getChildTypesByType($templateType),
+                        $this->typeAnalyzer->getChildTypesByType($templateType),
                         $context,
                         $title,
                         $options
@@ -227,8 +234,8 @@ abstract class BaseRenderer extends Component
                 } elseif (($psalmType = $this->getPsalmType($type, $context)) !== null) {
                     $links[] = $this->createSubjectLink($psalmType);
                     continue;
-                } elseif ($typeHelper->isGenericType($type)) {
-                    $genericTypes = $typeHelper->getTypesByGenericType($type);
+                } elseif ($this->typeAnalyzer->isGenericType($type)) {
+                    $genericTypes = $this->typeAnalyzer->getTypesByGenericType($type);
                     $typesLinks = [];
 
                     foreach ($genericTypes as $genericType) {
@@ -266,13 +273,7 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        foreach ($typeHelper->getExceptions() as $exception) {
-            $this->apiContext->errors[] = [
-                'line' => $exception->getLine(),
-                'file' => $exception->getFile(),
-                'message' => $exception->getMessage(),
-            ];
-        }
+        $this->apiContext->saveErrorsFromTypeAnalyzer($this->typeAnalyzer);
 
         // TODO: add support for intersection types
         return implode('|', array_unique($links));

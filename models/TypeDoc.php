@@ -14,7 +14,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
-use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\types\ConditionalReturnType;
 use yii\helpers\StringHelper;
 
@@ -199,6 +199,8 @@ class TypeDoc extends BaseDoc
             return;
         }
 
+        $typeAnalyzer = new TypeAnalyzer();
+
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Author) {
                 $this->authors[$tag->getAuthorName()] = $tag->getEmail();
@@ -242,8 +244,6 @@ class TypeDoc extends BaseDoc
 
                 $returnType = $tag->getReturnType();
 
-                $typeHelper = new TypeHelper();
-
                 if ((string) $returnType === 'mixed') {
                     $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
                     $lines = file($this->sourceFile);
@@ -260,7 +260,7 @@ class TypeDoc extends BaseDoc
                                 $matches
                             );
 
-                            if ($matches[1] !== 'mixed' && $typeHelper->isConditionalType($matches[1])) {
+                            if ($matches[1] !== 'mixed' && $typeAnalyzer->isConditionalType($matches[1])) {
                                 $returnType = new ConditionalReturnType($matches[1]);
                             }
 
@@ -304,6 +304,10 @@ class TypeDoc extends BaseDoc
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
             }
+        }
+
+        if ($context !== null) {
+            $context->saveErrorsFromTypeAnalyzer($typeAnalyzer);
         }
     }
 

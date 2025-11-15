@@ -9,18 +9,18 @@
 namespace yiiunit\apidoc\helpers;
 
 use InvalidArgumentException;
-use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yiiunit\apidoc\TestCase;
 
-class TypeHelperTest extends TestCase
+class TypeAnalyzerTest extends TestCase
 {
-    private TypeHelper $typeHelper;
+    private TypeAnalyzer $typeAnalyzer;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->typeHelper = new TypeHelper();
+        $this->typeAnalyzer = new TypeAnalyzer();
     }
 
     /**
@@ -28,7 +28,7 @@ class TypeHelperTest extends TestCase
      */
     public function testIsConditionalType(string $string, bool $expectedResult): void
     {
-        $result = $this->typeHelper->isConditionalType($string);
+        $result = $this->typeAnalyzer->isConditionalType($string);
         $this->assertSame($expectedResult, $result);
     }
 
@@ -78,7 +78,7 @@ class TypeHelperTest extends TestCase
      */
     public function testIsGenericType(string $string, bool $expectedResult): void
     {
-        $result = $this->typeHelper->isGenericType($string);
+        $result = $this->typeAnalyzer->isGenericType($string);
         $this->assertSame($expectedResult, $result);
     }
 
@@ -114,7 +114,7 @@ class TypeHelperTest extends TestCase
      */
     public function testGetTypesByGenericType(string $string, array $expectedResult): void
     {
-        $result = $this->typeHelper->getTypesByGenericType($string);
+        $result = $this->typeAnalyzer->getTypesByGenericType($string);
         $this->assertSame($expectedResult, $result);
     }
 
@@ -158,14 +158,14 @@ class TypeHelperTest extends TestCase
      */
     public function testGetPossibleTypesByConditionalType(string $string, array $expectedResult): void
     {
-        $result = $this->typeHelper->getPossibleTypesByConditionalType($string);
+        $result = $this->typeAnalyzer->getPossibleTypesByConditionalType($string);
         $this->assertSame($expectedResult, $result);
     }
 
     public function testGetPossibleTypesByConditionalTypeWithInvalidType(): void
     {
         $this->expectExceptionObject(new InvalidArgumentException('Type (int) is not conditional'));
-        $this->typeHelper->getPossibleTypesByConditionalType('int');
+        $this->typeAnalyzer->getPossibleTypesByConditionalType('int');
     }
 
     /**
@@ -192,14 +192,14 @@ class TypeHelperTest extends TestCase
      */
     public function testGetTypesByArrayType(string $string, array $expectedResult): void
     {
-        $result = $this->typeHelper->getTypesByArrayType($string);
+        $result = $this->typeAnalyzer->getTypesByArrayType($string);
         $this->assertSame($expectedResult, $result);
     }
 
     public function testGetTypesByArrayTypeWithInvalidType(): void
     {
         $this->expectExceptionObject(new InvalidArgumentException('Type (int) is not array'));
-        $this->typeHelper->getTypesByArrayType('int');
+        $this->typeAnalyzer->getTypesByArrayType('int');
     }
 
     /**
@@ -230,7 +230,7 @@ class TypeHelperTest extends TestCase
      */
     public function testGetChildTypesByType(string $string, array $expectedResult): void
     {
-        $result = $this->typeHelper->getChildTypesByType($string);
+        $result = $this->typeAnalyzer->getChildTypesByType($string);
         $this->assertSame($expectedResult, $result);
     }
 

@@ -27,7 +27,7 @@ use Throwable;
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
  */
-class TypeHelper
+class TypeAnalyzer
 {
     private TypeParser $typeParser;
 
@@ -54,6 +54,11 @@ class TypeHelper
     public function getExceptions(): array
     {
         return $this->exceptions;
+    }
+
+    public function resetExceptions(): void
+    {
+        $this->exceptions = [];
     }
 
     public function isConditionalType(string $type): bool

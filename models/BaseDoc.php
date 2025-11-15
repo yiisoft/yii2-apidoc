@@ -17,7 +17,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use yii\apidoc\helpers\ApiMarkdownTrait;
-use yii\apidoc\helpers\TypeHelper;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\types\ConditionalReturnType;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
@@ -176,6 +176,8 @@ class BaseDoc extends BaseObject
             return;
         }
 
+        $typeAnalyzer = new TypeAnalyzer();
+
         // base properties
         $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
 
@@ -213,8 +215,6 @@ class BaseDoc extends BaseObject
 
         $this->phpDocContext = $docBlock->getContext();
 
-        $typeHelper = new TypeHelper();
-
         $this->tags = $docBlock->getTags();
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Since) {
@@ -248,7 +248,7 @@ class BaseDoc extends BaseObject
                             $matches
                         );
 
-                        if ($matches[1] !== 'mixed' && $typeHelper->isConditionalType($matches[1])) {
+                        if ($matches[1] !== 'mixed' && $typeAnalyzer->isConditionalType($matches[1])) {
                             $this->tags[$docBlockIterator] = new Return_(
                                 new ConditionalReturnType($matches[1]),
                                 $tag->getDescription()
@@ -293,6 +293,10 @@ class BaseDoc extends BaseObject
             // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
             $this->tags[] = new Generic(self::INHERITDOC_TAG_NAME);
             $this->shortDescription = '';
+        }
+
+        if ($context !== null) {
+            $context->saveErrorsFromTypeAnalyzer($typeAnalyzer);
         }
     }
 

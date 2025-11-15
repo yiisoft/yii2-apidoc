@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -14,6 +15,7 @@ use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\apidoc\helpers\PrettyPrinter;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\base\Component;
 
 /**
@@ -45,7 +47,6 @@ class Context extends Component
      * @var array
      */
     public $warnings = [];
-
 
     /**
      * Returning TypeDoc for a type given
@@ -378,7 +379,7 @@ class Context extends Component
         );
 
         $methods = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
                 if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
@@ -404,7 +405,7 @@ class Context extends Component
         );
 
         $properties = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->properties[$method->name])) {
                 $cproperty = $candidate->properties[$method->name];
                 if ($cproperty->hasTag('inheritdoc')) {
@@ -436,7 +437,7 @@ class Context extends Component
     private function getInterfaces($class)
     {
         $interfaces = [];
-        foreach($class->interfaces as $interface) {
+        foreach ($class->interfaces as $interface) {
             if (isset($this->interfaces[$interface])) {
                 $interfaces[] = $this->interfaces[$interface];
             }
@@ -589,5 +590,18 @@ class Context extends Component
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
         return $projectFactory->create('ApiDoc', $files);
+    }
+
+    public function saveErrorsFromTypeAnalyzer(TypeAnalyzer $typeAnalyzer): void
+    {
+        foreach ($typeAnalyzer->getExceptions() as $exception) {
+            $this->errors[] = [
+                'line' => $exception->getLine(),
+                'file' => $exception->getFile(),
+                'message' => $exception->getMessage(),
+            ];
+        }
+
+        $typeAnalyzer->resetExceptions();
     }
 }
