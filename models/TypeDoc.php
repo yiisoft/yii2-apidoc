@@ -240,9 +240,9 @@ class TypeDoc extends BaseDoc
                     ]);
                 }
 
-                $returnType = $tag->getReturnType();
+                $returnType = null;
 
-                if ((string) $returnType === 'mixed') {
+                if ((string) $tag->getReturnType() === 'mixed') {
                     $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
                     $lines = file($this->sourceFile);
 
@@ -255,7 +255,8 @@ class TypeDoc extends BaseDoc
                             $realType = $typeAnalyzer->getTypeFromMethodTag(trim($lines[$docBlockIterator], ' *'));
 
                             if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
-                                $returnType = new ConditionalReturnType($realType);
+                                $returnType = $realType;
+                                $returnTypes = $typeAnalyzer->getPossibleTypesByConditionalType($realType);
                             }
 
                             break;
@@ -263,6 +264,11 @@ class TypeDoc extends BaseDoc
 
                         $docBlockIterator--;
                     }
+                }
+
+                if ($returnType === null) {
+                    $returnType = (string) $tag->getReturnType();
+                    $returnTypes = $this->splitTypes($tag->getReturnType());
                 }
 
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
@@ -278,8 +284,8 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => (string) $returnType,
-                    'returnTypes' => $this->splitTypes($returnType),
+                    'returnType' => $returnType,
+                    'returnTypes' => $returnTypes,
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -11,6 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
+use yii\apidoc\helpers\TypeAnalyzer;
 use yii\helpers\StringHelper;
 
 /**
@@ -61,10 +63,9 @@ class FunctionDoc extends BaseDoc
             return;
         }
 
-        $this->isReturnByReference = $reflector->getHasReturnByReference();
+        $typeAnalyzer = new TypeAnalyzer();
 
-        $this->returnType = (string) $reflector->getReturnType();
-        $this->returnTypes = [$this->returnType];
+        $this->isReturnByReference = $reflector->getHasReturnByReference();
 
         foreach ($reflector->getArguments() as $arg) {
             $arg = new ParamDoc($this, $arg, $context, ['sourceFile' => $this->sourceFile]);
@@ -92,8 +93,32 @@ class FunctionDoc extends BaseDoc
                 $this->params[$paramName]->types = $this->splitTypes($tag->getType());
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
-                $this->returnType = (string) $tag->getType();
-                $this->returnTypes = $this->splitTypes($tag->getType());
+                if ((string) $tag->getType() === 'mixed') {
+                    $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
+                    $lines = file($this->sourceFile);
+
+                    $docBlockIterator = $docBlockEndLineNumber;
+                    while ($docBlockIterator > 0) {
+                        if (strpos($lines[$docBlockIterator], '@return') !== false) {
+                            $realType = $typeAnalyzer->getTypeFromReturnTag(trim($lines[$docBlockIterator], ' *'));
+
+                            if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
+                                $this->returnType = $realType;
+                                $this->returnTypes = $typeAnalyzer->getPossibleTypesByConditionalType($realType);
+                            }
+
+                            break;
+                        }
+
+                        $docBlockIterator--;
+                    }
+                }
+
+                if ($this->returnType === null) {
+                    $this->returnType = (string) $tag->getType();
+                    $this->returnTypes = $this->splitTypes($tag->getType());
+                }
+
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -104,6 +129,10 @@ class FunctionDoc extends BaseDoc
         if (!$hasInheritdoc && $this->returnType === null) {
             $this->returnType = (string) $reflector->getReturnType();
             $this->returnTypes = [$this->returnType];
+        }
+
+        if ($context !== null) {
+            $context->saveErrorsFromTypeAnalyzer($typeAnalyzer);
         }
     }
 }

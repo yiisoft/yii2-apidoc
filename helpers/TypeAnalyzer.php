@@ -221,13 +221,13 @@ class TypeAnalyzer
         if ($typeNode->if instanceof ConditionalTypeNode) {
             $types = array_merge($types, $this->getPossibleTypesByConditionalTypeInternal($typeNode->if));
         } else {
-            $types[] = (string) $typeNode->if;
+            $types = array_merge($types, $this->getChildTypesByType((string) $typeNode->if));
         }
 
         if ($typeNode->else instanceof ConditionalTypeNode) {
             $types = array_merge($types, $this->getPossibleTypesByConditionalTypeInternal($typeNode->else));
         } else {
-            $types[] = (string) $typeNode->else;
+            $types = array_merge($types, $this->getChildTypesByType((string) $typeNode->else));
         }
 
         return $types;

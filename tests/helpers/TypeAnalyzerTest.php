@@ -184,6 +184,10 @@ class TypeAnalyzerTest extends TestCase
                 '($first is true ? string[] : string)',
                 ['string[]', 'string'],
             ],
+            'with union types' => [
+                '($condition is true ? string|int : string)',
+                ['string', 'int'],
+            ],
             'nested' => [
                 '($value is true ? (T is array ? static<T> : static<array<string, mixed>>) : static<T>)',
                 ['static<T>', 'static<array<string, mixed>>'],

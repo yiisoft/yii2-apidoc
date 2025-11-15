@@ -11,15 +11,12 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use phpDocumentor\Reflection\Types\Intersection;
-use yii\apidoc\helpers\ApiMarkdownTrait;
 use yii\apidoc\helpers\TypeAnalyzer;
-use yii\apidoc\models\types\ConditionalReturnType;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -238,27 +235,6 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Template) {
                 $this->templates[$tag->getTemplateName()] = $tag;
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof Return_ && (string) $tag->getType() === 'mixed') {
-                $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
-                $lines = file($this->sourceFile);
-
-                $docBlockIterator = $docBlockEndLineNumber;
-                while ($docBlockIterator > 0) {
-                    if (strpos($lines[$docBlockIterator], '@return') !== false) {
-                        $realType = $typeAnalyzer->getTypeFromReturnTag(trim($lines[$docBlockIterator], ' *'));
-
-                        if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
-                            $this->tags[$docBlockIterator] = new Return_(
-                                new ConditionalReturnType($realType),
-                                $tag->getDescription()
-                            );
-                        }
-
-                        break;
-                    }
-
-                    $docBlockIterator--;
-                }
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);

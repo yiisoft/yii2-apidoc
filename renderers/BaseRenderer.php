@@ -189,10 +189,6 @@ abstract class BaseRenderer extends Component
 
                     $links[] = implode('&amp;', $innerTypesLinks);
                     continue;
-                } elseif ($this->typeAnalyzer->isConditionalType($type)) {
-                    $possibleTypes = $this->typeAnalyzer->getPossibleTypesByConditionalType($type);
-                    $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
-                    continue;
                 } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
                     $arrayTypes = $this->createTypeLink(
                         $this->typeAnalyzer->getTypesByArrayType($type),
