@@ -208,9 +208,6 @@ abstract class BaseRenderer extends Component
                         $links[] = $this->createTypeLink($arrayElementType, $context, $title, $options) . '[]';
                     }
                     continue;
-                } elseif (substr_compare($type, 'int<', 0, 4) === 0) {
-                    $links[] = $this->createTypeLink('integer', $context, $title, $options);
-                    continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                     continue;

@@ -51,7 +51,7 @@ abstract class Animal extends BaseObject
      */
     public $arrayWithoutParenthesesProperty;
     /**
-     * @var int<0, 16>
+     * @var int<0, max>
      */
     public $intRangeProperty;
     /**
