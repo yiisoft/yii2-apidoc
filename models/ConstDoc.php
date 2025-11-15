@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -19,6 +20,9 @@ use phpDocumentor\Reflection\Php\Constant;
 class ConstDoc extends BaseDoc
 {
     public $definedBy;
+    /**
+     * @var string|null
+     */
     public $value;
 
 
@@ -36,6 +40,11 @@ class ConstDoc extends BaseDoc
             return;
         }
 
-        $this->value = $reflector->getValue();
+        if (PHP_VERSION_ID >= 80100) {
+            $reflectorValue = $reflector->getValue(false);
+            $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
+        } else {
+            $this->value = $reflector->getValue();
+        }
     }
 }
