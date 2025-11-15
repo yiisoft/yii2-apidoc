@@ -42,7 +42,7 @@ class ConstDoc extends BaseDoc
 
         if (PHP_VERSION_ID >= 80100) {
             $reflectorValue = $reflector->getValue(false);
-            $this->value = (string) $reflectorValue;
+            $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
         } else {
             $this->value = $reflector->getValue();
         }
