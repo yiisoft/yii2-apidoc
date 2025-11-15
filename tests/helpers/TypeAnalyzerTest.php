@@ -162,10 +162,16 @@ class TypeAnalyzerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function testGetPossibleTypesByConditionalTypeWithInvalidType(): void
+    public function testGetPossibleTypesByConditionalTypeWithInt(): void
     {
         $this->expectExceptionObject(new InvalidArgumentException('Type (int) is not conditional'));
         $this->typeAnalyzer->getPossibleTypesByConditionalType('int');
+    }
+
+    public function testGetPossibleTypesByConditionalTypeWithEmptyString(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Type () is not conditional'));
+        $this->typeAnalyzer->getPossibleTypesByConditionalType('');
     }
 
     /**
@@ -196,10 +202,16 @@ class TypeAnalyzerTest extends TestCase
         $this->assertSame($expectedResult, $result);
     }
 
-    public function testGetTypesByArrayTypeWithInvalidType(): void
+    public function testGetTypesByArrayTypeWithInt(): void
     {
         $this->expectExceptionObject(new InvalidArgumentException('Type (int) is not array'));
         $this->typeAnalyzer->getTypesByArrayType('int');
+    }
+
+    public function testGetTypesByArrayTypeWithEmptyString(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Type () is not array'));
+        $this->typeAnalyzer->getTypesByArrayType('');
     }
 
     /**
@@ -301,7 +313,7 @@ class TypeAnalyzerTest extends TestCase
     }
 
     /**
-     * @return array<string, array{string, string[]}
+     * @return array<string, array{string, string[]}>
      */
     public static function provideGetTypesByIntersectionTypeData(): array
     {
@@ -323,5 +335,61 @@ class TypeAnalyzerTest extends TestCase
                 [],
             ],
         ];
+    }
+
+    /**
+     * @dataProvider provideGetTypeFromMethodTagData
+     */
+    public function testGetTypeFromMethodTag(string $tag, ?string $expectedResult): void
+    {
+        $result = $this->typeAnalyzer->getTypeFromMethodTag($tag);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function provideGetTypeFromMethodTagData(): array
+    {
+        return [
+            'method with return type' => [
+                '@method array<string, mixed> asArray()',
+                'array<string, mixed>',
+            ],
+            'method without return type' => [
+                '@method asArray()',
+                null,
+            ],
+        ];
+    }
+
+    public function testGetTypeFromMethodTagWithReturnTag(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Tag (@return string) is not @method'));
+        $this->typeAnalyzer->getTypeFromMethodTag('@return string');
+    }
+
+    public function testGetTypeFromMethodTagWithInvalidTag(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Tag (@metho asArray()) is not @method'));
+        $this->typeAnalyzer->getTypeFromMethodTag('@metho asArray()');
+    }
+
+    public function testGetTypeFromReturnTag(): void
+    {
+        $result = $this->typeAnalyzer->getTypeFromReturnTag('@return object{someKey: string}');
+        $this->assertSame('object{someKey: string}', $result);
+    }
+
+    public function testGetTypeFromReturnTagWithMethodTag(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Tag (@method asArray()) is not @return'));
+        $this->typeAnalyzer->getTypeFromReturnTag('@method asArray()');
+    }
+
+    public function testGetTypeFromReturnTagWithInvalidTag(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Tag (@retur int) is not @return'));
+        $this->typeAnalyzer->getTypeFromReturnTag('@retur int');
     }
 }

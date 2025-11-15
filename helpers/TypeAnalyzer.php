@@ -9,6 +9,9 @@
 namespace yii\apidoc\helpers;
 
 use InvalidArgumentException;
+use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
@@ -18,6 +21,7 @@ use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
+use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
@@ -34,6 +38,8 @@ class TypeAnalyzer
 
     private Lexer $lexer;
 
+    private PhpDocParser $phpDocParser;
+
     /** @var array<string, Throwable> */
     private array $exceptions = [];
 
@@ -47,6 +53,7 @@ class TypeAnalyzer
 
         $this->typeParser = new TypeParser($config, $constExprParser);
         $this->lexer = new Lexer($config);
+        $this->phpDocParser = new PhpDocParser($config, $this->typeParser, $constExprParser);
     }
 
     /**
@@ -76,12 +83,31 @@ class TypeAnalyzer
         return $parsedType instanceof GenericTypeNode;
     }
 
-    // TODO: tests
     public function isIntersectionType(string $type): bool
     {
         $parsedType = $this->parseType($type);
 
         return $parsedType instanceof IntersectionTypeNode;
+    }
+
+    public function getTypeFromMethodTag(string $tag): ?string
+    {
+        $parsedTag = $this->parseTag($tag);
+        if (!$parsedTag->value instanceof MethodTagValueNode) {
+            throw new InvalidArgumentException("Tag ({$tag}) is not @method");
+        }
+
+        return $parsedTag->value->returnType !== null ? (string) $parsedTag->value->returnType : null;
+    }
+
+    public function getTypeFromReturnTag(string $tag): string
+    {
+        $parsedTag = $this->parseTag($tag);
+        if (!$parsedTag->value instanceof ReturnTagValueNode) {
+            throw new InvalidArgumentException("Tag ({$tag}) is not @return");
+        }
+
+        return (string) $parsedTag->value->type;
     }
 
     /**
@@ -97,7 +123,6 @@ class TypeAnalyzer
         return array_map(fn(TypeNode $node) => (string) $node, $parsedType->genericTypes);
     }
 
-    // TODO: tests
     /**
      * @return string[]
      */
@@ -160,12 +185,25 @@ class TypeAnalyzer
 
     private function parseType(string $type): ?TypeNode
     {
-        $tokens = new TokenIterator($this->lexer->tokenize($type));
+        $tokens = $this->getTokens($type);
 
         try {
             return $this->typeParser->parse($tokens);
         } catch (Throwable $e) {
             $this->exceptions[$type] = $e;
+
+            return null;
+        }
+    }
+
+    private function parseTag(string $tag): ?PhpDocTagNode
+    {
+        $tokens = $this->getTokens($tag);
+
+        try {
+            return $this->phpDocParser->parseTag($tokens);
+        } catch (Throwable $e) {
+            $this->exceptions[$tag] = $e;
 
             return null;
         }
@@ -193,5 +231,10 @@ class TypeAnalyzer
         }
 
         return $types;
+    }
+
+    private function getTokens(string $string): TokenIterator
+    {
+        return new TokenIterator($this->lexer->tokenize($string));
     }
 }

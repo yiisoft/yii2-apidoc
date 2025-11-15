@@ -252,14 +252,10 @@ class TypeDoc extends BaseDoc
                             strpos($lines[$docBlockIterator], '@method') !== false &&
                             strpos($lines[$docBlockIterator], $tag->getMethodName() . '(') !== false
                         ) {
-                            preg_match(
-                                '/@method\s+(\(.*?\)|\S+)(?=\s*[a-zA-Z_])/U',
-                                $lines[$docBlockIterator],
-                                $matches
-                            );
+                            $realType = $typeAnalyzer->getTypeFromMethodTag(trim($lines[$docBlockIterator], ' *'));
 
-                            if ($matches[1] !== 'mixed' && $typeAnalyzer->isConditionalType($matches[1])) {
-                                $returnType = new ConditionalReturnType($matches[1]);
+                            if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
+                                $returnType = new ConditionalReturnType($realType);
                             }
 
                             break;

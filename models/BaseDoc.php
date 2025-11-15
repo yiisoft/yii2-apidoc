@@ -245,15 +245,11 @@ class BaseDoc extends BaseObject
                 $docBlockIterator = $docBlockEndLineNumber;
                 while ($docBlockIterator > 0) {
                     if (strpos($lines[$docBlockIterator], '@return') !== false) {
-                        preg_match(
-                            '/@return\s+(\((.*?)\)|([\w\\<>|?:,\[\]]+))(?=\s|$)/',
-                            $lines[$docBlockIterator],
-                            $matches
-                        );
+                        $realType = $typeAnalyzer->getTypeFromReturnTag(trim($lines[$docBlockIterator], ' *'));
 
-                        if ($matches[1] !== 'mixed' && $typeAnalyzer->isConditionalType($matches[1])) {
+                        if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
                             $this->tags[$docBlockIterator] = new Return_(
-                                new ConditionalReturnType($matches[1]),
+                                new ConditionalReturnType($realType),
                                 $tag->getDescription()
                             );
                         }
