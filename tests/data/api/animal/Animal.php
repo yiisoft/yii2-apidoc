@@ -21,6 +21,14 @@ use yii\base\BaseObject;
  */
 abstract class Animal extends BaseObject
 {
+    public const COLOR_GREY = 'grey';
+    public const COLOR_WHITE = 'white';
+
+    public const COLORS = [
+        self::COLOR_GREY,
+        self::COLOR_WHITE
+    ];
+
     /**
      * @var string animal name.
      */
