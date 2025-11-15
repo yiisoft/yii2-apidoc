@@ -34,6 +34,7 @@ class BaseDoc extends BaseObject
 {
     private const PHPSTAN_TYPE_ANNOTATION_NAME = 'phpstan-type';
     private const PSALM_TYPE_ANNOTATION_NAME = 'psalm-type';
+    private const INHERITDOC_TAG_NAME = 'inheritdoc';
 
     /**
      * @var \phpDocumentor\Reflection\Types\Context
@@ -290,9 +291,14 @@ class BaseDoc extends BaseObject
         if (in_array($this->shortDescription, ['{@inheritdoc}', '{@inheritDoc}', '@inheritdoc', '@inheritDoc'], true)) {
             // Mock up parsing of '{@inheritdoc}' (in brackets) tag, which is not yet supported at "phpdocumentor/reflection-docblock" 2.x
             // todo consider removal in case of "phpdocumentor/reflection-docblock" upgrade
-            $this->tags[] = new Generic('inheritdoc');
+            $this->tags[] = new Generic(self::INHERITDOC_TAG_NAME);
             $this->shortDescription = '';
         }
+    }
+
+    protected function isInheritdocTag(Tag $tag): bool
+    {
+        return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
     }
 
     /**

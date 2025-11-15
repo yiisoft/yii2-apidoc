@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -21,11 +22,20 @@ class ParamDoc extends BaseObject
     public $name;
     public $typeHint;
     public $isOptional;
+    /**
+     * @var string|null
+     */
     public $defaultValue;
     public $isPassedByReference;
     // will be set by creating class
     public $description;
+    /**
+     * @var string|null
+     */
     public $type;
+    /**
+     * @var string[]|null
+     */
     public $types;
     public $sourceFile;
     /**
@@ -50,12 +60,19 @@ class ParamDoc extends BaseObject
             $this->typeHint = (string) $reflector->getType();
             $this->type = $this->typeHint;
             $this->types = [$this->type];
-            $this->defaultValue = $reflector->getDefault();
+
+            if (PHP_VERSION_ID >= 80100) {
+                $reflectorDefault = $reflector->getDefault(false);
+                $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
+            } else {
+                $this->defaultValue = $reflector->getDefault();
+            }
+
             $this->isOptional = $this->defaultValue !== null;
             $this->isPassedByReference = $reflector->isByReference();
         }
 
-        $this->name = '$' . $this->name ;
+        $this->name = '$' . $this->name;
 
         if ($this->typeHint === 'mixed') {
             $this->typeHint = '';

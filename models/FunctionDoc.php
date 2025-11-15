@@ -7,6 +7,7 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
@@ -74,6 +75,8 @@ class FunctionDoc extends BaseDoc
             $this->params[$arg->name] = $arg;
         }
 
+        $hasInheritdoc = false;
+
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
                 $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
@@ -97,7 +100,14 @@ class FunctionDoc extends BaseDoc
                 $this->returnTypes = $this->splitTypes($tag->getType());
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
+            } elseif ($this->isInheritdocTag($tag)) {
+                $hasInheritdoc = true;
             }
+        }
+
+        if (!$hasInheritdoc && $this->returnType === null) {
+            $this->returnType = (string) $reflector->getReturnType();
+            $this->returnTypes = [$this->returnType];
         }
     }
 }
