@@ -16,8 +16,6 @@ use phpDocumentor\Reflection\Php\Constant;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
- *
- * @extends BaseDoc<ClassDoc|TraitDoc>
  */
 class ConstDoc extends BaseDoc
 {

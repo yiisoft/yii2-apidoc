@@ -27,8 +27,6 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
- *
- * @template TParent of (self|null)
  */
 class BaseDoc extends BaseObject
 {
@@ -70,7 +68,7 @@ class BaseDoc extends BaseObject
      */
     public $templates = [];
     /**
-     * @var TParent
+     * @var self|null
      */
     public $parent = null;
     /**

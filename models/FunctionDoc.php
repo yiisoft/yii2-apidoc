@@ -7,7 +7,6 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
@@ -19,9 +18,6 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
- *
- * @template TParent of (BaseDoc|null)
- * @extends BaseDoc<TParent>
  */
 class FunctionDoc extends BaseDoc
 {
@@ -52,7 +48,7 @@ class FunctionDoc extends BaseDoc
 
 
     /**
-     * @param TParent $parent
+     * @param BaseDoc|null $parent
      * @param Method $reflector
      * @param Context $context
      * @param array $config

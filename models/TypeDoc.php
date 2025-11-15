@@ -30,8 +30,6 @@ use yii\helpers\StringHelper;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
- *
- * @extends BaseDoc<null>
  */
 class TypeDoc extends BaseDoc
 {

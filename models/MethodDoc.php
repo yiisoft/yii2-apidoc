@@ -15,8 +15,6 @@ use phpDocumentor\Reflection\Php\Method;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
- *
- * @extends FunctionDoc<ClassDoc|TraitDoc|InterfaceDoc>
  */
 class MethodDoc extends FunctionDoc
 {
