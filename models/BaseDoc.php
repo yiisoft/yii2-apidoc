@@ -16,6 +16,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
+use phpDocumentor\Reflection\Types\Intersection;
 use yii\apidoc\helpers\ApiMarkdownTrait;
 use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\types\ConditionalReturnType;
@@ -88,6 +89,10 @@ class BaseDoc extends BaseObject
     {
         if ($aggregatedType === null) {
             return [];
+        }
+
+        if ($aggregatedType instanceof Intersection) {
+            return [(string) $aggregatedType];
         }
 
         $types = [];

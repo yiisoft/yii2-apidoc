@@ -254,4 +254,74 @@ class TypeAnalyzerTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideIsIntersectionTypeData
+     */
+    public function testIsIntersectionType(string $string, bool $expectedResult): void
+    {
+        $result = $this->typeAnalyzer->isIntersectionType($string);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public static function provideIsIntersectionTypeData(): array
+    {
+        return [
+            'intersection' => [
+                'SomeClass&AnotherClass',
+                true,
+            ],
+            'generic array' => [
+                'array<string, mixed>',
+                false,
+            ],
+            'scalar' => [
+                'string',
+                false,
+            ],
+            'basic array' => [
+                'array',
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetTypesByIntersectionTypeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetTypesByIntersectionType(string $string, array $expectedResult): void
+    {
+        $result = $this->typeAnalyzer->getTypesByIntersectionType($string);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string[]}
+     */
+    public static function provideGetTypesByIntersectionTypeData(): array
+    {
+        return [
+            'intersection' => [
+                'SomeClass&AnotherClass',
+                ['SomeClass', 'AnotherClass'],
+            ],
+            'union' => [
+                'int|string',
+                [],
+            ],
+            'array' => [
+                'array',
+                [],
+            ],
+            'scalar' => [
+                'string',
+                [],
+            ],
+        ];
+    }
 }

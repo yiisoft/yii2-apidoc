@@ -82,8 +82,13 @@ abstract class Animal extends BaseObject
      * @var \Closure(mixed): bool
      */
     public $closureProperty;
+    /**
+     * @var Cat&Dog
+     */
+    public $intersectionType;
 
     // Unsupported PHPStan/Psalm syntax
+    // TODO: add support
 
     /**
      * @var int

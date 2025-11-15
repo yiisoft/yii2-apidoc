@@ -179,7 +179,17 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if ($this->typeAnalyzer->isConditionalType($type)) {
+                if ($this->typeAnalyzer->isIntersectionType($type)) {
+                    $innerTypes = $this->typeAnalyzer->getTypesByIntersectionType($type);
+                    $innerTypesLinks = [];
+
+                    foreach ($innerTypes as $innerType) {
+                        $innerTypesLinks[] = $this->createTypeLink($innerType, $context, $title, $options);
+                    }
+
+                    $links[] = implode('&amp;', $innerTypesLinks);
+                    continue;
+                } elseif ($this->typeAnalyzer->isConditionalType($type)) {
                     $possibleTypes = $this->typeAnalyzer->getPossibleTypesByConditionalType($type);
                     $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
                     continue;
@@ -271,7 +281,6 @@ abstract class BaseRenderer extends Component
 
         $this->apiContext->saveErrorsFromTypeAnalyzer($this->typeAnalyzer);
 
-        // TODO: add support for intersection types
         return implode('|', array_unique($links));
     }
 

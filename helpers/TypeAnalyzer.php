@@ -13,6 +13,7 @@ use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
@@ -33,7 +34,7 @@ class TypeAnalyzer
 
     private Lexer $lexer;
 
-    /** @var Throwable[] */
+    /** @var array<string, Throwable> */
     private array $exceptions = [];
 
     /**
@@ -49,7 +50,7 @@ class TypeAnalyzer
     }
 
     /**
-     * @return Throwable[]
+     * @return array<string, Throwable>
      */
     public function getExceptions(): array
     {
@@ -75,6 +76,14 @@ class TypeAnalyzer
         return $parsedType instanceof GenericTypeNode;
     }
 
+    // TODO: tests
+    public function isIntersectionType(string $type): bool
+    {
+        $parsedType = $this->parseType($type);
+
+        return $parsedType instanceof IntersectionTypeNode;
+    }
+
     /**
      * @return string[]
      */
@@ -86,6 +95,20 @@ class TypeAnalyzer
         }
 
         return array_map(fn(TypeNode $node) => (string) $node, $parsedType->genericTypes);
+    }
+
+    // TODO: tests
+    /**
+     * @return string[]
+     */
+    public function getTypesByIntersectionType(string $type): array
+    {
+        $parsedType = $this->parseType($type);
+        if (!$parsedType instanceof IntersectionTypeNode) {
+            return [];
+        }
+
+        return array_map(fn(TypeNode $node) => (string) $node, $parsedType->types);
     }
 
     /**
@@ -142,7 +165,7 @@ class TypeAnalyzer
         try {
             return $this->typeParser->parse($tokens);
         } catch (Throwable $e) {
-            $this->exceptions[] = $e;
+            $this->exceptions[$type] = $e;
 
             return null;
         }
