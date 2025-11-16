@@ -49,7 +49,7 @@ final class PhpDocTagFactory
 
         if ($tagNodeValue instanceof ParamTagValueNode) {
             return new Param(
-                $this->removeDollarFromVarName($tagNodeValue->parameterName),
+                substr($tagNodeValue->parameterName, 1),
                 $this->createPlainType($tagNodeValue->type),
                 $tagNodeValue->isVariadic,
                 $this->createDescription($tagNodeValue->description)
@@ -61,7 +61,7 @@ final class PhpDocTagFactory
             );
         } elseif ($tagNodeValue instanceof VarTagValueNode) {
             return new Var_(
-                $this->removeDollarFromVarName($tagNodeValue->variableName),
+                substr($tagNodeValue->variableName, 1),
                 $this->createPlainType($tagNodeValue->type),
                 $this->createDescription($tagNodeValue->description)
             );
@@ -101,7 +101,7 @@ final class PhpDocTagFactory
     private function createPropertyTag(PhpDocTagNode $tagNode): TagWithType
     {
         $tagNodeValue = $tagNode->value;
-        $propertyNameWithoutDollar = $this->removeDollarFromVarName($tagNodeValue->propertyName);
+        $propertyNameWithoutDollar = substr($tagNodeValue->propertyName, 1);
 
         switch ($tagNode->name) {
             case '@property-read':
@@ -150,10 +150,5 @@ final class PhpDocTagFactory
             $tagNodeValue->isStatic,
             $this->createDescription($tagNodeValue->description)
         );
-    }
-
-    private function removeDollarFromVarName(string $varName): string
-    {
-        return substr($varName, 0, 1) === '$' ? substr($varName, 1) : $varName;
     }
 }
