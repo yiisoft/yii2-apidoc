@@ -12,6 +12,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #311: Support `nikic/php-parser` v5 (mspirkov)
 - Bug #324: Raise minimum PHP version to 7.4 (mspirkov)
 - Bug #325: Fix deprecation errors `The Default value will become of type Expression by default` (mspirkov)
+- Bug #327: Fix deprecation errors `The expression value will become of type Expression by default` (mspirkov)
 - Bug #329: Fix getting parameter types in the `@method` annotation (mspirkov)
 
 
