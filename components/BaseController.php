@@ -12,7 +12,6 @@ use yii\console\Controller;
 use yii\helpers\Console;
 use yii\apidoc\models\Context;
 use Yii;
-use yii\apidoc\helpers\TypeAnalyzer;
 
 /**
  * Command to render API Documentation files

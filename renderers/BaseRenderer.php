@@ -189,7 +189,7 @@ abstract class BaseRenderer extends Component
 
                     $links[] = implode('&amp;', $innerTypesLinks);
                     continue;
-                } elseif (substr_compare($type, ')[]', -3, 3) === 0) {
+                } elseif (substr($type, -3, 3) === ')[]') {
                     $arrayTypes = $this->createTypeLink(
                         $this->typeAnalyzer->getTypesByArrayType($type),
                         $context,
@@ -199,7 +199,7 @@ abstract class BaseRenderer extends Component
 
                     $links[] = "({$arrayTypes})[]";
                     continue;
-                } elseif (substr_compare($type, '[]', -2, 2) === 0) {
+                } elseif (substr($type, -2, 2) === '[]') {
                     $arrayElementType = substr($type, 0, -2);
                     $templateType = $this->getTemplateType($arrayElementType, $context);
 
@@ -275,7 +275,8 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        $this->apiContext->saveErrorsFromTypeAnalyzer($this->typeAnalyzer);
+        $this->apiContext->addErrorsByExceptions($this->typeAnalyzer->getExceptions());
+        $this->typeAnalyzer->resetExceptions();
 
         return implode('|', array_unique($links));
     }

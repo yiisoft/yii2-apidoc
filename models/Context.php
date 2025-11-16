@@ -14,6 +14,7 @@ use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
 use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
+use Throwable;
 use yii\apidoc\helpers\PrettyPrinter;
 use yii\apidoc\helpers\TypeAnalyzer;
 use yii\base\Component;
@@ -592,16 +593,17 @@ class Context extends Component
         return $projectFactory->create('ApiDoc', $files);
     }
 
-    public function saveErrorsFromTypeAnalyzer(TypeAnalyzer $typeAnalyzer): void
+    /**
+     * @param Throwable[] $exceptions
+     */
+    public function addErrorsByExceptions(array $exceptions): void
     {
-        foreach ($typeAnalyzer->getExceptions() as $exception) {
+        foreach ($exceptions as $exception) {
             $this->errors[] = [
                 'line' => $exception->getLine(),
                 'file' => $exception->getFile(),
                 'message' => $exception->getMessage(),
             ];
         }
-
-        $typeAnalyzer->resetExceptions();
     }
 }

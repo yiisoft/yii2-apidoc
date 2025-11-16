@@ -32,13 +32,11 @@ use Throwable;
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
  */
-class TypeAnalyzer
+final class TypeAnalyzer
 {
     private TypeParser $typeParser;
 
     private Lexer $lexer;
-
-    private PhpDocParser $phpDocParser;
 
     /** @var array<string, Throwable> */
     private array $exceptions = [];
@@ -53,7 +51,6 @@ class TypeAnalyzer
 
         $this->typeParser = new TypeParser($config, $constExprParser);
         $this->lexer = new Lexer($config);
-        $this->phpDocParser = new PhpDocParser($config, $this->typeParser, $constExprParser);
     }
 
     /**
@@ -88,26 +85,6 @@ class TypeAnalyzer
         $parsedType = $this->parseType($type);
 
         return $parsedType instanceof IntersectionTypeNode;
-    }
-
-    public function getTypeFromMethodTag(string $tag): ?string
-    {
-        $parsedTag = $this->parseTag($tag);
-        if (!$parsedTag->value instanceof MethodTagValueNode) {
-            throw new InvalidArgumentException("Tag ({$tag}) is not @method");
-        }
-
-        return $parsedTag->value->returnType !== null ? (string) $parsedTag->value->returnType : null;
-    }
-
-    public function getTypeFromReturnTag(string $tag): string
-    {
-        $parsedTag = $this->parseTag($tag);
-        if (!$parsedTag->value instanceof ReturnTagValueNode) {
-            throw new InvalidArgumentException("Tag ({$tag}) is not @return");
-        }
-
-        return (string) $parsedTag->value->type;
     }
 
     /**
@@ -191,19 +168,6 @@ class TypeAnalyzer
             return $this->typeParser->parse($tokens);
         } catch (Throwable $e) {
             $this->exceptions[$type] = $e;
-
-            return null;
-        }
-    }
-
-    private function parseTag(string $tag): ?PhpDocTagNode
-    {
-        $tokens = $this->getTokens($tag);
-
-        try {
-            return $this->phpDocParser->parseTag($tokens);
-        } catch (Throwable $e) {
-            $this->exceptions[$tag] = $e;
 
             return null;
         }

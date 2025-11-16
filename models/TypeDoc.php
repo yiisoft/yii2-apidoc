@@ -14,6 +14,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
+use yii\apidoc\helpers\PhpDocTagParser;
 use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\types\ConditionalReturnType;
 use yii\helpers\StringHelper;
@@ -198,6 +199,7 @@ class TypeDoc extends BaseDoc
         }
 
         $typeAnalyzer = new TypeAnalyzer();
+        $phpDocTagParser = new PhpDocTagParser();
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Author) {
@@ -242,6 +244,8 @@ class TypeDoc extends BaseDoc
 
                 $returnType = null;
 
+                // We are trying to retrieve a conditional type because PHPDocumentor converts the
+                // conditional type to mixed
                 if ((string) $tag->getReturnType() === 'mixed') {
                     $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
                     $lines = file($this->sourceFile);
@@ -252,7 +256,7 @@ class TypeDoc extends BaseDoc
                             strpos($lines[$docBlockIterator], '@method') !== false &&
                             strpos($lines[$docBlockIterator], $tag->getMethodName() . '(') !== false
                         ) {
-                            $realType = $typeAnalyzer->getTypeFromMethodTag(trim($lines[$docBlockIterator], ' *'));
+                            $realType = $phpDocTagParser->getTypeFromMethodTag(trim($lines[$docBlockIterator], ' *'));
 
                             if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
                                 $returnType = $realType;
@@ -307,7 +311,8 @@ class TypeDoc extends BaseDoc
         }
 
         if ($context !== null) {
-            $context->saveErrorsFromTypeAnalyzer($typeAnalyzer);
+            $context->addErrorsByExceptions($typeAnalyzer->getExceptions());
+            $context->addErrorsByExceptions($phpDocTagParser->getExceptions());
         }
     }
 

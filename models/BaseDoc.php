@@ -8,14 +8,18 @@
 
 namespace yii\apidoc\models;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use phpDocumentor\Reflection\Types\Intersection;
+use yii\apidoc\helpers\PhpDocTagFactory;
+use yii\apidoc\helpers\PhpDocTagParser;
 use yii\apidoc\helpers\TypeAnalyzer;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
@@ -177,6 +181,8 @@ class BaseDoc extends BaseObject
         }
 
         $typeAnalyzer = new TypeAnalyzer();
+        $phpDocTagParser = new PhpDocTagParser();
+        $phpDocTagFactory = new PhpDocTagFactory();
 
         // base properties
         $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
@@ -260,6 +266,21 @@ class BaseDoc extends BaseObject
                     $this->psalmTypes[$psalmType->name] = $psalmType;
                     unset($this->tags[$i]);
                 }
+            } elseif ($tag instanceof InvalidTag) {
+                $realTag = $phpDocTagParser->parseTag($tag->render());
+                if ($realTag === null) {
+                    continue;
+                }
+
+                try {
+                    $this->tags[$i] = $phpDocTagFactory->createTagByTagNode($realTag);;
+                } catch (InvalidArgumentException $e) {
+                    $context->errors[] = [
+                        'line' => $e->getLine(),
+                        'file' => $e->getFile(),
+                        'message' => $e->getMessage(),
+                    ];
+                }
             }
         }
 
@@ -271,7 +292,8 @@ class BaseDoc extends BaseObject
         }
 
         if ($context !== null) {
-            $context->saveErrorsFromTypeAnalyzer($typeAnalyzer);
+            $context->addErrorsByExceptions($typeAnalyzer->getExceptions());
+            $context->addErrorsByExceptions($phpDocTagParser->getExceptions());
         }
     }
 

@@ -8,7 +8,6 @@
 namespace yii\apidoc\commands;
 
 use yii\apidoc\components\BaseController;
-use yii\apidoc\helpers\TypeAnalyzer;
 use yii\apidoc\models\Context;
 use yii\apidoc\renderers\ApiRenderer;
 use yii\helpers\ArrayHelper;

@@ -19,6 +19,14 @@ use yii\base\BaseObject;
  * @method int getSomething($test)
  * @method mixed getMixed()
  *
+ * @property value-of<self::COLORS> $valueOfAnnotationProperty Some description (valueOfAnnotationProperty).
+ * @property-read int-mask<1, 2, 4> $intMaskReadProperty Some description (intMaskReadProperty).
+ * @property-write key-of<self::COLORS> $keyOfWriteProperty Some description (keyOfWriteProperty).
+ *
+ * @phpstan-property int-mask<1, 2, 4> $intMaskPhpStanProperty Ignored annotation.
+ * @psalm-property int-mask<1, 2, 4> $intMaskPsalmProperty Ignored annotation.
+ * @phan-property int-mask<1, 2, 4> $intMaskPhanProperty Ignored annotation.
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
@@ -87,36 +95,20 @@ abstract class Animal extends BaseObject
      * @var Cat&Dog
      */
     public $intersectionType;
-
-    // Unsupported PHPStan/Psalm syntax
-    // TODO: add support
-
     /**
-     * @var int
-     *
-     * @phpstan-var int-mask<1, 2, 4>
-     * @psalm-var int-mask<1, 2, 4>
+     * @var int-mask<1, 2, 4>
      */
-    public $intMaskPropery;
+    public $intMaskProperty;
     /**
-     * @var int
-     *
-     * @phpstan-var int-mask-of<1|2|4>
-     * @psalm-var int-mask-of<1|2|4>
+     * @var int-mask-of<1|2|4>
      */
-    public $intMaskOfPropery;
+    public $intMaskOfProperty;
     /**
-     * @var string
-     *
-     * @phpstan-var value-of<self::COLORS>
-     * @psalm-var value-of<self::COLORS>
+     * @var value-of<self::COLORS>
      */
     public $valueOfProperty;
     /**
-     * @var int
-     *
-     * @phpstan-var key-of<self::COLORS>
-     * @psalm-var key-of<self::COLORS>
+     * @var key-of<self::COLORS>
      */
     public $keyOfProperty;
 
@@ -176,6 +168,34 @@ abstract class Animal extends BaseObject
     public function setBirthDate(int $birthDate): self
     {
         $this->birthDate = $birthDate;
+        return $this;
+    }
+
+    /**
+     * @return int-mask<1, 2, 4>
+     */
+    public function getIntMaskProperty(): int
+    {
+        return $this->intMaskProperty;
+    }
+
+    /**
+     * @param int-mask-of<1|2|4> $newValue
+     * @return $this
+     */
+    public function setIntMaskOfProperty(int $newValue): self
+    {
+        $this->intMaskOfProperty = $newValue;
+        return $this;
+    }
+
+    /**
+     * @param key-of<self::COLORS> $newValue
+     * @return $this
+     */
+    public function setKeyOfProperty(int $newValue): self
+    {
+        $this->keyOfProperty = $newValue;
         return $this;
     }
 
