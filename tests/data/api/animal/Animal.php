@@ -14,7 +14,7 @@ use yii\base\BaseObject;
  *
  * @property int $age animal age in seconds.
  *
- * @method int getSomething($test)
+ * @method int getSomething($test, int $test2)
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
