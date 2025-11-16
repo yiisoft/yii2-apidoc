@@ -231,7 +231,7 @@ class TypeDoc extends BaseDoc
                         'name' => $parameter->getName(),
                         'typeHint' => $argumentType,
                         'type' => $argumentType,
-                        'types' => [],
+                        'types' => [$argumentType],
                     ]);
                 }
 
