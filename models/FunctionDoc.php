@@ -14,6 +14,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
 use yii\apidoc\helpers\PhpDocTagParser;
 use yii\apidoc\helpers\TypeAnalyzer;
+use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -78,7 +79,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
+                $this->exceptions[implode(TypeHelper::splitType($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = '$' . $tag->getVariableName();
@@ -92,7 +93,7 @@ class FunctionDoc extends BaseDoc
                 }
                 $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->params[$paramName]->type = (string) $tag->getType();
-                $this->params[$paramName]->types = $this->splitTypes($tag->getType());
+                $this->params[$paramName]->types = TypeHelper::splitType($tag->getType());
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
                 // We are trying to retrieve a conditional type because PHPDocumentor converts the
@@ -120,7 +121,7 @@ class FunctionDoc extends BaseDoc
 
                 if ($this->returnType === null) {
                     $this->returnType = (string) $tag->getType();
-                    $this->returnTypes = $this->splitTypes($tag->getType());
+                    $this->returnTypes = TypeHelper::splitType($tag->getType());
                 }
 
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());

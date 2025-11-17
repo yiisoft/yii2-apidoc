@@ -9,6 +9,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\Php\Argument;
+use yii\apidoc\helpers\TypeHelper;
 use yii\base\BaseObject;
 
 /**
@@ -20,7 +21,6 @@ use yii\base\BaseObject;
 class ParamDoc extends BaseObject
 {
     public $name;
-    public $typeHint;
     public $isOptional;
     /**
      * @var string|null
@@ -57,11 +57,10 @@ class ParamDoc extends BaseObject
 
         if ($reflector !== null) {
             $this->name = $reflector->getName();
-            $this->typeHint = (string) $reflector->getType();
 
             if ($this->type === null) {
-                $this->type = $this->typeHint;
-                $this->types = [$this->type];
+                $this->type = (string) $reflector->getType();
+                $this->types = TypeHelper::splitType($reflector->getType());
             }
 
             if (PHP_VERSION_ID >= 80100) {
@@ -76,9 +75,5 @@ class ParamDoc extends BaseObject
         }
 
         $this->name = '$' . $this->name;
-
-        if ($this->typeHint === 'mixed') {
-            $this->typeHint = '';
-        }
     }
 }

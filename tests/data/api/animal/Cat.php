@@ -26,9 +26,9 @@ class Cat extends Animal
         return 'This is a cat';
     }
 
-    public function methodWithoutDocAndTypeHints()
+    public function methodWithoutDocAndTypeHints($param)
     {
-        return '';
+        return $param;
     }
 
     /**

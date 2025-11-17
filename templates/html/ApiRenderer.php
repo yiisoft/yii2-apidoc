@@ -272,7 +272,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = (empty($param->typeHint) ? '' : '<span class="signature-type">' . $this->createTypeLink($param->typeHint, $method) . '</span> ')
+            $params[] = '<span class="signature-type">' . $this->createTypeLink($param->types, $method) . '</span> '
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . ApiMarkdown::highlight(
                     $param->name

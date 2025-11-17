@@ -82,28 +82,6 @@ class BaseDoc extends BaseObject
     public array $psalmTypes = [];
 
     /**
-     * @param Type|null $aggregatedType
-     * @return string[]
-     */
-    protected function splitTypes($aggregatedType)
-    {
-        if ($aggregatedType === null) {
-            return [];
-        }
-
-        if ($aggregatedType instanceof Intersection) {
-            return [(string) $aggregatedType];
-        }
-
-        $types = [];
-        foreach ($aggregatedType as $type) {
-            $types[] = (string) $type;
-        }
-
-        return $types ?: [(string) $aggregatedType];
-    }
-
-    /**
      * Checks if doc has tag of a given name
      * @param string $name tag name
      * @return bool if doc has tag of a given name

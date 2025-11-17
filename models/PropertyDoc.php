@@ -9,6 +9,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
+use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -24,7 +25,13 @@ class PropertyDoc extends BaseDoc
 {
     public $visibility;
     public $isStatic;
+    /**
+     * @var string|null
+     */
     public $type;
+    /**
+     * @var string[]|null
+     */
     public $types;
     /**
      * @var string|null
@@ -81,7 +88,7 @@ class PropertyDoc extends BaseDoc
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
                 $this->type = (string) $tag->getType();
-                $this->types = $this->splitTypes($tag->getType());
+                $this->types = TypeHelper::splitType($tag->getType());
 
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);

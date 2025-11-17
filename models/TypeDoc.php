@@ -16,6 +16,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
 use yii\apidoc\helpers\PhpDocTagParser;
 use yii\apidoc\helpers\TypeAnalyzer;
+use yii\apidoc\helpers\TypeHelper;
 use yii\apidoc\models\types\ConditionalReturnType;
 use yii\helpers\StringHelper;
 
@@ -219,7 +220,7 @@ class TypeDoc extends BaseDoc
                     'visibility' => 'public',
                     'definedBy' => $this->name,
                     'type' => (string) $tag->getType(),
-                    'types' => $this->splitTypes($tag->getType()),
+                    'types' => TypeHelper::splitType($tag->getType()),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -231,14 +232,13 @@ class TypeDoc extends BaseDoc
                 $params = [];
 
                 foreach ($tag->getParameters() as $parameter) {
-                    $argumentType = (string) $parameter->getType();
+                    $argumentType = $parameter->getType();
 
                     $params[] = new ParamDoc($tag, null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
-                        'typeHint' => $argumentType,
-                        'type' => $argumentType,
-                        'types' => [$argumentType],
+                        'type' => (string) $argumentType,
+                        'types' => TypeHelper::splitType($argumentType),
                     ]);
                 }
 
@@ -272,7 +272,7 @@ class TypeDoc extends BaseDoc
 
                 if ($returnType === null) {
                     $returnType = (string) $tag->getReturnType();
-                    $returnTypes = $this->splitTypes($tag->getReturnType());
+                    $returnTypes = TypeHelper::splitType($tag->getReturnType());
                 }
 
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
