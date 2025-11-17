@@ -7,11 +7,11 @@
 
 namespace yii\apidoc\models;
 
-use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
+use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -63,7 +63,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[implode($this->splitTypes($tag->getType()))] = $tag->getDescription();
+                $this->exceptions[implode(TypeHelper::splitType($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = '$' . $tag->getVariableName();
@@ -77,11 +77,11 @@ class FunctionDoc extends BaseDoc
                 }
                 $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->params[$paramName]->type = (string) $tag->getType();
-                $this->params[$paramName]->types = $this->splitTypes($tag->getType());
+                $this->params[$paramName]->types = TypeHelper::splitType($tag->getType());
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
                 $this->returnType = (string) $tag->getType();
-                $this->returnTypes = $this->splitTypes($tag->getType());
+                $this->returnTypes = TypeHelper::splitType($tag->getType());
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             } elseif ($this->isInheritdocTag($tag)) {
