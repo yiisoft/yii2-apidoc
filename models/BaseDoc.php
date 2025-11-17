@@ -267,12 +267,8 @@ class BaseDoc extends BaseObject
                     unset($this->tags[$i]);
                 }
             } elseif ($tag instanceof InvalidTag) {
-                $realTag = $phpDocTagParser->parseTag($tag->render());
-                if ($realTag === null) {
-                    continue;
-                }
-
                 try {
+                    $realTag = $phpDocTagParser->parseTag($tag->render());
                     $this->tags[$i] = $phpDocTagFactory->createTagByTagNode($realTag);;
                 } catch (InvalidArgumentException $e) {
                     $context->errors[] = [

@@ -139,7 +139,7 @@ final class TypeAnalyzer
         return array_map(fn(TypeNode $typeNode) => (string) $typeNode, $parsedType->types);
     }
 
-    private function parseType(string $type): ?TypeNode
+    private function parseType(string $type): TypeNode
     {
         $tokens = $this->getTokens($type);
 

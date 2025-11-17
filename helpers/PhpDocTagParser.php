@@ -18,7 +18,6 @@ use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
-use Throwable;
 
 /**
  * An auxiliary class for working with PHPDoc tags.
@@ -70,7 +69,7 @@ final class PhpDocTagParser
         return (string) $parsedTag->value->type;
     }
 
-    public function parseTag(string $tag): ?PhpDocTagNode
+    public function parseTag(string $tag): PhpDocTagNode
     {
         $tokens = $this->getTokens($tag);
 
