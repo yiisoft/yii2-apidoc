@@ -164,7 +164,7 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * @param TParent $parent
+     * @param self $parent
      * @param Class_|null $reflector
      * @param Context|null $context
      * @param array $config
