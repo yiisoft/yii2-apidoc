@@ -69,25 +69,22 @@ abstract class BaseRenderer extends Component
      * @var array<string, string[]>
      */
     private const PHPSTAN_TYPES_DOC_LINKS = [
+        'general-arrays' => [
+            'array',
+            'non-empty-array',
+        ],
+        'lists' => [
+            'list',
+            'non-empty-list',
+        ],
         'basic-types' => [
             'array-key',
             'double',
             'number',
             'scalar',
         ],
-        'integer-ranges' => [
-            'int',
-            'positive-int',
-            'negative-int',
-            'non-positive-int',
-            'non-negative-int',
-            'non-zero-int',
-        ],
-        'bottom-type' => [
-            'never',
-            'never-return',
-            'never-returns',
-            'no-return',
+        'class-string' => [
+            'class-string',
         ],
         'other-advanced-string-types' => [
             'callable-string',
@@ -98,16 +95,26 @@ abstract class BaseRenderer extends Component
             'literal-string',
             'lowercase-string',
         ],
-        'class-string' => [
-            'class-string',
+        'integer-ranges' => [
+            'int',
+            'positive-int',
+            'negative-int',
+            'non-positive-int',
+            'non-negative-int',
+            'non-zero-int',
         ],
-        'general-arrays' => [
-            'array',
-            'non-empty-array',
+        'integer-masks' => [
+            'int-mask',
+            'int-mask-of',
         ],
-        'lists' => [
-            'list',
-            'non-empty-list',
+        'bottom-type' => [
+            'never-return',
+            'never-returns',
+            'no-return',
+        ],
+        'key-and-value-types-of-arrays-and-iterables' => [
+            'key-of',
+            'value-of',
         ],
     ];
 
