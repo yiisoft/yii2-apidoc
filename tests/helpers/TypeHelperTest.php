@@ -38,6 +38,10 @@ class TypeHelperTest extends TestCase
     public static function provideSplitTypeData(): array
     {
         return [
+            'without type' => [
+                null,
+                [],
+            ],
             'string' => [
                 new String_(),
                 ['string'],
