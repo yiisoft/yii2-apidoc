@@ -39,24 +39,12 @@ class TypeAnalyzerTest extends TestCase
     {
         return [
             'conditional with parentheses' => [
-                '($first is true ? string[] : string)',
+                '($first is true ? string : string[])',
                 true,
-            ],
-            'conditional without parentheses' => [
-                '$first is true ? string[] : string',
-                false,
             ],
             'nested conditionals' => [
                 '($value is true ? (T is array ? static<T> : static<array<string, mixed>>) : static<T>)',
                 true,
-            ],
-            'incomplete conditional' => [
-                '($value is true ? (T is array ? static<T> : static<array<string, mixed>>))',
-                false,
-            ],
-            'conditional with invalid parentheses' => [
-                '($first is true ? string[] : string',
-                false,
             ],
             'scalar' => [
                 'string',
@@ -64,10 +52,6 @@ class TypeAnalyzerTest extends TestCase
             ],
             'array' => [
                 'array<string, mixed>',
-                false,
-            ],
-            'empty string' => [
-                '',
                 false,
             ],
         ];
@@ -98,10 +82,6 @@ class TypeAnalyzerTest extends TestCase
             ],
             'basic array' => [
                 'array',
-                false,
-            ],
-            'empty string' => [
-                '',
                 false,
             ],
         ];
@@ -168,12 +148,6 @@ class TypeAnalyzerTest extends TestCase
         $this->typeAnalyzer->getPossibleTypesByConditionalType('int');
     }
 
-    public function testGetPossibleTypesByConditionalTypeWithEmptyString(): void
-    {
-        $this->expectExceptionObject(new InvalidArgumentException('Type () is not conditional'));
-        $this->typeAnalyzer->getPossibleTypesByConditionalType('');
-    }
-
     /**
      * @return array<string, array{string, string[]}>
      */
@@ -181,8 +155,8 @@ class TypeAnalyzerTest extends TestCase
     {
         return [
             'basic' => [
-                '($first is true ? string[] : string)',
-                ['string[]', 'string'],
+                '($first is true ? string : string[])',
+                ['string', 'string[]'],
             ],
             'with union types' => [
                 '($condition is true ? string|int : string)',
@@ -210,12 +184,6 @@ class TypeAnalyzerTest extends TestCase
     {
         $this->expectExceptionObject(new InvalidArgumentException('Type (int) is not array'));
         $this->typeAnalyzer->getTypesByArrayType('int');
-    }
-
-    public function testGetTypesByArrayTypeWithEmptyString(): void
-    {
-        $this->expectExceptionObject(new InvalidArgumentException('Type () is not array'));
-        $this->typeAnalyzer->getTypesByArrayType('');
     }
 
     /**

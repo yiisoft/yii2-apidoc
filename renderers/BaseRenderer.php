@@ -275,9 +275,6 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        $this->apiContext->addErrorsByExceptions($this->typeAnalyzer->getExceptions());
-        $this->typeAnalyzer->resetExceptions();
-
         return implode('|', array_unique($links));
     }
 

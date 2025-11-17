@@ -12,11 +12,8 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
 use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
-use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
-use Throwable;
 use yii\apidoc\helpers\PrettyPrinter;
-use yii\apidoc\helpers\TypeAnalyzer;
 use yii\base\Component;
 
 /**
@@ -591,19 +588,5 @@ class Context extends Component
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
         return $projectFactory->create('ApiDoc', $files);
-    }
-
-    /**
-     * @param Throwable[] $exceptions
-     */
-    public function addErrorsByExceptions(array $exceptions): void
-    {
-        foreach ($exceptions as $exception) {
-            $this->errors[] = [
-                'line' => $exception->getLine(),
-                'file' => $exception->getFile(),
-                'message' => $exception->getMessage(),
-            ];
-        }
     }
 }

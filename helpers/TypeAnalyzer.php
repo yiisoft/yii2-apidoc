@@ -9,9 +9,6 @@
 namespace yii\apidoc\helpers;
 
 use InvalidArgumentException;
-use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
@@ -21,11 +18,9 @@ use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
-use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 use PHPStan\PhpDocParser\Parser\TypeParser;
 use PHPStan\PhpDocParser\ParserConfig;
-use Throwable;
 
 /**
  * An auxiliary class for working with types.
@@ -38,9 +33,6 @@ final class TypeAnalyzer
 
     private Lexer $lexer;
 
-    /** @var array<string, Throwable> */
-    private array $exceptions = [];
-
     /**
      * @param array{lines?: bool, indexes?: bool, comments?: bool} $usedAttributes
      */
@@ -51,19 +43,6 @@ final class TypeAnalyzer
 
         $this->typeParser = new TypeParser($config, $constExprParser);
         $this->lexer = new Lexer($config);
-    }
-
-    /**
-     * @return array<string, Throwable>
-     */
-    public function getExceptions(): array
-    {
-        return $this->exceptions;
-    }
-
-    public function resetExceptions(): void
-    {
-        $this->exceptions = [];
     }
 
     public function isConditionalType(string $type): bool
@@ -164,13 +143,7 @@ final class TypeAnalyzer
     {
         $tokens = $this->getTokens($type);
 
-        try {
-            return $this->typeParser->parse($tokens);
-        } catch (Throwable $e) {
-            $this->exceptions[$type] = $e;
-
-            return null;
-        }
+        return $this->typeParser->parse($tokens);
     }
 
     /**

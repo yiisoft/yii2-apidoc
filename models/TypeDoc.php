@@ -309,11 +309,6 @@ class TypeDoc extends BaseDoc
                 $this->methods[$method->name] = $method;
             }
         }
-
-        if ($context !== null) {
-            $context->addErrorsByExceptions($typeAnalyzer->getExceptions());
-            $context->addErrorsByExceptions($phpDocTagParser->getExceptions());
-        }
     }
 
     /**

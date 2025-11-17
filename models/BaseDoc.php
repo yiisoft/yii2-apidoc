@@ -290,11 +290,6 @@ class BaseDoc extends BaseObject
             $this->tags[] = new Generic(self::INHERITDOC_TAG_NAME);
             $this->shortDescription = '';
         }
-
-        if ($context !== null) {
-            $context->addErrorsByExceptions($typeAnalyzer->getExceptions());
-            $context->addErrorsByExceptions($phpDocTagParser->getExceptions());
-        }
     }
 
     protected function isInheritdocTag(Tag $tag): bool

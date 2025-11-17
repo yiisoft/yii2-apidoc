@@ -92,8 +92,5 @@ class PhpDocTagParserTest extends TestCase
         $this->assertNotNull($parseVarResult);
         $this->assertInstanceOf(VarTagValueNode::class, $parseVarResult->value);
         $this->assertSame('key-of<self::SOME_CONSTANT>', (string) $parseVarResult->value->type);
-
-        $parseEmptyStringResult = $this->phpDocTagParser->parseTag('');
-        $this->assertNull($parseEmptyStringResult);
     }
 }

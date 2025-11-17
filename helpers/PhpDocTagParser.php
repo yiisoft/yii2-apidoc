@@ -31,9 +31,6 @@ final class PhpDocTagParser
 
     private PhpDocParser $phpDocParser;
 
-    /** @var array<string, Throwable> */
-    private array $exceptions = [];
-
     /**
      * @param array{lines?: bool, indexes?: bool, comments?: bool} $usedAttributes
      */
@@ -45,19 +42,6 @@ final class PhpDocTagParser
 
         $this->lexer = new Lexer($config);
         $this->phpDocParser = new PhpDocParser($config, $typeParser, $constExprParser);
-    }
-
-    /**
-     * @return array<string, Throwable>
-     */
-    public function getExceptions(): array
-    {
-        return $this->exceptions;
-    }
-
-    public function resetExceptions(): void
-    {
-        $this->exceptions = [];
     }
 
     /**
@@ -90,13 +74,7 @@ final class PhpDocTagParser
     {
         $tokens = $this->getTokens($tag);
 
-        try {
-            return $this->phpDocParser->parseTag($tokens);
-        } catch (Throwable $e) {
-            $this->exceptions[$tag] = $e;
-
-            return null;
-        }
+        return $this->phpDocParser->parseTag($tokens);
     }
 
     private function getTokens(string $string): TokenIterator

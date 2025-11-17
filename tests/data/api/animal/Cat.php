@@ -10,6 +10,8 @@ namespace yiiunit\apidoc\data\api\animal;
 /**
  * Cat represents a cat animal.
  *
+ * @method $first is true ? string : string[] methodWithInvalidReturnType2(bool $first) Will be ignored
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
@@ -27,5 +29,13 @@ class Cat extends Animal
     public function methodWithoutDocAndTypeHints()
     {
         return '';
+    }
+
+    /**
+     * @return $first is true ? string : string[] Incorrect conditional type (without parentheses)
+     */
+    public function methodWithInvalidReturnType(bool $first)
+    {
+        return $first ? '' : [''];
     }
 }

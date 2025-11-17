@@ -134,10 +134,5 @@ class FunctionDoc extends BaseDoc
             $this->returnType = (string) $reflector->getReturnType();
             $this->returnTypes = [$this->returnType];
         }
-
-        if ($context !== null) {
-            $context->addErrorsByExceptions($typeAnalyzer->getExceptions());
-            $context->addErrorsByExceptions($phpDocTagParser->getExceptions());
-        }
     }
 }
