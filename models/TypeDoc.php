@@ -13,6 +13,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
+use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -212,7 +213,7 @@ class TypeDoc extends BaseDoc
                     'visibility' => 'public',
                     'definedBy' => $this->name,
                     'type' => (string) $tag->getType(),
-                    'types' => $this->splitTypes($tag->getType()),
+                    'types' => TypeHelper::splitType($tag->getType()),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -224,14 +225,13 @@ class TypeDoc extends BaseDoc
                 $params = [];
 
                 foreach ($tag->getParameters() as $parameter) {
-                    $argumentType = (string) $parameter->getType();
+                    $argumentType = $parameter->getType();
 
                     $params[] = new ParamDoc(null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
-                        'typeHint' => $argumentType,
-                        'type' => $argumentType,
-                        'types' => [$argumentType],
+                        'type' => (string) $argumentType,
+                        'types' => TypeHelper::splitType($argumentType),
                     ]);
                 }
 
@@ -249,7 +249,7 @@ class TypeDoc extends BaseDoc
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
                     'returnType' => (string) $tag->getReturnType(),
-                    'returnTypes' => $this->splitTypes($tag->getReturnType()),
+                    'returnTypes' => TypeHelper::splitType($tag->getReturnType()),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

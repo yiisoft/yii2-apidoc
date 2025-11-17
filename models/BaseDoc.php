@@ -57,25 +57,6 @@ class BaseDoc extends BaseObject
      */
     public $todos = [];
 
-
-    /**
-     * @param Type|null $aggregatedType
-     * @return string[]
-     */
-    protected function splitTypes($aggregatedType)
-    {
-        if ($aggregatedType === null) {
-            return [];
-        }
-
-        $types = [];
-        foreach ($aggregatedType as $type) {
-            $types[] = (string) $type;
-        }
-
-        return $types ?: [(string) $aggregatedType];
-    }
-
     /**
      * Checks if doc has tag of a given name
      * @param string $name tag name
