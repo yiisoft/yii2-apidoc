@@ -105,18 +105,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function runControllerAction($controller, $actionId, array $args = [])
     {
-        // ob_start();
-        // ob_implicit_flush(false);
-        try {
-            $controller->run($actionId, $args);
-        } catch (\Exception $e) {
-            // ob_end_flush();
-            throw $e;
-        } catch (\Throwable $e) {
-            // ob_end_flush();
-            throw $e;
-        }
-        // ob_get_clean();
+        $controller->run($actionId, $args);
 
         return $controller->flushStdErrBuffer() . "\n" . $controller->flushStdOutBuffer();
     }
