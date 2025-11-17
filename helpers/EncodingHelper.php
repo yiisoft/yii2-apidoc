@@ -13,7 +13,7 @@ namespace yii\apidoc\helpers;
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
  */
-class EncodingHelper
+final class EncodingHelper
 {
     public static function convertToUtf8WithHtmlEntities(string $string): string
     {

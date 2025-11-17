@@ -20,7 +20,13 @@ use yii\helpers\StringHelper;
  */
 class EventDoc extends ConstDoc
 {
+    /**
+     * @var string|null
+     */
     public $type;
+    /**
+     * @var string[]|null
+     */
     public $types;
 
 
