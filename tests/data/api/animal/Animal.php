@@ -16,7 +16,7 @@ use yii\base\BaseObject;
  *
  * @property int $age animal age in seconds.
  *
- * @method int getSomething($test)
+ * @method int getSomething($test, int $test2)
  * @method mixed getMixed()
  *
  * @property value-of<self::COLORS> $valueOfAnnotationProperty Some description (valueOfAnnotationProperty).
