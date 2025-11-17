@@ -8,7 +8,6 @@
 
 namespace yii\apidoc\models;
 
-use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
@@ -18,9 +17,9 @@ use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Factory\Type;
 use phpDocumentor\Reflection\Types\Intersection;
+use Throwable;
 use yii\apidoc\helpers\PhpDocTagFactory;
 use yii\apidoc\helpers\PhpDocTagParser;
-use yii\apidoc\helpers\TypeAnalyzer;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -180,7 +179,6 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $typeAnalyzer = new TypeAnalyzer();
         $phpDocTagParser = new PhpDocTagParser();
         $phpDocTagFactory = new PhpDocTagFactory();
 
@@ -206,7 +204,7 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());;
+        $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());
         if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
             $context->warnings[] = [
                 'line' => $this->startLine,
@@ -269,8 +267,8 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof InvalidTag) {
                 try {
                     $realTag = $phpDocTagParser->parseTag($tag->render());
-                    $this->tags[$i] = $phpDocTagFactory->createTagByTagNode($realTag);;
-                } catch (InvalidArgumentException $e) {
+                    $this->tags[$i] = $phpDocTagFactory->createTagWithTypesByTagNode($realTag);
+                } catch (Throwable $e) {
                     $context->errors[] = [
                         'line' => $e->getLine(),
                         'file' => $e->getFile(),

@@ -9,6 +9,7 @@
 namespace yiiunit\apidoc\helpers;
 
 use InvalidArgumentException;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use yii\apidoc\helpers\PhpDocTagParser;
@@ -85,12 +86,18 @@ class PhpDocTagParserTest extends TestCase
     {
         $parseReturnResult = $this->phpDocTagParser->parseTag('@return int');
         $this->assertNotNull($parseReturnResult);
-        $this->assertInstanceOf(ReturnTagValueNode::class, $parseReturnResult->value);
-        $this->assertSame('int', (string) $parseReturnResult->value->type);
+
+        /** @var ReturnTagValueNode|PhpDocTagValueNode */
+        $parseReturnResultValue = $parseReturnResult->value;
+        $this->assertInstanceOf(ReturnTagValueNode::class, $parseReturnResultValue);
+        $this->assertSame('int', (string) $parseReturnResultValue->type);
 
         $parseVarResult = $this->phpDocTagParser->parseTag('@var key-of<self::SOME_CONSTANT>');
         $this->assertNotNull($parseVarResult);
-        $this->assertInstanceOf(VarTagValueNode::class, $parseVarResult->value);
-        $this->assertSame('key-of<self::SOME_CONSTANT>', (string) $parseVarResult->value->type);
+
+        /** @var ReturnTagValueNode|PhpDocTagValueNode */
+        $parseVarResultValue = $parseVarResult->value;
+        $this->assertInstanceOf(VarTagValueNode::class, $parseVarResultValue);
+        $this->assertSame('key-of<self::SOME_CONSTANT>', (string) $parseVarResultValue->type);
     }
 }

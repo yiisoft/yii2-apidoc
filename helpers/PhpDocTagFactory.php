@@ -39,11 +39,13 @@ use yii\apidoc\models\PlainType;
  */
 final class PhpDocTagFactory
 {
-    // TODO: add tests
     /**
-     * @throws InvalidArgumentException When the tag is not supported
+     * Creates a tag that contains types (for example, {@link \phpDocumentor\Reflection\DocBlock\Tags\Return_})
+     * based on the {@link \PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode}.
+     *
+     * @throws InvalidArgumentException When a tag is not supported or does not contain types.
      */
-    public function createTagByTagNode(PhpDocTagNode $tagNode): Tag
+    public function createTagWithTypesByTagNode(PhpDocTagNode $tagNode): Tag
     {
         $tagNodeValue = $tagNode->value;
 
@@ -111,7 +113,7 @@ final class PhpDocTagFactory
                     $this->createDescription($tagNodeValue->description)
                 );
 
-            case '@propery-write':
+            case '@property-write':
                 return new PropertyWrite(
                     $propertyNameWithoutDollar,
                     $this->createPlainType($tagNodeValue->type),
@@ -135,7 +137,7 @@ final class PhpDocTagFactory
                 : MethodParameter::NO_DEFAULT_VALUE;
 
             return new MethodParameter(
-                $parameter->parameterName,
+                substr($parameter->parameterName, 1),
                 $this->createPlainType($parameter->type),
                 $parameter->isReference,
                 $parameter->isVariadic,
@@ -145,10 +147,12 @@ final class PhpDocTagFactory
 
         return new Method(
             $tagNodeValue->methodName,
-            $methodParameters,
+            [],
             $this->createPlainType($tagNodeValue->returnType),
             $tagNodeValue->isStatic,
-            $this->createDescription($tagNodeValue->description)
+            $this->createDescription($tagNodeValue->description),
+            false,
+            $methodParameters
         );
     }
 }
