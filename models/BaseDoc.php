@@ -14,9 +14,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
+use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Php\Class_;
-use phpDocumentor\Reflection\Php\Factory\Type;
-use phpDocumentor\Reflection\Types\Intersection;
 use Throwable;
 use yii\apidoc\helpers\PhpDocTagFactory;
 use yii\apidoc\helpers\PhpDocTagParser;
@@ -33,6 +32,10 @@ class BaseDoc extends BaseObject
 {
     private const PHPSTAN_TYPE_ANNOTATION_NAME = 'phpstan-type';
     private const PSALM_TYPE_ANNOTATION_NAME = 'psalm-type';
+
+    private const PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME = 'phpstan-import-type';
+    private const PSALM_IMPORT_TYPE_ANNOTATION_NAME = 'psalm-import-type';
+
     private const INHERITDOC_TAG_NAME = 'inheritdoc';
 
     /**
@@ -80,6 +83,14 @@ class BaseDoc extends BaseObject
      * @var array<string, PseudoTypeDoc>
      */
     public array $psalmTypes = [];
+    /**
+     * @var array<string, PseudoTypeImportDoc>
+     */
+    public array $phpStanTypeImports = [];
+    /**
+     * @var array<string, PseudoTypeImportDoc>
+     */
+    public array $psalmTypeImports = [];
 
     /**
      * Checks if doc has tag of a given name
@@ -159,6 +170,7 @@ class BaseDoc extends BaseObject
 
         $phpDocTagParser = new PhpDocTagParser();
         $phpDocTagFactory = new PhpDocTagFactory();
+        $fqsenResolver = new FqsenResolver();
 
         // base properties
         $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
@@ -240,6 +252,24 @@ class BaseDoc extends BaseObject
                         trim($tagData[1])
                     );
                     $this->psalmTypes[$psalmType->name] = $psalmType;
+                    unset($this->tags[$i]);
+                } elseif ($tag->getName() === self::PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME) {
+                    $tagData = explode(' from ', trim($tag->getDescription()), 2);
+                    $phpStanTypeImport = new PseudoTypeImportDoc(
+                        PseudoTypeImportDoc::TYPE_PHPSTAN,
+                        trim($tagData[0]),
+                        $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                    );
+                    $this->phpStanTypeImports[$phpStanTypeImport->typeName] = $phpStanTypeImport;
+                    unset($this->tags[$i]);
+                } elseif ($tag->getName() === self::PSALM_IMPORT_TYPE_ANNOTATION_NAME) {
+                    $tagData = explode(' from ', trim($tag->getDescription()), 2);
+                    $psalmTypeImport = new PseudoTypeImportDoc(
+                        PseudoTypeImportDoc::TYPE_PSALM,
+                        trim($tagData[0]),
+                        $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                    );
+                    $this->psalmTypeImports[$psalmTypeImport->typeName] = $psalmTypeImport;
                     unset($this->tags[$i]);
                 }
             } elseif ($tag instanceof InvalidTag) {

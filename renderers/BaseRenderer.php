@@ -20,6 +20,7 @@ use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
 use yii\apidoc\models\PropertyDoc;
 use yii\apidoc\models\PseudoTypeDoc;
+use yii\apidoc\models\PseudoTypeImportDoc;
 use yii\apidoc\models\TraitDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\base\Component;
@@ -246,6 +247,12 @@ abstract class BaseRenderer extends Component
                 } elseif (($psalmType = $this->getPsalmType($type, $context)) !== null) {
                     $links[] = $this->createSubjectLink($psalmType);
                     continue;
+                } elseif (($phpStanTypeImport = $this->getPhpStanTypeImport($type, $context)) !== null) {
+                    $links[] = $this->createSubjectLink($phpStanTypeImport);
+                    continue;
+                } elseif (($psalmTypeImport = $this->getPsalmTypeImport($type, $context)) !== null) {
+                    $links[] = $this->createSubjectLink($psalmTypeImport);
+                    continue;
                 } elseif ($this->typeAnalyzer->isGenericType($type)) {
                     $genericTypes = $this->typeAnalyzer->getTypesByGenericType($type);
                     $typesLinks = [];
@@ -319,7 +326,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a subject
-     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc|PseudoTypeDoc $subject
+     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc|PseudoTypeDoc|PseudoTypeImportDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @param TypeDoc|null $type
@@ -330,6 +337,12 @@ abstract class BaseRenderer extends Component
         if ($subject instanceof PseudoTypeDoc) {
             $href = $this->generateApiUrl($subject->parent->name) . "#{$subject->type}-type-{$subject->name}";
             return $this->generateLink($subject->name, $href, $options);
+        }
+
+        if ($subject instanceof PseudoTypeImportDoc) {
+            $typeParentFqsen = (string) $subject->typeParentFqsen;
+            $href = $this->generateApiUrl(ltrim($typeParentFqsen, '\\')) . "#{$subject->type}-type-{$subject->typeName}";
+            return $this->generateLink($subject->typeName, $href, $options);
         }
 
         if ($title === null) {
@@ -497,6 +510,20 @@ abstract class BaseRenderer extends Component
         return $phpStanType;
     }
 
+    private function getPhpStanTypeImport(string $type, ?BaseDoc $context): ?PseudoTypeImportDoc
+    {
+        if ($context === null) {
+            return null;
+        }
+
+        $phpStanTypeImport = $context->phpStanTypeImports[$this->getFqcnLastPart($type)] ?? null;
+        if ($phpStanTypeImport === null) {
+            return $context->parent !== null ? $this->getPhpStanTypeImport($type, $context->parent) : null;
+        }
+
+        return $phpStanTypeImport;
+    }
+
     private function getPsalmType(string $type, ?BaseDoc $context): ?PseudoTypeDoc
     {
         if ($context === null) {
@@ -509,6 +536,20 @@ abstract class BaseRenderer extends Component
         }
 
         return $psalmType;
+    }
+
+    private function getPsalmTypeImport(string $type, ?BaseDoc $context): ?PseudoTypeImportDoc
+    {
+        if ($context === null) {
+            return null;
+        }
+
+        $psalmTypeImport = $context->psalmTypeImports[$this->getFqcnLastPart($type)] ?? null;
+        if ($psalmTypeImport === null) {
+            return $context->parent !== null ? $this->getPsalmTypeImport($type, $context->parent) : null;
+        }
+
+        return $psalmTypeImport;
     }
 
     private function getTemplateType(string $type, ?BaseDoc $context): ?string

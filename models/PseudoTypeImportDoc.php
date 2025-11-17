@@ -8,45 +8,37 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\Fqsen;
 use yii\base\BaseObject;
 
 /**
- * Represents API documentation information for a `@phpstan-type` and `@psalm-type`.
+ * Represents API documentation information for a `@phpstan-import-type` and `@psalm-import-type`.
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
  * @immutable
  */
-class PseudoTypeDoc extends BaseObject
+class PseudoTypeImportDoc extends BaseObject
 {
     public const TYPE_PHPSTAN = 'phpstan';
     public const TYPE_PSALM = 'psalm';
 
-    public const TYPES = [
-        self::TYPE_PHPSTAN,
-        self::TYPE_PSALM,
-    ];
-
     /** @var value-of<self::TYPES> */
     public string $type;
 
-    public BaseDoc $parent;
+    public string $typeName;
 
-    public string $name;
-
-    public string $value;
+    public Fqsen $typeParentFqsen;
 
     /**
      * @param value-of<self::TYPES> $type
      */
     public function __construct(
         string $type,
-        BaseDoc $parent,
-        string $name,
-        string $value
+        string $typeName,
+        Fqsen $typeParentFqsen
     ) {
         $this->type = $type;
-        $this->parent = $parent;
-        $this->name = $name;
-        $this->value = $value;
+        $this->typeName = $typeName;
+        $this->typeParentFqsen = $typeParentFqsen;
     }
 }
