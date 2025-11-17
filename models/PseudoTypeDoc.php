@@ -12,6 +12,8 @@ use yii\base\BaseObject;
 
 /**
  * Represents API documentation information for a `@phpstan-type` and `@psalm-type`.
+ *
+ * @author Maksim Spirkov <spirkov.2001@mail.ru>
  * @immutable
  */
 class PseudoTypeDoc extends BaseObject
