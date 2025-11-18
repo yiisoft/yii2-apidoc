@@ -12,6 +12,9 @@ namespace yiiunit\apidoc\data\api\animal;
  *
  * @method $first is true ? string : string[] methodWithInvalidReturnType2(bool $first) Will be ignored
  *
+ * @psalm-type SomePsalmType = (string|array<string, mixed>)
+ * @phpstan-type SomePhpStanType (string|array<string, mixed>|object)
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
@@ -37,5 +40,21 @@ class Cat extends Animal
     public function methodWithInvalidReturnType(bool $first)
     {
         return $first ? '' : [''];
+    }
+
+    /**
+     * @return SomePsalmType
+     */
+    public function getSomePsalmType(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return SomePhpStanType
+     */
+    public function getSomePhpStanType(): array
+    {
+        return [];
     }
 }
