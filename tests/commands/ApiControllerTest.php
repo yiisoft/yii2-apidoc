@@ -91,6 +91,7 @@ class ApiControllerTest extends TestCase
             $fileContent = str_replace('> $', '>$', $fileContent);
             $fileContent = str_replace('> <', '><', $fileContent);
             $fileContent = str_replace('=&nbsp;', '= ', $fileContent);
+            $fileContent = str_replace('&nbsp;<', ' <', $fileContent);
 
             $this->assertMatchesHtmlSnapshot($fileContent);
             $filesCount++;

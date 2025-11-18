@@ -48,9 +48,6 @@ abstract class Animal extends BaseObject
      * @var int animal birth date as a UNIX timestamp.
      */
     public $birthDate;
-
-    // Supported PHPStan/Psalm syntax
-
     /**
      * @var (Cat|Dog)[]
      */
