@@ -66,6 +66,13 @@ final class TypeAnalyzer
         return $parsedType instanceof IntersectionTypeNode;
     }
 
+    public function isUnionType(string $type): bool
+    {
+        $parsedType = $this->parseType($type);
+
+        return $parsedType instanceof UnionTypeNode;
+    }
+
     /**
      * @return string[]
      */
@@ -127,13 +134,14 @@ final class TypeAnalyzer
     }
 
     /**
+     * @throws InvalidArgumentException When the input type is not union.
      * @return string[]
      */
-    public function getChildTypesByType(string $type): array
+    public function getTypesByUnionType(string $type): array
     {
         $parsedType = $this->parseType($type);
         if (!$parsedType instanceof UnionTypeNode) {
-            return [(string) $parsedType];
+            throw new InvalidArgumentException("Type ({$type}) is not union");
         }
 
         return array_map(fn(TypeNode $typeNode) => (string) $typeNode, $parsedType->types);
@@ -155,16 +163,14 @@ final class TypeAnalyzer
     {
         $types = [];
 
-        if ($typeNode->if instanceof ConditionalTypeNode) {
-            $types = array_merge($types, $this->getPossibleTypesByConditionalTypeInternal($typeNode->if));
-        } else {
-            $types = array_merge($types, $this->getChildTypesByType((string) $typeNode->if));
-        }
-
-        if ($typeNode->else instanceof ConditionalTypeNode) {
-            $types = array_merge($types, $this->getPossibleTypesByConditionalTypeInternal($typeNode->else));
-        } else {
-            $types = array_merge($types, $this->getChildTypesByType((string) $typeNode->else));
+        foreach ([$typeNode->if, $typeNode->else] as $innerType) {
+            if ($innerType instanceof ConditionalTypeNode) {
+                $types = array_merge($types, $this->getPossibleTypesByConditionalTypeInternal($innerType));
+            } elseif ($innerType instanceof UnionTypeNode) {
+                $types = array_merge($types, $this->getTypesByUnionType((string) $innerType));
+            } else {
+                $types[] = (string) $innerType;
+            }
         }
 
         return $types;

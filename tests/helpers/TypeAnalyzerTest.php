@@ -208,35 +208,69 @@ class TypeAnalyzerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetChildTypesByTypeData
+     * @dataProvider provideIsUnionTypeData
      *
      * @param string[] $expectedResult
      */
-    public function testGetChildTypesByType(string $string, array $expectedResult): void
+    public function testIsUnionType(string $string, bool $expectedResult): void
     {
-        $result = $this->typeAnalyzer->getChildTypesByType($string);
+        $result = $this->typeAnalyzer->isUnionType($string);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, bool}>
+     */
+    public static function provideIsUnionTypeData(): array
+    {
+        return [
+            'union' => [
+                'string|int',
+                true,
+            ],
+            'intersection' => [
+                '\Exception&\SomeException',
+                false,
+            ],
+            'scalar' => [
+                'string',
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetTypesByUnionTypeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetTypesByUnionType(string $string, array $expectedResult): void
+    {
+        $result = $this->typeAnalyzer->getTypesByUnionType($string);
         $this->assertSame($expectedResult, $result);
     }
 
     /**
      * @return array<string, array{string, string[]}>
      */
-    public static function provideGetChildTypesByTypeData(): array
+    public static function provideGetTypesByUnionTypeData(): array
     {
         return [
-            'scalar' => [
-                'string',
-                ['string'],
-            ],
-            'generic array' => [
-                'array<string, mixed>',
-                ['array<string, mixed>'],
-            ],
-            'union' => [
+            'scalars' => [
                 'string|int|float',
                 ['string', 'int', 'float'],
             ],
+            'generics' => [
+                'array<string, mixed>|Action<Controller>',
+                ['array<string, mixed>', 'Action<Controller>'],
+            ],
         ];
+    }
+
+    public function testGetTypesByUnionTypeWithString(): void
+    {
+        $this->expectExceptionObject(new InvalidArgumentException('Type (string) is not union'));
+        $this->typeAnalyzer->getTypesByUnionType('string');
     }
 
     /**

@@ -187,7 +187,11 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if ($this->typeAnalyzer->isIntersectionType($type)) {
+                if ($this->typeAnalyzer->isUnionType($type)) {
+                    $innerTypes = $this->typeAnalyzer->getTypesByUnionType($type);
+                    $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
+                    continue;
+                } elseif ($this->typeAnalyzer->isIntersectionType($type)) {
                     $innerTypes = $this->typeAnalyzer->getTypesByIntersectionType($type);
                     $innerTypesLinks = [];
 
@@ -212,10 +216,8 @@ abstract class BaseRenderer extends Component
                     $templateType = $this->getTemplateType($arrayElementType, $context);
 
                     if ($templateType !== null) {
-                        $templateTypes = $this->typeAnalyzer->getChildTypesByType($templateType);
-                        $typeLink = $this->createTypeLink($templateTypes, $context, $title, $options);
-
-                        if (count($templateTypes) > 1) {
+                        $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
+                        if ($this->typeAnalyzer->isUnionType($templateType)) {
                             $links[] = "({$typeLink})[]";
                         } else {
                             $links[] =  "{$typeLink}[]";
@@ -223,6 +225,7 @@ abstract class BaseRenderer extends Component
                     } else {
                         $links[] = $this->createTypeLink($arrayElementType, $context, $title, $options) . '[]';
                     }
+
                     continue;
                 } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
                     $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
@@ -234,12 +237,7 @@ abstract class BaseRenderer extends Component
                     $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                     continue;
                 } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
-                    $links[] = $this->createTypeLink(
-                        $this->typeAnalyzer->getChildTypesByType($templateType),
-                        $context,
-                        $title,
-                        $options
-                    );
+                    $links[] = $this->createTypeLink($templateType, $context, $title, $options);
                     continue;
                 } elseif (($phpStanType = $this->getPhpStanType($type, $context)) !== null) {
                     $links[] = $this->createSubjectLink($phpStanType);
