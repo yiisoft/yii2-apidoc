@@ -32,10 +32,10 @@ class EventDoc extends ConstDoc
 
     /**
      * @param ClassDoc|TraitDoc $parent
-     * @param Class_|Constant $reflector
-     * @param Context $context
+     * @param Class_|Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
-     * @param DocBlock $docBlock
+     * @param DocBlock|null $docBlock
      */
     public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {

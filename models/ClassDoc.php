@@ -7,6 +7,8 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\Php\Class_;
+
 /**
  * Represents API documentation information for a `class`.
  *
@@ -91,7 +93,9 @@ class ClassDoc extends TypeDoc
     }
 
     /**
-     * @inheritdoc
+     * @param Class_|null $reflector
+     * @param Context|null $context
+     * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
     {

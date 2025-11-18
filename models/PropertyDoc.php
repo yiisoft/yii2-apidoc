@@ -62,8 +62,8 @@ class PropertyDoc extends BaseDoc
 
     /**
      * @param ClassDoc|TraitDoc $parent
-     * @param Property $reflector
-     * @param Context $context
+     * @param Property|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($parent, $reflector = null, $context = null, $config = [])

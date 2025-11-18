@@ -32,8 +32,8 @@ class MethodDoc extends FunctionDoc
 
     /**
      * @param ClassDoc|TraitDoc|InterfaceDoc $parent
-     * @param Class_|Method $reflector
-     * @param Context $context
+     * @param Class_|Method|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($parent, $reflector = null, $context = null, $config = [])

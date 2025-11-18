@@ -12,6 +12,8 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
 use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
+use phpDocumentor\Reflection\Php\File;
+use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\apidoc\helpers\PrettyPrinter;
 use yii\base\Component;
@@ -87,6 +89,10 @@ class Context extends Component
         $this->files[$fileName] = sha1_file($fileName);
     }
 
+    /**
+     * @param File $reflection
+     * @param string $fileName
+     */
     private function parseFile($reflection, $fileName)
     {
         foreach ($reflection->getClasses() as $class) {
@@ -573,6 +579,9 @@ class Context extends Component
         return false;
     }
 
+    /**
+     * @return Project
+     */
     public function getReflectionProject()
     {
         $files = [];

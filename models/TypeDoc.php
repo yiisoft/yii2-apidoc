@@ -186,7 +186,7 @@ class TypeDoc extends BaseDoc
 
     /**
      * @param Class_ $reflector
-     * @param Context $context
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

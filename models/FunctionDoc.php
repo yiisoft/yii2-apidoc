@@ -53,8 +53,8 @@ class FunctionDoc extends BaseDoc
 
     /**
      * @param BaseDoc|null $parent
-     * @param Method $reflector
-     * @param Context $context
+     * @param Method|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($parent, $reflector = null, $context = null, $config = [])
