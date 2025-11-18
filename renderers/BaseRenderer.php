@@ -8,11 +8,10 @@
 
 namespace yii\apidoc\renderers;
 
-use PhpParser\Node\UnionType;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Parser\ParserException;
 use yii\apidoc\helpers\ApiMarkdown;
@@ -214,6 +213,20 @@ abstract class BaseRenderer extends Component
                         );
                         $links[] = implode('&amp;', $innerTypesLinks);
                         continue;
+                    } elseif ($typeNode instanceof GenericTypeNode) {
+                        $genericTypes = TypeHelper::getTypesByGenericTypeNode($typeNode);
+                        $typesLinks = array_map(
+                            fn(string $genericType) => $this->createTypeLink($genericType, $context, $title, $options),
+                            $genericTypes
+                        );
+                        $mainTypeLinkOptions = array_merge($options, ['forcePhpStanLink' => true]);
+                        $mainTypeLink = $this->createTypeLink((string) $typeNode->type, $context, $title, $mainTypeLinkOptions);
+                        $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
+                        continue;
+                    } elseif ($typeNode instanceof OffsetAccessTypeNode) {
+                        $typeLink = $this->createTypeLink((string) $typeNode->type, $context, $title, $options);
+                        $links[] = "{$typeLink}[{$typeNode->offset}]";
+                        continue;
                     } elseif (substr($type, -3, 3) === ')[]') {
                         $arrayTypes = TypeHelper::getTypesByArrayTypeNode($typeNode);
                         $arrayTypesLinks = $this->createTypeLink($arrayTypes, $context, $title, $options);
@@ -259,16 +272,6 @@ abstract class BaseRenderer extends Component
                         continue;
                     } elseif (($psalmTypeImport = $this->getPsalmTypeImport($type, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmTypeImport);
-                        continue;
-                    } elseif ($typeNode instanceof GenericTypeNode) {
-                        $genericTypes = TypeHelper::getTypesByGenericTypeNode($typeNode);
-                        $typesLinks = array_map(
-                            fn(string $genericType) => $this->createTypeLink($genericType, $context, $title, $options),
-                            $genericTypes
-                        );
-                        $mainTypeLinkOptions = array_merge($options, ['forcePhpStanLink' => true]);
-                        $mainTypeLink = $this->createTypeLink((string) $typeNode->type, $context, $title, $mainTypeLinkOptions);
-                        $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
                         continue;
                     }
                 } catch (ParserException $e) {

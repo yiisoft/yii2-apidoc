@@ -10,6 +10,8 @@ namespace yiiunit\apidoc\data\api\animal;
 /**
  * Dog represents a dog animal.
  *
+ * @phpstan-type MyArray array{foo: int, bar: string}
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
@@ -30,5 +32,13 @@ class Dog extends Animal
     public function getThreeStringsArray(): array
     {
         return ['one', 'two', 'three'];
+    }
+
+    /**
+     * @return MyArray['bar']
+     */
+    public function testOffsetAccess(): string
+    {
+        return '';
     }
 }
