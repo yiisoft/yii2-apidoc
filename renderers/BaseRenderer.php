@@ -8,6 +8,7 @@
 
 namespace yii\apidoc\renderers;
 
+use PHPStan\PhpDocParser\Parser\ParserException;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
 use yii\apidoc\helpers\TypeAnalyzer;
@@ -187,93 +188,101 @@ abstract class BaseRenderer extends Component
         $links = [];
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
-                if ($this->typeAnalyzer->isUnionType($type)) {
-                    $innerTypes = $this->typeAnalyzer->getTypesByUnionType($type);
-                    $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
-                    continue;
-                } elseif ($this->typeAnalyzer->isIntersectionType($type)) {
-                    $innerTypes = $this->typeAnalyzer->getTypesByIntersectionType($type);
-                    $innerTypesLinks = [];
+                try {
+                    if ($this->typeAnalyzer->isUnionType($type)) {
+                        $innerTypes = $this->typeAnalyzer->getTypesByUnionType($type);
+                        $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
+                        continue;
+                    } elseif ($this->typeAnalyzer->isIntersectionType($type)) {
+                        $innerTypes = $this->typeAnalyzer->getTypesByIntersectionType($type);
+                        $innerTypesLinks = [];
 
-                    foreach ($innerTypes as $innerType) {
-                        $innerTypesLinks[] = $this->createTypeLink($innerType, $context, $title, $options);
-                    }
-
-                    $links[] = implode('&amp;', $innerTypesLinks);
-                    continue;
-                } elseif (substr($type, -3, 3) === ')[]') {
-                    $arrayTypes = $this->createTypeLink(
-                        $this->typeAnalyzer->getTypesByArrayType($type),
-                        $context,
-                        $title,
-                        $options
-                    );
-
-                    $links[] = "({$arrayTypes})[]";
-                    continue;
-                } elseif (substr($type, -2, 2) === '[]') {
-                    $arrayElementType = substr($type, 0, -2);
-                    $templateType = $this->getTemplateType($arrayElementType, $context);
-
-                    if ($templateType !== null) {
-                        $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
-                        if ($this->typeAnalyzer->isUnionType($templateType)) {
-                            $links[] = "({$typeLink})[]";
-                        } else {
-                            $links[] =  "{$typeLink}[]";
+                        foreach ($innerTypes as $innerType) {
+                            $innerTypesLinks[] = $this->createTypeLink($innerType, $context, $title, $options);
                         }
-                    } else {
-                        $links[] = $this->createTypeLink($arrayElementType, $context, $title, $options) . '[]';
-                    }
 
-                    continue;
-                } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
-                    $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
-                    continue;
-                } elseif (
-                    $type[0] !== '\\' &&
-                    ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
-                ) {
-                    $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
-                    continue;
-                } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
-                    $links[] = $this->createTypeLink($templateType, $context, $title, $options);
-                    continue;
-                } elseif (($phpStanType = $this->getPhpStanType($type, $context)) !== null) {
-                    $links[] = $this->createSubjectLink($phpStanType);
-                    continue;
-                } elseif (($psalmType = $this->getPsalmType($type, $context)) !== null) {
-                    $links[] = $this->createSubjectLink($psalmType);
-                    continue;
-                } elseif (($phpStanTypeImport = $this->getPhpStanTypeImport($type, $context)) !== null) {
-                    $links[] = $this->createSubjectLink($phpStanTypeImport);
-                    continue;
-                } elseif (($psalmTypeImport = $this->getPsalmTypeImport($type, $context)) !== null) {
-                    $links[] = $this->createSubjectLink($psalmTypeImport);
-                    continue;
-                } elseif ($this->typeAnalyzer->isGenericType($type)) {
-                    $genericTypes = $this->typeAnalyzer->getTypesByGenericType($type);
-                    $typesLinks = [];
-
-                    foreach ($genericTypes as $genericType) {
-                        $typesLinks[] = $this->createTypeLink(
-                            $genericType,
+                        $links[] = implode('&amp;', $innerTypesLinks);
+                        continue;
+                    } elseif (substr($type, -3, 3) === ')[]') {
+                        $arrayTypes = $this->createTypeLink(
+                            $this->typeAnalyzer->getTypesByArrayType($type),
                             $context,
                             $title,
                             $options
                         );
+
+                        $links[] = "({$arrayTypes})[]";
+                        continue;
+                    } elseif (substr($type, -2, 2) === '[]') {
+                        $arrayElementType = substr($type, 0, -2);
+                        $templateType = $this->getTemplateType($arrayElementType, $context);
+
+                        if ($templateType !== null) {
+                            $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
+                            if ($this->typeAnalyzer->isUnionType($templateType)) {
+                                $links[] = "({$typeLink})[]";
+                            } else {
+                                $links[] =  "{$typeLink}[]";
+                            }
+                        } else {
+                            $links[] = $this->createTypeLink($arrayElementType, $context, $title, $options) . '[]';
+                        }
+
+                        continue;
+                    } elseif (($typeDoc = $this->apiContext->getType(ltrim($type, '\\'))) !== null) {
+                        $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
+                        continue;
+                    } elseif (
+                        $type[0] !== '\\' &&
+                        ($typeDoc = $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($type, '\\'))) !== null
+                    ) {
+                        $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
+                        continue;
+                    } elseif (($templateType = $this->getTemplateType($type, $context)) !== null) {
+                        $links[] = $this->createTypeLink($templateType, $context, $title, $options);
+                        continue;
+                    } elseif (($phpStanType = $this->getPhpStanType($type, $context)) !== null) {
+                        $links[] = $this->createSubjectLink($phpStanType);
+                        continue;
+                    } elseif (($psalmType = $this->getPsalmType($type, $context)) !== null) {
+                        $links[] = $this->createSubjectLink($psalmType);
+                        continue;
+                    } elseif (($phpStanTypeImport = $this->getPhpStanTypeImport($type, $context)) !== null) {
+                        $links[] = $this->createSubjectLink($phpStanTypeImport);
+                        continue;
+                    } elseif (($psalmTypeImport = $this->getPsalmTypeImport($type, $context)) !== null) {
+                        $links[] = $this->createSubjectLink($psalmTypeImport);
+                        continue;
+                    } elseif ($this->typeAnalyzer->isGenericType($type)) {
+                        $genericTypes = $this->typeAnalyzer->getTypesByGenericType($type);
+                        $typesLinks = [];
+
+                        foreach ($genericTypes as $genericType) {
+                            $typesLinks[] = $this->createTypeLink(
+                                $genericType,
+                                $context,
+                                $title,
+                                $options
+                            );
+                        }
+
+                        $mainType = substr($type, 0, strpos($type, '<'));
+                        $mainTypeLink = $this->createTypeLink(
+                            $mainType,
+                            $context,
+                            $title,
+                            array_merge($options, ['forcePhpStanLink' => true])
+                        );
+
+                        $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
+                        continue;
                     }
-
-                    $mainType = substr($type, 0, strpos($type, '<'));
-                    $mainTypeLink = $this->createTypeLink(
-                        $mainType,
-                        $context,
-                        $title,
-                        array_merge($options, ['forcePhpStanLink' => true])
-                    );
-
-                    $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
-                    continue;
+                } catch (ParserException $e) {
+                    $this->apiContext->errors[] = [
+                        'line' => $e->getLine(),
+                        'file' => $e->getFile(),
+                        'message' => "Invalid type: {$type}. Details: {$e->getMessage()}",
+                    ];
                 }
             }
 
