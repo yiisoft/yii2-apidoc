@@ -18,26 +18,26 @@ use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use yii\apidoc\helpers\PhpDocTagFactory;
-use yii\apidoc\helpers\PhpDocTagParser;
+use yii\apidoc\helpers\PhpDocParser;
 use yiiunit\apidoc\TestCase;
 
 class PhpDocTagFactoryTest extends TestCase
 {
     private PhpDocTagFactory $phpDocTagFactory;
 
-    private PhpDocTagParser $phpDocTagParser;
+    private PhpDocParser $phpDocParser;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->phpDocTagFactory = new PhpDocTagFactory();
-        $this->phpDocTagParser = new PhpDocTagParser();
+        $this->phpDocParser = new PhpDocParser();
     }
 
     public function testCreateTagWithTypesByTagNode(): void
     {
-        $paramTagNode = $this->phpDocTagParser->parseTag('@param key-of<self::COLORS> $colorKey some param description');
+        $paramTagNode = $this->phpDocParser->parseTag('@param key-of<self::COLORS> $colorKey some param description');
 
         /** @var Param|Tag */
         $paramTag = $this->phpDocTagFactory->createTagWithTypesByTagNode($paramTagNode);
@@ -46,7 +46,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('key-of<self::COLORS>', (string) $paramTag->getType());
         $this->assertSame('some param description', (string) $paramTag->getDescription());
 
-        $returnTagNode = $this->phpDocTagParser->parseTag('@return value-of<self::COLORS> some return description');
+        $returnTagNode = $this->phpDocParser->parseTag('@return value-of<self::COLORS> some return description');
 
         /** @var Return_|Tag */
         $returnTag = $this->phpDocTagFactory->createTagWithTypesByTagNode($returnTagNode);
@@ -54,7 +54,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('value-of<self::COLORS>', (string) $returnTag->getType());
         $this->assertSame('some return description', (string) $returnTag->getDescription());
 
-        $varTagNode = $this->phpDocTagParser->parseTag('@var int-mask<1, 2, 4> $intMaskVar some var description');
+        $varTagNode = $this->phpDocParser->parseTag('@var int-mask<1, 2, 4> $intMaskVar some var description');
 
         /** @var Var_|Tag */
         $varTag = $this->phpDocTagFactory->createTagWithTypesByTagNode($varTagNode);
@@ -63,7 +63,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('int-mask<1, 2, 4>', (string) $varTag->getType());
         $this->assertSame('some var description', (string) $varTag->getDescription());
 
-        $propertyTagNode = $this->phpDocTagParser->parseTag(
+        $propertyTagNode = $this->phpDocParser->parseTag(
             '@property int-mask-of<1|2|4> $intMaskProperty some property description'
         );
 
@@ -74,7 +74,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('int-mask-of<(1 | 2 | 4)>', (string) $propertyTag->getType());
         $this->assertSame('some property description', (string) $propertyTag->getDescription());
 
-        $propertyReadTagNode = $this->phpDocTagParser->parseTag(
+        $propertyReadTagNode = $this->phpDocParser->parseTag(
             '@property-read (int|string)[] $arrayReadProperty some property-read description'
         );
 
@@ -85,7 +85,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('(int | string)[]', (string) $propertyReadTag->getType());
         $this->assertSame('some property-read description', (string) $propertyReadTag->getDescription());
 
-        $propertyWriteTagNode = $this->phpDocTagParser->parseTag(
+        $propertyWriteTagNode = $this->phpDocParser->parseTag(
             '@property-write array<string, mixed> $arrayWriteProperty some property-write description'
         );
 
@@ -96,7 +96,7 @@ class PhpDocTagFactoryTest extends TestCase
         $this->assertSame('array<string, mixed>', (string) $propertyWriteTag->getType());
         $this->assertSame('some property-write description', (string) $propertyWriteTag->getDescription());
 
-        $methodTagNode = $this->phpDocTagParser->parseTag(
+        $methodTagNode = $this->phpDocParser->parseTag(
             '@method array<string, string> someMethod(bool $param1, array $param2) some method description'
         );
 
@@ -114,7 +114,7 @@ class PhpDocTagFactoryTest extends TestCase
             )
         );
 
-        $templateTagNode = $this->phpDocTagParser->parseTag(
+        $templateTagNode = $this->phpDocParser->parseTag(
             '@template T of Action<Controller> some template description'
         );
 

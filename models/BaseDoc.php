@@ -18,7 +18,7 @@ use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Php\Class_;
 use Throwable;
 use yii\apidoc\helpers\PhpDocTagFactory;
-use yii\apidoc\helpers\PhpDocTagParser;
+use yii\apidoc\helpers\PhpDocParser;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -168,7 +168,7 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $phpDocTagParser = new PhpDocTagParser();
+        $phpDocParser = new PhpDocParser();
         $phpDocTagFactory = new PhpDocTagFactory();
         $fqsenResolver = new FqsenResolver();
 
@@ -274,7 +274,7 @@ class BaseDoc extends BaseObject
                 }
             } elseif ($tag instanceof InvalidTag) {
                 try {
-                    $realTag = $phpDocTagParser->parseTag($tag->render());
+                    $realTag = $phpDocParser->parseTag($tag->render());
                     $this->tags[$i] = $phpDocTagFactory->createTagWithTypesByTagNode($realTag);
                 } catch (Throwable $e) {
                     $context->errors[] = [

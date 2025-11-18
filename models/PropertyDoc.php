@@ -26,10 +26,6 @@ class PropertyDoc extends BaseDoc
     public $visibility;
     public $isStatic;
     /**
-     * @var string|null
-     */
-    public $type;
-    /**
      * @var string[]|null
      */
     public $types;
@@ -87,9 +83,7 @@ class PropertyDoc extends BaseDoc
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
-                $this->type = (string) $tag->getType();
-                $this->types = TypeHelper::splitType($tag->getType());
-
+                $this->types = TypeHelper::getOriginalTypesFromType($tag->getType());
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -105,9 +99,8 @@ class PropertyDoc extends BaseDoc
             ];
         }
 
-        if (!$hasInheritdoc && $this->type === null) {
-            $this->type = (string) $reflector->getType();
-            $this->types = [$this->type];
+        if (!$hasInheritdoc && $this->types === null) {
+            $this->types = [(string) $reflector->getType()];
         }
     }
 }

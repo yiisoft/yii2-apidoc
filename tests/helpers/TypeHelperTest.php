@@ -14,28 +14,39 @@ use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Intersection;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
+use yii\apidoc\helpers\PhpDocParser;
 use yii\apidoc\helpers\TypeHelper;
 use yiiunit\apidoc\TestCase;
 
 class TypeHelperTest extends TestCase
 {
+    private PhpDocParser $phpDocParser;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->phpDocParser = new PhpDocParser();
+    }
+
     /**
-     * @dataProvider provideSplitTypeData
+     * @dataProvider provideGetOriginalTypesFromTypeData
      *
      * @param string[] $expectedResult
      */
-    public function testSplitType(?Type $type, array $expectedResult): void
+    public function testGetOriginalTypesFromType(?Type $type, array $expectedResult): void
     {
-        $result = TypeHelper::splitType($type);
+        $result = TypeHelper::getOriginalTypesFromType($type);
         $this->assertSame($expectedResult, $result);
     }
 
     /**
      * @return array<string, array{Type|null, string[]}>
      */
-    public static function provideSplitTypeData(): array
+    public static function provideGetOriginalTypesFromTypeData(): array
     {
         return [
             'without type' => [
@@ -61,6 +72,148 @@ class TypeHelperTest extends TestCase
             'array key' => [
                 new ArrayKey(),
                 ['string', 'int'],
+            ],
+        ];
+    }
+
+    public function testGetOriginalTypesFromTypeWithMixed(): void
+    {
+        $mixedWithoutTypeNodeResult = TypeHelper::getOriginalTypesFromType(new Mixed_());
+        $this->assertSame(['mixed'], $mixedWithoutTypeNodeResult);
+
+        $typeNode = $this->phpDocParser->parseType('($condition is true ? string|int : string)');
+        $mixedWithTypeNodeResult = TypeHelper::getOriginalTypesFromType(new Mixed_($typeNode));
+        $this->assertSame(['($condition is true ? (string | int) : string)'], $mixedWithTypeNodeResult);
+    }
+
+    /**
+     * @dataProvider provideGetTypesByGenericTypeNodeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetTypesByGenericTypeNode(string $type, array $expectedResult): void
+    {
+        $typeNode = $this->phpDocParser->parseType($type);
+        $result = TypeHelper::getTypesByGenericTypeNode($typeNode);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string[]}
+     */
+    public static function provideGetTypesByGenericTypeNodeData(): array
+    {
+        return [
+            'generic array' => [
+                'array<string, mixed>',
+                ['string', 'mixed'],
+            ],
+            'generic class' => [
+                'Action<Controller>',
+                ['Controller'],
+            ],
+            'nested generics' => [
+                'static<array<string, mixed>>',
+                ['array<string, mixed>'],
+            ],
+            'multiple nested generics' => [
+                'static<array<string, mixed>, Action<Controller>>',
+                ['array<string, mixed>', 'Action<Controller>'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetPossibleTypesByConditionalTypeNodeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetPossibleTypesByConditionalType(string $type, array $expectedResult): void
+    {
+        $typeNode = $this->phpDocParser->parseType($type);
+        $result = TypeHelper::getPossibleTypesByConditionalTypeNode($typeNode);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string[]}>
+     */
+    public static function provideGetPossibleTypesByConditionalTypeNodeData(): array
+    {
+        return [
+            'basic' => [
+                '($first is true ? string : string[])',
+                ['string', 'string[]'],
+            ],
+            'with union types' => [
+                '($condition is true ? string|int : string)',
+                ['string', 'int'],
+            ],
+            'nested' => [
+                '($value is true ? (T is array ? static<T> : static<array<string, mixed>>) : static<T>)',
+                ['static<T>', 'static<array<string, mixed>>'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetTypesByArrayTypeNodeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetTypesByArrayTypeNode(string $type, array $expectedResult): void
+    {
+        $typeNode = $this->phpDocParser->parseType($type);
+        $result = TypeHelper::getTypesByArrayTypeNode($typeNode);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string[]}>
+     */
+    public static function provideGetTypesByArrayTypeNodeData(): array
+    {
+        return [
+            'basic' => [
+                'string[]',
+                ['string'],
+            ],
+            'generic array' => [
+                'array<string, mixed>[]',
+                ['array<string, mixed>'],
+            ],
+            'with parentheses' => [
+                '(string|int|float)[]',
+                ['string', 'int', 'float'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideGetTypesByIntersectionTypeNodeData
+     *
+     * @param string[] $expectedResult
+     */
+    public function testGetTypesByIntersectionTypeNode(string $type, array $expectedResult): void
+    {
+        $typeNode = $this->phpDocParser->parseType($type);
+        $result = TypeHelper::getTypesByIntersectionTypeNode($typeNode);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, string[]}>
+     */
+    public static function provideGetTypesByIntersectionTypeNodeData(): array
+    {
+        return [
+            'basic' => [
+                'SomeClass&AnotherClass',
+                ['SomeClass', 'AnotherClass'],
+            ],
+            'with generics' => [
+                'SomeClass&AnotherClass<GenericClass>',
+                ['SomeClass', 'AnotherClass<GenericClass>'],
             ],
         ];
     }

@@ -297,7 +297,7 @@ class Context extends Component
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'type', 'types', 'since'] as $property) {
+                foreach (['shortDescription', 'types', 'since'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $p->getPackageName() !== $inheritedProperty->getPackageName()) {
@@ -330,7 +330,7 @@ class Context extends Component
                     continue;
                 }
                 // set all properties that are empty.
-                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions', 'since'] as $property) {
+                foreach (['shortDescription', 'return', 'returnTypes', 'exceptions', 'since'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $m->getPackageName() !== $inheritedMethod->getPackageName()) {
@@ -480,7 +480,6 @@ class Context extends Component
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
                         'isStatic' => false,
-                        'type' => $method->returnType,
                         'types' => $method->returnTypes,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
@@ -514,7 +513,6 @@ class Context extends Component
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
                         'isStatic' => false,
-                        'type' => $param->type,
                         'types' => $param->types,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,

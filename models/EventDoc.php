@@ -21,10 +21,6 @@ use yii\helpers\StringHelper;
 class EventDoc extends ConstDoc
 {
     /**
-     * @var string|null
-     */
-    public $type;
-    /**
      * @var string[]|null
      */
     public $types;
@@ -55,14 +51,14 @@ class EventDoc extends ConstDoc
             $this->description = StringHelper::mb_ucfirst($parts[1]);
 
             if (strpos($className, '\\') !== false)  {
-                $this->type = $className;
+                $type = $className;
             } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
-                $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];
+                $type = $docBlock->getContext()->getNamespaceAliases()[$className];
             } else {
-                $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
+                $type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->types = [$this->type];
+            $this->types = [$type];
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }

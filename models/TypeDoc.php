@@ -14,10 +14,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
-use yii\apidoc\helpers\PhpDocTagParser;
-use yii\apidoc\helpers\TypeAnalyzer;
+use phpDocumentor\Reflection\Types\Mixed_;
 use yii\apidoc\helpers\TypeHelper;
-use yii\apidoc\models\types\ConditionalReturnType;
 use yii\helpers\StringHelper;
 
 /**
@@ -199,9 +197,6 @@ class TypeDoc extends BaseDoc
             return;
         }
 
-        $typeAnalyzer = new TypeAnalyzer();
-        $phpDocTagParser = new PhpDocTagParser();
-
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Author) {
                 $this->authors[$tag->getAuthorName()] = $tag->getEmail();
@@ -219,8 +214,7 @@ class TypeDoc extends BaseDoc
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'type' => (string) $tag->getType(),
-                    'types' => TypeHelper::splitType($tag->getType()),
+                    'types' => TypeHelper::getOriginalTypesFromType($tag->getType()),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -237,42 +231,8 @@ class TypeDoc extends BaseDoc
                     $params[] = new ParamDoc($tag, null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
-                        'type' => (string) $argumentType,
-                        'types' => TypeHelper::splitType($argumentType),
+                        'types' => TypeHelper::getOriginalTypesFromType($argumentType),
                     ]);
-                }
-
-                $returnType = null;
-
-                // We are trying to retrieve a conditional type because PHPDocumentor converts the
-                // conditional type to mixed
-                if ((string) $tag->getReturnType() === 'mixed') {
-                    $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
-                    $lines = file($this->sourceFile);
-
-                    $docBlockIterator = $docBlockEndLineNumber;
-                    while ($docBlockIterator > 0) {
-                        if (
-                            strpos($lines[$docBlockIterator], '@method') !== false &&
-                            strpos($lines[$docBlockIterator], $tag->getMethodName() . '(') !== false
-                        ) {
-                            $realType = $phpDocTagParser->getTypeFromMethodTag(trim($lines[$docBlockIterator], ' *'));
-
-                            if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
-                                $returnType = $realType;
-                                $returnTypes = $typeAnalyzer->getPossibleTypesByConditionalType($realType);
-                            }
-
-                            break;
-                        }
-
-                        $docBlockIterator--;
-                    }
-                }
-
-                if ($returnType === null) {
-                    $returnType = (string) $tag->getReturnType();
-                    $returnTypes = TypeHelper::splitType($tag->getReturnType());
                 }
 
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
@@ -288,8 +248,7 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => $returnType,
-                    'returnTypes' => $returnTypes,
+                    'returnTypes' => TypeHelper::getOriginalTypesFromType($tag->getReturnType()),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

@@ -8,10 +8,17 @@
 
 namespace yii\apidoc\renderers;
 
+use PhpParser\Node\UnionType;
+use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
+use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Parser\ParserException;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
-use yii\apidoc\helpers\TypeAnalyzer;
+use yii\apidoc\helpers\PhpDocParser;
+use yii\apidoc\helpers\TypeHelper;
 use yii\apidoc\models\BaseDoc;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\ConstDoc;
@@ -154,13 +161,13 @@ abstract class BaseRenderer extends Component
     public $controller;
     public $guideUrl;
 
-    private TypeAnalyzer $typeAnalyzer;
+    private PhpDocParser $phpDocParser;
 
     public function __construct($config = [])
     {
         parent::__construct($config);
 
-        $this->typeAnalyzer = new TypeAnalyzer();
+        $this->phpDocParser = new PhpDocParser();
     }
 
     public function init()
@@ -189,29 +196,28 @@ abstract class BaseRenderer extends Component
         foreach ($types as $type) {
             if (is_string($type) && $type !== '' && !in_array($type, self::PHP_TYPES)) {
                 try {
-                    if ($this->typeAnalyzer->isUnionType($type)) {
-                        $innerTypes = $this->typeAnalyzer->getTypesByUnionType($type);
+                    $typeNode = $this->phpDocParser->parseType($type);
+
+                    if ($typeNode instanceof UnionTypeNode) {
+                        $innerTypes = TypeHelper::getTypesByUnionTypeNode($typeNode);
                         $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
                         continue;
-                    } elseif ($this->typeAnalyzer->isIntersectionType($type)) {
-                        $innerTypes = $this->typeAnalyzer->getTypesByIntersectionType($type);
-                        $innerTypesLinks = [];
-
-                        foreach ($innerTypes as $innerType) {
-                            $innerTypesLinks[] = $this->createTypeLink($innerType, $context, $title, $options);
-                        }
-
+                    } elseif ($typeNode instanceof ConditionalTypeForParameterNode) {
+                        $possibleTypes = TypeHelper::getPossibleTypesByConditionalTypeNode($typeNode);
+                        $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
+                        continue;
+                    } elseif ($typeNode instanceof IntersectionTypeNode) {
+                        $innerTypes = TypeHelper::getTypesByIntersectionTypeNode($typeNode);
+                        $innerTypesLinks = array_map(
+                            fn(string $innerType) => $this->createTypeLink($innerType, $context, $title, $options),
+                            $innerTypes
+                        );
                         $links[] = implode('&amp;', $innerTypesLinks);
                         continue;
                     } elseif (substr($type, -3, 3) === ')[]') {
-                        $arrayTypes = $this->createTypeLink(
-                            $this->typeAnalyzer->getTypesByArrayType($type),
-                            $context,
-                            $title,
-                            $options
-                        );
-
-                        $links[] = "({$arrayTypes})[]";
+                        $arrayTypes = TypeHelper::getTypesByArrayTypeNode($typeNode);
+                        $arrayTypesLinks = $this->createTypeLink($arrayTypes, $context, $title, $options);
+                        $links[] = "({$arrayTypesLinks})[]";
                         continue;
                     } elseif (substr($type, -2, 2) === '[]') {
                         $arrayElementType = substr($type, 0, -2);
@@ -219,7 +225,8 @@ abstract class BaseRenderer extends Component
 
                         if ($templateType !== null) {
                             $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
-                            if ($this->typeAnalyzer->isUnionType($templateType)) {
+                            $parsedTemplateType = $this->phpDocParser->parseType($templateType);
+                            if ($parsedTemplateType instanceof UnionTypeNode) {
                                 $links[] = "({$typeLink})[]";
                             } else {
                                 $links[] =  "{$typeLink}[]";
@@ -253,27 +260,14 @@ abstract class BaseRenderer extends Component
                     } elseif (($psalmTypeImport = $this->getPsalmTypeImport($type, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmTypeImport);
                         continue;
-                    } elseif ($this->typeAnalyzer->isGenericType($type)) {
-                        $genericTypes = $this->typeAnalyzer->getTypesByGenericType($type);
-                        $typesLinks = [];
-
-                        foreach ($genericTypes as $genericType) {
-                            $typesLinks[] = $this->createTypeLink(
-                                $genericType,
-                                $context,
-                                $title,
-                                $options
-                            );
-                        }
-
-                        $mainType = substr($type, 0, strpos($type, '<'));
-                        $mainTypeLink = $this->createTypeLink(
-                            $mainType,
-                            $context,
-                            $title,
-                            array_merge($options, ['forcePhpStanLink' => true])
+                    } elseif ($typeNode instanceof GenericTypeNode) {
+                        $genericTypes = TypeHelper::getTypesByGenericTypeNode($typeNode);
+                        $typesLinks = array_map(
+                            fn(string $genericType) => $this->createTypeLink($genericType, $context, $title, $options),
+                            $genericTypes
                         );
-
+                        $mainTypeLinkOptions = array_merge($options, ['forcePhpStanLink' => true]);
+                        $mainTypeLink = $this->createTypeLink((string) $typeNode->type, $context, $title, $mainTypeLinkOptions);
                         $links[] = "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
                         continue;
                     }

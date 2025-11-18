@@ -30,10 +30,6 @@ class ParamDoc extends BaseObject
     // will be set by creating class
     public $description;
     /**
-     * @var string|null
-     */
-    public $type;
-    /**
      * @var string[]|null
      */
     public $types;
@@ -58,9 +54,8 @@ class ParamDoc extends BaseObject
         if ($reflector !== null) {
             $this->name = $reflector->getName();
 
-            if ($this->type === null) {
-                $this->type = (string) $reflector->getType();
-                $this->types = TypeHelper::splitType($reflector->getType());
+            if ($this->types === null) {
+                $this->types = TypeHelper::getOriginalTypesFromType($reflector->getType());
             }
 
             if (PHP_VERSION_ID >= 80100) {

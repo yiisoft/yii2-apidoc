@@ -12,8 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
-use yii\apidoc\helpers\PhpDocTagParser;
-use yii\apidoc\helpers\TypeAnalyzer;
+use phpDocumentor\Reflection\Types\Mixed_;
 use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
@@ -38,10 +37,6 @@ class FunctionDoc extends BaseDoc
      */
     public $return;
     /**
-     * @var string|null
-     */
-    public $returnType;
-    /**
      * @var string[]|null
      */
     public $returnTypes;
@@ -65,9 +60,6 @@ class FunctionDoc extends BaseDoc
             return;
         }
 
-        $typeAnalyzer = new TypeAnalyzer();
-        $phpDocTagParser = new PhpDocTagParser();
-
         $this->isReturnByReference = $reflector->getHasReturnByReference();
 
         foreach ($reflector->getArguments() as $arg) {
@@ -79,7 +71,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[implode(TypeHelper::splitType($tag->getType()))] = $tag->getDescription();
+                $this->exceptions[implode(TypeHelper::getOriginalTypesFromType($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = '$' . $tag->getVariableName();
@@ -91,39 +83,12 @@ class FunctionDoc extends BaseDoc
                     ];
                     continue;
                 }
+
                 $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
-                $this->params[$paramName]->type = (string) $tag->getType();
-                $this->params[$paramName]->types = TypeHelper::splitType($tag->getType());
+                $this->params[$paramName]->types = TypeHelper::getOriginalTypesFromType($tag->getType());
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
-                // We are trying to retrieve a conditional type because PHPDocumentor converts the
-                // conditional type to mixed
-                if ((string) $tag->getType() === 'mixed') {
-                    $docBlockEndLineNumber = $reflector->getLocation()->getLineNumber() - 2;
-                    $lines = file($this->sourceFile);
-
-                    $docBlockIterator = $docBlockEndLineNumber;
-                    while ($docBlockIterator > 0) {
-                        if (strpos($lines[$docBlockIterator], '@return') !== false) {
-                            $realType = $phpDocTagParser->getTypeFromReturnTag(trim($lines[$docBlockIterator], ' *'));
-
-                            if ($realType !== 'mixed' && $typeAnalyzer->isConditionalType($realType)) {
-                                $this->returnType = $realType;
-                                $this->returnTypes = $typeAnalyzer->getPossibleTypesByConditionalType($realType);
-                            }
-
-                            break;
-                        }
-
-                        $docBlockIterator--;
-                    }
-                }
-
-                if ($this->returnType === null) {
-                    $this->returnType = (string) $tag->getType();
-                    $this->returnTypes = TypeHelper::splitType($tag->getType());
-                }
-
+                $this->returnTypes = TypeHelper::getOriginalTypesFromType($tag->getType());
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -131,9 +96,8 @@ class FunctionDoc extends BaseDoc
             }
         }
 
-        if (!$hasInheritdoc && $this->returnType === null) {
-            $this->returnType = (string) $reflector->getReturnType();
-            $this->returnTypes = [$this->returnType];
+        if (!$hasInheritdoc && $this->returnTypes === null) {
+            $this->returnTypes = [(string) $reflector->getReturnType()];
         }
     }
 }
