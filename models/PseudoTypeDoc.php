@@ -8,6 +8,7 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\Type;
 use yii\base\BaseObject;
 
 /**
@@ -33,7 +34,7 @@ class PseudoTypeDoc extends BaseObject
 
     public string $name;
 
-    public string $value;
+    public Type $value;
 
     /**
      * @param value-of<self::TYPES> $type
@@ -42,7 +43,7 @@ class PseudoTypeDoc extends BaseObject
         string $type,
         BaseDoc $parent,
         string $name,
-        string $value
+        Type $value
     ) {
         $this->type = $type;
         $this->parent = $parent;

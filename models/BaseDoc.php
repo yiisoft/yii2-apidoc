@@ -15,7 +15,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Php\Class_;
-use yii\apidoc\helpers\PhpDocParser;
+use phpDocumentor\Reflection\TypeResolver;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -165,8 +165,8 @@ class BaseDoc extends BaseObject
             return;
         }
 
-        $phpDocParser = new PhpDocParser();
         $fqsenResolver = new FqsenResolver();
+        $typeResolver = new TypeResolver($fqsenResolver);
 
         // base properties
         $this->fullName = trim((string) $reflector->getFqsen(), '\\()');
@@ -223,7 +223,7 @@ class BaseDoc extends BaseObject
                 $this->deprecatedReason = (string) $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Template) {
-                $this->templates[$tag->getTemplateName()] = $tag;
+                $this->templates[(string) $fqsenResolver->resolve($tag->getTemplateName(), $this->phpDocContext)] = $tag;
                 unset($this->tags[$i]);
             } elseif ($tag->getName() === 'todo') {
                 $this->todos[] = $tag;
@@ -235,9 +235,9 @@ class BaseDoc extends BaseObject
                         PseudoTypeDoc::TYPE_PHPSTAN,
                         $this,
                         trim($tagData[0]),
-                        trim($tagData[1])
+                        $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->phpStanTypes[$phpStanType->name] = $phpStanType;
+                    $this->phpStanTypes[(string) $fqsenResolver->resolve($phpStanType->name, $this->phpDocContext)] = $phpStanType;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PSALM_TYPE_ANNOTATION_NAME) {
                     $tagData = explode('=', trim($tag->getDescription()), 2);
@@ -245,9 +245,9 @@ class BaseDoc extends BaseObject
                         PseudoTypeDoc::TYPE_PSALM,
                         $this,
                         trim($tagData[0]),
-                        trim($tagData[1])
+                        $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->psalmTypes[$psalmType->name] = $psalmType;
+                    $this->psalmTypes[(string) $fqsenResolver->resolve($psalmType->name, $this->phpDocContext)] = $psalmType;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME) {
                     $tagData = explode(' from ', trim($tag->getDescription()), 2);
@@ -256,7 +256,7 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->phpStanTypeImports[$phpStanTypeImport->typeName] = $phpStanTypeImport;
+                    $this->phpStanTypeImports[(string) $fqsenResolver->resolve($phpStanTypeImport->typeName, $this->phpDocContext)] = $phpStanTypeImport;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PSALM_IMPORT_TYPE_ANNOTATION_NAME) {
                     $tagData = explode(' from ', trim($tag->getDescription()), 2);
@@ -265,7 +265,7 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->psalmTypeImports[$psalmTypeImport->typeName] = $psalmTypeImport;
+                    $this->psalmTypeImports[(string) $fqsenResolver->resolve($psalmTypeImport->typeName, $this->phpDocContext)] = $psalmTypeImport;
                     unset($this->tags[$i]);
                 }
             }

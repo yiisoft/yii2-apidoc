@@ -12,8 +12,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use phpDocumentor\Reflection\Php\Method;
-use phpDocumentor\Reflection\Types\Mixed_;
-use yii\apidoc\helpers\TypeHelper;
+use phpDocumentor\Reflection\Type;
 use yii\helpers\StringHelper;
 
 /**
@@ -29,7 +28,7 @@ class FunctionDoc extends BaseDoc
      */
     public $params = [];
     /**
-     * @var array<string, Description|null>
+     * @var Throws[]
      */
     public $exceptions = [];
     /**
@@ -37,9 +36,9 @@ class FunctionDoc extends BaseDoc
      */
     public $return;
     /**
-     * @var string[]|null
+     * @var Type|null
      */
-    public $returnTypes;
+    public $returnType;
     /**
      * @var bool
      */
@@ -71,7 +70,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[implode(TypeHelper::splitType($tag->getType()))] = $tag->getDescription();
+                $this->exceptions[] = $tag;
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = '$' . $tag->getVariableName();
@@ -85,10 +84,10 @@ class FunctionDoc extends BaseDoc
                 }
 
                 $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
-                $this->params[$paramName]->types = TypeHelper::splitType($tag->getType());
+                $this->params[$paramName]->type = $tag->getType();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
-                $this->returnTypes = TypeHelper::splitType($tag->getType());
+                $this->returnType = $tag->getType();
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -96,8 +95,8 @@ class FunctionDoc extends BaseDoc
             }
         }
 
-        if (!$hasInheritdoc && $this->returnTypes === null) {
-            $this->returnTypes = [(string) $reflector->getReturnType()];
+        if (!$hasInheritdoc && $this->returnType === null) {
+            $this->returnType = $reflector->getReturnType();
         }
     }
 }

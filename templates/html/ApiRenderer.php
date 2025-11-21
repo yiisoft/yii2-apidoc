@@ -259,7 +259,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<span class="signature-type">' . $this->createTypeLink($property->types, $context) . '</span>'
+            . '<span class="signature-type">' . $this->createTypeLink($property->type, $context) . '</span>'
             . ' ' . $this->createSubjectLink($property, $property->name) . ' '
             . ApiMarkdown::highlight('= ' . $this->renderDefaultValue($property->defaultValue), 'php');
     }
@@ -272,7 +272,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = '<span class="signature-type">' . $this->createTypeLink($param->types, $method) . '</span> '
+            $params[] = '<span class="signature-type">' . $this->createTypeLink($param->type, $method) . '</span> '
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . ApiMarkdown::highlight(
                     $param->name
@@ -292,7 +292,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
             . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
-            . $this->createTypeLink($method->returnTypes, $method) . '</span> '
+            . $this->createTypeLink($method->returnType, $method) . '</span> '
             . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
     }

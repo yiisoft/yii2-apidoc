@@ -41,4 +41,35 @@ class Dog extends Animal
     {
         return '';
     }
+
+    /**
+     * @return non-empty-list<array>
+     */
+    public function getNonEmptyList(): array
+    {
+        return [[]];
+    }
+
+    /**
+     * @return list
+     */
+    public function getListWithoutGenerics(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return non-empty-list
+     */
+    public function getNonEmptyListWithoutGenerics(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Dog<Cat, Animal>
+     */
+    public function getClassWithTwoGenerics()
+    {
+    }
 }

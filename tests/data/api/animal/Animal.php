@@ -75,6 +75,10 @@ abstract class Animal extends BaseObject
      */
     public $iterableProperty;
     /**
+     * @var iterable<string>
+     */
+    public $iterableWithoutKeyProperty;
+    /**
      * @var array<string>
      */
     public $genericArrayWithoutKeyProperty;
@@ -206,5 +210,13 @@ abstract class Animal extends BaseObject
         return Yii::createObject([
             'class' => get_called_class(),
         ]);
+    }
+
+    /**
+     * @return self<Cat>
+     */
+    public function getSelfWithGenerics()
+    {
+        return $this;
     }
 }

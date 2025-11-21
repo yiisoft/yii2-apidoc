@@ -9,200 +9,109 @@
 namespace yiiunit\apidoc\helpers;
 
 use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\ArrayKey;
+use phpDocumentor\Reflection\Types\AggregatedType;
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Compound;
+use phpDocumentor\Reflection\Types\Float_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Intersection;
+use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
-use yii\apidoc\helpers\PhpDocParser;
 use yii\apidoc\helpers\TypeHelper;
 use yiiunit\apidoc\TestCase;
 
 class TypeHelperTest extends TestCase
 {
-    private PhpDocParser $phpDocParser;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->phpDocParser = new PhpDocParser();
-    }
-
     /**
-     * @dataProvider provideSplitTypeData
+     * @dataProvider provideGetTypesByAggregatedTypeData
      *
-     * @param string[] $expectedResult
+     * @param Type[] $expectedResult
      */
-    public function testSplitType(?Type $type, array $expectedResult): void
+    public function testGetTypesByAggregatedType(AggregatedType $type, array $expectedResult): void
     {
-        $result = TypeHelper::splitType($type);
-        $this->assertSame($expectedResult, $result);
+        $result = TypeHelper::getTypesByAggregatedType($type);
+        $this->assertEquals($expectedResult, $result);
     }
 
     /**
-     * @return array<string, array{Type|null, string[]}>
+     * @return array<string, array{AggregatedType, Type[]}>
      */
-    public static function provideSplitTypeData(): array
+    public static function provideGetTypesByAggregatedTypeData(): array
     {
         return [
-            'without type' => [
-                null,
-                [],
-            ],
-            'string' => [
-                new String_(),
-                ['string'],
-            ],
-            'integer' => [
-                new Integer(),
-                ['int'],
+            'compound' => [
+                new Compound([new String_(), new Integer(), new Float_()]),
+                [new String_(), new Integer(), new Float_()],
             ],
             'intersection' => [
-                new Intersection([new Object_(new Fqsen('\Exception')), new Object_(new Fqsen('\SomeException'))]),
-                ['\Exception&\SomeException'],
-            ],
-            'compound' => [
-                new Compound([new Object_(new Fqsen('\Exception')), new Object_(new Fqsen('\SomeException'))]),
-                ['\Exception', '\SomeException'],
-            ],
-            'array key' => [
-                new ArrayKey(),
-                ['array-key'],
+                new Intersection([new Object_(new Fqsen('\\A')), new Object_(new Fqsen('\\B'))]),
+                [new Object_(new Fqsen('\\A')), new Object_(new Fqsen('\\B'))],
             ],
         ];
     }
 
     /**
-     * @dataProvider provideGetTypesByGenericTypeNodeData
+     * @dataProvider provideGetPossibleTypesByConditionalTypeData
      *
-     * @param string[] $expectedResult
+     * @param ConditionalForParameter|Conditional $type
+     * @param Type[] $expectedResult
      */
-    public function testGetTypesByGenericTypeNode(string $type, array $expectedResult): void
+    public function testGetPossibleTypesByConditionalType(Type $type, array $expectedResult): void
     {
-        $typeNode = $this->phpDocParser->parseType($type);
-        $result = TypeHelper::getTypesByGenericTypeNode($typeNode);
-        $this->assertSame($expectedResult, $result);
+        $result = TypeHelper::getPossibleTypesByConditionalType($type);
+        $this->assertEquals($expectedResult, $result);
     }
 
     /**
-     * @return array<string, array{string, string[]}
+     * @return array<string, array{ConditionalForParameter|Conditional, string[]}>
      */
-    public static function provideGetTypesByGenericTypeNodeData(): array
-    {
-        return [
-            'generic array' => [
-                'array<string, mixed>',
-                ['string', 'mixed'],
-            ],
-            'generic class' => [
-                'Action<Controller>',
-                ['Controller'],
-            ],
-            'nested generics' => [
-                'static<array<string, mixed>>',
-                ['array<string, mixed>'],
-            ],
-            'multiple nested generics' => [
-                'static<array<string, mixed>, Action<Controller>>',
-                ['array<string, mixed>', 'Action<Controller>'],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetPossibleTypesByConditionalTypeNodeData
-     *
-     * @param string[] $expectedResult
-     */
-    public function testGetPossibleTypesByConditionalType(string $type, array $expectedResult): void
-    {
-        $typeNode = $this->phpDocParser->parseType($type);
-        $result = TypeHelper::getPossibleTypesByConditionalTypeNode($typeNode);
-        $this->assertSame($expectedResult, $result);
-    }
-
-    /**
-     * @return array<string, array{string, string[]}>
-     */
-    public static function provideGetPossibleTypesByConditionalTypeNodeData(): array
+    public static function provideGetPossibleTypesByConditionalTypeData(): array
     {
         return [
             'basic' => [
-                '($first is true ? string : string[])',
-                ['string', 'string[]'],
+                new ConditionalForParameter(
+                    false,
+                    'first',
+                    new True_(),
+                    new String_(),
+                    new Array_(new String_()),
+                ),
+                [new String_(), new Array_(new String_())],
             ],
-            'with union types' => [
-                '($condition is true ? string|int : string)',
-                ['string', 'int'],
+            'with compound' => [
+                new ConditionalForParameter(
+                    false,
+                    'first',
+                    new True_(),
+                    new Compound([new String_(), new Integer()]),
+                    new String_(),
+                ),
+                [new String_(), new Integer()],
             ],
             'nested' => [
-                '($value is true ? (T is array ? static<T> : static<array<string, mixed>>) : static<T>)',
-                ['static<T>', 'static<array<string, mixed>>'],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetTypesByArrayTypeNodeData
-     *
-     * @param string[] $expectedResult
-     */
-    public function testGetTypesByArrayTypeNode(string $type, array $expectedResult): void
-    {
-        $typeNode = $this->phpDocParser->parseType($type);
-        $result = TypeHelper::getTypesByArrayTypeNode($typeNode);
-        $this->assertSame($expectedResult, $result);
-    }
-
-    /**
-     * @return array<string, array{string, string[]}>
-     */
-    public static function provideGetTypesByArrayTypeNodeData(): array
-    {
-        return [
-            'basic' => [
-                'string[]',
-                ['string'],
-            ],
-            'generic array' => [
-                'array<string, mixed>[]',
-                ['array<string, mixed>'],
-            ],
-            'with parentheses' => [
-                '(string|int|float)[]',
-                ['string', 'int', 'float'],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider provideGetTypesByIntersectionTypeNodeData
-     *
-     * @param string[] $expectedResult
-     */
-    public function testGetTypesByIntersectionTypeNode(string $type, array $expectedResult): void
-    {
-        $typeNode = $this->phpDocParser->parseType($type);
-        $result = TypeHelper::getTypesByIntersectionTypeNode($typeNode);
-        $this->assertSame($expectedResult, $result);
-    }
-
-    /**
-     * @return array<string, array{string, string[]}>
-     */
-    public static function provideGetTypesByIntersectionTypeNodeData(): array
-    {
-        return [
-            'basic' => [
-                'SomeClass&AnotherClass',
-                ['SomeClass', 'AnotherClass'],
-            ],
-            'with generics' => [
-                'SomeClass&AnotherClass<GenericClass>',
-                ['SomeClass', 'AnotherClass<GenericClass>'],
+                new ConditionalForParameter(
+                    false,
+                    'value',
+                    new True_(),
+                    new Conditional(
+                        false,
+                        new Object_(new Fqsen('\\T')),
+                        new Array_(),
+                        new Static_(new Object_(new Fqsen('\\T'))),
+                        new Static_(new Array_(new Mixed_(), new String_())),
+                    ),
+                    new Static_(new Object_(new Fqsen('\\T'))),
+                ),
+                [
+                    new Static_(new Object_(new Fqsen('\\T'))),
+                    new Static_(new Array_(new Mixed_(), new String_())),
+                ],
             ],
         ];
     }

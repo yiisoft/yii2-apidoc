@@ -330,7 +330,7 @@ class Context extends Component
                     continue;
                 }
                 // set all properties that are empty.
-                foreach (['shortDescription', 'return', 'returnTypes', 'exceptions', 'since'] as $property) {
+                foreach (['shortDescription', 'return', 'returnType', 'exceptions', 'since'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $m->getPackageName() !== $inheritedMethod->getPackageName()) {
@@ -358,11 +358,8 @@ class Context extends Component
                     if (empty($param->description) || trim($param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
-                    if (empty($param->type) || trim($param->type) === '') {
+                    if (empty($param->type)) {
                         $param->type = $inheritedMethod->params[$i]->type;
-                    }
-                    if (empty($param->types)) {
-                        $param->types = $inheritedMethod->params[$i]->types;
                     }
                 }
                 $m->removeTag('inheritdoc');
@@ -480,7 +477,7 @@ class Context extends Component
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
                         'isStatic' => false,
-                        'types' => $method->returnTypes,
+                        'type' => $method->returnType,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
                         'since' => $method->since,
@@ -513,7 +510,7 @@ class Context extends Component
                         'sourceFile' => $class->sourceFile,
                         'visibility' => 'public',
                         'isStatic' => false,
-                        'types' => $param->types,
+                        'type' => $param->type,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,
                         'since' => $method->since,

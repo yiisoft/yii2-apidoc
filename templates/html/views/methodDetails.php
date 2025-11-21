@@ -1,15 +1,18 @@
 <?php
 
+use Highlight\Highlighter;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\TraitDoc;
+use yii\apidoc\templates\html\ApiRenderer;
 use yii\helpers\ArrayHelper;
+use yii\web\View;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc|TraitDoc */
-/* @var $highlighter \Highlight\Highlighter */
+/** @var View&object{context: ApiRenderer} $this */
+/** @var ClassDoc|TraitDoc $type */
+/** @var Highlighter $highlighter */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var ApiRenderer $renderer */
 $renderer = $this->context;
 
 $methods = $type->methods;
@@ -92,7 +95,7 @@ ArrayHelper::multisort($methods, 'name');
                     <?php foreach ($method->params as $param) { ?>
                         <tr>
                             <td class="param-name-col"><?= ApiMarkdown::highlight($param->name, 'php') ?></td>
-                            <td class="param-type-col"><?= $renderer->createTypeLink($param->types, $method) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($param->type, $method) ?></td>
                             <td class="param-desc-col">
                                <?= ApiMarkdown::process($param->description, $method->definedBy) ?>
                             </td>
@@ -102,19 +105,19 @@ ArrayHelper::multisort($methods, 'name');
                     <?php if (!empty($method->return)) { ?>
                         <tr>
                             <th class="param-name-col">return</th>
-                            <td class="param-type-col"><?= $renderer->createMethodReturnTypeLink($method, $type) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($method->returnType, $method) ?></td>
                             <td class="param-desc-col">
                                 <?= ApiMarkdown::process($method->return, $method->definedBy) ?>
                             </td>
                         </tr>
                     <?php } ?>
 
-                    <?php foreach ($method->exceptions as $exception => $description) { ?>
+                    <?php foreach ($method->exceptions as $exception) { ?>
                         <tr>
                             <th class="param-name-col">throws</th>
-                            <td class="param-type-col"><?= $renderer->createTypeLink($exception, $method) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($exception->getType(), $method) ?></td>
                             <td class="param-desc-col">
-                                <?= ApiMarkdown::process($description, $method->definedBy) ?>
+                                <?= ApiMarkdown::process((string) $exception->getDescription(), $method->definedBy) ?>
                             </td>
                         </tr>
                     <?php } ?>

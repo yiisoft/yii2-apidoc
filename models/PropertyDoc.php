@@ -9,7 +9,6 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
-use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -26,9 +25,9 @@ class PropertyDoc extends BaseDoc
     public $visibility;
     public $isStatic;
     /**
-     * @var string[]|null
+     * @var Type|null
      */
-    public $types;
+    public $type;
     /**
      * @var string|null
      */
@@ -83,7 +82,7 @@ class PropertyDoc extends BaseDoc
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
-                $this->types = TypeHelper::splitType($tag->getType());
+                $this->type = $tag->getType();
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -99,8 +98,8 @@ class PropertyDoc extends BaseDoc
             ];
         }
 
-        if (!$hasInheritdoc && $this->types === null) {
-            $this->types = [(string) $reflector->getType()];
+        if (!$hasInheritdoc && $this->type === null) {
+            $this->type = $reflector->getType();
         }
     }
 }

@@ -57,4 +57,29 @@ class Cat extends Animal
     {
         return [];
     }
+
+    /**
+     * @return class-string
+     */
+    public function getClassStringWithoutGenerics(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return interface-string
+     */
+    public function getInterfaceStringWithoutGenerics(): string
+    {
+        return '';
+    }
+
+    /**
+     * @param class-string<Cat>
+     * @return interface-string<Cat>
+     */
+    public function getInterfaceStringByClassString(string $string): string
+    {
+        return '';
+    }
 }

@@ -14,8 +14,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
-use phpDocumentor\Reflection\Types\Mixed_;
-use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -214,7 +212,7 @@ class TypeDoc extends BaseDoc
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'types' => TypeHelper::splitType($tag->getType()),
+                    'type' => $tag->getType(),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -231,7 +229,7 @@ class TypeDoc extends BaseDoc
                     $params[] = new ParamDoc($tag, null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
-                        'types' => TypeHelper::splitType($argumentType),
+                        'type' => $argumentType,
                     ]);
                 }
 
@@ -248,7 +246,7 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnTypes' => TypeHelper::splitType($tag->getReturnType()),
+                    'returnType' => $tag->getReturnType(),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
