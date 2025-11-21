@@ -8,6 +8,7 @@
 
 namespace yii\apidoc\renderers;
 
+use phpDocumentor\Reflection\PseudoTypes\ArrayShape;
 use phpDocumentor\Reflection\PseudoTypes\Conditional;
 use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\PseudoTypes\IntegerRange;
@@ -16,7 +17,9 @@ use phpDocumentor\Reflection\PseudoTypes\IntMaskOf;
 use phpDocumentor\Reflection\PseudoTypes\KeyOf;
 use phpDocumentor\Reflection\PseudoTypes\List_;
 use phpDocumentor\Reflection\PseudoTypes\NonEmptyList;
+use phpDocumentor\Reflection\PseudoTypes\ObjectShape;
 use phpDocumentor\Reflection\PseudoTypes\OffsetAccess;
+use phpDocumentor\Reflection\PseudoTypes\ShapeItem;
 use phpDocumentor\Reflection\PseudoTypes\ValueOf;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\AbstractList;
@@ -246,6 +249,16 @@ abstract class BaseRenderer extends Component
                         $links[] = $this->createTypeLink($type->getValueType(), $context, $title, $options) . '[]';
                     }
 
+                    continue;
+                } elseif ($type instanceof ArrayShape) {
+                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
+                    $mainTypeLink = $this->generateLink('array', self::PHPSTAN_TYPE_BASE_URL . 'array-shapes', $options);
+                    $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
+                    continue;
+                } elseif ($type instanceof ObjectShape) {
+                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
+                    $mainTypeLink = $this->generateLink('object', self::PHPSTAN_TYPE_BASE_URL . 'object-shapes', $options);
+                    $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
                     continue;
                 } elseif (($link = $this->createLinkByTypeWithGenerics($type, $context, $title, $options)) !== null) {
                     $links[] = $link;
@@ -531,6 +544,31 @@ abstract class BaseRenderer extends Component
         }
 
         return $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($fqsen, '\\'));
+    }
+
+    /**
+     * @param ShapeItem[] $items
+     * @return string[]
+     */
+    private function createLinksByShapeItems(array $items, ?BaseDoc $context, ?string $title, array $options): array
+    {
+        $links = [];
+
+        foreach ($items as $item) {
+            $itemKey = $item->getKey();
+            if ($itemKey !== null && $itemKey !== '') {
+                $links[] = sprintf(
+                    '%s%s: %s',
+                    $itemKey,
+                    $item->isOptional() ? '?' : '',
+                    $this->createTypeLink($item->getValue(), $context, $title, $options)
+                );
+            } else {
+                $links[] = $this->createTypeLink($item->getValue(), $context, $title, $options);
+            }
+        }
+
+        return $links;
     }
 
     /**
