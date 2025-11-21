@@ -83,7 +83,7 @@ class PropertyDoc extends BaseDoc
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
-                $this->types = TypeHelper::getOriginalTypesFromType($tag->getType());
+                $this->types = TypeHelper::splitType($tag->getType());
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             } elseif ($this->isInheritdocTag($tag)) {

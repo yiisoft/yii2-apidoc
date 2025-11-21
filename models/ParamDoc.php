@@ -55,7 +55,7 @@ class ParamDoc extends BaseObject
             $this->name = $reflector->getName();
 
             if ($this->types === null) {
-                $this->types = TypeHelper::getOriginalTypesFromType($reflector->getType());
+                $this->types = TypeHelper::splitType($reflector->getType());
             }
 
             if (PHP_VERSION_ID >= 80100) {

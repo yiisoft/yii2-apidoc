@@ -214,7 +214,7 @@ class TypeDoc extends BaseDoc
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'types' => TypeHelper::getOriginalTypesFromType($tag->getType()),
+                    'types' => TypeHelper::splitType($tag->getType()),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -231,7 +231,7 @@ class TypeDoc extends BaseDoc
                     $params[] = new ParamDoc($tag, null, $context, [
                         'sourceFile' => $this->sourceFile,
                         'name' => $parameter->getName(),
-                        'types' => TypeHelper::getOriginalTypesFromType($argumentType),
+                        'types' => TypeHelper::splitType($argumentType),
                     ]);
                 }
 
@@ -248,7 +248,7 @@ class TypeDoc extends BaseDoc
                     'params' => $params,
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnTypes' => TypeHelper::getOriginalTypesFromType($tag->getReturnType()),
+                    'returnTypes' => TypeHelper::splitType($tag->getReturnType()),
                 ]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;

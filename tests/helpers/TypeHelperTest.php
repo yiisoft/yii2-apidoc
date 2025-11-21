@@ -14,7 +14,6 @@ use phpDocumentor\Reflection\Types\ArrayKey;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Intersection;
-use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\String_;
 use yii\apidoc\helpers\PhpDocParser;
@@ -33,20 +32,20 @@ class TypeHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetOriginalTypesFromTypeData
+     * @dataProvider provideSplitTypeData
      *
      * @param string[] $expectedResult
      */
-    public function testGetOriginalTypesFromType(?Type $type, array $expectedResult): void
+    public function testSplitType(?Type $type, array $expectedResult): void
     {
-        $result = TypeHelper::getOriginalTypesFromType($type);
+        $result = TypeHelper::splitType($type);
         $this->assertSame($expectedResult, $result);
     }
 
     /**
      * @return array<string, array{Type|null, string[]}>
      */
-    public static function provideGetOriginalTypesFromTypeData(): array
+    public static function provideSplitTypeData(): array
     {
         return [
             'without type' => [
@@ -71,19 +70,9 @@ class TypeHelperTest extends TestCase
             ],
             'array key' => [
                 new ArrayKey(),
-                ['string', 'int'],
+                ['array-key'],
             ],
         ];
-    }
-
-    public function testGetOriginalTypesFromTypeWithMixed(): void
-    {
-        $mixedWithoutTypeNodeResult = TypeHelper::getOriginalTypesFromType(new Mixed_());
-        $this->assertSame(['mixed'], $mixedWithoutTypeNodeResult);
-
-        $typeNode = $this->phpDocParser->parseType('($condition is true ? string|int : string)');
-        $mixedWithTypeNodeResult = TypeHelper::getOriginalTypesFromType(new Mixed_($typeNode));
-        $this->assertSame(['($condition is true ? (string | int) : string)'], $mixedWithTypeNodeResult);
     }
 
     /**

@@ -9,9 +9,7 @@
 namespace yii\apidoc\helpers;
 
 use phpDocumentor\Reflection\Type;
-use phpDocumentor\Reflection\Types\AggregatedType;
-use phpDocumentor\Reflection\Types\Intersection;
-use phpDocumentor\Reflection\Types\Mixed_;
+use phpDocumentor\Reflection\Types\Compound;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
@@ -26,22 +24,6 @@ use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
  */
 final class TypeHelper
 {
-    /**
-     * @return string[]
-     */
-    public static function getOriginalTypesFromType(?Type $type): array
-    {
-        if ($type === null) {
-            return [];
-        }
-
-        // TODO: Wait https://github.com/phpDocumentor/TypeResolver/pull/225
-        if ($type instanceof Mixed_ && $type->typeNode !== null) {
-            return [(string) $type->typeNode];
-        }
-
-        return self::splitType($type);
-    }
 
     /**
      * @return string[]
@@ -91,9 +73,13 @@ final class TypeHelper
     /**
      * @return string[]
      */
-    private static function splitType(Type $type): array
+    public static function splitType(?Type $type): array
     {
-        if (!$type instanceof AggregatedType || $type instanceof Intersection) {
+        if ($type === null) {
+            return [];
+        }
+
+        if (!$type instanceof Compound) {
             return [(string) $type];
         }
 

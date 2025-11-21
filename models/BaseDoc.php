@@ -11,13 +11,10 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
-use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Php\Class_;
-use Throwable;
-use yii\apidoc\helpers\PhpDocTagFactory;
 use yii\apidoc\helpers\PhpDocParser;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
@@ -169,7 +166,6 @@ class BaseDoc extends BaseObject
         }
 
         $phpDocParser = new PhpDocParser();
-        $phpDocTagFactory = new PhpDocTagFactory();
         $fqsenResolver = new FqsenResolver();
 
         // base properties
@@ -271,17 +267,6 @@ class BaseDoc extends BaseObject
                     );
                     $this->psalmTypeImports[$psalmTypeImport->typeName] = $psalmTypeImport;
                     unset($this->tags[$i]);
-                }
-            } elseif ($tag instanceof InvalidTag) {
-                try {
-                    $realTag = $phpDocParser->parseTag($tag->render());
-                    $this->tags[$i] = $phpDocTagFactory->createTagWithTypesByTagNode($realTag);
-                } catch (Throwable $e) {
-                    $context->errors[] = [
-                        'line' => $e->getLine(),
-                        'file' => $e->getFile(),
-                        'message' => $e->getMessage(),
-                    ];
                 }
             }
         }

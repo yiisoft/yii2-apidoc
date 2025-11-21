@@ -71,7 +71,7 @@ class FunctionDoc extends BaseDoc
 
         foreach ($this->tags as $i => $tag) {
             if ($tag instanceof Throws) {
-                $this->exceptions[implode(TypeHelper::getOriginalTypesFromType($tag->getType()))] = $tag->getDescription();
+                $this->exceptions[implode(TypeHelper::splitType($tag->getType()))] = $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Param) {
                 $paramName = '$' . $tag->getVariableName();
@@ -85,10 +85,10 @@ class FunctionDoc extends BaseDoc
                 }
 
                 $this->params[$paramName]->description = StringHelper::mb_ucfirst($tag->getDescription());
-                $this->params[$paramName]->types = TypeHelper::getOriginalTypesFromType($tag->getType());
+                $this->params[$paramName]->types = TypeHelper::splitType($tag->getType());
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Return_) {
-                $this->returnTypes = TypeHelper::getOriginalTypesFromType($tag->getType());
+                $this->returnTypes = TypeHelper::splitType($tag->getType());
                 $this->return = StringHelper::mb_ucfirst($tag->getDescription());
                 unset($this->tags[$i]);
             } elseif ($this->isInheritdocTag($tag)) {

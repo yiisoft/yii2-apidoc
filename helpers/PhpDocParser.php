@@ -8,7 +8,6 @@
 
 namespace yii\apidoc\helpers;
 
-use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
@@ -48,13 +47,6 @@ final class PhpDocParser
         $tokens = $this->getTokens($type);
 
         return $this->typeParser->parse($tokens);
-    }
-
-    public function parseTag(string $tag): PhpDocTagNode
-    {
-        $tokens = $this->getTokens($tag);
-
-        return $this->phpStanPhpDocParser->parseTag($tokens);
     }
 
     private function getTokens(string $string): TokenIterator
