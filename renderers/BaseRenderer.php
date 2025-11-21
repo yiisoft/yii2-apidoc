@@ -145,7 +145,7 @@ abstract class BaseRenderer extends Component
     ];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     private const PHP_TYPE_ALIASES = [
         'true' => 'boolean',
@@ -155,7 +155,7 @@ abstract class BaseRenderer extends Component
     ];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     private const PHP_TYPE_DISPLAY_ALIASES = [
         'bool' => 'boolean',
@@ -215,11 +215,15 @@ abstract class BaseRenderer extends Component
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
                     continue;
-                } elseif ($type instanceof ConditionalForParameter || $type instanceof Conditional) {
+                }
+
+                if ($type instanceof ConditionalForParameter || $type instanceof Conditional) {
                     $possibleTypes = TypeHelper::getPossibleTypesByConditionalType($type);
                     $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
                     continue;
-                } elseif ($type instanceof Intersection) {
+                }
+
+                if ($type instanceof Intersection) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $innerTypesLinks = array_map(
                         fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options),
@@ -227,17 +231,22 @@ abstract class BaseRenderer extends Component
                     );
                     $links[] = implode('&amp;', $innerTypesLinks);
                     continue;
-                } elseif ($type instanceof OffsetAccess) {
+                }
+
+                if ($type instanceof OffsetAccess) {
                     $typeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
                     $links[] = $typeLink . '[' . $type->getOffset() . ']';
                     continue;
-                } elseif ($type instanceof Array_ && substr((string) $type, -3, 3) === ')[]') {
+                }
+
+                if ($type instanceof Array_ && substr((string) $type, -3, 3) === ')[]') {
                     $arrayTypesLinks = $this->createTypeLink($type->getValueType(), $context, $title, $options);
                     $links[] = "({$arrayTypesLinks})[]";
                     continue;
-                } elseif ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
-                    $templateType = $this->getTemplateType($type->getValueType(), $context);
+                }
 
+                if ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
+                    $templateType = $this->getTemplateType($type->getValueType(), $context);
                     if ($templateType !== null) {
                         $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
                         if ($templateType instanceof Compound) {
@@ -250,38 +259,56 @@ abstract class BaseRenderer extends Component
                     }
 
                     continue;
-                } elseif ($type instanceof ArrayShape) {
+                }
+
+                if ($type instanceof ArrayShape) {
                     $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
                     $mainTypeLink = $this->generateLink('array', self::PHPSTAN_TYPE_BASE_URL . 'array-shapes', $options);
                     $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
                     continue;
-                } elseif ($type instanceof ObjectShape) {
+                }
+
+                if ($type instanceof ObjectShape) {
                     $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
                     $mainTypeLink = $this->generateLink('object', self::PHPSTAN_TYPE_BASE_URL . 'object-shapes', $options);
                     $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
                     continue;
-                } elseif (($link = $this->createLinkByTypeWithGenerics($type, $context, $title, $options)) !== null) {
+                }
+
+                if (($link = $this->createLinkByTypeWithGenerics($type, $context, $title, $options)) !== null) {
                     $links[] = $link;
                     continue;
-                } elseif ($type instanceof Object_ && $type->getFqsen() !== null) {
+                }
+
+                if ($type instanceof Object_ && $type->getFqsen() !== null) {
                     $fqsen = (string) $type->getFqsen();
 
                     if (($typeDoc = $this->getTypeDocByFqsen($fqsen, $context)) !== null) {
                         $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                         continue;
-                    } elseif (($templateType = $this->getTemplateType($fqsen, $context)) !== null) {
+                    }
+
+                    if (($templateType = $this->getTemplateType($fqsen, $context)) !== null) {
                         $links[] = $this->createTypeLink($templateType, $context, $title, $options);
                         continue;
-                    } elseif (($phpStanType = $this->getPhpStanType($fqsen, $context)) !== null) {
+                    }
+
+                    if (($phpStanType = $this->getPhpStanType($fqsen, $context)) !== null) {
                         $links[] = $this->createSubjectLink($phpStanType);
                         continue;
-                    } elseif (($psalmType = $this->getPsalmType($fqsen, $context)) !== null) {
+                    }
+
+                    if (($psalmType = $this->getPsalmType($fqsen, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmType);
                         continue;
-                    } elseif (($phpStanTypeImport = $this->getPhpStanTypeImport($fqsen, $context)) !== null) {
+                    }
+
+                    if (($phpStanTypeImport = $this->getPhpStanTypeImport($fqsen, $context)) !== null) {
                         $links[] = $this->createSubjectLink($phpStanTypeImport);
                         continue;
-                    } elseif (($psalmTypeImport = $this->getPsalmTypeImport($fqsen, $context)) !== null) {
+                    }
+
+                    if (($psalmTypeImport = $this->getPsalmTypeImport($fqsen, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmTypeImport);
                         continue;
                     }
@@ -585,58 +612,72 @@ abstract class BaseRenderer extends Component
          * @param Type[] $genericTypes
          */
         $generateLink = function (Type $mainType, array $genericTypes) use ($context, $title, $options): string {
-            $typesLinks = array_map(
-                fn(Type $genericType) => $this->createTypeLink($genericType, $context, $title, $options),
-                $genericTypes
-            );
-
+            $genericTypesLinks = $this->createTypeLinksByTypes($genericTypes, $context, $title, $options);
             $mainTypeLinkOptions = array_merge($options, ['forcePhpStanLink' => true]);
             $mainTypeLink = $this->createTypeLink($mainType, $context, $title, $mainTypeLinkOptions);
-
-            return  "{$mainTypeLink}&lt;" . implode(', ', $typesLinks) . '&gt;';
+            return  "{$mainTypeLink}&lt;" . implode(', ', $genericTypesLinks) . '&gt;';
         };
+
+        if ($type instanceof List_ && substr((string) $type, -1, 1) === '>') {
+            return $generateLink(new List_(), [$type->getValueType()]);
+        }
+
+        if ($type instanceof NonEmptyList && substr((string) $type, -1, 1) === '>') {
+            return $generateLink(new NonEmptyList(), [$type->getValueType()]);
+        }
+
+        if ($type instanceof Array_ && substr((string) $type, -1, 1) === '>') {
+            $genericTypes = $this->getGenericTypesByListType($type);
+            return $generateLink(new Array_(), $genericTypes);
+        }
+
+        if ($type instanceof ClassString && $type->getFqsen() !== null) {
+            return $generateLink(new ClassString(), [new Object_($type->getFqsen())]);
+        }
+
+        if ($type instanceof InterfaceString && $type->getFqsen() !== null) {
+            return $generateLink(new InterfaceString(), [new Object_($type->getFqsen())]);
+        }
 
         if ($type instanceof Static_ && $type->getGenericTypes()) {
             return $generateLink(new Static_(), $type->getGenericTypes());
-        } elseif ($type instanceof Self_ && $type->getGenericTypes()) {
+        }
+
+        if ($type instanceof Self_ && $type->getGenericTypes()) {
             return $generateLink(new Self_(), $type->getGenericTypes());
-        } elseif ($type instanceof List_ && substr((string) $type, -1, 1) === '>') {
-            return $generateLink(new List_(), [$type->getValueType()]);
-        } elseif ($type instanceof NonEmptyList && substr((string) $type, -1, 1) === '>') {
-            return $generateLink(new NonEmptyList(), [$type->getValueType()]);
-        } elseif ($type instanceof Array_ && substr((string) $type, -1, 1) === '>') {
-            $genericTypes = $this->getGenericTypesByListType($type);
-            return $generateLink(new Array_(), $genericTypes);
-        } elseif ($type instanceof ClassString && $type->getFqsen() !== null) {
-            return $generateLink(new ClassString(), [new Object_($type->getFqsen())]);
-        } elseif ($type instanceof InterfaceString && $type->getFqsen() !== null) {
-            return $generateLink(new InterfaceString(), [new Object_($type->getFqsen())]);
-        } elseif ($type instanceof IntegerRange) {
-            return $this->createPhpStanTypeLink('int', $options)
-                . '&lt;'
-                . $type->getMinValue()
-                . ', '
-                . $type->getMaxValue()
-                . '&gt;';
-        } elseif ($type instanceof Iterable_ && substr((string) $type, -1, 1) === '>') {
+        }
+
+        if ($type instanceof IntegerRange) {
+            $mainTypeLink = $this->createPhpStanTypeLink('int', $options);
+            return $mainTypeLink . '&lt;' . $type->getMinValue() . ', ' . $type->getMaxValue() . '&gt;';
+        }
+
+        if ($type instanceof Iterable_ && substr((string) $type, -1, 1) === '>') {
             $genericTypes = $this->getGenericTypesByListType($type);
             return $generateLink(new Iterable_(), $genericTypes);
-        } elseif ($type instanceof KeyOf) {
+        }
+
+        if ($type instanceof KeyOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
             return $this->createPhpStanTypeLink('key-of', $options) . "&lt;{$genericTypeLink}&gt;";
-        } elseif ($type instanceof ValueOf) {
+        }
+
+        if ($type instanceof ValueOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
             return $this->createPhpStanTypeLink('value-of', $options) . "&lt;{$genericTypeLink}&gt;";
-        } elseif ($type instanceof IntMask) {
-            $genericTypesLinks = array_map(
-                fn(Type $genericType) => $this->createTypeLink($genericType, $context, $title, $options),
-                $type->getTypes()
-            );
+        }
+
+        if ($type instanceof IntMask) {
+            $genericTypesLinks = $this->createTypeLinksByTypes($type->getTypes(), $context, $title, $options);
             return $this->createPhpStanTypeLink('int-mask', $options) . '&lt;' . implode(', ', $genericTypesLinks) . '&gt;';
-        } elseif ($type instanceof IntMaskOf) {
+        }
+
+        if ($type instanceof IntMaskOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
             return $this->createPhpStanTypeLink('int-mask-of', $options) . "&lt;{$genericTypeLink}&gt;";
-        } elseif ($type instanceof Collection) {
+        }
+
+        if ($type instanceof Collection) {
             $genericTypes = $this->getGenericTypesByListType($type);
             return $generateLink(new Object_($type->getFqsen()), $genericTypes);
         }
@@ -644,25 +685,37 @@ abstract class BaseRenderer extends Component
         return null;
     }
 
+    private function createTypeLinksByTypes(
+        array $types,
+        ?BaseDoc $context,
+        ?string $title,
+        array $options
+    ): array {
+        return array_map(
+            fn(Type $type) => $this->createTypeLink($type, $context, $title, $options),
+            $types
+        );
+    }
+
     private function createPhpTypeLink(string $type, string $linkText, array $options): ?string
     {
-        if (in_array($type, self::PHP_TYPES)) {
-            if (isset(self::PHP_TYPE_DISPLAY_ALIASES[$type])) {
-                $linkText = self::PHP_TYPE_DISPLAY_ALIASES[$type];
-            }
-
-            if (isset(self::PHP_TYPE_ALIASES[$type])) {
-                $type = self::PHP_TYPE_ALIASES[$type];
-            }
-
-            return $this->generateLink(
-                $linkText,
-                self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
-                $options
-            );
+        if (!in_array($type, self::PHP_TYPES)) {
+            return null;
         }
 
-        return null;
+        if (isset(self::PHP_TYPE_DISPLAY_ALIASES[$type])) {
+            $linkText = self::PHP_TYPE_DISPLAY_ALIASES[$type];
+        }
+
+        if (isset(self::PHP_TYPE_ALIASES[$type])) {
+            $type = self::PHP_TYPE_ALIASES[$type];
+        }
+
+        return $this->generateLink(
+            $linkText,
+            self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
+            $options
+        );
     }
 
     private function createPhpStanTypeLink(string $type, array $options): ?string
