@@ -259,7 +259,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<span class="signature-type">' . $this->createTypeLink($property->type, $context) . '</span>'
+            . '<span class="signature-type">' . $this->createTypeLink($property->type, $property) . '</span>'
             . ' ' . $this->createSubjectLink($property, $property->name) . ' '
             . ApiMarkdown::highlight('= ' . $this->renderDefaultValue($property->defaultValue), 'php');
     }

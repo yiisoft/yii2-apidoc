@@ -39,7 +39,13 @@ class BaseDoc extends BaseObject
      * @var \phpDocumentor\Reflection\Types\Context
      */
     public $phpDocContext;
+    /**
+     * @var string|null
+     */
     public $name;
+    /**
+     * @var string|null
+     */
     public $fullName;
     public $sourceFile;
     public $startLine;

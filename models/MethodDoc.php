@@ -22,7 +22,9 @@ class MethodDoc extends FunctionDoc
     public $isFinal;
     public $isStatic;
     public $visibility;
-    // will be set by creating class
+    /**
+     * @var string|null
+     */
     public $definedBy;
     /**
      * @var string

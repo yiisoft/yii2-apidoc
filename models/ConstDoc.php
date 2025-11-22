@@ -19,6 +19,9 @@ use phpDocumentor\Reflection\Php\Constant;
  */
 class ConstDoc extends BaseDoc
 {
+    /**
+     * @var string|null
+     */
     public $definedBy;
     /**
      * @var string|null
