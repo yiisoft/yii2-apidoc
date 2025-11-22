@@ -493,17 +493,13 @@ abstract class BaseRenderer extends Component
             return $link ?? $type;
         }
 
-        if ($type instanceof BaseDoc) {
-            $linkText = $type->name;
-            if ($title !== null) {
-                $linkText = $title;
-                $title = null;
-            }
-
-            return $this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
+        $linkText = $type->name;
+        if ($title !== null) {
+            $linkText = $title;
+            $title = null;
         }
 
-        return null;
+        return $this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
     }
 
     private function getPhpStanType(string $fqsen, ?BaseDoc $context): ?PseudoTypeDoc
