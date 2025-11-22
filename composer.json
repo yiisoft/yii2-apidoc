@@ -46,7 +46,14 @@
         "ext-intl": "for generating slugs in non-English guides"
     },
     "autoload": {
-        "psr-4": { "yii\\apidoc\\": "" }
+        "psr-4": {
+            "yii\\apidoc\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "yiiunit\\apidoc\\": "tests/"
+        }
     },
     "bin": ["apidoc"],
     "config": {
