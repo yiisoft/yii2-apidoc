@@ -33,6 +33,7 @@ use phpDocumentor\Reflection\Types\Iterable_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
+use phpDocumentor\Reflection\Types\This;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
 use yii\apidoc\helpers\TypeHelper;
@@ -192,8 +193,13 @@ abstract class BaseRenderer extends Component
      * @param array $options additional HTML attributes for the link.
      * @return string
      */
-    public function createTypeLink($types, $context = null, $title = null, $options = [])
-    {
+    public function createTypeLink(
+        $types,
+        ?BaseDoc $context = null,
+        ?string $title = null,
+        array $options = [],
+        ?TypeDoc $currentTypeDoc = null
+    ) {
         if (!is_array($types)) {
             $types = [$types];
         } elseif (count($types) > 1) {
@@ -206,7 +212,7 @@ abstract class BaseRenderer extends Component
                 if ($type !== '') {
                     $typeDoc = $this->getTypeDocByFqsen($type, $context);
                     if ($typeDoc !== null) {
-                        $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
+                        $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
                         continue;
                     }
                 }
@@ -272,6 +278,16 @@ abstract class BaseRenderer extends Component
                     $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
                     $mainTypeLink = $this->generateLink('object', self::PHPSTAN_TYPE_BASE_URL . 'object-shapes', $options);
                     $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
+                    continue;
+                }
+
+                if ($type instanceof This && $currentTypeDoc !== null) {
+                    $links[] = $this->createTypeLink($currentTypeDoc, null, '$this', $options);
+                    continue;
+                }
+
+                if ($type instanceof Static_ && !$type->getGenericTypes() && $currentTypeDoc !== null) {
+                    $links[] = $this->createTypeLink($currentTypeDoc, null, null, $options);
                     continue;
                 }
 

@@ -105,7 +105,7 @@ ArrayHelper::multisort($methods, 'name');
                     <?php if (!empty($method->return)) { ?>
                         <tr>
                             <th class="param-name-col">return</th>
-                            <td class="param-type-col"><?= $renderer->createTypeLink($method->returnType, $method) ?></td>
+                            <td class="param-type-col"><?= $renderer->createTypeLink($method->returnType, $method, null, [], $type) ?></td>
                             <td class="param-desc-col">
                                 <?= ApiMarkdown::process($method->return, $method->definedBy) ?>
                             </td>
