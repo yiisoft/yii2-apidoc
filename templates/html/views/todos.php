@@ -2,7 +2,7 @@
 
 use yii\apidoc\models\BaseDoc;
 
-/* @var $doc BaseDoc */
+/** @var BaseDoc $doc */
 ?>
 
 <?php foreach ($doc->todos as $todo): ?>

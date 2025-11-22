@@ -6,12 +6,14 @@ use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc|InterfaceDoc|TraitDoc */
-/* @var $protected bool */
+/**
+ * @var \yii\web\View $this
+ * @var ClassDoc|InterfaceDoc|TraitDoc $type
+ * @var bool $protected
+ */
 
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var \yii\apidoc\templates\html\ApiRenderer $renderer */
 $renderer = $this->context;
 
 if (

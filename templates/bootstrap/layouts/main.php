@@ -5,8 +5,10 @@ use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $content string */
+/**
+ * @var \yii\web\View $this
+ * @var string $content
+ */
 
 \yii\apidoc\templates\bootstrap\assets\AssetBundle::register($this);
 
