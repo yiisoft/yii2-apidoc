@@ -7,9 +7,11 @@ use yii\apidoc\models\TraitDoc;
 use yii\apidoc\templates\bootstrap\ApiRenderer;
 use yii\web\View;
 
-/* @var ClassDoc[]|InterfaceDoc[]|TraitDoc[] $types */
-/* @var string|null $readme */
-/* @var View $this */
+/**
+ * @var ClassDoc[]|InterfaceDoc[]|TraitDoc[] $types
+ * @var string|null $readme
+ * @var View $this
+ */
 
 /** @var ApiRenderer $renderer */
 $renderer = $this->context;

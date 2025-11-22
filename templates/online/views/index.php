@@ -4,8 +4,10 @@ use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
 
-/* @var $types ClassDoc[]|InterfaceDoc[]|TraitDoc[] */
-/* @var $this yii\web\View */
+/**
+ * @var ClassDoc[]|InterfaceDoc[]|TraitDoc[] $types
+ * @var \yii\web\View $this
+ */
 
 ksort($types);
 ?>

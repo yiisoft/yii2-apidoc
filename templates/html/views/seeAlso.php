@@ -1,7 +1,9 @@
 <?php
 
-/* @var $object yii\apidoc\models\BaseDoc */
-/* @var $this yii\web\View */
+/**
+ * @var \yii\apidoc\models\BaseDoc $object
+ * @var \yii\web\View $this
+ */
 
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\TypeDoc;
@@ -10,7 +12,7 @@ $type = $object instanceof TypeDoc ? $object : $object->definedBy;
 
 $see = [];
 foreach ($object->tags as $tag) {
-    /** @var $tag phpDocumentor\Reflection\DocBlock\Tags\See */
+    /** @var \phpDocumentor\Reflection\DocBlock\Tags\See $tag */
     if (get_class($tag) == 'phpDocumentor\Reflection\DocBlock\Tags\See') {
         $ref = $tag->getReference();
         if (strpos($ref, '://') === false) {
