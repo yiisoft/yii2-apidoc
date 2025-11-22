@@ -210,7 +210,7 @@ abstract class BaseRenderer extends Component
         foreach ($types as $type) {
             if (is_string($type)) {
                 if ($type !== '') {
-                    $typeDoc = $this->getTypeDocByFqsen($type, $context);
+                    $typeDoc = $this->getTypeDocByQualifiedClassName($type, $context);
                     if ($typeDoc !== null) {
                         $links[] = $this->createTypeLink($typeDoc, $context, $title, $options);
                         continue;
@@ -297,9 +297,10 @@ abstract class BaseRenderer extends Component
                 }
 
                 if ($type instanceof Object_ && $type->getFqsen() !== null) {
+                    /** @var class-string */
                     $fqsen = (string) $type->getFqsen();
 
-                    if (($typeDoc = $this->getTypeDocByFqsen($fqsen, $context)) !== null) {
+                    if (($typeDoc = $this->getTypeDocByQualifiedClassName($fqsen, $context)) !== null) {
                         $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                         continue;
                     }
@@ -453,6 +454,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * @param BaseDoc|string $type
+     * @param array{forcePhpStanLink?: bool, ...} $options
      */
     private function createTypeLinkByType($type, ?string $title = null, array $options = []): ?string
     {
@@ -502,6 +504,9 @@ abstract class BaseRenderer extends Component
         return $this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
     }
 
+    /**
+     * @param class-string $fqsen
+     */
     private function getPhpStanType(string $fqsen, ?BaseDoc $context): ?PseudoTypeDoc
     {
         if ($context === null) {
@@ -516,6 +521,9 @@ abstract class BaseRenderer extends Component
         return $phpStanType;
     }
 
+    /**
+     * @param class-string $fqsen
+     */
     private function getPhpStanTypeImport(string $fqsen, ?BaseDoc $context): ?PseudoTypeImportDoc
     {
         if ($context === null) {
@@ -530,6 +538,9 @@ abstract class BaseRenderer extends Component
         return $phpStanTypeImport;
     }
 
+    /**
+     * @param class-string $fqsen
+     */
     private function getPsalmType(string $fqsen, ?BaseDoc $context): ?PseudoTypeDoc
     {
         if ($context === null) {
@@ -544,6 +555,9 @@ abstract class BaseRenderer extends Component
         return $psalmType;
     }
 
+    /**
+     * @param class-string $fqsen
+     */
     private function getPsalmTypeImport(string $fqsen, ?BaseDoc $context): ?PseudoTypeImportDoc
     {
         if ($context === null) {
@@ -558,6 +572,9 @@ abstract class BaseRenderer extends Component
         return $psalmTypeImport;
     }
 
+    /**
+     * @param class-string $fqsen
+     */
     private function getTemplateType(string $fqsen, ?BaseDoc $context): ?Type
     {
         if ($context === null) {
@@ -573,16 +590,17 @@ abstract class BaseRenderer extends Component
     }
 
     /**
+     * @param string $className
      * @return ClassDoc|InterfaceDoc|TraitDoc|null
      */
-    private function getTypeDocByFqsen(string $fqsen, ?BaseDoc $context): ?TypeDoc
+    private function getTypeDocByQualifiedClassName(string $className, ?BaseDoc $context): ?TypeDoc
     {
-        $typeDoc = $this->apiContext->getType(ltrim($fqsen, '\\'));
+        $typeDoc = $this->apiContext->getType(ltrim($className, '\\'));
         if ($typeDoc !== null) {
             return $typeDoc;
         }
 
-        return $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($fqsen, '\\'));
+        return $this->apiContext->getType($this->resolveNamespace($context) . '\\' . ltrim($className, '\\'));
     }
 
     /**
