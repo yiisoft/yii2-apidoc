@@ -17,7 +17,7 @@ use yii\base\BaseObject;
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
  * @immutable
  */
-class PseudoTypeDoc extends BaseObject
+final class PseudoTypeDoc extends BaseObject
 {
     public const TYPE_PHPSTAN = 'phpstan';
     public const TYPE_PSALM = 'psalm';

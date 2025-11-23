@@ -53,14 +53,13 @@ class EventDoc extends ConstDoc
             $this->description = StringHelper::mb_ucfirst($parts[1]);
 
             if (strpos($className, '\\') !== false)  {
-                $type = $className;
+                $this->type = $className;
             } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
-                $type = $docBlock->getContext()->getNamespaceAliases()[$className];
+                $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];
             } else {
-                $type = $docBlock->getContext()->getNamespace() . '\\' . $className;
+                $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->type = $type;
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }
