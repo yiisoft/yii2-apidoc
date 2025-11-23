@@ -42,7 +42,7 @@ ArrayHelper::multisort($events, 'name');
         <?php foreach ($events as $event) { ?>
             <tr id="<?= $event->name ?>" class="<?= $event->definedBy !== $type->name ? 'inherited' : '' ?>">
                 <td><?= $renderer->createSubjectLink($event, null, [], $type) ?></td>
-                <td><?= $renderer->createTypeLink($event->types, $type) ?></td>
+                <td><?= $renderer->createTypeLink($event->type, $type) ?></td>
                 <td>
                     <?= ApiMarkdown::process($event->shortDescription, $event->definedBy, true) ?>
                     <?php if (!empty($event->since)) { ?>

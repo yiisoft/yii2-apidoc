@@ -297,7 +297,7 @@ class Context extends Component
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'types', 'since'] as $property) {
+                foreach (['shortDescription', 'type', 'since'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $p->getPackageName() !== $inheritedProperty->getPackageName()) {

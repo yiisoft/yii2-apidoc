@@ -8,8 +8,10 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\Fqsen;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Types\Object_;
 use yii\helpers\StringHelper;
 
 /**
@@ -21,9 +23,9 @@ use yii\helpers\StringHelper;
 class EventDoc extends ConstDoc
 {
     /**
-     * @var string[]|null
+     * @var string|null
      */
-    public $types;
+    public $type;
 
 
     /**
@@ -58,7 +60,7 @@ class EventDoc extends ConstDoc
                 $type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->types = [$type];
+            $this->type = $type;
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }

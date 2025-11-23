@@ -21,6 +21,11 @@ namespace yiiunit\apidoc\data\api\animal;
 class Cat extends Animal
 {
     /**
+     * @event Some description for event tag.
+     */
+    public const EVENT_BEGIN_PAGE = 'beginPage';
+
+    /**
      * {@inheritdoc}
      */
     public function render()
