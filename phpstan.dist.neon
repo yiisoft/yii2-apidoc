@@ -1,0 +1,40 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - commands
+        - components
+        - helpers
+        - models
+        - renderers
+        - templates
+        - tests
+        - apidoc
+
+    excludePaths:
+        analyse:
+            - tests/data
+
+    bootstrapFiles:
+        - tests/bootstrap.php
+
+    dynamicConstantNames:
+        - YII_DEBUG
+        - YII_ENV
+        - YII_ENV_DEV
+        - YII_ENV_PROD
+        - YII_ENV_TEST
+
+    ignoreErrors:
+        - '#Unsafe usage of new static\(\).#'
+        # TODO: fix this errors
+        - identifier: missingType.return
+        # TODO: fix this errors
+        - identifier: missingType.parameter
+        # TODO: fix this errors
+        - identifier: missingType.property
+        # TODO: fix this errors
+        - identifier: missingType.iterableValue

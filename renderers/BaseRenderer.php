@@ -205,7 +205,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a subject
-     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc $subject
+     * @param BaseDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @param TypeDoc|null $type
@@ -221,7 +221,7 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        if (!$type) {
+        if (!$type && property_exists($subject, 'definedBy')) {
             $type = $this->apiContext->getType($subject->definedBy);
         }
 
@@ -240,7 +240,7 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * @param BaseDoc|string $context
+     * @param BaseDoc|string|null $context
      * @return string
      */
     private function resolveNamespace($context)

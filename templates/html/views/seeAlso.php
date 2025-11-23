@@ -8,7 +8,13 @@
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\TypeDoc;
 
-$type = $object instanceof TypeDoc ? $object : $object->definedBy;
+if ($object instanceof TypeDoc) {
+    $type = $object;
+} elseif (property_exists($object, 'definedBy')) {
+    $type = $object->definedBy;
+} else {
+    $type = null;
+}
 
 $see = [];
 foreach ($object->tags as $tag) {

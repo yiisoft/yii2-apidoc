@@ -540,7 +540,7 @@ class Context extends Component
 
     /**
      * @param MethodDoc $method
-     * @return ParamDoc
+     * @return ParamDoc|null
      */
     private function getFirstNotOptionalParameter($method)
     {

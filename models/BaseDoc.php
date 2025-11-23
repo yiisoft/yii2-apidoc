@@ -12,8 +12,11 @@ use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\Php\Class_;
-use phpDocumentor\Reflection\Php\Factory\Type;
-use yii\apidoc\helpers\ApiMarkdownTrait;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Trait_;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -26,9 +29,10 @@ use yii\helpers\StringHelper;
 class BaseDoc extends BaseObject
 {
     private const INHERITDOC_TAG_NAME = 'inheritdoc';
+    private const TODO_TAG_NAME = 'todo';
 
     /**
-     * @var \phpDocumentor\Reflection\Types\Context
+     * @var \phpDocumentor\Reflection\Types\Context|null
      */
     public $phpDocContext;
     public $name;
@@ -118,8 +122,8 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * @param Class_ $reflector
-     * @param Context $context
+     * @param Class_|Method|Trait_|Interface_|Property|Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
@@ -153,7 +157,7 @@ class BaseDoc extends BaseObject
         }
 
         $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());;
-        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
+        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && !$docBlock->getTagsByName(self::INHERITDOC_TAG_NAME)) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
@@ -184,7 +188,7 @@ class BaseDoc extends BaseObject
                 $this->deprecatedSince = $tag->getVersion();
                 $this->deprecatedReason = (string) $tag->getDescription();
                 unset($this->tags[$i]);
-            } elseif ($tag->getName() === 'todo') {
+            } elseif ($tag instanceof Generic && $tag->getName() === self::TODO_TAG_NAME) {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);
             }

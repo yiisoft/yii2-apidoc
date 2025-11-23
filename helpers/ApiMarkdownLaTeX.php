@@ -121,7 +121,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
      * Converts markdown into HTML
      *
      * @param string $content
-     * @param TypeDoc $context
+     * @param TypeDoc|string|null $context
      * @param bool $paragraph
      * @return string
      */
