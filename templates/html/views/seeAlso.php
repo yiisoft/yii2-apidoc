@@ -1,20 +1,14 @@
 <?php
 
 /**
- * @var \yii\apidoc\models\BaseDoc $object
+ * @var \yii\apidoc\models\EventDoc|\yii\apidoc\models\MethodDoc|\yii\apidoc\models\PropertyDoc|\yii\apidoc\models\TypeDoc $object
  * @var \yii\web\View $this
  */
 
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\TypeDoc;
 
-if ($object instanceof TypeDoc) {
-    $type = $object;
-} elseif (property_exists($object, 'definedBy')) {
-    $type = $object->definedBy;
-} else {
-    $type = null;
-}
+$type = $object instanceof TypeDoc ? $object : $object->definedBy;
 
 $see = [];
 foreach ($object->tags as $tag) {
