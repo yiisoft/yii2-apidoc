@@ -1,5 +1,6 @@
 <?php
 
+use Highlight\Highlighter;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
@@ -9,7 +10,7 @@ use yii\apidoc\templates\html\ApiRenderer;
 /**
  * @var View $this
  * @var ClassDoc|InterfaceDoc|TraitDoc $type
- * @var \Highlight\Highlighter $highlighter
+ * @var Highlighter $highlighter
  */
 
 /** @var ApiRenderer $renderer */

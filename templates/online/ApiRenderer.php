@@ -35,7 +35,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         $packages = [];
         $notNamespaced = [];
         foreach (array_merge($context->classes, $context->interfaces, $context->traits) as $type) {
-            /* @var $type TypeDoc */
+            /** @var TypeDoc $type */
             if (empty($type->namespace)) {
                 $notNamespaced[] = str_replace('\\', '-', $type->name);
             } else {

@@ -122,7 +122,7 @@ trait ApiMarkdownTrait
                 }
             }
 
-            /** @var $type TypeDoc */
+            /** @var TypeDoc $type */
             $type = static::$renderer->apiContext->getType($typeName);
 
             if ($type === null || $subjectName === '') {

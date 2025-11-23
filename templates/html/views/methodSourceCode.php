@@ -2,8 +2,10 @@
 
 use yii\apidoc\models\MethodDoc;
 
-/* @var $method MethodDoc */
-/* @var $highlighter \Highlight\Highlighter */
+/**
+ * @var MethodDoc $method
+ * @var \Highlight\Highlighter $highlighter
+ */
 
 $sourceCode = $method->sourceCode;
 ?>
