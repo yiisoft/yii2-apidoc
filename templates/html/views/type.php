@@ -5,11 +5,13 @@ use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc|InterfaceDoc|TraitDoc */
-/* @var $highlighter \Highlight\Highlighter */
+/**
+ * @var \yii\web\View $this
+ * @var ClassDoc|InterfaceDoc|TraitDoc $type
+ * @var \Highlight\Highlighter $highlighter
+ */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var \yii\apidoc\templates\html\ApiRenderer $renderer */
 $renderer = $this->context;
 ?>
 <h1><?php

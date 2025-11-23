@@ -2,9 +2,11 @@
 
 use yii\apidoc\templates\bootstrap\SideNavWidget;
 
-/* @var $this yii\web\View */
-/* @var $content string */
-/* @var $chapters array */
+/**
+ * @var \yii\web\View $this
+ * @var string $content
+ * @var array $chapters
+ */
 
 if (isset($currentFile)) {
     foreach ($chapters as $chapter) {
