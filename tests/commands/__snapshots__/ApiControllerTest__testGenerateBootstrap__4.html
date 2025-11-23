@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="language" content="en">
+        
+
+
+
+
+
+    <title>ClassWithoutParent, yiiunit\apidoc\data\api\base\ClassWithoutParent - Yii Framework 2.0 API Documentation</title>
+</head>
+<body>
+
+<div class="wrap">
+    <nav class="navbar-inverse navbar-fixed-top navbar"><div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse"><span class="sr-only">Toggle navigation</span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span></button><a class="navbar-brand" href="./index.html">Yii Framework 2.0 API Documentation</a>
+</div>
+<div class="collapse navbar-collapse">
+<ul class="navbar-nav nav"><li><a href="./index.html">Class reference</a></li></ul>
+<div class="navbar-form navbar-left" role="search">
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Search">
+  </div>
+</div>
+</div></nav>
+    <div style="display: none;" class="modal-content">
+        <ul>
+        </ul>
+    </div>
+
+    
+<div class="row">
+    <div class="col-md-3">
+                <div class="list-group">
+<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\animal <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-animal.html">Animal</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-cat.html">Cat</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-dog.html">Dog</a>
+</div>
+<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\base <b class="caret"></b></a><div class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./yiiunit-apidoc-data-api-base-classwithoutparent.html">ClassWithoutParent</a></div>
+</div>    </div>
+    <div class="col-md-9 api-content" role="main">
+<h1>Class yiiunit\apidoc\data\api\base\ClassWithoutParent</h1>
+<div class="top-nav">
+    <a href="index">All Classes</a>
+                </div>
+
+<table class="summaryTable docClass table table-bordered">
+    <colgroup>
+        <col class="col-name">
+        <col class="col-value">
+    </colgroup>
+            <tr>
+<th>Inheritance</th>
+<td><a href="yiiunit-apidoc-data-api-base-classwithoutparent.html">yiiunit\apidoc\data\api\base\ClassWithoutParent</a></td>
+</tr>
+                                        </table>
+
+<div class="class-description">
+    <p><strong></strong></p>
+    
+    </div>
+
+
+
+<a></a>
+
+<a></a>
+
+<a></a>
+
+<a></a>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*<![CDATA[*/
+    $('a.toggle').on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('properties-hidden')) {
+            $this.text($this.text().replace(/Show/,'Hide'));
+            $this.parents('.toggle-target-container').find('.inherited').show();
+            $this.removeClass('properties-hidden');
+        } else {
+            $this.text($this.text().replace(/Hide/,'Show'));
+            $this.parents('.toggle-target-container').find('.inherited').hide();
+            $this.addClass('properties-hidden');
+        }
+
+        return false;
+    });
+    /*]]>*/
+</script>
+
+
+</div>
+
+<footer class="footer">
+        
+    Powered by <a href="https://www.yiiframework.com/" rel="external">Yii Framework</a></footer>
+
+<script>jQuery(function ($) {
+    var shiftWindow = function () { scrollBy(0, -50) };
+    if (location.hash) setTimeout(shiftWindow, 1);
+    window.addEventListener("hashchange", shiftWindow);
+var element = document.createElement("script");
+element.src = "./jssearch.index.js";
+document.body.appendChild(element);
+
+var searchBox = $('#searchbox');
+
+// search when typing in search field
+searchBox.on("keyup", function(event) {
+    var query = $(this).val();
+
+    if (query == '' || event.which == 27) {
+        $('#search-resultbox').hide();
+        return;
+    } else if (event.which == 13) {
+        var selectedLink = $('#search-resultbox a.selected');
+        if (selectedLink.length != 0) {
+            document.location = selectedLink.attr('href');
+            return;
+        }
+    } else if (event.which == 38 || event.which == 40) {
+        $('#search-resultbox').show();
+
+        var selected = $('#search-resultbox a.selected');
+        if (selected.length == 0) {
+            $('#search-results').find('a').first().addClass('selected');
+        } else {
+            var next;
+            if (event.which == 40) {
+                next = selected.parent().next().find('a').first();
+            } else {
+                next = selected.parent().prev().find('a').first();
+            }
+            if (next.length != 0) {
+                var resultbox = $('#search-results');
+                var position = next.position();
+
+//              TODO scrolling is buggy and jumps around
+//                resultbox.scrollTop(Math.floor(position.top));
+//                console.log(position.top);
+
+                selected.removeClass('selected');
+                next.addClass('selected');
+            }
+        }
+
+        return;
+    }
+    $('#search-resultbox').show();
+    $('#search-results').html('<li><span class="no-results">No results');
+
+    var result = jssearch.search(query);
+
+    if (result.length > 0) {
+        var i = 0;
+        var resHtml = '';
+
+        for (var key in result) {
+            if (i++ > 20) {
+                break;
+            }
+            resHtml = resHtml +
+            '<li><a href="' + result[key].file.u.substr(3) +'"><span class="title">' + result[key].file.t + '' +
+            '<span class="description">' + result[key].file.d + '';
+        }
+        $('#search-results').html(resHtml);
+    }
+});
+
+// hide the search results on ESC
+$(document).on("keyup", function(event) { if (event.which == 27) { $('#search-resultbox').hide(); } });
+// hide search results on click to document
+$(document).bind('click', function (e) { $('#search-resultbox').hide(); });
+// except the following:
+searchBox.bind('click', function(e) { e.stopPropagation(); });
+$('#search-resultbox').bind('click', function(e) { e.stopPropagation(); });
+
+});</script>
+</body>
+</html>
