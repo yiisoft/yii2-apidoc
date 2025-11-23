@@ -30,11 +30,11 @@ parameters:
 
     ignoreErrors:
         - '#Unsafe usage of new static\(\).#'
-        # TODO: fix this errors
+        # TODO: fix errors
         - identifier: missingType.return
-        # TODO: fix this errors
+        # TODO: fix errors
         - identifier: missingType.parameter
-        # TODO: fix this errors
+        # TODO: fix errors
         - identifier: missingType.property
-        # TODO: fix this errors
+        # TODO: fix errors
         - identifier: missingType.iterableValue
