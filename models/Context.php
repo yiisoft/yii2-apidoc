@@ -358,7 +358,7 @@ class Context extends Component
                     if (empty($param->description) || trim($param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
-                    if (empty($param->type)) {
+                    if ($param->type === null) {
                         $param->type = $inheritedMethod->params[$i]->type;
                     }
                 }
