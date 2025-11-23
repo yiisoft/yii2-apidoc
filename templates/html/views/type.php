@@ -7,7 +7,7 @@ use yii\apidoc\models\TraitDoc;
 use yii\apidoc\templates\html\ApiRenderer;
 
 /**
- * @var View&object{context: ApiRenderer} $this
+ * @var View $this
  * @var ClassDoc|InterfaceDoc|TraitDoc $type
  * @var \Highlight\Highlighter $highlighter
  */

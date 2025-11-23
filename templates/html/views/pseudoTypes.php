@@ -4,10 +4,13 @@ use yii\apidoc\templates\html\ApiRenderer;
 use yii\web\View;
 
 /**
- * @var View&object{context: ApiRenderer} $this
+ * @var View $this
  * @var string $title
  * @var PseudoTypeDoc[] $types
  */
+
+/** @var ApiRenderer $renderer */
+$renderer = $this->context;
 
 ?>
 
@@ -26,8 +29,8 @@ use yii\web\View;
 
         <?php foreach ($types as $type): ?>
             <tr id="<?= $type->type ?>-type-<?= $type->name ?>">
-                <td><?= $this->context->createSubjectLink($type) ?></td>
-                <td><?= $this->context->createTypeLink($type->value) ?></td>
+                <td><?= $renderer->createSubjectLink($type) ?></td>
+                <td><?= $renderer->createTypeLink($type->value) ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

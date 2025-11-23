@@ -8,7 +8,7 @@ use yii\apidoc\templates\html\ApiRenderer;
 use yii\helpers\ArrayHelper;
 use yii\web\View;
 
-/** @var View&object{context: ApiRenderer} $this */
+/** @var View $this */
 /** @var ClassDoc|TraitDoc $type */
 /** @var Highlighter $highlighter */
 
