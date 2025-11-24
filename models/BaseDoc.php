@@ -23,6 +23,8 @@ use yii\helpers\StringHelper;
 /**
  * Base class for API documentation information.
  *
+ * @property-read string|null $packageName
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */

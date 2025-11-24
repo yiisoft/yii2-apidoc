@@ -1,23 +1,23 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.8 under development
+3.0.8 November 24, 2025
 -----------------------
 
+- Bug #311: Support `nikic/php-parser` v5 (mspirkov)
+- Bug #312: Fix `MarkdownHighlightTrait::highlight()` behavior for PHP 8.3 (mspirkov)
 - Bug #313: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
 - Bug #317: Fix `trim` deprecation errors `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
 - Bug #318: Fix deprecation errors `mb_convert_encoding(): Handling HTML entities via mbstring is deprecated` (mspirkov)
-- Bug #312: Fix `MarkdownHighlightTrait::highlight()` behavior for PHP 8.3 (mspirkov)
-- Enh #319, #328: Determining types by type hints for properties, methods and params (mspirkov)
-- Enh #320: Expand the list of built-in PHP types (mspirkov)
-- Bug #311: Support `nikic/php-parser` v5 (mspirkov)
 - Bug #324: Raise minimum PHP version to 7.4 (mspirkov)
 - Bug #325: Fix deprecation errors `The Default value will become of type Expression by default` (mspirkov)
 - Bug #327: Fix deprecation errors `The expression value will become of type Expression by default` (mspirkov)
 - Bug #329, #331: Fix getting parameter types from the `@method` annotation (mspirkov)
-- Enh #331: Display `mixed` for parameters that do not have PHPDoc annotations or type hints (mspirkov)
 - Bug #334: Fix PHPDoc annotations throughout the code (mspirkov)
 - Bug #335: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
+- Enh #319, #328: Determining types by type hints for properties, methods and params (mspirkov)
+- Enh #320: Expand the list of built-in PHP types (mspirkov)
+- Enh #331: Display `mixed` for parameters that do not have PHPDoc annotations or type hints (mspirkov)
 
 
 3.0.7 February 13, 2025
