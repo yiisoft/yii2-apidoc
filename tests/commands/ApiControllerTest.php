@@ -99,5 +99,8 @@ class ApiControllerTest extends TestCase
         $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true]));
 
         $this->assertSame($sourceFilesCount, $filesCount);
+
+        $this->assertMatchesTextSnapshot(file_get_contents("{$outputPath}/warnings.txt"));
+        $this->assertMatchesTextSnapshot(file_get_contents("{$outputPath}/errors.txt"));
     }
 }

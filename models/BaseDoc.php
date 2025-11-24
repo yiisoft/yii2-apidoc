@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -10,6 +11,7 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
@@ -193,6 +195,19 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Generic && $tag->getName() === self::TODO_TAG_NAME) {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);
+            } elseif ($tag instanceof InvalidTag && $context !== null) {
+                $exception = $tag->getException();
+                $message = 'Invalid tag: ' . $tag->render() . '.';
+
+                if ($exception !== null) {
+                    $message .= ' Exception message: ' . $exception->getMessage();
+                }
+
+                $context->errors[] = [
+                    'line' => $this->startLine,
+                    'file' => $this->sourceFile,
+                    'message' => $message,
+                ];
             }
         }
 
@@ -242,7 +257,8 @@ class BaseDoc extends BaseObject
             if ($length >= $pos + 2) {
                 $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
-                if ($abbrev === 'e.g.' ||
+                if (
+                    $abbrev === 'e.g.' ||
                     $abbrev === 'i.e.' ||
                     mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
