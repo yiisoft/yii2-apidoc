@@ -108,6 +108,10 @@ class Context extends Component
     {
         // update all subclass references
         foreach ($this->classes as $class) {
+            if ($class->parentClass === null) {
+                continue;
+            }
+
             $className = $class->name;
             while (isset($this->classes[$class->parentClass])) {
                 $class = $this->classes[$class->parentClass];
