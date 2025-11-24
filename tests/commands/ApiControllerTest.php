@@ -100,7 +100,14 @@ class ApiControllerTest extends TestCase
 
         $this->assertSame($sourceFilesCount, $filesCount);
 
-        $this->assertMatchesTextSnapshot(file_get_contents("{$outputPath}/warnings.txt"));
-        $this->assertMatchesTextSnapshot(file_get_contents("{$outputPath}/errors.txt"));
+        $warningsContent = file_get_contents("{$outputPath}/warnings.txt");
+        // Remove the dynamic parts of the paths to the files
+        $warningsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $warningsContent);
+        $this->assertMatchesTextSnapshot($warningsContent);
+
+        $errorsContent = file_get_contents("{$outputPath}/errors.txt");
+        // Remove the dynamic parts of the paths to the files
+        $errorsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $errorsContent);
+        $this->assertMatchesTextSnapshot($errorsContent);
     }
 }
