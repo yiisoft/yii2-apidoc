@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \yii\apidoc\models\BaseDoc $object
+ * @var \yii\apidoc\models\EventDoc|\yii\apidoc\models\MethodDoc|\yii\apidoc\models\PropertyDoc|\yii\apidoc\models\TypeDoc $object
  * @var \yii\web\View $this
  */
 

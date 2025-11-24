@@ -16,6 +16,11 @@ namespace yiiunit\apidoc\data\api\animal;
 class Cat extends Animal
 {
     /**
+     * @event Some description for event tag.
+     */
+    public const EVENT_BEGIN_PAGE = 'beginPage';
+
+    /**
      * {@inheritdoc}
      */
     public function render()
@@ -27,5 +32,12 @@ class Cat extends Animal
     public function methodWithoutDocAndTypeHints($param)
     {
         return $param;
+    }
+
+    /**
+     * @todo Some description for todo tag.
+     */
+    public function methodWithTodoTag(): void
+    {
     }
 }

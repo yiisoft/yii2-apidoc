@@ -59,10 +59,6 @@ class PrettyPrinter extends BasePrettyPrinter
      */
     public static function getRepresentationOfValue(Expr $value)
     {
-        if ($value === null) {
-            return '';
-        }
-
         $printer = new static();
 
         return $printer->prettyPrintExpr($value);

@@ -33,7 +33,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6 || ^10.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2 || ^5.0"
+        "spatie/phpunit-snapshot-assertions": "^4.2 || ^5.0",
+        "phpstan/phpstan": "^2.1"
     },
     "repositories": [
         {

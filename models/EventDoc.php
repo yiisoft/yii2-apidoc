@@ -8,6 +8,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use yii\helpers\StringHelper;
@@ -31,10 +32,10 @@ class EventDoc extends ConstDoc
 
 
     /**
-     * @param Class_|Constant $reflector
-     * @param Context $context
+     * @param Class_|Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
-     * @param DocBlock $docBlock
+     * @param DocBlock|null $docBlock
      */
     public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {
@@ -45,7 +46,7 @@ class EventDoc extends ConstDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag->getName() != 'event') {
+            if (!$tag instanceof Generic || $tag->getName() !== 'event') {
                 continue;
             }
 

@@ -40,3 +40,6 @@ phpunit.phar
 
 # local tests configuration
 /tests/data/config.local.php
+
+# local phpstan config
+phpstan.neon

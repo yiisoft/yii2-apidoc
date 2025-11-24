@@ -26,11 +26,13 @@ trait StdOutBufferControllerTrait
     public function stdout($string)
     {
         $this->stdOutBuffer .= $string;
+        return 0;
     }
 
     public function stderr($string)
     {
         $this->stdErrBuffer .= $string;
+        return 0;
     }
 
     public function flushStdOutBuffer()

@@ -27,10 +27,10 @@ class ConstDoc extends BaseDoc
 
 
     /**
-     * @param Constant $reflector
-     * @param Context $context
+     * @param Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
-     * @param DocBlock $docBlock
+     * @param DocBlock|null $docBlock
      */
     public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
     {

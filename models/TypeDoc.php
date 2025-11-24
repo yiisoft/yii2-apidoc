@@ -13,6 +13,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Trait_;
 use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
@@ -56,7 +58,7 @@ class TypeDoc extends BaseDoc
      * - `$subjectName = 'attributes'` finds the method if it exists, if not it will find the property.
      *
      * @param $subjectName
-     * @return null|MethodDoc|PropertyDoc
+     * @return BaseDoc|null
      */
     public function findSubject($subjectName)
     {
@@ -157,8 +159,8 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param null $visibility
-     * @param null $definedBy
+     * @param string|null $visibility
+     * @param string|null $definedBy
      * @return PropertyDoc[]
      */
     private function getFilteredProperties($visibility = null, $definedBy = null)
@@ -181,8 +183,8 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param Class_ $reflector
-     * @param Context $context
+     * @param Class_|Trait_|Interface_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

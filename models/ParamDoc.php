@@ -41,8 +41,8 @@ class ParamDoc extends BaseObject
 
 
     /**
-     * @param Argument $reflector
-     * @param Context $context
+     * @param Argument|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

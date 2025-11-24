@@ -31,8 +31,8 @@ class MethodDoc extends FunctionDoc
 
 
     /**
-     * @param Class_|Method $reflector
-     * @param Context $context
+     * @param Class_|Method|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

@@ -24,8 +24,8 @@ class TraitDoc extends TypeDoc
 
 
     /**
-     * @param Trait_ $reflector
-     * @param Context $context
+     * @param Trait_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
