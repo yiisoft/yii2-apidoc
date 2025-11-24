@@ -16,6 +16,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #327: Fix deprecation errors `The expression value will become of type Expression by default` (mspirkov)
 - Bug #329, #331: Fix getting parameter types from the `@method` annotation (mspirkov)
 - Enh #331: Display `mixed` for parameters that do not have PHPDoc annotations or type hints (mspirkov)
+- Bug #335: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
 
 
 3.0.7 February 13, 2025
