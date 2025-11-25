@@ -1,5 +1,6 @@
 <?php
 
+use yii\apidoc\models\PseudoTypeDoc;
 use yii\apidoc\templates\html\ApiRenderer;
 use yii\web\View;
 

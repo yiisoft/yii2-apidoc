@@ -595,6 +595,9 @@ class Context extends Component
         $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
-        return $projectFactory->create('ApiDoc', $files);
+        /** @var Project */
+        $project = $projectFactory->create('ApiDoc', $files);
+
+        return $project;
     }
 }

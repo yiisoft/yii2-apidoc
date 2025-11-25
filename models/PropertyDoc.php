@@ -9,6 +9,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Type;
 use yii\helpers\StringHelper;
 
 /**
@@ -58,7 +59,7 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
-     * @param ClassDoc|TraitDoc $parent
+     * @param TypeDoc $parent
      * @param Property|null $reflector
      * @param Context|null $context
      * @param array $config

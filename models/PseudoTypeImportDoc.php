@@ -22,6 +22,11 @@ final class PseudoTypeImportDoc extends BaseObject
     public const TYPE_PHPSTAN = 'phpstan';
     public const TYPE_PSALM = 'psalm';
 
+    public const TYPES = [
+        self::TYPE_PHPSTAN,
+        self::TYPE_PSALM,
+    ];
+
     /** @var value-of<self::TYPES> */
     public string $type;
 

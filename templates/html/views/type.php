@@ -6,6 +6,7 @@ use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
 use yii\apidoc\templates\html\ApiRenderer;
+use yii\web\View;
 
 /**
  * @var View $this

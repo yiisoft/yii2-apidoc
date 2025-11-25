@@ -33,7 +33,7 @@ class MethodDoc extends FunctionDoc
 
 
     /**
-     * @param ClassDoc|TraitDoc|InterfaceDoc $parent
+     * @param TypeDoc $parent
      * @param Class_|Method|null $reflector
      * @param Context|null $context
      * @param array $config

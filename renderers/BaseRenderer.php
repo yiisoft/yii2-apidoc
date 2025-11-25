@@ -184,7 +184,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a type (class, interface or trait)
-     * @param ClassDoc|InterfaceDoc|TraitDoc|ClassDoc[]|InterfaceDoc[]|TraitDoc[]|Type|Type[]|string|string[] $types
+     * @param BaseDoc|BaseDoc[]|Type|Type[]|string|string[]|null $types
      * @param BaseDoc|null $context
      * @param string|null $title a title to be used for the link TODO check whether [[yii\...|Class]] is supported
      * @param array $options additional HTML attributes for the link.
@@ -197,6 +197,10 @@ abstract class BaseRenderer extends Component
         array $options = [],
         ?TypeDoc $currentTypeDoc = null
     ) {
+        if ($types === null) {
+            return '';
+        }
+
         if (!is_array($types)) {
             $types = [$types];
         } elseif (count($types) > 1) {
@@ -249,7 +253,11 @@ abstract class BaseRenderer extends Component
                 }
 
                 if ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
-                    $templateType = $this->getTemplateType($type->getValueType(), $context);
+                    $valueType = $type->getValueType();
+                    $templateType = $valueType instanceof Object_
+                        ? $this->getTemplateType((string) $valueType->getFqsen(), $context)
+                        : null;
+
                     if ($templateType !== null) {
                         $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
                         if ($templateType instanceof Compound) {
@@ -258,7 +266,7 @@ abstract class BaseRenderer extends Component
                             $links[] =  "{$typeLink}[]";
                         }
                     } else {
-                        $links[] = $this->createTypeLink($type->getValueType(), $context, $title, $options) . '[]';
+                        $links[] = $this->createTypeLink($valueType, $context, $title, $options) . '[]';
                     }
 
                     continue;
@@ -344,7 +352,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a subject
-     * @param BaseDoc $subject
+     * @param BaseDoc|PseudoTypeDoc|PseudoTypeImportDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @param TypeDoc|null $type
@@ -626,7 +634,6 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * @param Type[] $genericTypes
      * @return string|null Link if the type has generics and null otherwise.
      */
     private function createLinkByTypeWithGenerics(

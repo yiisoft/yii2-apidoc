@@ -224,18 +224,6 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Method) {
-                $params = [];
-
-                foreach ($tag->getParameters() as $parameter) {
-                    $argumentType = $parameter->getType();
-
-                    $params[] = new ParamDoc($tag, null, $context, [
-                        'sourceFile' => $this->sourceFile,
-                        'name' => $parameter->getName(),
-                        'type' => $argumentType,
-                    ]);
-                }
-
                 $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
 
@@ -246,11 +234,20 @@ class TypeDoc extends BaseDoc
                     'shortDescription' => $shortDescription,
                     'description' => $description,
                     'visibility' => 'public',
-                    'params' => $params,
+                    'params' => [],
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
                     'returnType' => $tag->getReturnType(),
                 ]);
+
+                foreach ($tag->getParameters() as $parameter) {
+                    $method->params[] = new ParamDoc($method, null, $context, [
+                        'sourceFile' => $this->sourceFile,
+                        'name' => $parameter->getName(),
+                        'type' => $parameter->getType(),
+                    ]);
+                }
+
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
             }
