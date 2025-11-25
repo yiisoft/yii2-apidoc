@@ -23,4 +23,11 @@ class Dog extends Animal
         // this method has `inheritdoc` tag without brackets
         return 'This is a dog';
     }
+
+    /**
+     * @return invalid-type
+     */
+    public function methodWithInvalidReturnTag()
+    {
+    }
 }
