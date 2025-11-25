@@ -254,21 +254,16 @@ abstract class BaseRenderer extends Component
 
                 if ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
                     $valueType = $type->getValueType();
-                    $templateType = $valueType instanceof Object_
-                        ? $this->getTemplateType((string) $valueType->getFqsen(), $context)
-                        : null;
-
-                    if ($templateType !== null) {
-                        $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
-                        if ($templateType instanceof Compound) {
-                            $links[] = "({$typeLink})[]";
-                        } else {
-                            $links[] =  "{$typeLink}[]";
+                    if ($valueType instanceof Object_ && $valueType->getFqsen() !== null) {
+                        $templateType = $this->getTemplateType((string) $valueType->getFqsen(), $context);
+                        if ($templateType !== null) {
+                            $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
+                            $links[] = $templateType instanceof Compound ? "({$typeLink})[]" : "{$typeLink}[]";
+                            continue;
                         }
-                    } else {
-                        $links[] = $this->createTypeLink($valueType, $context, $title, $options) . '[]';
                     }
 
+                    $links[] = $this->createTypeLink($valueType, $context, $title, $options) . '[]';
                     continue;
                 }
 
@@ -411,7 +406,7 @@ abstract class BaseRenderer extends Component
             return $context->namespace;
         }
         if ($context->hasProperty('definedBy') && method_exists($context, '__toString')) {
-            $type = $this->apiContext->getType($context);
+            $type = $this->apiContext->getType((string) $context);
             if ($type !== null) {
                 return $type->namespace;
             }
@@ -719,6 +714,9 @@ abstract class BaseRenderer extends Component
         return null;
     }
 
+    /**
+     * @param Type[] $types
+     */
     private function createTypeLinksByTypes(
         array $types,
         ?BaseDoc $context,
