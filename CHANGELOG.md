@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 3.0.9 under development
 -----------------------
 
-- no changes in this release.
+- Bug #338: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
 
 
 3.0.8 November 24, 2025
