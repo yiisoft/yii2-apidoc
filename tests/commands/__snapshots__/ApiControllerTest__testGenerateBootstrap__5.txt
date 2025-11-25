@@ -1,0 +1,66 @@
+Array
+(
+    [0] => Array
+        (
+            [line] => 41
+            [file] => /tests/data/api/animal/Animal.php
+            [message] => No docblock for element '$propertyWithoutDoc'
+        )
+
+    [1] => Array
+        (
+            [line] => 41
+            [file] => /tests/data/api/animal/Animal.php
+            [message] => No short description for element '$propertyWithoutDoc'
+        )
+
+    [2] => Array
+        (
+            [line] => 43
+            [file] => /tests/data/api/animal/Animal.php
+            [message] => No docblock for element '$propertyWithoutDocAndTypeHint'
+        )
+
+    [3] => Array
+        (
+            [line] => 43
+            [file] => /tests/data/api/animal/Animal.php
+            [message] => No short description for element '$propertyWithoutDocAndTypeHint'
+        )
+
+    [4] => Array
+        (
+            [line] => 70
+            [file] => /tests/data/api/animal/Animal.php
+            [message] => No docblock for element 'setBirthDate'
+        )
+
+    [5] => Array
+        (
+            [line] => 32
+            [file] => /tests/data/api/animal/Cat.php
+            [message] => No docblock for element 'methodWithoutDocAndTypeHints'
+        )
+
+    [6] => Array
+        (
+            [line] => 40
+            [file] => /tests/data/api/animal/Cat.php
+            [message] => No short description for Method 'methodWithTodoTag'
+        )
+
+    [7] => Array
+        (
+            [line] => 30
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'methodWithInvalidReturnTag'
+        )
+
+    [8] => Array
+        (
+            [line] => 11
+            [file] => /tests/data/api/base/Component.php
+            [message] => No docblock for element 'yiiunit\apidoc\data\api\base\Component'
+        )
+
+)

@@ -99,5 +99,15 @@ class ApiControllerTest extends TestCase
         $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true]));
 
         $this->assertSame($sourceFilesCount, $filesCount);
+
+        $warningsContent = file_get_contents("{$outputPath}/warnings.txt");
+        // Remove the dynamic parts of the file paths
+        $warningsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $warningsContent);
+        $this->assertMatchesTextSnapshot($warningsContent);
+
+        $errorsContent = file_get_contents("{$outputPath}/errors.txt");
+        // Remove the dynamic parts of the file paths
+        $errorsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $errorsContent);
+        $this->assertMatchesTextSnapshot($errorsContent);
     }
 }
