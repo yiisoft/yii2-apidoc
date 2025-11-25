@@ -237,7 +237,8 @@ class BaseDoc extends BaseObject
                 $this->deprecatedReason = (string) $tag->getDescription();
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Template) {
-                $this->templates[(string) $fqsenResolver->resolve($tag->getTemplateName(), $this->phpDocContext)] = $tag;
+                $fqsen = $fqsenResolver->resolve($tag->getTemplateName(), $this->phpDocContext);
+                $this->templates[(string) $fqsen] = $tag;
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Generic) {
                 if ($tag->getName() === self::TODO_TAG_NAME) {
@@ -251,7 +252,8 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->phpStanTypes[(string) $fqsenResolver->resolve($phpStanType->name, $this->phpDocContext)] = $phpStanType;
+                    $fqsen = $fqsenResolver->resolve($phpStanType->name, $this->phpDocContext);
+                    $this->phpStanTypes[(string) $fqsen] = $phpStanType;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PSALM_TYPE_ANNOTATION_NAME) {
                     $tagData = explode('=', trim($tag->getDescription()), 2);
@@ -261,7 +263,8 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->psalmTypes[(string) $fqsenResolver->resolve($psalmType->name, $this->phpDocContext)] = $psalmType;
+                    $fqsen = $fqsenResolver->resolve($psalmType->name, $this->phpDocContext);
+                    $this->psalmTypes[(string) $fqsen] = $psalmType;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME) {
                     $tagData = explode(' from ', trim($tag->getDescription()), 2);
@@ -270,7 +273,8 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->phpStanTypeImports[(string) $fqsenResolver->resolve($phpStanTypeImport->typeName, $this->phpDocContext)] = $phpStanTypeImport;
+                    $fqsen = $fqsenResolver->resolve($phpStanTypeImport->typeName, $this->phpDocContext);
+                    $this->phpStanTypeImports[(string) $fqsen] = $phpStanTypeImport;
                     unset($this->tags[$i]);
                 } elseif ($tag->getName() === self::PSALM_IMPORT_TYPE_ANNOTATION_NAME) {
                     $tagData = explode(' from ', trim($tag->getDescription()), 2);
@@ -279,7 +283,8 @@ class BaseDoc extends BaseObject
                         trim($tagData[0]),
                         $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
                     );
-                    $this->psalmTypeImports[(string) $fqsenResolver->resolve($psalmTypeImport->typeName, $this->phpDocContext)] = $psalmTypeImport;
+                    $fqsen = $fqsenResolver->resolve($psalmTypeImport->typeName, $this->phpDocContext);
+                    $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                     unset($this->tags[$i]);
                 }
             }
