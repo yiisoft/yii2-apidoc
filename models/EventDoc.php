@@ -8,7 +8,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use phpDocumentor\Reflection\Types\Object_;
@@ -44,7 +44,7 @@ class EventDoc extends ConstDoc
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag->getName() != 'event') {
+            if (!$tag instanceof Generic || $tag->getName() !== 'event') {
                 continue;
             }
 

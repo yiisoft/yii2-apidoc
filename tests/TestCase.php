@@ -2,6 +2,7 @@
 
 namespace yiiunit\apidoc;
 
+use Exception;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -69,7 +70,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @param mixed  $needle
      * @param mixed  $haystack
-     * @param string $message
      */
     public function assertContainsWithoutIndent($needle, $haystack)
     {
@@ -97,7 +97,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * Emulates running of the console controller action.
-     * @param \yii\console\Controller|\yiiunit\apidoc\support\controllers\StdOutBufferControllerTrait $controller controller instance.
+     * @param \yii\console\Controller $controller controller instance.
      * @param string $actionId id of action to be run.
      * @param array $args action arguments.
      * @return string command output.
@@ -105,6 +105,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected function runControllerAction($controller, $actionId, array $args = [])
     {
+        if (!method_exists($controller, 'flushStdErrBuffer') || !method_exists($controller, 'flushStdOutBuffer')) {
+            throw new Exception('Controller does not contain the `flushStdErrBuffer` or `flushStdOutBuffer` method');
+        }
+
         $controller->run($actionId, $args);
 
         return $controller->flushStdErrBuffer() . "\n" . $controller->flushStdOutBuffer();

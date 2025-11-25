@@ -1,0 +1,54 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constructor of class yii\\\\apidoc\\\\models\\\\ConstDoc has an unused parameter \\$docBlock\\.$#"
+			count: 1
+			path: models/ConstDoc.php
+
+		-
+			message: "#^Constructor of class yii\\\\apidoc\\\\models\\\\ParamDoc has an unused parameter \\$context\\.$#"
+			count: 1
+			path: models/ParamDoc.php
+
+		-
+			message: "#^Static property yii\\\\BaseYii\\:\\:\\$app \\(yii\\\\console\\\\Application\\|yii\\\\web\\\\Application\\) does not accept null\\.$#"
+			count: 1
+			path: tests/TestCase.php
+
+		-
+			message: "#^Right side of \\&\\& is always true\\.$#"
+			count: 1
+			path: renderers/BaseRenderer.php
+
+		-
+			message: "#^Call to an undefined method phpDocumentor\\\\Reflection\\\\DocBlock\\\\Tag\\:\\:getDescription\\(\\)\\.$#"
+			count: 2
+			path: models/Context.php
+
+		-
+			message: "#^Property yii\\\\apidoc\\\\models\\\\ClassDoc\\:\\:\\$events \\(array\\<yii\\\\apidoc\\\\models\\\\EventDoc\\>\\) does not accept array\\<yii\\\\apidoc\\\\models\\\\ConstDoc\\|yii\\\\apidoc\\\\models\\\\MethodDoc\\|yii\\\\apidoc\\\\models\\\\PropertyDoc\\>\\.$#"
+			count: 1
+			path: models/Context.php
+
+		-
+			message: "#^Strict comparison using \\=\\=\\= between array and false will always evaluate to false\\.$#"
+			count: 1
+			path: commands/ApiController.php
+
+		-
+			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Property\\:\\:getDefault\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
+			count: 1
+			reportUnmatched: false
+			path: models/PropertyDoc.php
+
+		-
+			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Argument\\:\\:getDefault\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
+			count: 1
+			reportUnmatched: false
+			path: models/ParamDoc.php
+
+		-
+			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Constant\\:\\:getValue\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
+			count: 1
+			reportUnmatched: false
+			path: models/ConstDoc.php

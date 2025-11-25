@@ -64,6 +64,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     public function getViewPath()
     {
+        return '';
     }
 
     /**

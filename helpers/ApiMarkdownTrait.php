@@ -65,7 +65,7 @@ trait ApiMarkdownTrait
     }
 
     /**
-     * @param TypeDoc $type
+     * @param TypeDoc|null $type
      * @param array $contexts
      */
     private function _findContexts($type, &$contexts = [])
@@ -122,7 +122,7 @@ trait ApiMarkdownTrait
                 }
             }
 
-            /** @var TypeDoc $type */
+            /** @var TypeDoc|null $type */
             $type = static::$renderer->apiContext->getType($typeName);
 
             if ($type === null || $subjectName === '') {

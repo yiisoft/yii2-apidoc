@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -86,5 +87,12 @@ class Cat extends Animal
     public function getInterfaceStringByClassString(string $string): string
     {
         return '';
+    }
+
+    /**
+     * @todo Some description for todo tag.
+     */
+    public function methodWithTodoTag(): void
+    {
     }
 }

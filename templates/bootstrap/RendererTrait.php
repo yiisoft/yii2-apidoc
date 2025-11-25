@@ -42,7 +42,7 @@ trait RendererTrait
 
     /**
      * Returns nav TypeDocs
-     * @param TypeDoc $type typedoc to take category from
+     * @param TypeDoc|null $type typedoc to take category from
      * @param TypeDoc[] $types TypeDocs to filter
      * @return array
      */
@@ -57,7 +57,7 @@ trait RendererTrait
 
     /**
      * Returns category of TypeDoc
-     * @param TypeDoc $type
+     * @param TypeDoc|null $type
      * @return string
      */
     protected function getTypeCategory($type)

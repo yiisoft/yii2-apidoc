@@ -33,7 +33,7 @@ use yii\apidoc\models\TypeDoc;
 class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 {
     /**
-     * @var string path or alias of the layout file to use.
+     * @var string|false path or alias of the layout file to use.
      */
     public $layout;
     /**

@@ -15,12 +15,19 @@ use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Method;
+use phpDocumentor\Reflection\Php\Property;
+use phpDocumentor\Reflection\Php\Trait_;
 use phpDocumentor\Reflection\TypeResolver;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
 /**
  * Base class for API documentation information.
+ *
+ * @property-read string|null $packageName
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
@@ -34,9 +41,10 @@ class BaseDoc extends BaseObject
     private const PSALM_IMPORT_TYPE_ANNOTATION_NAME = 'psalm-import-type';
 
     private const INHERITDOC_TAG_NAME = 'inheritdoc';
+    private const TODO_TAG_NAME = 'todo';
 
     /**
-     * @var \phpDocumentor\Reflection\Types\Context
+     * @var \phpDocumentor\Reflection\Types\Context|null
      */
     public $phpDocContext;
     /**
@@ -157,7 +165,7 @@ class BaseDoc extends BaseObject
 
     /**
      * @param self|null $parent
-     * @param Class_|null $reflector
+     * @param Class_|Method|Trait_|Interface_|Property|Constant|null $reflector
      * @param Context|null $context
      * @param array $config
      */
@@ -197,7 +205,7 @@ class BaseDoc extends BaseObject
         }
 
         $this->shortDescription = StringHelper::mb_ucfirst($docBlock->getSummary());
-        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && $docBlock->getTagsByName('inheritdoc') === null) {
+        if (empty($this->shortDescription) && !($this instanceof PropertyDoc) && $context !== null && !$docBlock->getTagsByName(self::INHERITDOC_TAG_NAME)) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
@@ -231,7 +239,7 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Template) {
                 $this->templates[(string) $fqsenResolver->resolve($tag->getTemplateName(), $this->phpDocContext)] = $tag;
                 unset($this->tags[$i]);
-            } elseif ($tag->getName() === 'todo') {
+            } elseif ($tag instanceof Generic && $tag->getName() === self::TODO_TAG_NAME) {
                 $this->todos[] = $tag;
                 unset($this->tags[$i]);
             } elseif ($tag instanceof Generic) {

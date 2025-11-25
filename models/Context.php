@@ -113,6 +113,10 @@ class Context extends Component
     {
         // update all subclass references
         foreach ($this->classes as $class) {
+            if ($class->parentClass === null) {
+                continue;
+            }
+
             $className = $class->name;
             while (isset($this->classes[$class->parentClass])) {
                 $class = $this->classes[$class->parentClass];
@@ -540,7 +544,7 @@ class Context extends Component
 
     /**
      * @param MethodDoc $method
-     * @return ParamDoc
+     * @return ParamDoc|null
      */
     private function getFirstNotOptionalParameter($method)
     {

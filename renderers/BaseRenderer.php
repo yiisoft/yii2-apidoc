@@ -39,12 +39,9 @@ use yii\apidoc\helpers\ApiMarkdownLaTeX;
 use yii\apidoc\helpers\TypeHelper;
 use yii\apidoc\models\BaseDoc;
 use yii\apidoc\models\ClassDoc;
-use yii\apidoc\models\ConstDoc;
 use yii\apidoc\models\Context;
-use yii\apidoc\models\EventDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\MethodDoc;
-use yii\apidoc\models\PropertyDoc;
 use yii\apidoc\models\PseudoTypeDoc;
 use yii\apidoc\models\PseudoTypeImportDoc;
 use yii\apidoc\models\TraitDoc;
@@ -347,7 +344,7 @@ abstract class BaseRenderer extends Component
 
     /**
      * creates a link to a subject
-     * @param PropertyDoc|MethodDoc|ConstDoc|EventDoc|PseudoTypeDoc|PseudoTypeImportDoc $subject
+     * @param BaseDoc $subject
      * @param string|null $title
      * @param array $options additional HTML attributes for the link.
      * @param TypeDoc|null $type
@@ -374,7 +371,7 @@ abstract class BaseRenderer extends Component
             }
         }
 
-        if (!$type) {
+        if (!$type && property_exists($subject, 'definedBy')) {
             $type = $this->apiContext->getType($subject->definedBy);
         }
 
@@ -393,7 +390,7 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * @param BaseDoc|string $context
+     * @param BaseDoc|string|null $context
      * @return string
      */
     private function resolveNamespace($context)

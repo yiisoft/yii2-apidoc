@@ -18,6 +18,7 @@ use yii\helpers\Console;
  */
 class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
 {
+    /** @var string|false */
     public $layout = false;
     public $indexView = '@yii/apidoc/templates/online/views/index.php';
 

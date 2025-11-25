@@ -1,5 +1,6 @@
 <?php
 
+use yii\apidoc\templates\bootstrap\ApiRenderer;
 use yii\apidoc\templates\bootstrap\SideNavWidget;
 
 /**
@@ -7,6 +8,9 @@ use yii\apidoc\templates\bootstrap\SideNavWidget;
  * @var string $content
  * @var array $chapters
  */
+
+/** @var ApiRenderer $renderer */
+$renderer = $this->context;
 
 if (isset($currentFile)) {
     foreach ($chapters as $chapter) {
@@ -30,13 +34,13 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($g
             foreach($chapter['content'] as $chContent) {
                 $items[] = [
                     'label' => $chContent['headline'],
-                    'url' => $this->context->generateGuideUrl($chContent['file']),
+                    'url' => $renderer->generateGuideUrl($chContent['file']),
                     'active' => isset($currentFile) && ($chContent['file'] == basename($currentFile)),
                 ];
             }
             $nav[] = [
                 'label' => $chapter['headline'],
-                //'url' => $this->context->generateGuideUrl($file),
+                //'url' => $renderer->generateGuideUrl($file),
                 'items' => $items,
             ];
         } ?>
