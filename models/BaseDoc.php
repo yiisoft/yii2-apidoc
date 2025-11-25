@@ -239,11 +239,11 @@ class BaseDoc extends BaseObject
             } elseif ($tag instanceof Template) {
                 $this->templates[(string) $fqsenResolver->resolve($tag->getTemplateName(), $this->phpDocContext)] = $tag;
                 unset($this->tags[$i]);
-            } elseif ($tag instanceof Generic && $tag->getName() === self::TODO_TAG_NAME) {
-                $this->todos[] = $tag;
-                unset($this->tags[$i]);
             } elseif ($tag instanceof Generic) {
-                if ($tag->getName() === self::PHPSTAN_TYPE_ANNOTATION_NAME) {
+                if ($tag->getName() === self::TODO_TAG_NAME) {
+                    $this->todos[] = $tag;
+                    unset($this->tags[$i]);
+                } elseif ($tag->getName() === self::PHPSTAN_TYPE_ANNOTATION_NAME) {
                     $tagData = explode(' ', trim($tag->getDescription()), 2);
                     $phpStanType = new PseudoTypeDoc(
                         PseudoTypeDoc::TYPE_PHPSTAN,
