@@ -220,20 +220,20 @@ abstract class BaseRenderer extends Component
             } elseif ($type instanceof Type) {
                 if ($type instanceof Compound) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
-                    $links[] = $this->createTypeLink($innerTypes, $context, $title, $options);
+                    $links[] = $this->createTypeLink($innerTypes, $context, $title, $options, $currentTypeDoc);
                     continue;
                 }
 
                 if ($type instanceof ConditionalForParameter || $type instanceof Conditional) {
                     $possibleTypes = TypeHelper::getPossibleTypesByConditionalType($type);
-                    $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options);
+                    $links[] = $this->createTypeLink($possibleTypes, $context, $title, $options, $currentTypeDoc);
                     continue;
                 }
 
                 if ($type instanceof Intersection) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $innerTypesLinks = array_map(
-                        fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options),
+                        fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
                         $innerTypes
                     );
                     $links[] = implode('&amp;', $innerTypesLinks);
@@ -247,7 +247,7 @@ abstract class BaseRenderer extends Component
                 }
 
                 if ($type instanceof Array_ && substr((string) $type, -3, 3) === ')[]') {
-                    $arrayTypesLinks = $this->createTypeLink($type->getValueType(), $context, $title, $options);
+                    $arrayTypesLinks = $this->createTypeLink($type->getValueType(), $context, $title, $options, $currentTypeDoc);
                     $links[] = "({$arrayTypesLinks})[]";
                     continue;
                 }
@@ -257,7 +257,7 @@ abstract class BaseRenderer extends Component
                     if ($valueType instanceof Object_ && $valueType->getFqsen() !== null) {
                         $templateType = $this->getTemplateType((string) $valueType->getFqsen(), $context);
                         if ($templateType !== null) {
-                            $typeLink = $this->createTypeLink($templateType, $context, $title, $options);
+                            $typeLink = $this->createTypeLink($templateType, $context, $title, $options, $currentTypeDoc);
                             $links[] = $templateType instanceof Compound ? "({$typeLink})[]" : "{$typeLink}[]";
                             continue;
                         }
@@ -268,14 +268,14 @@ abstract class BaseRenderer extends Component
                 }
 
                 if ($type instanceof ArrayShape) {
-                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
+                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options, $currentTypeDoc);
                     $mainTypeLink = $this->generateLink('array', self::PHPSTAN_TYPE_BASE_URL . 'array-shapes', $options);
                     $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
                     continue;
                 }
 
                 if ($type instanceof ObjectShape) {
-                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options);
+                    $itemsLinks = $this->createLinksByShapeItems($type->getItems(), $context, $title, $options, $currentTypeDoc);
                     $mainTypeLink = $this->generateLink('object', self::PHPSTAN_TYPE_BASE_URL . 'object-shapes', $options);
                     $links[] = $mainTypeLink . '{' . implode(', ', $itemsLinks) . '}';
                     continue;
@@ -291,7 +291,7 @@ abstract class BaseRenderer extends Component
                     continue;
                 }
 
-                if (($link = $this->createLinkByTypeWithGenerics($type, $context, $title, $options)) !== null) {
+                if (($link = $this->createLinkByTypeWithGenerics($type, $context, $title, $options, $currentTypeDoc)) !== null) {
                     $links[] = $link;
                     continue;
                 }
@@ -306,7 +306,7 @@ abstract class BaseRenderer extends Component
                     }
 
                     if (($templateType = $this->getTemplateType($fqsen, $context)) !== null) {
-                        $links[] = $this->createTypeLink($templateType, $context, $title, $options);
+                        $links[] = $this->createTypeLink($templateType, $context, $title, $options, $currentTypeDoc);
                         continue;
                     }
 
@@ -607,8 +607,13 @@ abstract class BaseRenderer extends Component
      * @param ShapeItem[] $items
      * @return string[]
      */
-    private function createLinksByShapeItems(array $items, ?BaseDoc $context, ?string $title, array $options): array
-    {
+    private function createLinksByShapeItems(
+        array $items,
+        ?BaseDoc $context,
+        ?string $title,
+        array $options,
+        ?TypeDoc $currentTypeDoc
+    ): array {
         $links = [];
 
         foreach ($items as $item) {
@@ -618,10 +623,10 @@ abstract class BaseRenderer extends Component
                     '%s%s: %s',
                     $itemKey,
                     $item->isOptional() ? '?' : '',
-                    $this->createTypeLink($item->getValue(), $context, $title, $options)
+                    $this->createTypeLink($item->getValue(), $context, $title, $options, $currentTypeDoc)
                 );
             } else {
-                $links[] = $this->createTypeLink($item->getValue(), $context, $title, $options);
+                $links[] = $this->createTypeLink($item->getValue(), $context, $title, $options, $currentTypeDoc);
             }
         }
 
@@ -635,15 +640,21 @@ abstract class BaseRenderer extends Component
         Type $type,
         ?BaseDoc $context,
         ?string $title,
-        array $options
+        array $options,
+        ?TypeDoc $currentTypeDoc
     ): ?string {
         /**
          * @param Type[] $genericTypes
          */
-        $generateLink = function (Type $mainType, array $genericTypes) use ($context, $title, $options): string {
+        $generateLink = function (Type $mainType, array $genericTypes) use (
+            $context,
+            $title,
+            $options,
+            $currentTypeDoc
+        ): string {
             $genericTypesLinks = $this->createTypeLinksByTypes($genericTypes, $context, $title, $options);
             $mainTypeLinkOptions = array_merge($options, ['forcePhpStanLink' => true]);
-            $mainTypeLink = $this->createTypeLink($mainType, $context, $title, $mainTypeLinkOptions);
+            $mainTypeLink = $this->createTypeLink($mainType, $context, $title, $mainTypeLinkOptions, $currentTypeDoc);
             return  "{$mainTypeLink}&lt;" . implode(', ', $genericTypesLinks) . '&gt;';
         };
 

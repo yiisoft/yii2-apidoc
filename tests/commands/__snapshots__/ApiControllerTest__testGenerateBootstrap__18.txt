@@ -289,54 +289,89 @@ Array
 
     [41] => Array
         (
+            [line] => 93
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getArrayWithStaticGeneric'
+        )
+
+    [42] => Array
+        (
+            [line] => 100
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getIterableWithStaticGeneric'
+        )
+
+    [43] => Array
+        (
+            [line] => 107
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getArrayShapeWithStaticGeneric'
+        )
+
+    [44] => Array
+        (
+            [line] => 114
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getObjectShapeWithStaticGeneric'
+        )
+
+    [45] => Array
+        (
+            [line] => 121
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getStaticOrNull'
+        )
+
+    [46] => Array
+        (
             [line] => 11
             [file] => /tests/data/api/base/Component.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\base\Component'
         )
 
-    [42] => Array
+    [47] => Array
         (
             [line] => 24
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'one'
         )
 
-    [43] => Array
+    [48] => Array
         (
             [line] => 31
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'all'
         )
 
-    [44] => Array
+    [49] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveQueryInterface'
         )
 
-    [45] => Array
+    [50] => Array
         (
             [line] => 13
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'one'
         )
 
-    [46] => Array
+    [51] => Array
         (
             [line] => 14
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'all'
         )
 
-    [47] => Array
+    [52] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecord.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveRecord'
         )
 
-    [48] => Array
+    [53] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecordInterface.php

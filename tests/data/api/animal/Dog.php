@@ -86,4 +86,39 @@ class Dog extends Animal
     public function getArrayOfStatic()
     {
     }
+
+    /**
+     * @return array<string, static>
+     */
+    public function getArrayWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return iterable<string, static>
+     */
+    public function getIterableWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return array{someObject: static}
+     */
+    public function getArrayShapeWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return array{someObject: static}
+     */
+    public function getObjectShapeWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return static|null
+     */
+    public function getStaticOrNull()
+    {
+    }
 }
