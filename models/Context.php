@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -11,6 +12,7 @@ use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
 use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
+use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\apidoc\helpers\PrettyPrinter;
@@ -45,7 +47,6 @@ class Context extends Component
      * @var array
      */
     public $warnings = [];
-
 
     /**
      * Returning TypeDoc for a type given
@@ -88,6 +89,10 @@ class Context extends Component
         $this->files[$fileName] = sha1_file($fileName);
     }
 
+    /**
+     * @param File $reflection
+     * @param string $fileName
+     */
     private function parseFile($reflection, $fileName)
     {
         foreach ($reflection->getClasses() as $class) {
@@ -292,7 +297,7 @@ class Context extends Component
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'type', 'types', 'since'] as $property) {
+                foreach (['shortDescription', 'type', 'since'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $p->getPackageName() !== $inheritedProperty->getPackageName()) {
@@ -325,7 +330,7 @@ class Context extends Component
                     continue;
                 }
                 // set all properties that are empty.
-                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions', 'since'] as $property) {
+                foreach (['shortDescription', 'return', 'returnType', 'exceptions', 'since'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $m->getPackageName() !== $inheritedMethod->getPackageName()) {
@@ -353,11 +358,8 @@ class Context extends Component
                     if (empty($param->description) || trim($param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
-                    if (empty($param->type) || trim($param->type) === '') {
+                    if ($param->type === null) {
                         $param->type = $inheritedMethod->params[$i]->type;
-                    }
-                    if (empty($param->types)) {
-                        $param->types = $inheritedMethod->params[$i]->types;
                     }
                 }
                 $m->removeTag('inheritdoc');
@@ -378,7 +380,7 @@ class Context extends Component
         );
 
         $methods = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
                 if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
@@ -404,7 +406,7 @@ class Context extends Component
         );
 
         $properties = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->properties[$method->name])) {
                 $cproperty = $candidate->properties[$method->name];
                 if ($cproperty->hasTag('inheritdoc')) {
@@ -436,7 +438,7 @@ class Context extends Component
     private function getInterfaces($class)
     {
         $interfaces = [];
-        foreach($class->interfaces as $interface) {
+        foreach ($class->interfaces as $interface) {
             if (isset($this->interfaces[$interface])) {
                 $interfaces[] = $this->interfaces[$interface];
             }
@@ -468,7 +470,7 @@ class Context extends Component
                     ];
                 } else {
                     // Override the setter-defined property if it exists already
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
@@ -476,7 +478,6 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $method->returnType,
-                        'types' => $method->returnTypes,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
                         'since' => $method->since,
@@ -502,7 +503,7 @@ class Context extends Component
                     }
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
@@ -510,7 +511,6 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $param->type,
-                        'types' => $param->types,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,
                         'since' => $method->since,
@@ -574,6 +574,9 @@ class Context extends Component
         return false;
     }
 
+    /**
+     * @return Project
+     */
     public function getReflectionProject()
     {
         $files = [];
@@ -588,6 +591,9 @@ class Context extends Component
         $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
-        return $projectFactory->create('ApiDoc', $files);
+        /** @var Project */
+        $project = $projectFactory->create('ApiDoc', $files);
+
+        return $project;
     }
 }

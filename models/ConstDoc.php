@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Php\Constant;
  */
 class ConstDoc extends BaseDoc
 {
+    /**
+     * @var string|null
+     */
     public $definedBy;
     /**
      * @var string|null
@@ -26,14 +29,15 @@ class ConstDoc extends BaseDoc
 
 
     /**
+     * @param ClassDoc|TraitDoc $parent
      * @param Constant|null $reflector
      * @param Context|null $context
      * @param array $config
      * @param DocBlock|null $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;

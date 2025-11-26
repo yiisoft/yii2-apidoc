@@ -64,7 +64,7 @@ ArrayHelper::multisort($constants, 'name');
                       </strong>
                   <?php } ?>
               </td>
-              <td><?= $renderer->createTypeLink($constant->definedBy) ?></td>
+              <td><?= $renderer->createTypeLink($constant->definedBy, $type) ?></td>
             </tr>
         <?php } ?>
     </table>

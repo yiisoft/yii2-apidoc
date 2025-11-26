@@ -8,7 +8,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\Php\Argument;
-use yii\apidoc\helpers\TypeHelper;
+use phpDocumentor\Reflection\Type;
 use yii\base\BaseObject;
 
 /**
@@ -29,31 +29,32 @@ class ParamDoc extends BaseObject
     // will be set by creating class
     public $description;
     /**
-     * @var string|null
+     * @var Type|null
      */
     public $type;
-    /**
-     * @var string[]|null
-     */
-    public $types;
     public $sourceFile;
-
+    /**
+     * @var FunctionDoc|MethodDoc
+     */
+    public $parent;
 
     /**
+     * @param FunctionDoc|MethodDoc $parent
      * @param Argument|null $reflector
      * @param Context|null $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
         parent::__construct($config);
+
+        $this->parent = $parent;
 
         if ($reflector !== null) {
             $this->name = $reflector->getName();
 
             if ($this->type === null) {
-                $this->type = (string) $reflector->getType();
-                $this->types = TypeHelper::splitType($reflector->getType());
+                $this->type = $reflector->getType();
             }
 
             if (PHP_VERSION_ID >= 80100) {

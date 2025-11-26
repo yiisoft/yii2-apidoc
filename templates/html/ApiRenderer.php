@@ -20,6 +20,7 @@ use yii\helpers\Html;
 use yii\web\AssetManager;
 use yii\web\View;
 use Yii;
+use yii\apidoc\models\TypeDoc;
 
 /**
  * The base class for HTML API documentation renderers.
@@ -259,20 +260,16 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<span class="signature-type">' . $this->createTypeLink($property->types, $context) . '</span>'
+            . '<span class="signature-type">' . $this->createTypeLink($property->type, $property) . '</span>'
             . ' ' . $this->createSubjectLink($property, $property->name) . ' '
             . ApiMarkdown::highlight('= ' . $this->renderDefaultValue($property->defaultValue), 'php');
     }
 
-    /**
-     * @param MethodDoc $method
-     * @return string
-     */
-    public function renderMethodSignature($method, $context = null)
+    public function renderMethodSignature(MethodDoc $method, ?TypeDoc $context = null): string
     {
         $params = [];
         foreach ($method->params as $param) {
-            $params[] = '<span class="signature-type">' . $this->createTypeLink($param->types, $context) . '</span> '
+            $params[] = '<span class="signature-type">' . $this->createTypeLink($param->type, $method) . '</span> '
                 . ($param->isPassedByReference ? '<b>&</b>' : '')
                 . ApiMarkdown::highlight(
                     $param->name
@@ -292,7 +289,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
             . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
-            . $this->createTypeLink($method->returnTypes, $context) . '</span> '
+            . $this->createTypeLink($method->returnType, $method, null, [], $context) . '</span> '
             . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
             . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
     }

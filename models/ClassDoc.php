@@ -7,6 +7,8 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\Php\Class_;
+
 /**
  * Represents API documentation information for a `class`.
  *
@@ -91,7 +93,9 @@ class ClassDoc extends TypeDoc
     }
 
     /**
-     * @inheritdoc
+     * @param Class_|null $reflector
+     * @param Context|null $context
+     * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
     {
@@ -118,11 +122,11 @@ class ClassDoc extends TypeDoc
         foreach ($reflector->getConstants() as $constantReflector) {
             $docBlock = $constantReflector->getDocBlock();
             if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector, null, [], $docBlock);
+                $event = new EventDoc($this, $constantReflector, null, [], $docBlock);
                 $event->definedBy = $this->name;
                 $this->events[$event->name] = $event;
             } else {
-                $constant = new ConstDoc($constantReflector);
+                $constant = new ConstDoc($this, $constantReflector);
                 $constant->definedBy = $this->name;
                 $this->constants[$constant->name] = $constant;
             }

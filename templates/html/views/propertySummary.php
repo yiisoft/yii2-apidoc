@@ -51,9 +51,9 @@ if (
             ) { ?>
                 <tr id="<?= $property->name ?>" class="<?= $property->definedBy !== $type->name ? 'inherited' : '' ?>">
                     <td><?= $renderer->createSubjectLink($property, null, [], $type) ?></td>
-                    <td><?= $renderer->createTypeLink($property->types) ?></td>
+                    <td><?= $renderer->createTypeLink($property->type, $property) ?></td>
                     <td><?= ApiMarkdown::process($property->shortDescription, $property->definedBy, true) ?></td>
-                    <td><?= $renderer->createTypeLink($property->definedBy) ?></td>
+                    <td><?= $renderer->createTypeLink($property->definedBy, $type) ?></td>
                 </tr>
             <?php }; ?>
         <?php } ?>

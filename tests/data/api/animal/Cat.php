@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -9,6 +10,11 @@ namespace yiiunit\apidoc\data\api\animal;
 
 /**
  * Cat represents a cat animal.
+ *
+ * @method $first is true ? string : string[] methodWithInvalidReturnType2(bool $first) Will be ignored
+ *
+ * @psalm-type SomePsalmType = (string|array<string, mixed>)
+ * @phpstan-type SomePhpStanType (string|array<string, mixed>|object)
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
@@ -32,6 +38,55 @@ class Cat extends Animal
     public function methodWithoutDocAndTypeHints($param)
     {
         return $param;
+    }
+
+    /**
+     * @return $first is true ? string : string[] Incorrect conditional type (without parentheses)
+     */
+    public function methodWithInvalidReturnType(bool $first)
+    {
+        return $first ? '' : [''];
+    }
+
+    /**
+     * @return SomePsalmType
+     */
+    public function getSomePsalmType(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return SomePhpStanType
+     */
+    public function getSomePhpStanType(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return class-string
+     */
+    public function getClassStringWithoutGenerics(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return interface-string
+     */
+    public function getInterfaceStringWithoutGenerics(): string
+    {
+        return '';
+    }
+
+    /**
+     * @param class-string<Cat>
+     * @return interface-string<Cat>
+     */
+    public function getInterfaceStringByClassString(string $string): string
+    {
+        return '';
     }
 
     /**

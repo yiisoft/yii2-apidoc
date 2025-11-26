@@ -7,6 +7,8 @@
 
 namespace yii\apidoc\helpers;
 
+use phpDocumentor\Reflection\PseudoTypes\Conditional;
+use phpDocumentor\Reflection\PseudoTypes\ConditionalForParameter;
 use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\Types\AggregatedType;
 
@@ -18,24 +20,41 @@ use phpDocumentor\Reflection\Types\AggregatedType;
 final class TypeHelper
 {
     /**
-     * @return string[]
+     * @return Type[]
      */
-    public static function splitType(?Type $type): array
+    public static function getTypesByAggregatedType(AggregatedType $compound): array
     {
-        if ($type === null) {
-            return [];
-        }
-
-        // TODO: Don't split the Intersection
-        if (!$type instanceof AggregatedType) {
-            return [(string) $type];
-        }
-
         $types = [];
-        foreach ($type as $childType) {
-            $types[] = (string) $childType;
+        foreach ($compound as $type) {
+            $types[] = $type;
         }
 
         return $types;
+    }
+
+    /**
+     * @param Conditional|ConditionalForParameter $type
+     * @return Type[] Possible unique types.
+     */
+    public static function getPossibleTypesByConditionalType(Type $type): array
+    {
+        $types = [];
+
+        foreach ([$type->getIf(), $type->getElse()] as $innerType) {
+            if ($innerType instanceof Conditional || $innerType instanceof ConditionalForParameter) {
+                $types = array_merge($types, self::getPossibleTypesByConditionalType($innerType));
+            } elseif ($innerType instanceof AggregatedType) {
+                $types = array_merge($types, self::getTypesByAggregatedType($innerType));
+            } else {
+                $types[] = $innerType;
+            }
+        }
+
+        $uniqueTypes = [];
+        foreach ($types as $innerType) {
+            $uniqueTypes[(string) $innerType] = $innerType;
+        }
+
+        return array_values($uniqueTypes);
     }
 }

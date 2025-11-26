@@ -9,7 +9,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
-use yii\apidoc\helpers\TypeHelper;
+use phpDocumentor\Reflection\Type;
 use yii\helpers\StringHelper;
 
 /**
@@ -26,13 +26,9 @@ class PropertyDoc extends BaseDoc
     public $visibility;
     public $isStatic;
     /**
-     * @var string|null
+     * @var Type|null
      */
     public $type;
-    /**
-     * @var string[]|null
-     */
-    public $types;
     /**
      * @var string|null
      */
@@ -40,7 +36,9 @@ class PropertyDoc extends BaseDoc
     // will be set by creating class
     public $getter;
     public $setter;
-    // will be set by creating class
+    /**
+     * @var string|null
+     */
     public $definedBy;
 
 
@@ -61,13 +59,14 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
+     * @param TypeDoc $parent
      * @param Property|null $reflector
      * @param Context|null $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
@@ -86,9 +85,7 @@ class PropertyDoc extends BaseDoc
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
-                $this->type = (string) $tag->getType();
-                $this->types = TypeHelper::splitType($tag->getType());
-
+                $this->type = $tag->getType();
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             } elseif ($this->isInheritdocTag($tag)) {
@@ -105,8 +102,7 @@ class PropertyDoc extends BaseDoc
         }
 
         if (!$hasInheritdoc && $this->type === null) {
-            $this->type = (string) $reflector->getType();
-            $this->types = [$this->type];
+            $this->type = $reflector->getType();
         }
     }
 }

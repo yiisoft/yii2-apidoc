@@ -11,6 +11,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
+use phpDocumentor\Reflection\Types\Object_;
 use yii\helpers\StringHelper;
 
 /**
@@ -25,21 +26,18 @@ class EventDoc extends ConstDoc
      * @var string|null
      */
     public $type;
-    /**
-     * @var string[]|null
-     */
-    public $types;
 
 
     /**
+     * @param ClassDoc|TraitDoc $parent
      * @param Class_|Constant|null $reflector
      * @param Context|null $context
      * @param array $config
      * @param DocBlock|null $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
@@ -62,7 +60,6 @@ class EventDoc extends ConstDoc
                 $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->types = [$this->type];
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }

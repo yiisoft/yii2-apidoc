@@ -10,6 +10,8 @@ namespace yiiunit\apidoc\data\api\animal;
 /**
  * Dog represents a dog animal.
  *
+ * @phpstan-type MyArray array{foo: int, bar: string}
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
@@ -25,9 +27,98 @@ class Dog extends Animal
     }
 
     /**
+     * @return array{string, string, string}
+     */
+    public function getThreeStringsArray(): array
+    {
+        return ['one', 'two', 'three'];
+    }
+
+    /**
+     * @return MyArray['bar']
+     */
+    public function testOffsetAccess(): string
+    {
+        return '';
+    }
+
+    /**
+     * @return non-empty-list<array>
+     */
+    public function getNonEmptyList(): array
+    {
+        return [[]];
+    }
+
+    /**
+     * @return list
+     */
+    public function getListWithoutGenerics(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return non-empty-list
+     */
+    public function getNonEmptyListWithoutGenerics(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return Dog<Cat, Animal>
+     */
+    public function getClassWithTwoGenerics()
+    {
+    }
+
+    /**
      * @return invalid-type
      */
     public function methodWithInvalidReturnTag()
+    {
+    }
+
+    /**
+     * @return static[]
+     */
+    public function getArrayOfStatic()
+    {
+    }
+
+    /**
+     * @return array<string, static>
+     */
+    public function getArrayWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return iterable<string, static>
+     */
+    public function getIterableWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return array{someObject: static}
+     */
+    public function getArrayShapeWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return array{someObject: static}
+     */
+    public function getObjectShapeWithStaticGeneric()
+    {
+    }
+
+    /**
+     * @return static|null
+     */
+    public function getStaticOrNull()
     {
     }
 }
