@@ -52,10 +52,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     private function removeParentFieldsRecursive($data)
     {
-        if (!is_array($data) && !is_object($data)) {
-            return $data;
-        }
-
         if (is_array($data)) {
             foreach ($data as $key => $value) {
                 if ($key === 'parent') {
