@@ -11,6 +11,7 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
+use phpDocumentor\Reflection\DocBlock\Tags\InvalidTag;
 use phpDocumentor\Reflection\DocBlock\Tags\Since;
 use phpDocumentor\Reflection\DocBlock\Tags\Template;
 use phpDocumentor\Reflection\FqsenResolver;
@@ -287,6 +288,19 @@ class BaseDoc extends BaseObject
                     $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                     unset($this->tags[$i]);
                 }
+            } elseif ($tag instanceof InvalidTag && $context !== null) {
+                $exception = $tag->getException();
+                $message = 'Invalid tag: ' . $tag->render() . '.';
+
+                if ($exception !== null) {
+                    $message .= ' Exception message: ' . $exception->getMessage();
+                }
+
+                $context->errors[] = [
+                    'line' => $this->startLine,
+                    'file' => $this->sourceFile,
+                    'message' => $message,
+                ];
             }
         }
 

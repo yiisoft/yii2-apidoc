@@ -72,4 +72,11 @@ class Dog extends Animal
     public function getClassWithTwoGenerics()
     {
     }
+
+    /**
+     * @return invalid-type
+     */
+    public function methodWithInvalidReturnTag()
+    {
+    }
 }
