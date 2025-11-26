@@ -79,4 +79,11 @@ class Dog extends Animal
     public function methodWithInvalidReturnTag()
     {
     }
+
+    /**
+     * @return static[]
+     */
+    public function getArrayOfStatic()
+    {
+    }
 }

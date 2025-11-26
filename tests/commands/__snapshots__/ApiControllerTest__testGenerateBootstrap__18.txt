@@ -282,54 +282,61 @@ Array
 
     [40] => Array
         (
+            [line] => 86
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'getArrayOfStatic'
+        )
+
+    [41] => Array
+        (
             [line] => 11
             [file] => /tests/data/api/base/Component.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\base\Component'
         )
 
-    [41] => Array
+    [42] => Array
         (
             [line] => 24
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'one'
         )
 
-    [42] => Array
+    [43] => Array
         (
             [line] => 31
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'all'
         )
 
-    [43] => Array
+    [44] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveQueryInterface'
         )
 
-    [44] => Array
+    [45] => Array
         (
             [line] => 13
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'one'
         )
 
-    [45] => Array
+    [46] => Array
         (
             [line] => 14
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'all'
         )
 
-    [46] => Array
+    [47] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecord.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveRecord'
         )
 
-    [47] => Array
+    [48] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecordInterface.php

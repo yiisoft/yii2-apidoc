@@ -263,7 +263,7 @@ abstract class BaseRenderer extends Component
                         }
                     }
 
-                    $links[] = $this->createTypeLink($valueType, $context, $title, $options) . '[]';
+                    $links[] = $this->createTypeLink($valueType, $context, $title, $options, $currentTypeDoc) . '[]';
                     continue;
                 }
 
