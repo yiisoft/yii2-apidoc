@@ -56,7 +56,7 @@ class ApiControllerTest extends TestCase
 
     // Tests :
 
-    public function testNoFiles()
+    public function testNoFiles(): void
     {
         $output = $this->generateApi(Yii::getAlias('@yiiunit/apidoc/data/guide'));
 
@@ -64,7 +64,7 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
-    public function testGenerateBootstrap()
+    public function testGenerateBootstrap(): void
     {
         $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');
         $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => 'bootstrap']);
@@ -110,5 +110,16 @@ class ApiControllerTest extends TestCase
         // Remove the dynamic parts of the file paths
         $errorsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $errorsContent);
         $this->assertMatchesTextSnapshot($errorsContent);
+    }
+
+    public function testGenerateJson(): void
+    {
+        $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');
+        $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => 'json']);
+
+        $this->assertNotEmpty($output);
+        $this->assertStringContainsString('Updating cross references and backlinks... done.', $output);
+
+        $this->assertMatchesJsonSnapshot(file_get_contents(Yii::getAlias('@runtime') . '/types.json'));
     }
 }
