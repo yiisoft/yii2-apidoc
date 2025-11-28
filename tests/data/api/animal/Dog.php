@@ -12,6 +12,8 @@ namespace yiiunit\apidoc\data\api\animal;
  *
  * @phpstan-type MyArray array{foo: int, bar: string}
  *
+ * @phpstan-type InvalidType invalid-type
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
