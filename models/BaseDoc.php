@@ -8,6 +8,7 @@
 
 namespace yii\apidoc\models;
 
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Deprecated;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
@@ -22,7 +23,7 @@ use phpDocumentor\Reflection\Php\Method;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Php\Trait_;
 use phpDocumentor\Reflection\TypeResolver;
-use Throwable;
+use RuntimeException;
 use yii\base\BaseObject;
 use yii\helpers\StringHelper;
 
@@ -290,7 +291,7 @@ class BaseDoc extends BaseObject
                         $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                         unset($this->tags[$i]);
                     }
-                } catch (Throwable $e) {
+                } catch (InvalidArgumentException | RuntimeException $e) {
                     if ($context !== null){
                         $context->errors[] = [
                             'line' => $this->startLine,
