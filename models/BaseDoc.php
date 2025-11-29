@@ -298,6 +298,8 @@ class BaseDoc extends BaseObject
                             'file' => $this->sourceFile,
                             'message' => 'Exception: ' . $e->getMessage(),
                         ];
+                    } else {
+                        throw $e;
                     }
                 }
             } elseif ($tag instanceof InvalidTag && $context !== null) {
