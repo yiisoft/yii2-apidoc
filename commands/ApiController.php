@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -37,7 +38,6 @@ class ApiController extends BaseController
      * left as is.
      */
     public $repoUrl;
-
 
     // TODO add force update option
     /**
@@ -145,6 +145,14 @@ class ApiController extends BaseController
     /**
      * @inheritdoc
      */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function findFiles($path, $except = [])
     {
         if (empty($except)) {
@@ -153,15 +161,15 @@ class ApiController extends BaseController
         $path = FileHelper::normalizePath($path);
         $options = [
             'filter' => function ($path) {
-                    if (is_file($path)) {
-                        $file = basename($path);
-                        if ($file[0] < 'A' || $file[0] > 'Z') {
-                            return false;
-                        }
+                if (is_file($path)) {
+                    $file = basename($path);
+                    if ($file[0] < 'A' || $file[0] > 'Z') {
+                        return false;
                     }
+                }
 
-                    return null;
-                },
+                return null;
+            },
             'only' => ['*.php'],
             'except' => $except,
         ];
@@ -188,13 +196,5 @@ class ApiController extends BaseController
         }
 
         return new $rendererClass();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function options($actionID)
-    {
-        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
     }
 }

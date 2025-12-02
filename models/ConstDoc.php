@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -26,7 +27,6 @@ class ConstDoc extends BaseDoc
      * @var string|null
      */
     public $value;
-
 
     /**
      * @param ClassDoc|TraitDoc $parent

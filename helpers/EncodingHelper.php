@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -20,10 +21,10 @@ final class EncodingHelper
         return mb_encode_numericentity(
             htmlspecialchars_decode(
                 htmlentities($string, ENT_NOQUOTES, 'UTF-8', false),
-                ENT_NOQUOTES
+                ENT_NOQUOTES,
             ),
             [0x80, 0x10FFFF, 0, ~0],
-            'UTF-8'
+            'UTF-8',
         );
     }
 }

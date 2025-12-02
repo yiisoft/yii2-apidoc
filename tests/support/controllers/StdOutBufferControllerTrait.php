@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -21,7 +22,6 @@ trait StdOutBufferControllerTrait
      * @var string error buffer.
      */
     private $stdErrBuffer = '';
-
 
     public function stdout($string)
     {

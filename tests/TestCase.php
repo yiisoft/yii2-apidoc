@@ -25,6 +25,32 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Asserting two strings equality ignoring line endings
+     *
+     * @param string $expected
+     * @param string $actual
+     */
+    public function assertEqualsWithoutLE($expected, $actual)
+    {
+        $expected = str_replace(["\r", "\n"], '', $expected);
+        $actual = str_replace(["\r", "\n"], '', $actual);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Asserts that a haystack contains a needle, ignoring indenting symbols.
+     *
+     * @param mixed  $needle
+     * @param mixed  $haystack
+     */
+    public function assertContainsWithoutIndent($needle, $haystack)
+    {
+        $needle = str_replace(["\r", "\n", "\t", '  '], '', $needle);
+        $haystack = str_replace(["\r", "\n", "\t", '  '], '', $haystack);
+        $this->assertStringContainsString($needle, $haystack);
+    }
+
+    /**
      * Populates Yii::$app with a new application
      * The application will be destroyed on tearDown() automatically.
      * @param array $config The application configuration, if needed
@@ -50,32 +76,6 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         Yii::$app = null;
         Yii::$container = new Container();
-    }
-
-    /**
-     * Asserting two strings equality ignoring line endings
-     *
-     * @param string $expected
-     * @param string $actual
-     */
-    public function assertEqualsWithoutLE($expected, $actual)
-    {
-        $expected = str_replace(["\r", "\n"], '', $expected);
-        $actual = str_replace(["\r", "\n"], '', $actual);
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * Asserts that a haystack contains a needle, ignoring indenting symbols.
-     *
-     * @param mixed  $needle
-     * @param mixed  $haystack
-     */
-    public function assertContainsWithoutIndent($needle, $haystack)
-    {
-        $needle = str_replace(["\r", "\n", "\t", '  '], '', $needle);
-        $haystack = str_replace(["\r", "\n", "\t", '  '], '', $haystack);
-        $this->assertStringContainsString($needle, $haystack);
     }
 
     /**

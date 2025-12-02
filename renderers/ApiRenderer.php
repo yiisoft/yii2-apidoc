@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\renderers;
 
-use Yii;
 use yii\apidoc\commands\ApiController;
 use yii\apidoc\models\Context;
 
@@ -24,7 +24,6 @@ abstract class ApiRenderer extends BaseRenderer
      * @see ApiController::$repoUrl
      */
     public $repoUrl;
-
 
     /**
      * Renders a given [[Context]].

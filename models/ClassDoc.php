@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -53,45 +54,6 @@ class ClassDoc extends TypeDoc
      */
     public $constants = [];
 
-
-    /**
-     * @inheritdoc
-     */
-    public function findSubject($subjectName)
-    {
-        if (($subject = parent::findSubject($subjectName)) !== null) {
-            return $subject;
-        }
-        foreach ($this->events as $name => $event) {
-            if ($subjectName == $name) {
-                return $event;
-            }
-        }
-        foreach ($this->constants as $name => $constant) {
-            if ($subjectName == $name) {
-                return $constant;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return EventDoc[]
-     */
-    public function getNativeEvents()
-    {
-        $events = [];
-        foreach ($this->events as $name => $event) {
-            if ($event->definedBy != $this->name) {
-                continue;
-            }
-            $events[$name] = $event;
-        }
-
-        return $events;
-    }
-
     /**
      * @param Class_|null $reflector
      * @param Context|null $context
@@ -131,5 +93,43 @@ class ClassDoc extends TypeDoc
                 $this->constants[$constant->name] = $constant;
             }
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findSubject($subjectName)
+    {
+        if (($subject = parent::findSubject($subjectName)) !== null) {
+            return $subject;
+        }
+        foreach ($this->events as $name => $event) {
+            if ($subjectName == $name) {
+                return $event;
+            }
+        }
+        foreach ($this->constants as $name => $constant) {
+            if ($subjectName == $name) {
+                return $constant;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return EventDoc[]
+     */
+    public function getNativeEvents()
+    {
+        $events = [];
+        foreach ($this->events as $name => $event) {
+            if ($event->definedBy != $this->name) {
+                continue;
+            }
+            $events[$name] = $event;
+        }
+
+        return $events;
     }
 }

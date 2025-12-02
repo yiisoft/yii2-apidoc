@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -34,6 +35,13 @@ abstract class BaseController extends Controller
      */
     public $pageTitle;
 
+    /**
+     * @inheritdoc
+     */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle']);
+    }
 
     /**
      * Checks that target directory is valid. Asks questions in tricky cases.
@@ -154,12 +162,4 @@ abstract class BaseController extends Controller
      * @return BaseRenderer
      */
     abstract protected function findRenderer($template);
-
-    /**
-     * @inheritdoc
-     */
-    public function options($actionID)
-    {
-        return array_merge(parent::options($actionID), ['template', 'exclude', 'pageTitle']);
-    }
 }

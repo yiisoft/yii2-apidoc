@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -17,6 +18,20 @@ use yii\helpers\StringHelper;
  */
 class ApiIndexer extends Indexer
 {
+    /**
+     * @return TokenizerInterface
+     */
+    public function getTokenizer()
+    {
+        $tokenizer = parent::getTokenizer();
+        if ($tokenizer instanceof StandardTokenizer) {
+            // yii is part of every doc and makes weird search results
+            $tokenizer->stopWords[] = 'yii';
+            $tokenizer->stopWords = array_unique($tokenizer->stopWords);
+        }
+        return $tokenizer;
+    }
+
     /**
      * @param string $file
      * @param string $contents
@@ -48,19 +63,5 @@ class ApiIndexer extends Indexer
             't' => $title,
             'd' => $description,
         ];
-    }
-
-    /**
-     * @return TokenizerInterface
-     */
-    public function getTokenizer()
-    {
-        $tokenizer = parent::getTokenizer();
-        if ($tokenizer instanceof StandardTokenizer) {
-            // yii is part of every doc and makes weird search results
-            $tokenizer->stopWords[] = 'yii';
-            $tokenizer->stopWords = array_unique($tokenizer->stopWords);
-        }
-        return $tokenizer;
     }
 }

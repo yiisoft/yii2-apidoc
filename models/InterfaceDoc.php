@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -23,7 +24,6 @@ class InterfaceDoc extends TypeDoc
      * @see Context::updateReferences() for initialization
      */
     public $implementedBy = [];
-
 
     /**
      * @param Interface_|null $reflector

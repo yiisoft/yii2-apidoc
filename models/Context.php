@@ -89,26 +89,6 @@ class Context extends Component
         $this->files[$fileName] = sha1_file($fileName);
     }
 
-    /**
-     * @param File $reflection
-     * @param string $fileName
-     */
-    private function parseFile($reflection, $fileName)
-    {
-        foreach ($reflection->getClasses() as $class) {
-            $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
-            $this->classes[$class->name] = $class;
-        }
-        foreach ($reflection->getInterfaces() as $interface) {
-            $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
-            $this->interfaces[$interface->name] = $interface;
-        }
-        foreach ($reflection->getTraits() as $trait) {
-            $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
-            $this->traits[$trait->name] = $trait;
-        }
-    }
-
     public function updateReferences()
     {
         // update all subclass references
@@ -169,6 +149,29 @@ class Context extends Component
         }
 
         // TODO reference exceptions to methods where they are thrown
+    }
+
+    /**
+     * @return Project
+     */
+    public function getReflectionProject()
+    {
+        $files = [];
+        foreach ($this->files as $fileName => $hash) {
+            $files[] = new LocalFile($fileName);
+        }
+
+        $projectFactory = ProjectFactory::createInstance();
+        $docBlockFactory = DocBlockFactory::createInstance();
+        $priority = 1200;
+
+        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
+        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
+
+        /** @var Project */
+        $project = $projectFactory->create('ApiDoc', $files);
+
+        return $project;
     }
 
     /**
@@ -247,8 +250,8 @@ class Context extends Component
             foreach ($attrNames as $attrName) {
                 foreach ($parent->$attrName as $item) {
                     if (
-                        isset($class->$attrName[$item->name]) &&
-                        !isset($this->traits[$class->$attrName[$item->name]->definedBy])
+                        isset($class->$attrName[$item->name])
+                        && !isset($this->traits[$class->$attrName[$item->name]->definedBy])
                     ) {
                         continue;
                     }
@@ -368,85 +371,6 @@ class Context extends Component
     }
 
     /**
-     * @param MethodDoc $method
-     * @param ClassDoc $class
-     * @return mixed
-     */
-    private function inheritMethodRecursive($method, $class)
-    {
-        $inheritanceCandidates = array_merge(
-            $this->getParents($class),
-            $this->getInterfaces($class)
-        );
-
-        $methods = [];
-        foreach ($inheritanceCandidates as $candidate) {
-            if (isset($candidate->methods[$method->name])) {
-                $cmethod = $candidate->methods[$method->name];
-                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
-                    $this->inheritDocs($candidate);
-                }
-                $methods[] = $cmethod;
-            }
-        }
-
-        return reset($methods);
-    }
-
-    /**
-     * @param PropertyDoc $method
-     * @param ClassDoc $class
-     * @return mixed
-     */
-    private function inheritPropertyRecursive($method, $class)
-    {
-        $inheritanceCandidates = array_merge(
-            $this->getParents($class),
-            $this->getInterfaces($class)
-        );
-
-        $properties = [];
-        foreach ($inheritanceCandidates as $candidate) {
-            if (isset($candidate->properties[$method->name])) {
-                $cproperty = $candidate->properties[$method->name];
-                if ($cproperty->hasTag('inheritdoc')) {
-                    $this->inheritDocs($candidate);
-                }
-                $properties[] = $cproperty;
-            }
-        }
-
-        return reset($properties);
-    }
-
-    /**
-     * @param ClassDoc $class
-     * @return array
-     */
-    private function getParents($class)
-    {
-        if ($class->parentClass === null || !isset($this->classes[$class->parentClass])) {
-            return [];
-        }
-        return array_merge([$this->classes[$class->parentClass]], $this->getParents($this->classes[$class->parentClass]));
-    }
-
-    /**
-     * @param ClassDoc $class
-     * @return array
-     */
-    private function getInterfaces($class)
-    {
-        $interfaces = [];
-        foreach ($class->interfaces as $interface) {
-            if (isset($this->interfaces[$interface])) {
-                $interfaces[] = $this->interfaces[$interface];
-            }
-        }
-        return $interfaces;
-    }
-
-    /**
      * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
      * @param ClassDoc $class
      */
@@ -522,6 +446,127 @@ class Context extends Component
     }
 
     /**
+     * @param ClassDoc $classA
+     * @param ClassDoc|string $classB
+     * @return bool
+     */
+    protected function isSubclassOf($classA, $classB)
+    {
+        if (is_object($classB)) {
+            $classB = $classB->name;
+        }
+        if ($classA->name == $classB) {
+            return true;
+        }
+        while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
+            $classA = $this->classes[$classA->parentClass];
+            if ($classA->name == $classB) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param File $reflection
+     * @param string $fileName
+     */
+    private function parseFile($reflection, $fileName)
+    {
+        foreach ($reflection->getClasses() as $class) {
+            $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
+            $this->classes[$class->name] = $class;
+        }
+        foreach ($reflection->getInterfaces() as $interface) {
+            $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
+            $this->interfaces[$interface->name] = $interface;
+        }
+        foreach ($reflection->getTraits() as $trait) {
+            $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
+            $this->traits[$trait->name] = $trait;
+        }
+    }
+
+    /**
+     * @param MethodDoc $method
+     * @param ClassDoc $class
+     * @return mixed
+     */
+    private function inheritMethodRecursive($method, $class)
+    {
+        $inheritanceCandidates = array_merge(
+            $this->getParents($class),
+            $this->getInterfaces($class),
+        );
+
+        $methods = [];
+        foreach ($inheritanceCandidates as $candidate) {
+            if (isset($candidate->methods[$method->name])) {
+                $cmethod = $candidate->methods[$method->name];
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
+                    $this->inheritDocs($candidate);
+                }
+                $methods[] = $cmethod;
+            }
+        }
+
+        return reset($methods);
+    }
+
+    /**
+     * @param PropertyDoc $method
+     * @param ClassDoc $class
+     * @return mixed
+     */
+    private function inheritPropertyRecursive($method, $class)
+    {
+        $inheritanceCandidates = array_merge(
+            $this->getParents($class),
+            $this->getInterfaces($class),
+        );
+
+        $properties = [];
+        foreach ($inheritanceCandidates as $candidate) {
+            if (isset($candidate->properties[$method->name])) {
+                $cproperty = $candidate->properties[$method->name];
+                if ($cproperty->hasTag('inheritdoc')) {
+                    $this->inheritDocs($candidate);
+                }
+                $properties[] = $cproperty;
+            }
+        }
+
+        return reset($properties);
+    }
+
+    /**
+     * @param ClassDoc $class
+     * @return array
+     */
+    private function getParents($class)
+    {
+        if ($class->parentClass === null || !isset($this->classes[$class->parentClass])) {
+            return [];
+        }
+        return array_merge([$this->classes[$class->parentClass]], $this->getParents($this->classes[$class->parentClass]));
+    }
+
+    /**
+     * @param ClassDoc $class
+     * @return array
+     */
+    private function getInterfaces($class)
+    {
+        $interfaces = [];
+        foreach ($class->interfaces as $interface) {
+            if (isset($this->interfaces[$interface])) {
+                $interfaces[] = $this->interfaces[$interface];
+            }
+        }
+        return $interfaces;
+    }
+
+    /**
      * Check whether a method has `$number` non-optional parameters.
      * @param MethodDoc $method
      * @param int $number number of not optional parameters
@@ -550,50 +595,5 @@ class Context extends Component
             }
         }
         return null;
-    }
-
-    /**
-     * @param ClassDoc $classA
-     * @param ClassDoc|string $classB
-     * @return bool
-     */
-    protected function isSubclassOf($classA, $classB)
-    {
-        if (is_object($classB)) {
-            $classB = $classB->name;
-        }
-        if ($classA->name == $classB) {
-            return true;
-        }
-        while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
-            $classA = $this->classes[$classA->parentClass];
-            if ($classA->name == $classB) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return Project
-     */
-    public function getReflectionProject()
-    {
-        $files = [];
-        foreach ($this->files as $fileName => $hash) {
-            $files[] = new LocalFile($fileName);
-        }
-
-        $projectFactory = ProjectFactory::createInstance();
-        $docBlockFactory = DocBlockFactory::createInstance();
-        $priority = 1200;
-
-        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
-        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
-
-        /** @var Project */
-        $project = $projectFactory->create('ApiDoc', $files);
-
-        return $project;
     }
 }

@@ -107,66 +107,6 @@ class BaseDoc extends BaseObject
     public array $psalmTypeImports = [];
 
     /**
-     * Checks if doc has tag of a given name
-     * @param string $name tag name
-     * @return bool if doc has tag of a given name
-     */
-    public function hasTag($name)
-    {
-        foreach ($this->tags as $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Removes tag of a given name
-     * @param string $name
-     */
-    public function removeTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                unset($this->tags[$i]);
-            }
-        }
-    }
-
-    /**
-     * Get the first tag of a given name
-     * @param string $name tag name.
-     * @return Tag|null tag instance, `null` if not found.
-     * @since 2.0.5
-     */
-    public function getFirstTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return $this->tags[$i];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
-     *
-     * @return string|null
-     * @since 2.1.3
-     */
-    public function getPackageName()
-    {
-        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
-            return null;
-        }
-
-        return $match[1];
-    }
-
-    /**
      * @param self|null $parent
      * @param Class_|Method|Trait_|Interface_|Property|Constant|null $reflector
      * @param Context|null $context
@@ -254,7 +194,7 @@ class BaseDoc extends BaseObject
                             PseudoTypeDoc::TYPE_PHPSTAN,
                             $this,
                             trim($tagData[0]),
-                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($phpStanType->name, $this->phpDocContext);
                         $this->phpStanTypes[(string) $fqsen] = $phpStanType;
@@ -265,7 +205,7 @@ class BaseDoc extends BaseObject
                             PseudoTypeDoc::TYPE_PSALM,
                             $this,
                             trim($tagData[0]),
-                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($psalmType->name, $this->phpDocContext);
                         $this->psalmTypes[(string) $fqsen] = $psalmType;
@@ -275,7 +215,7 @@ class BaseDoc extends BaseObject
                         $phpStanTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PHPSTAN,
                             trim($tagData[0]),
-                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($phpStanTypeImport->typeName, $this->phpDocContext);
                         $this->phpStanTypeImports[(string) $fqsen] = $phpStanTypeImport;
@@ -285,14 +225,14 @@ class BaseDoc extends BaseObject
                         $psalmTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PSALM,
                             trim($tagData[0]),
-                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($psalmTypeImport->typeName, $this->phpDocContext);
                         $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                         unset($this->tags[$i]);
                     }
-                } catch (InvalidArgumentException | RuntimeException $e) {
-                    if ($context !== null){
+                } catch (InvalidArgumentException|RuntimeException $e) {
+                    if ($context !== null) {
                         $context->errors[] = [
                             'line' => $this->startLine,
                             'file' => $this->sourceFile,
@@ -326,24 +266,64 @@ class BaseDoc extends BaseObject
         }
     }
 
-    protected function isInheritdocTag(Tag $tag): bool
+    /**
+     * Checks if doc has tag of a given name
+     * @param string $name tag name
+     * @return bool if doc has tag of a given name
+     */
+    public function hasTag($name)
     {
-        return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
+        foreach ($this->tags as $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
-     * Converts inline links to unified format.
-     * @see ApiMarkdownTrait::parseApiLinks()
-     * @param string|null $content
-     * @return string|null
+     * Removes tag of a given name
+     * @param string $name
      */
-    protected static function convertInlineLinks($content)
+    public function removeTag($name)
     {
-        if (!$content) {
-            return $content;
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                unset($this->tags[$i]);
+            }
+        }
+    }
+
+    /**
+     * Get the first tag of a given name
+     * @param string $name tag name.
+     * @return Tag|null tag instance, `null` if not found.
+     * @since 2.0.5
+     */
+    public function getFirstTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return $this->tags[$i];
+            }
         }
 
-        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', "[[$1]]", $content);
+        return null;
+    }
+
+    /**
+     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
+     *
+     * @return string|null
+     * @since 2.1.3
+     */
+    public function getPackageName()
+    {
+        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
+            return null;
+        }
+
+        return $match[1];
     }
 
     /**
@@ -365,13 +345,13 @@ class BaseDoc extends BaseObject
                 $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if (
-                    $abbrev === 'e.g.' ||
-                    $abbrev === 'i.e.' ||
-                    mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
+                    $abbrev === 'e.g.'
+                    || $abbrev === 'i.e.'
+                    || mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
                     $sentence .= static::extractFirstSentence(
                         mb_substr($text, $pos + 1, $length, 'utf-8'),
-                        $prevText
+                        $prevText,
                     );
                 }
             }
@@ -379,6 +359,26 @@ class BaseDoc extends BaseObject
         }
 
         return $text;
+    }
+
+    protected function isInheritdocTag(Tag $tag): bool
+    {
+        return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
+    }
+
+    /**
+     * Converts inline links to unified format.
+     * @see ApiMarkdownTrait::parseApiLinks()
+     * @param string|null $content
+     * @return string|null
+     */
+    protected static function convertInlineLinks($content)
+    {
+        if (!$content) {
+            return $content;
+        }
+
+        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', "[[$1]]", $content);
     }
 
     /**

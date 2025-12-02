@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -32,7 +33,6 @@ class GuideController extends BaseController
      * @var string prefix to prepend to all output file names generated for the guide.
      */
     public $guidePrefix = 'guide-';
-
 
     /**
      * Renders API documentation files
@@ -80,7 +80,7 @@ class GuideController extends BaseController
 
         // read blocktypes translations
         ApiMarkdown::$blockTranslations = [];
-        foreach($sourceDirs as $dir) {
+        foreach ($sourceDirs as $dir) {
             if (is_file("$dir/blocktypes.json")) {
                 ApiMarkdown::$blockTranslations = Json::decode(file_get_contents("$dir/blocktypes.json"), true);
             }
@@ -106,6 +106,13 @@ class GuideController extends BaseController
         return 0;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), ['apiDocs', 'guidePrefix']);
+    }
 
     /**
      * @inheritdoc
@@ -140,13 +147,5 @@ class GuideController extends BaseController
         }
 
         return new $rendererClass();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function options($actionID)
-    {
-        return array_merge(parent::options($actionID), ['apiDocs', 'guidePrefix']);
     }
 }

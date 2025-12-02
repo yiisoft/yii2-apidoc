@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -22,39 +23,6 @@ trait MarkdownHighlightTrait
      * @var Highlighter
      */
     private static $highlighter;
-
-
-    /**
-     * @inheritdoc
-     */
-    protected function renderCode($block)
-    {
-        if (self::$highlighter === null) {
-            self::$highlighter = new Highlighter();
-            self::$highlighter->setAutodetectLanguages([
-                'apache', 'nginx',
-                'bash', 'dockerfile', 'http',
-                'css', 'less', 'scss',
-                'javascript', 'json', 'markdown',
-                'php', 'sql', 'twig', 'xml',
-            ]);
-        }
-        try {
-            if (isset($block['language'])) {
-                if ($block['language'] === 'php' && strpos($block['content'], '<?=') !== false) {
-                    $block['language'] = 'html';
-                }
-
-                $result = self::$highlighter->highlight($block['language'], $block['content'] . "\n");
-                return "<pre><code class=\"hljs {$result->language} language-{$block['language']}\">{$result->value}</code></pre>\n";
-            } else {
-                $result = self::$highlighter->highlightAuto($block['content'] . "\n");
-                return "<pre><code class=\"hljs {$result->language}\">{$result->value}</code></pre>\n";
-            }
-        } catch (DomainException $e) {
-            return parent::renderCode($block);
-        }
-    }
 
     /**
      * Highlights code
@@ -88,5 +56,37 @@ trait MarkdownHighlightTrait
         }
 
         return $text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function renderCode($block)
+    {
+        if (self::$highlighter === null) {
+            self::$highlighter = new Highlighter();
+            self::$highlighter->setAutodetectLanguages([
+                'apache', 'nginx',
+                'bash', 'dockerfile', 'http',
+                'css', 'less', 'scss',
+                'javascript', 'json', 'markdown',
+                'php', 'sql', 'twig', 'xml',
+            ]);
+        }
+        try {
+            if (isset($block['language'])) {
+                if ($block['language'] === 'php' && strpos($block['content'], '<?=') !== false) {
+                    $block['language'] = 'html';
+                }
+
+                $result = self::$highlighter->highlight($block['language'], $block['content'] . "\n");
+                return "<pre><code class=\"hljs {$result->language} language-{$block['language']}\">{$result->value}</code></pre>\n";
+            } else {
+                $result = self::$highlighter->highlightAuto($block['content'] . "\n");
+                return "<pre><code class=\"hljs {$result->language}\">{$result->value}</code></pre>\n";
+            }
+        } catch (DomainException $e) {
+            return parent::renderCode($block);
+        }
     }
 }

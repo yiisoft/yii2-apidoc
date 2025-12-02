@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -40,23 +41,6 @@ class PropertyDoc extends BaseDoc
      * @var string|null
      */
     public $definedBy;
-
-
-    /**
-     * @return bool if property is read only
-     */
-    public function getIsReadOnly()
-    {
-        return $this->getter !== null && $this->setter === null;
-    }
-
-    /**
-     * @return bool if property is write only
-     */
-    public function getIsWriteOnly()
-    {
-        return $this->getter === null && $this->setter !== null;
-    }
 
     /**
      * @param TypeDoc $parent
@@ -104,5 +88,21 @@ class PropertyDoc extends BaseDoc
         if (!$hasInheritdoc && $this->type === null) {
             $this->type = $reflector->getType();
         }
+    }
+
+    /**
+     * @return bool if property is read only
+     */
+    public function getIsReadOnly()
+    {
+        return $this->getter !== null && $this->setter === null;
+    }
+
+    /**
+     * @return bool if property is write only
+     */
+    public function getIsWriteOnly()
+    {
+        return $this->getter === null && $this->setter !== null;
     }
 }

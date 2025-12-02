@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -60,37 +61,8 @@ trait ApiMarkdownTrait
 
         return [
             ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
-            $offset
+            $offset,
         ];
-    }
-
-    /**
-     * @param TypeDoc|null $type
-     * @param array $contexts
-     */
-    private function _findContexts($type, &$contexts = [])
-    {
-        if ($type === null) {
-            return;
-        }
-
-        $contexts[] = $type;
-
-        if ($type instanceof ClassDoc) {
-            foreach ($type->traits as $trait) {
-                $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
-            }
-            foreach ($type->interfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-            }
-            if ($type->parentClass) {
-                $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
-            }
-        } elseif ($type instanceof InterfaceDoc) {
-            foreach ($type->parentInterfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-            }
-        }
     }
 
     /**
@@ -141,7 +113,7 @@ trait ApiMarkdownTrait
 
             return [
                 ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
-                $offset
+                $offset,
             ];
         }
 
@@ -149,7 +121,7 @@ trait ApiMarkdownTrait
             if (($subject = $context->findSubject($object)) !== null) {
                 return [
                     ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
-                    $offset
+                    $offset,
                 ];
             }
 
@@ -167,14 +139,14 @@ trait ApiMarkdownTrait
         if (($type = static::$renderer->apiContext->getType($object)) !== null) {
             return [
                 ['apiLink', static::$renderer->createTypeLink($type, null, $title)],
-                $offset
+                $offset,
             ];
         }
 
         if (strpos($typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href') !== false) {
             return [
                 ['apiLink', $typeLink],
-                $offset
+                $offset,
             ];
         }
 
@@ -262,7 +234,7 @@ trait ApiMarkdownTrait
     /**
      * @since 2.0.5
      */
-    protected abstract function translateBlockType($type);
+    abstract protected function translateBlockType($type);
 
     /**
      * Renders a blockquote
@@ -274,5 +246,34 @@ trait ApiMarkdownTrait
             $class = ' class="' . $block['blocktype'] . '"';
         }
         return "<blockquote{$class}>" . $this->renderAbsy($block['content']) . "</blockquote>\n";
+    }
+
+    /**
+     * @param TypeDoc|null $type
+     * @param array $contexts
+     */
+    private function _findContexts($type, &$contexts = [])
+    {
+        if ($type === null) {
+            return;
+        }
+
+        $contexts[] = $type;
+
+        if ($type instanceof ClassDoc) {
+            foreach ($type->traits as $trait) {
+                $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
+            }
+            foreach ($type->interfaces as $interface) {
+                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+            }
+            if ($type->parentClass) {
+                $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
+            }
+        } elseif ($type instanceof InterfaceDoc) {
+            foreach ($type->parentInterfaces as $interface) {
+                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+            }
+        }
     }
 }

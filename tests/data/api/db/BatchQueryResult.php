@@ -22,18 +22,14 @@ class BatchQueryResult extends Component implements \Iterator
      * This method is required by the interface [[\Iterator]].
      */
     #[\ReturnTypeWillChange]
-    public function rewind()
-    {
-    }
+    public function rewind() {}
 
     /**
      * Moves the internal pointer to the next dataset.
      * This method is required by the interface [[\Iterator]].
      */
     #[\ReturnTypeWillChange]
-    public function next()
-    {
-    }
+    public function next() {}
 
     /**
      * Returns the index of the current dataset.
@@ -41,9 +37,7 @@ class BatchQueryResult extends Component implements \Iterator
      * @return int the index of the current row.
      */
     #[\ReturnTypeWillChange]
-    public function key()
-    {
-    }
+    public function key() {}
 
     /**
      * Returns the current dataset.
@@ -51,9 +45,7 @@ class BatchQueryResult extends Component implements \Iterator
      * @return mixed the current dataset.
      */
     #[\ReturnTypeWillChange]
-    public function current()
-    {
-    }
+    public function current() {}
 
     /**
      * Returns whether there is a valid dataset at the current position.
@@ -61,7 +53,5 @@ class BatchQueryResult extends Component implements \Iterator
      * @return bool whether there is a valid dataset at the current position.
      */
     #[\ReturnTypeWillChange]
-    public function valid()
-    {
-    }
+    public function valid() {}
 }

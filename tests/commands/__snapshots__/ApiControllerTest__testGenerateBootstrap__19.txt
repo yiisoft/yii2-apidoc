@@ -30,14 +30,14 @@ Array
 
     [4] => Array
         (
-            [line] => 20
+            [line] => 21
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )
 
     [5] => Array
         (
-            [line] => 81
+            [line] => 80
             [file] => /tests/data/api/animal/Dog.php
             [message] => Invalid tag: @return invalid-type. Exception message: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )
