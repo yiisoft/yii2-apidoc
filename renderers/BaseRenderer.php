@@ -30,6 +30,8 @@ use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\InterfaceString;
 use phpDocumentor\Reflection\Types\Intersection;
 use phpDocumentor\Reflection\Types\Iterable_;
+use phpDocumentor\Reflection\Types\Null_;
+use phpDocumentor\Reflection\Types\Nullable;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Self_;
 use phpDocumentor\Reflection\Types\Static_;
@@ -288,6 +290,11 @@ abstract class BaseRenderer extends Component
 
                 if ($type instanceof Static_ && !$type->getGenericTypes() && $currentTypeDoc !== null) {
                     $links[] = $this->createTypeLink($currentTypeDoc, null, null, $options);
+                    continue;
+                }
+
+                if ($type instanceof Nullable) {
+                    $links[] = $this->createTypeLink([$type->getActualType(), new Null_()]);
                     continue;
                 }
 
