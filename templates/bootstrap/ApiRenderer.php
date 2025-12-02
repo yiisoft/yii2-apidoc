@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\bootstrap;
 
-use Yii;
 use yii\apidoc\helpers\ApiIndexer;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
@@ -23,7 +23,6 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
 
     public $layout = '@yii/apidoc/templates/bootstrap/layouts/api.php';
     public $indexView = '@yii/apidoc/templates/bootstrap/views/index.php';
-
 
     /**
      * @inheritdoc

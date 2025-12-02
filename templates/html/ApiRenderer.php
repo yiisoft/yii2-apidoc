@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -62,7 +63,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     private $_targetDir;
 
-
     /**
      * @inheritdoc
      */
@@ -114,7 +114,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         $done = 0;
-        $higlighter = new Highlighter;
+        $higlighter = new Highlighter();
 
         foreach ($types as $type) {
             $fileContent = $this->renderWithLayout($this->typeView, [
@@ -137,23 +137,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             Console::endProgress(true);
             $this->controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
-    }
-
-    /**
-     * Renders file applying layout
-     * @param string $viewFile the view name
-     * @param array $params the parameters (name-value pairs) that will be extracted and made available in the view file.
-     * @return string
-     */
-    protected function renderWithLayout($viewFile, $params)
-    {
-        $output = $this->getView()->render($viewFile, $params, $this);
-        if ($this->layout !== false) {
-            $params['content'] = $output;
-            return $this->getView()->renderFile($this->layout, $params, $this);
-        }
-
-        return $output;
     }
 
     /**
@@ -274,7 +257,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
                 . ApiMarkdown::highlight(
                     $param->name
                     . ($param->isOptional ? ' = ' . $this->renderDefaultValue($param->defaultValue) : ''),
-                    'php'
+                    'php',
                 );
         }
 
@@ -335,6 +318,39 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getViewPath()
+    {
+        return Yii::getAlias('@yii/apidoc/templates/html/views');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSourceUrl($type, $line = null)
+    {
+        return null;
+    }
+
+    /**
+     * Renders file applying layout
+     * @param string $viewFile the view name
+     * @param array $params the parameters (name-value pairs) that will be extracted and made available in the view file.
+     * @return string
+     */
+    protected function renderWithLayout($viewFile, $params)
+    {
+        $output = $this->getView()->render($viewFile, $params, $this);
+        if ($this->layout !== false) {
+            $params['content'] = $output;
+            return $this->getView()->renderFile($this->layout, $params, $this);
+        }
+
+        return $output;
+    }
+
+    /**
      * Generates file name for API page for a given type
      * @param string $typeName
      * @return string
@@ -347,26 +363,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     /**
      * @inheritdoc
      */
-    public function getViewPath()
-    {
-        return Yii::getAlias('@yii/apidoc/templates/html/views');
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function generateLink($text, $href, $options = [])
     {
         $options['href'] = $href;
 
         return Html::a($text, null, $options);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSourceUrl($type, $line = null)
-    {
-        return null;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\bootstrap;
 
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap\Widget;
@@ -78,7 +78,6 @@ class SideNavWidget extends Widget
      * @see isItemActive
      */
     public $activeUrl;
-
 
     /**
      * Initializes the widget.
@@ -166,8 +165,8 @@ class SideNavWidget extends Widget
                     'encodeLabels' => $this->encodeLabels,
                     'view' => $this->getView(),
                     'options' => [
-                        'class' => "submenu panel-collapse collapse" . ($active || !$collapsed ? ' in' : '')
-                    ]
+                        'class' => "submenu panel-collapse collapse" . ($active || !$collapsed ? ' in' : ''),
+                    ],
                 ]);
             }
         }

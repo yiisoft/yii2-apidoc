@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -8,7 +9,6 @@
 namespace yii\apidoc\templates\online;
 
 use yii\apidoc\models\TypeDoc;
-use Yii;
 use yii\helpers\Console;
 
 /**
@@ -21,7 +21,6 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
     /** @var string|false */
     public $layout = false;
     public $indexView = '@yii/apidoc/templates/online/views/index.php';
-
 
     /**
      * @inheritdoc
