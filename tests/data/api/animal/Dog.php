@@ -123,4 +123,12 @@ class Dog extends Animal
     public function getStaticOrNull()
     {
     }
+
+    /**
+     * Some description
+     */
+    public function getNullableString(): ?string
+    {
+        return null;
+    }
 }
