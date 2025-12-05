@@ -22,6 +22,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
     public $layout = false;
     public $indexView = '@yii/apidoc/templates/online/views/index.php';
 
+
     /**
      * @inheritdoc
      */
@@ -30,7 +31,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         parent::render($context, $targetDir);
 
         if ($this->controller !== null) {
-            $this->controller->stdout("writing packages file...");
+            $this->controller->stdout('writing packages file...');
         }
         $packages = [];
         $notNamespaced = [];

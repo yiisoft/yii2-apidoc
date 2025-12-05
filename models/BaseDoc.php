@@ -107,6 +107,66 @@ class BaseDoc extends BaseObject
     public array $psalmTypeImports = [];
 
     /**
+     * Checks if doc has tag of a given name
+     * @param string $name tag name
+     * @return bool if doc has tag of a given name
+     */
+    public function hasTag($name)
+    {
+        foreach ($this->tags as $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Removes tag of a given name
+     * @param string $name
+     */
+    public function removeTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                unset($this->tags[$i]);
+            }
+        }
+    }
+
+    /**
+     * Get the first tag of a given name
+     * @param string $name tag name.
+     * @return Tag|null tag instance, `null` if not found.
+     * @since 2.0.5
+     */
+    public function getFirstTag($name)
+    {
+        foreach ($this->tags as $i => $tag) {
+            if (strtolower($tag->getName()) == $name) {
+                return $this->tags[$i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
+     *
+     * @return string|null
+     * @since 2.1.3
+     */
+    public function getPackageName()
+    {
+        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
+            return null;
+        }
+
+        return $match[1];
+    }
+
+    /**
      * @param self|null $parent
      * @param Class_|Method|Trait_|Interface_|Property|Constant|null $reflector
      * @param Context|null $context
@@ -152,7 +212,7 @@ class BaseDoc extends BaseObject
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
-                'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
+                'message' => 'No short description for ' . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
             ];
         }
         $this->shortDescription = static::convertInlineLinks($this->shortDescription);
@@ -231,7 +291,7 @@ class BaseDoc extends BaseObject
                         $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                         unset($this->tags[$i]);
                     }
-                } catch (InvalidArgumentException|RuntimeException $e) {
+                } catch (InvalidArgumentException | RuntimeException $e) {
                     if ($context !== null) {
                         $context->errors[] = [
                             'line' => $this->startLine,
@@ -266,64 +326,24 @@ class BaseDoc extends BaseObject
         }
     }
 
-    /**
-     * Checks if doc has tag of a given name
-     * @param string $name tag name
-     * @return bool if doc has tag of a given name
-     */
-    public function hasTag($name)
+    protected function isInheritdocTag(Tag $tag): bool
     {
-        foreach ($this->tags as $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return true;
-            }
-        }
-        return false;
+        return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
     }
 
     /**
-     * Removes tag of a given name
-     * @param string $name
-     */
-    public function removeTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                unset($this->tags[$i]);
-            }
-        }
-    }
-
-    /**
-     * Get the first tag of a given name
-     * @param string $name tag name.
-     * @return Tag|null tag instance, `null` if not found.
-     * @since 2.0.5
-     */
-    public function getFirstTag($name)
-    {
-        foreach ($this->tags as $i => $tag) {
-            if (strtolower($tag->getName()) == $name) {
-                return $this->tags[$i];
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the Composer package for this type, if it can be determined from [[sourceFile]].
-     *
+     * Converts inline links to unified format.
+     * @see ApiMarkdownTrait::parseApiLinks()
+     * @param string|null $content
      * @return string|null
-     * @since 2.1.3
      */
-    public function getPackageName()
+    protected static function convertInlineLinks($content)
     {
-        if (!$this->sourceFile || !preg_match('/\/vendor\/([\w\-]+\/[\w\-]+)/', $this->sourceFile, $match)) {
-            return null;
+        if (!$content) {
+            return $content;
         }
 
-        return $match[1];
+        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', '[[$1]]', $content);
     }
 
     /**
@@ -345,9 +365,9 @@ class BaseDoc extends BaseObject
                 $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
                 // do not break sentence after abbreviation
                 if (
-                    $abbrev === 'e.g.'
-                    || $abbrev === 'i.e.'
-                    || mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
+                    $abbrev === 'e.g.' ||
+                    $abbrev === 'i.e.' ||
+                    mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
                 ) {
                     $sentence .= static::extractFirstSentence(
                         mb_substr($text, $pos + 1, $length, 'utf-8'),
@@ -359,26 +379,6 @@ class BaseDoc extends BaseObject
         }
 
         return $text;
-    }
-
-    protected function isInheritdocTag(Tag $tag): bool
-    {
-        return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
-    }
-
-    /**
-     * Converts inline links to unified format.
-     * @see ApiMarkdownTrait::parseApiLinks()
-     * @param string|null $content
-     * @return string|null
-     */
-    protected static function convertInlineLinks($content)
-    {
-        if (!$content) {
-            return $content;
-        }
-
-        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', "[[$1]]", $content);
     }
 
     /**

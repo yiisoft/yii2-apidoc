@@ -28,6 +28,7 @@ class ConstDoc extends BaseDoc
      */
     public $value;
 
+
     /**
      * @param ClassDoc|TraitDoc $parent
      * @param Constant|null $reflector

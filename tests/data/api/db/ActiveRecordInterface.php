@@ -8,4 +8,6 @@
 
 namespace yiiunit\apidoc\data\api\db;
 
-interface ActiveRecordInterface {}
+interface ActiveRecordInterface
+{
+}

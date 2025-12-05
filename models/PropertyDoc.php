@@ -42,6 +42,23 @@ class PropertyDoc extends BaseDoc
      */
     public $definedBy;
 
+
+    /**
+     * @return bool if property is read only
+     */
+    public function getIsReadOnly()
+    {
+        return $this->getter !== null && $this->setter === null;
+    }
+
+    /**
+     * @return bool if property is write only
+     */
+    public function getIsWriteOnly()
+    {
+        return $this->getter === null && $this->setter !== null;
+    }
+
     /**
      * @param TypeDoc $parent
      * @param Property|null $reflector
@@ -88,21 +105,5 @@ class PropertyDoc extends BaseDoc
         if (!$hasInheritdoc && $this->type === null) {
             $this->type = $reflector->getType();
         }
-    }
-
-    /**
-     * @return bool if property is read only
-     */
-    public function getIsReadOnly()
-    {
-        return $this->getter !== null && $this->setter === null;
-    }
-
-    /**
-     * @return bool if property is write only
-     */
-    public function getIsWriteOnly()
-    {
-        return $this->getter === null && $this->setter !== null;
     }
 }

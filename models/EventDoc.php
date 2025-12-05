@@ -27,6 +27,7 @@ class EventDoc extends ConstDoc
      */
     public $type;
 
+
     /**
      * @param ClassDoc|TraitDoc $parent
      * @param Class_|Constant|null $reflector

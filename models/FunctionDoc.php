@@ -44,6 +44,7 @@ class FunctionDoc extends BaseDoc
      */
     public $isReturnByReference;
 
+
     /**
      * @param BaseDoc|null $parent
      * @param Method|null $reflector

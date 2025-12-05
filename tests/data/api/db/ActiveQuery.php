@@ -21,10 +21,14 @@ class ActiveQuery implements ActiveQueryInterface
     /**
      * @return T|null
      */
-    public function one() {}
+    public function one()
+    {
+    }
 
     /**
      * @return T[]
      */
-    public function all() {}
+    public function all()
+    {
+    }
 }

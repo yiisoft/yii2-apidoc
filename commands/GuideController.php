@@ -34,6 +34,7 @@ class GuideController extends BaseController
      */
     public $guidePrefix = 'guide-';
 
+
     /**
      * Renders API documentation files
      * @param array $sourceDirs
@@ -106,13 +107,6 @@ class GuideController extends BaseController
         return 0;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function options($actionID)
-    {
-        return array_merge(parent::options($actionID), ['apiDocs', 'guidePrefix']);
-    }
 
     /**
      * @inheritdoc
@@ -147,5 +141,13 @@ class GuideController extends BaseController
         }
 
         return new $rendererClass();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), ['apiDocs', 'guidePrefix']);
     }
 }

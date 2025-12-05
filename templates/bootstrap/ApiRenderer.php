@@ -24,6 +24,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
     public $layout = '@yii/apidoc/templates/bootstrap/layouts/api.php';
     public $indexView = '@yii/apidoc/templates/bootstrap/views/index.php';
 
+
     /**
      * @inheritdoc
      */
@@ -67,7 +68,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
                 'readme' => null,
             ]);
         } else {
-            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-framework/master/README.md");
+            $readme = @file_get_contents('https://raw.github.com/yiisoft/yii2-framework/master/README.md');
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $yiiTypes,

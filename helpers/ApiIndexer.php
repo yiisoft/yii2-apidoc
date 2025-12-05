@@ -19,20 +19,6 @@ use yii\helpers\StringHelper;
 class ApiIndexer extends Indexer
 {
     /**
-     * @return TokenizerInterface
-     */
-    public function getTokenizer()
-    {
-        $tokenizer = parent::getTokenizer();
-        if ($tokenizer instanceof StandardTokenizer) {
-            // yii is part of every doc and makes weird search results
-            $tokenizer->stopWords[] = 'yii';
-            $tokenizer->stopWords = array_unique($tokenizer->stopWords);
-        }
-        return $tokenizer;
-    }
-
-    /**
      * @param string $file
      * @param string $contents
      * @param string $basePath
@@ -63,5 +49,19 @@ class ApiIndexer extends Indexer
             't' => $title,
             'd' => $description,
         ];
+    }
+
+    /**
+     * @return TokenizerInterface
+     */
+    public function getTokenizer()
+    {
+        $tokenizer = parent::getTokenizer();
+        if ($tokenizer instanceof StandardTokenizer) {
+            // yii is part of every doc and makes weird search results
+            $tokenizer->stopWords[] = 'yii';
+            $tokenizer->stopWords = array_unique($tokenizer->stopWords);
+        }
+        return $tokenizer;
     }
 }

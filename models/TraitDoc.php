@@ -23,6 +23,7 @@ class TraitDoc extends TypeDoc
     public $usedBy = [];
     public $traits = [];
 
+
     /**
      * @param Trait_|null $reflector
      * @param Context|null $context

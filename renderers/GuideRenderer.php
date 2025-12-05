@@ -46,8 +46,8 @@ abstract class GuideRenderer extends BaseRenderer
             } else {
                 $headlines[$file] = basename($file);
             }
-
         }
+
         return $chapters;
     }
 }

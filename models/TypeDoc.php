@@ -44,6 +44,144 @@ class TypeDoc extends BaseDoc
     public $properties = [];
     public $namespace;
 
+
+    /**
+     * Finds subject (method or property) by name
+     *
+     * If there is a property with the same as a method, the method will be returned if the name is not stated
+     * explicitly by prefixing with `$`.
+     *
+     * Example for method `attributes()` and property `$attributes` which both may exist:
+     *
+     * - `$subjectName = '$attributes'` finds a property or nothing.
+     * - `$subjectName = 'attributes()'` finds a method or nothing.
+     * - `$subjectName = 'attributes'` finds the method if it exists, if not it will find the property.
+     *
+     * @param $subjectName
+     * @return BaseDoc|null
+     */
+    public function findSubject($subjectName)
+    {
+        if (empty($subjectName)) {
+            return null;
+        }
+
+        $subjectName = ltrim(str_replace($this->namespace, '', $subjectName), '\\');
+        if ($subjectName[0] !== '$') {
+            foreach ($this->methods as $name => $method) {
+                if (rtrim($subjectName, '()') == $name) {
+                    return $method;
+                }
+            }
+        }
+        if (substr_compare($subjectName, '()', -2, 2) === 0) {
+            return null;
+        }
+        if ($this->properties === null) {
+            return null;
+        }
+        foreach ($this->properties as $name => $property) {
+            if (ltrim($subjectName, '$') == ltrim($name, '$')) {
+                return $property;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return MethodDoc[]
+     */
+    public function getNativeMethods()
+    {
+        return $this->getFilteredMethods(null, $this->name);
+    }
+
+    /**
+     * @return MethodDoc[]
+     */
+    public function getPublicMethods()
+    {
+        return $this->getFilteredMethods('public');
+    }
+
+    /**
+     * @return MethodDoc[]
+     */
+    public function getProtectedMethods()
+    {
+        return $this->getFilteredMethods('protected');
+    }
+
+    /**
+     * @param string|null $visibility
+     * @param string|null $definedBy
+     * @return MethodDoc[]
+     */
+    private function getFilteredMethods($visibility = null, $definedBy = null)
+    {
+        $methods = [];
+        foreach ($this->methods as $name => $method) {
+            if ($visibility !== null && $method->visibility != $visibility) {
+                continue;
+            }
+            if ($definedBy !== null && $method->definedBy != $definedBy) {
+                continue;
+            }
+            $methods[$name] = $method;
+        }
+
+        return $methods;
+    }
+
+    /**
+     * @return PropertyDoc[]
+     */
+    public function getNativeProperties()
+    {
+        return $this->getFilteredProperties(null, $this->name);
+    }
+
+    /**
+     * @return PropertyDoc[]
+     */
+    public function getPublicProperties()
+    {
+        return $this->getFilteredProperties('public');
+    }
+
+    /**
+     * @return PropertyDoc[]
+     */
+    public function getProtectedProperties()
+    {
+        return $this->getFilteredProperties('protected');
+    }
+
+    /**
+     * @param string|null $visibility
+     * @param string|null $definedBy
+     * @return PropertyDoc[]
+     */
+    private function getFilteredProperties($visibility = null, $definedBy = null)
+    {
+        if ($this->properties === null) {
+            return [];
+        }
+        $properties = [];
+        foreach ($this->properties as $name => $property) {
+            if ($visibility !== null && $property->visibility != $visibility) {
+                continue;
+            }
+            if ($definedBy !== null && $property->definedBy != $definedBy) {
+                continue;
+            }
+            $properties[$name] = $property;
+        }
+
+        return $properties;
+    }
+
     /**
      * @param Class_|Trait_|Interface_|null $reflector
      * @param Context|null $context
@@ -130,98 +268,6 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * Finds subject (method or property) by name
-     *
-     * If there is a property with the same as a method, the method will be returned if the name is not stated
-     * explicitly by prefixing with `$`.
-     *
-     * Example for method `attributes()` and property `$attributes` which both may exist:
-     *
-     * - `$subjectName = '$attributes'` finds a property or nothing.
-     * - `$subjectName = 'attributes()'` finds a method or nothing.
-     * - `$subjectName = 'attributes'` finds the method if it exists, if not it will find the property.
-     *
-     * @param $subjectName
-     * @return BaseDoc|null
-     */
-    public function findSubject($subjectName)
-    {
-        if (empty($subjectName)) {
-            return null;
-        }
-
-        $subjectName = ltrim(str_replace($this->namespace, '', $subjectName), '\\');
-        if ($subjectName[0] !== '$') {
-            foreach ($this->methods as $name => $method) {
-                if (rtrim($subjectName, '()') == $name) {
-                    return $method;
-                }
-            }
-        }
-        if (substr_compare($subjectName, '()', -2, 2) === 0) {
-            return null;
-        }
-        if ($this->properties === null) {
-            return null;
-        }
-        foreach ($this->properties as $name => $property) {
-            if (ltrim($subjectName, '$') == ltrim($name, '$')) {
-                return $property;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @return MethodDoc[]
-     */
-    public function getNativeMethods()
-    {
-        return $this->getFilteredMethods(null, $this->name);
-    }
-
-    /**
-     * @return MethodDoc[]
-     */
-    public function getPublicMethods()
-    {
-        return $this->getFilteredMethods('public');
-    }
-
-    /**
-     * @return MethodDoc[]
-     */
-    public function getProtectedMethods()
-    {
-        return $this->getFilteredMethods('protected');
-    }
-
-    /**
-     * @return PropertyDoc[]
-     */
-    public function getNativeProperties()
-    {
-        return $this->getFilteredProperties(null, $this->name);
-    }
-
-    /**
-     * @return PropertyDoc[]
-     */
-    public function getPublicProperties()
-    {
-        return $this->getFilteredProperties('public');
-    }
-
-    /**
-     * @return PropertyDoc[]
-     */
-    public function getProtectedProperties()
-    {
-        return $this->getFilteredProperties('protected');
-    }
-
-    /**
      * @param Class_ $reflector
      * @param Context $context
      */
@@ -238,50 +284,5 @@ class TypeDoc extends BaseDoc
                 $this->properties[$property->name] = $property;
             }
         }
-    }
-
-    /**
-     * @param string|null $visibility
-     * @param string|null $definedBy
-     * @return MethodDoc[]
-     */
-    private function getFilteredMethods($visibility = null, $definedBy = null)
-    {
-        $methods = [];
-        foreach ($this->methods as $name => $method) {
-            if ($visibility !== null && $method->visibility != $visibility) {
-                continue;
-            }
-            if ($definedBy !== null && $method->definedBy != $definedBy) {
-                continue;
-            }
-            $methods[$name] = $method;
-        }
-
-        return $methods;
-    }
-
-    /**
-     * @param string|null $visibility
-     * @param string|null $definedBy
-     * @return PropertyDoc[]
-     */
-    private function getFilteredProperties($visibility = null, $definedBy = null)
-    {
-        if ($this->properties === null) {
-            return [];
-        }
-        $properties = [];
-        foreach ($this->properties as $name => $property) {
-            if ($visibility !== null && $property->visibility != $visibility) {
-                continue;
-            }
-            if ($definedBy !== null && $property->definedBy != $definedBy) {
-                continue;
-            }
-            $properties[$name] = $property;
-        }
-
-        return $properties;
     }
 }

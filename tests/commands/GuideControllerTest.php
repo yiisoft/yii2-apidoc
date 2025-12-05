@@ -26,6 +26,30 @@ class GuideControllerTest extends TestCase
         $this->mockApplication();
     }
 
+    /**
+     * Creates test controller instance.
+     * @return GuideControllerMock
+     */
+    protected function createController()
+    {
+        $controller = new GuideControllerMock('guide', Yii::$app);
+        $controller->interactive = false;
+
+        return $controller;
+    }
+
+    /**
+     * @param string $sourceDirs
+     * @param string $targetDir
+     * @param array $args
+     * @return string command output
+     */
+    protected function generateGuide($sourceDirs, $targetDir = '@runtime', array $args = [])
+    {
+        $controller = $this->createController();
+        return $this->runControllerAction($controller, 'index', array_merge([$sourceDirs, $targetDir], $args));
+    }
+
     // Tests :
 
     public function testNoFiles()
@@ -73,29 +97,5 @@ class GuideControllerTest extends TestCase
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'main.tex'));
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'guide.tex'));
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'title.tex'));
-    }
-
-    /**
-     * Creates test controller instance.
-     * @return GuideControllerMock
-     */
-    protected function createController()
-    {
-        $controller = new GuideControllerMock('guide', Yii::$app);
-        $controller->interactive = false;
-
-        return $controller;
-    }
-
-    /**
-     * @param string $sourceDirs
-     * @param string $targetDir
-     * @param array $args
-     * @return string command output
-     */
-    protected function generateGuide($sourceDirs, $targetDir = '@runtime', array $args = [])
-    {
-        $controller = $this->createController();
-        return $this->runControllerAction($controller, 'index', array_merge([$sourceDirs, $targetDir], $args));
     }
 }

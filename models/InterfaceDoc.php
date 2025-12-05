@@ -25,6 +25,7 @@ class InterfaceDoc extends TypeDoc
      */
     public $implementedBy = [];
 
+
     /**
      * @param Interface_|null $reflector
      * @param Context|null $context

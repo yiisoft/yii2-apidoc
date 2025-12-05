@@ -38,7 +38,7 @@ trait ApiMarkdownTrait
 
         /** @var TypeDoc[] $contexts */
         $contexts = [];
-        $this->_findContexts($this->renderingContext, $contexts);
+        $this->findContexts($this->renderingContext, $contexts);
         $contexts = array_unique($contexts, SORT_REGULAR);
         $contexts[] = null;
 
@@ -63,6 +63,35 @@ trait ApiMarkdownTrait
             ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
             $offset,
         ];
+    }
+
+    /**
+     * @param TypeDoc|null $type
+     * @param array $contexts
+     */
+    private function findContexts($type, &$contexts = [])
+    {
+        if ($type === null) {
+            return;
+        }
+
+        $contexts[] = $type;
+
+        if ($type instanceof ClassDoc) {
+            foreach ($type->traits as $trait) {
+                $this->findContexts(static::$renderer->apiContext->getType($trait), $contexts);
+            }
+            foreach ($type->interfaces as $interface) {
+                $this->findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+            }
+            if ($type->parentClass) {
+                $this->findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
+            }
+        } elseif ($type instanceof InterfaceDoc) {
+            foreach ($type->parentInterfaces as $interface) {
+                $this->findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+            }
+        }
     }
 
     /**
@@ -246,34 +275,5 @@ trait ApiMarkdownTrait
             $class = ' class="' . $block['blocktype'] . '"';
         }
         return "<blockquote{$class}>" . $this->renderAbsy($block['content']) . "</blockquote>\n";
-    }
-
-    /**
-     * @param TypeDoc|null $type
-     * @param array $contexts
-     */
-    private function _findContexts($type, &$contexts = [])
-    {
-        if ($type === null) {
-            return;
-        }
-
-        $contexts[] = $type;
-
-        if ($type instanceof ClassDoc) {
-            foreach ($type->traits as $trait) {
-                $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
-            }
-            foreach ($type->interfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-            }
-            if ($type->parentClass) {
-                $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
-            }
-        } elseif ($type instanceof InterfaceDoc) {
-            foreach ($type->parentInterfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
-            }
-        }
     }
 }

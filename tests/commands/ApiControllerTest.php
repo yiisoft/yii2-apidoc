@@ -30,6 +30,30 @@ class ApiControllerTest extends TestCase
         $this->mockApplication();
     }
 
+    /**
+     * Creates test controller instance.
+     * @return ApiControllerMock
+     */
+    protected function createController()
+    {
+        $controller = new ApiControllerMock('api', Yii::$app);
+        $controller->interactive = false;
+
+        return $controller;
+    }
+
+    /**
+     * @param string $sourceDirs
+     * @param string $targetDir
+     * @param array $args
+     * @return string command output
+     */
+    protected function generateApi($sourceDirs, $targetDir = '@runtime', array $args = [])
+    {
+        $controller = $this->createController();
+        return $this->runControllerAction($controller, 'index', array_merge([$sourceDirs, $targetDir], $args));
+    }
+
     // Tests :
 
     public function testNoFiles(): void
@@ -98,29 +122,5 @@ class ApiControllerTest extends TestCase
 
         $content = file_get_contents(Yii::getAlias('@runtime') . '/types.json');
         $this->assertNotEmpty($content);
-    }
-
-    /**
-     * Creates test controller instance.
-     * @return ApiControllerMock
-     */
-    protected function createController()
-    {
-        $controller = new ApiControllerMock('api', Yii::$app);
-        $controller->interactive = false;
-
-        return $controller;
-    }
-
-    /**
-     * @param string $sourceDirs
-     * @param string $targetDir
-     * @param array $args
-     * @return string command output
-     */
-    protected function generateApi($sourceDirs, $targetDir = '@runtime', array $args = [])
-    {
-        $controller = $this->createController();
-        return $this->runControllerAction($controller, 'index', array_merge([$sourceDirs, $targetDir], $args));
     }
 }

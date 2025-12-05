@@ -21,6 +21,7 @@ class IndexFileAnalyzer extends Markdown
     private $_chapter = 0;
     private $_chapters = [];
 
+
     /**
      * Parses text and returns list of chapters got from it
      * @param string $text

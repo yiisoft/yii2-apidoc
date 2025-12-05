@@ -39,6 +39,7 @@ class ApiController extends BaseController
      */
     public $repoUrl;
 
+
     // TODO add force update option
     /**
      * Renders API documentation files
@@ -145,14 +146,6 @@ class ApiController extends BaseController
     /**
      * @inheritdoc
      */
-    public function options($actionID)
-    {
-        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function findFiles($path, $except = [])
     {
         if (empty($except)) {
@@ -196,5 +189,13 @@ class ApiController extends BaseController
         }
 
         return new $rendererClass();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function options($actionID)
+    {
+        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
     }
 }

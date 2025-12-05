@@ -39,6 +39,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     private $_targetDir;
 
+
     /**
      * @inheritdoc
      */
@@ -120,25 +121,6 @@ abstract class GuideRenderer extends BaseGuideRenderer
         }
     }
 
-    public function getGuideReferences()
-    {
-        // TODO implement for api docs
-        //		$refs = [];
-        //		foreach ($this->markDownFiles as $file) {
-        //			$refName = 'guide-' . basename($file, '.md');
-        //			$refs[$refName] = ['url' => $this->generateGuideFileName($file)];
-        //		}
-        //		return $refs;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function generateApiUrl($typeName)
-    {
-        return rtrim($this->apiUrl, '/') . '/' . strtolower(str_replace('\\', '-', $typeName)) . '.html';
-    }
-
     /**
      * Callback that is called after markdown is processed.
      *
@@ -164,6 +146,17 @@ abstract class GuideRenderer extends BaseGuideRenderer
     protected function generateGuideFileName($file)
     {
         return $this->guidePrefix . basename($file, '.md') . '.html';
+    }
+
+    public function getGuideReferences()
+    {
+        // TODO implement for api docs
+        // $refs = [];
+        // foreach ($this->markDownFiles as $file) {
+        //     $refName = 'guide-' . basename($file, '.md');
+        //     $refs[$refName] = ['url' => $this->generateGuideFileName($file)];
+        // }
+        // return $refs;
     }
 
     /**
@@ -198,5 +191,13 @@ abstract class GuideRenderer extends BaseGuideRenderer
         $options['href'] = $href;
 
         return Html::a($text, null, $options);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generateApiUrl($typeName)
+    {
+        return rtrim($this->apiUrl, '/') . '/' . strtolower(str_replace('\\', '-', $typeName)) . '.html';
     }
 }

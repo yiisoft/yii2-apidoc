@@ -13,4 +13,6 @@ namespace yiiunit\apidoc\data\api\base;
  *
  * @template T of Controller
  */
-class Action extends Component {}
+class Action extends Component
+{
+}

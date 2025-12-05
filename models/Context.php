@@ -89,6 +89,26 @@ class Context extends Component
         $this->files[$fileName] = sha1_file($fileName);
     }
 
+    /**
+     * @param File $reflection
+     * @param string $fileName
+     */
+    private function parseFile($reflection, $fileName)
+    {
+        foreach ($reflection->getClasses() as $class) {
+            $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
+            $this->classes[$class->name] = $class;
+        }
+        foreach ($reflection->getInterfaces() as $interface) {
+            $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
+            $this->interfaces[$interface->name] = $interface;
+        }
+        foreach ($reflection->getTraits() as $trait) {
+            $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
+            $this->traits[$trait->name] = $trait;
+        }
+    }
+
     public function updateReferences()
     {
         // update all subclass references
@@ -149,29 +169,6 @@ class Context extends Component
         }
 
         // TODO reference exceptions to methods where they are thrown
-    }
-
-    /**
-     * @return Project
-     */
-    public function getReflectionProject()
-    {
-        $files = [];
-        foreach ($this->files as $fileName => $hash) {
-            $files[] = new LocalFile($fileName);
-        }
-
-        $projectFactory = ProjectFactory::createInstance();
-        $docBlockFactory = DocBlockFactory::createInstance();
-        $priority = 1200;
-
-        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
-        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
-
-        /** @var Project */
-        $project = $projectFactory->create('ApiDoc', $files);
-
-        return $project;
     }
 
     /**
@@ -250,8 +247,8 @@ class Context extends Component
             foreach ($attrNames as $attrName) {
                 foreach ($parent->$attrName as $item) {
                     if (
-                        isset($class->$attrName[$item->name])
-                        && !isset($this->traits[$class->$attrName[$item->name]->definedBy])
+                        isset($class->$attrName[$item->name]) &&
+                        !isset($this->traits[$class->$attrName[$item->name]->definedBy])
                     ) {
                         continue;
                     }
@@ -371,123 +368,6 @@ class Context extends Component
     }
 
     /**
-     * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
-     * @param ClassDoc $class
-     */
-    protected function handlePropertyFeature($class)
-    {
-        if (!$this->isSubclassOf($class, 'yii\base\BaseObject')) {
-            return;
-        }
-        foreach ($class->getPublicMethods() as $name => $method) {
-            if ($method->isStatic) {
-                continue;
-            }
-            if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
-                $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
-                if ($property && $property->getter === null && $property->setter === null) {
-                    $this->errors[] = [
-                        'line' => $property->startLine,
-                        'file' => $class->sourceFile,
-                        'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
-                    ];
-                } else {
-                    // Override the setter-defined property if it exists already
-                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
-                        'name' => $propertyName,
-                        'fullName' => "$class->name::$propertyName",
-                        'definedBy' => $method->definedBy,
-                        'sourceFile' => $class->sourceFile,
-                        'visibility' => 'public',
-                        'isStatic' => false,
-                        'type' => $method->returnType,
-                        'shortDescription' => BaseDoc::extractFirstSentence($method->return),
-                        'description' => $method->return,
-                        'since' => $method->since,
-                        'getter' => $method,
-                        'setter' => isset($property->setter) ? $property->setter : null,
-                        // TODO set default value
-                    ]);
-                }
-            }
-            if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
-                $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
-                if ($property) {
-                    if ($property->getter === null && $property->setter === null) {
-                        $this->errors[] = [
-                            'line' => $property->startLine,
-                            'file' => $class->sourceFile,
-                            'message' => "Property $propertyName conflicts with a defined setter {$method->name} in {$class->name}.",
-                        ];
-                    } else {
-                        // Just set the setter
-                        $property->setter = $method;
-                    }
-                } else {
-                    $param = $this->getFirstNotOptionalParameter($method);
-                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
-                        'name' => $propertyName,
-                        'fullName' => "$class->name::$propertyName",
-                        'definedBy' => $method->definedBy,
-                        'sourceFile' => $class->sourceFile,
-                        'visibility' => 'public',
-                        'isStatic' => false,
-                        'type' => $param->type,
-                        'shortDescription' => BaseDoc::extractFirstSentence($param->description),
-                        'description' => $param->description,
-                        'since' => $method->since,
-                        'setter' => $method,
-                    ]);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param ClassDoc $classA
-     * @param ClassDoc|string $classB
-     * @return bool
-     */
-    protected function isSubclassOf($classA, $classB)
-    {
-        if (is_object($classB)) {
-            $classB = $classB->name;
-        }
-        if ($classA->name == $classB) {
-            return true;
-        }
-        while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
-            $classA = $this->classes[$classA->parentClass];
-            if ($classA->name == $classB) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @param File $reflection
-     * @param string $fileName
-     */
-    private function parseFile($reflection, $fileName)
-    {
-        foreach ($reflection->getClasses() as $class) {
-            $class = new ClassDoc($class, $this, ['sourceFile' => $fileName]);
-            $this->classes[$class->name] = $class;
-        }
-        foreach ($reflection->getInterfaces() as $interface) {
-            $interface = new InterfaceDoc($interface, $this, ['sourceFile' => $fileName]);
-            $this->interfaces[$interface->name] = $interface;
-        }
-        foreach ($reflection->getTraits() as $trait) {
-            $trait = new TraitDoc($trait, $this, ['sourceFile' => $fileName]);
-            $this->traits[$trait->name] = $trait;
-        }
-    }
-
-    /**
      * @param MethodDoc $method
      * @param ClassDoc $class
      * @return mixed
@@ -567,6 +447,81 @@ class Context extends Component
     }
 
     /**
+     * Add properties for getters and setters if class is subclass of [[\yii\base\BaseObject]].
+     * @param ClassDoc $class
+     */
+    protected function handlePropertyFeature($class)
+    {
+        if (!$this->isSubclassOf($class, 'yii\base\BaseObject')) {
+            return;
+        }
+        foreach ($class->getPublicMethods() as $name => $method) {
+            if ($method->isStatic) {
+                continue;
+            }
+            if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
+                $propertyName = '$' . lcfirst(substr($method->name, 3));
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property && $property->getter === null && $property->setter === null) {
+                    $this->errors[] = [
+                        'line' => $property->startLine,
+                        'file' => $class->sourceFile,
+                        'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
+                    ];
+                } else {
+                    // Override the setter-defined property if it exists already
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
+                        'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
+                        'definedBy' => $method->definedBy,
+                        'sourceFile' => $class->sourceFile,
+                        'visibility' => 'public',
+                        'isStatic' => false,
+                        'type' => $method->returnType,
+                        'shortDescription' => BaseDoc::extractFirstSentence($method->return),
+                        'description' => $method->return,
+                        'since' => $method->since,
+                        'getter' => $method,
+                        'setter' => isset($property->setter) ? $property->setter : null,
+                        // TODO set default value
+                    ]);
+                }
+            }
+            if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
+                $propertyName = '$' . lcfirst(substr($method->name, 3));
+                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+                if ($property) {
+                    if ($property->getter === null && $property->setter === null) {
+                        $this->errors[] = [
+                            'line' => $property->startLine,
+                            'file' => $class->sourceFile,
+                            'message' => "Property $propertyName conflicts with a defined setter {$method->name} in {$class->name}.",
+                        ];
+                    } else {
+                        // Just set the setter
+                        $property->setter = $method;
+                    }
+                } else {
+                    $param = $this->getFirstNotOptionalParameter($method);
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
+                        'name' => $propertyName,
+                        'fullName' => "$class->name::$propertyName",
+                        'definedBy' => $method->definedBy,
+                        'sourceFile' => $class->sourceFile,
+                        'visibility' => 'public',
+                        'isStatic' => false,
+                        'type' => $param->type,
+                        'shortDescription' => BaseDoc::extractFirstSentence($param->description),
+                        'description' => $param->description,
+                        'since' => $method->since,
+                        'setter' => $method,
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
      * Check whether a method has `$number` non-optional parameters.
      * @param MethodDoc $method
      * @param int $number number of not optional parameters
@@ -595,5 +550,50 @@ class Context extends Component
             }
         }
         return null;
+    }
+
+    /**
+     * @param ClassDoc $classA
+     * @param ClassDoc|string $classB
+     * @return bool
+     */
+    protected function isSubclassOf($classA, $classB)
+    {
+        if (is_object($classB)) {
+            $classB = $classB->name;
+        }
+        if ($classA->name == $classB) {
+            return true;
+        }
+        while ($classA->parentClass !== null && isset($this->classes[$classA->parentClass])) {
+            $classA = $this->classes[$classA->parentClass];
+            if ($classA->name == $classB) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return Project
+     */
+    public function getReflectionProject()
+    {
+        $files = [];
+        foreach ($this->files as $fileName => $hash) {
+            $files[] = new LocalFile($fileName);
+        }
+
+        $projectFactory = ProjectFactory::createInstance();
+        $docBlockFactory = DocBlockFactory::createInstance();
+        $priority = 1200;
+
+        $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
+        $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
+
+        /** @var Project */
+        $project = $projectFactory->create('ApiDoc', $files);
+
+        return $project;
     }
 }

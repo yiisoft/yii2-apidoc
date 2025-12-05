@@ -40,5 +40,7 @@ class AssetManager extends Component
      * @param PublishOptions $options the options to be applied when publishing a directory.
      * @return non-empty-array the path (directory or file path) and the URL that the asset is published as.
      */
-    public function publish($path, $options = []) {}
+    public function publish($path, $options = [])
+    {
+    }
 }

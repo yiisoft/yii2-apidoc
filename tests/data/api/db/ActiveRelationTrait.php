@@ -17,4 +17,6 @@ namespace yiiunit\apidoc\data\api\db;
  * @property class-string<ActiveRecordInterface> $modelClass
  * @property (int|string)[] $someProperty
  */
-trait ActiveRelationTrait {}
+trait ActiveRelationTrait
+{
+}

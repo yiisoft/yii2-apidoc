@@ -46,34 +46,6 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function generateApiUrl($typeName) {}
-
-    /**
-     * @inheritdoc
-     */
-    public function getViewPath()
-    {
-        return '';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSourceUrl($type, $line = null) {}
-
-    /**
-     * @inheritdoc
-     */
-    protected function generateFileName($typeName) {}
-
-    /**
-     * @inheritdoc
-     */
-    protected function generateLink($text, $href, $options = []) {}
-
-    /**
      * Removes the `parent` fields recursively so that the data could be converted to JSON format..
      * @param array|object $data
      * @return array|object
@@ -101,5 +73,41 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function generateApiUrl($typeName)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function generateFileName($typeName)
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getViewPath()
+    {
+        return '';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function generateLink($text, $href, $options = [])
+    {
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSourceUrl($type, $line = null)
+    {
     }
 }

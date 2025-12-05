@@ -72,42 +72,58 @@ class Dog extends Animal
     /**
      * @return Dog<Cat, Animal>
      */
-    public function getClassWithTwoGenerics() {}
+    public function getClassWithTwoGenerics()
+    {
+    }
 
     /**
      * @return invalid-type
      */
-    public function methodWithInvalidReturnTag() {}
+    public function methodWithInvalidReturnTag()
+    {
+    }
 
     /**
      * @return static[]
      */
-    public function getArrayOfStatic() {}
+    public function getArrayOfStatic()
+    {
+    }
 
     /**
      * @return array<string, static>
      */
-    public function getArrayWithStaticGeneric() {}
+    public function getArrayWithStaticGeneric()
+    {
+    }
 
     /**
      * @return iterable<string, static>
      */
-    public function getIterableWithStaticGeneric() {}
+    public function getIterableWithStaticGeneric()
+    {
+    }
 
     /**
      * @return array{someObject: static}
      */
-    public function getArrayShapeWithStaticGeneric() {}
+    public function getArrayShapeWithStaticGeneric()
+    {
+    }
 
     /**
      * @return array{someObject: static}
      */
-    public function getObjectShapeWithStaticGeneric() {}
+    public function getObjectShapeWithStaticGeneric()
+    {
+    }
 
     /**
      * @return static|null
      */
-    public function getStaticOrNull() {}
+    public function getStaticOrNull()
+    {
+    }
 
     /**
      * Some description

@@ -275,49 +275,49 @@ Array
 
     [39] => Array
         (
-            [line] => 80
+            [line] => 82
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'methodWithInvalidReturnTag'
         )
 
     [40] => Array
         (
-            [line] => 85
+            [line] => 89
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayOfStatic'
         )
 
     [41] => Array
         (
-            [line] => 90
+            [line] => 96
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayWithStaticGeneric'
         )
 
     [42] => Array
         (
-            [line] => 95
+            [line] => 103
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getIterableWithStaticGeneric'
         )
 
     [43] => Array
         (
-            [line] => 100
+            [line] => 110
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayShapeWithStaticGeneric'
         )
 
     [44] => Array
         (
-            [line] => 105
+            [line] => 117
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getObjectShapeWithStaticGeneric'
         )
 
     [45] => Array
         (
-            [line] => 110
+            [line] => 124
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getStaticOrNull'
         )
@@ -338,7 +338,7 @@ Array
 
     [48] => Array
         (
-            [line] => 29
+            [line] => 31
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'all'
         )
@@ -359,7 +359,7 @@ Array
 
     [51] => Array
         (
-            [line] => 15
+            [line] => 14
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'all'
         )

@@ -8,4 +8,6 @@
 
 namespace yiiunit\apidoc\data\api\base;
 
-class Component {}
+class Component
+{
+}

@@ -32,6 +32,7 @@ class MethodDoc extends FunctionDoc
      */
     public $sourceCode = '';
 
+
     /**
      * @param TypeDoc $parent
      * @param Class_|Method|null $reflector

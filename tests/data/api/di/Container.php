@@ -27,5 +27,7 @@ class Container
      * @param array<string, mixed> $config a list of name-value pairs that will be used to initialize the object properties.
      * @return ($class is class-string<T> ? T : object) an instance of the requested class.
      */
-    public function get($class, $params = [], $config = []) {}
+    public function get($class, $params = [], $config = [])
+    {
+    }
 }

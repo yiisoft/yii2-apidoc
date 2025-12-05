@@ -235,7 +235,7 @@ abstract class BaseRenderer extends Component
                 if ($type instanceof Intersection) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $innerTypesLinks = array_map(
-                        fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
+                        fn (Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
                         $innerTypes,
                     );
                     $links[] = implode('&amp;', $innerTypesLinks);
@@ -400,6 +400,38 @@ abstract class BaseRenderer extends Component
     }
 
     /**
+     * @param BaseDoc|string|null $context
+     * @return string
+     */
+    private function resolveNamespace($context)
+    {
+        // TODO use phpdoc Context for this
+        if ($context === null) {
+            return '';
+        }
+        if ($context instanceof TypeDoc) {
+            return $context->namespace;
+        }
+        if ($context->hasProperty('definedBy') && method_exists($context, '__toString')) {
+            $type = $this->apiContext->getType((string) $context);
+            if ($type !== null) {
+                return $type->namespace;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * generate link markup
+     * @param $text
+     * @param $href
+     * @param array $options additional HTML attributes for the link.
+     * @return mixed
+     */
+    abstract protected function generateLink($text, $href, $options = []);
+
+    /**
      * Generate an url to a type in apidocs
      * @param $typeName
      * @return mixed
@@ -428,38 +460,6 @@ abstract class BaseRenderer extends Component
     }
 
     /**
-     * generate link markup
-     * @param $text
-     * @param $href
-     * @param array $options additional HTML attributes for the link.
-     * @return mixed
-     */
-    abstract protected function generateLink($text, $href, $options = []);
-
-    /**
-     * @param BaseDoc|string|null $context
-     * @return string
-     */
-    private function resolveNamespace($context)
-    {
-        // TODO use phpdoc Context for this
-        if ($context === null) {
-            return '';
-        }
-        if ($context instanceof TypeDoc) {
-            return $context->namespace;
-        }
-        if ($context->hasProperty('definedBy') && method_exists($context, '__toString')) {
-            $type = $this->apiContext->getType((string) $context);
-            if ($type !== null) {
-                return $type->namespace;
-            }
-        }
-
-        return '';
-    }
-
-    /**
      * @param BaseDoc|string $type
      * @param array{forcePhpStanLink?: bool, ...} $options
      */
@@ -481,8 +481,8 @@ abstract class BaseRenderer extends Component
 
             // check if it is PHP internal class
             if (
-                (class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false))
-                && ($reflection = new \ReflectionClass($type)) && $reflection->isInternal()
+                (class_exists($type, false) || interface_exists($type, false) || trait_exists($type, false)) &&
+                ($reflection = new \ReflectionClass($type)) && $reflection->isInternal()
             ) {
                 return $this->generateLink(
                     $linkText,
@@ -653,7 +653,10 @@ abstract class BaseRenderer extends Component
         /**
          * @param Type[] $genericTypes
          */
-        $generateLink = function (Type $mainType, array $genericTypes) use (
+        $generateLink = function (
+            Type $mainType,
+            array $genericTypes
+        ) use (
             $context,
             $title,
             $options,
@@ -742,7 +745,7 @@ abstract class BaseRenderer extends Component
         array $options
     ): array {
         return array_map(
-            fn(Type $type) => $this->createTypeLink($type, $context, $title, $options),
+            fn (Type $type) => $this->createTypeLink($type, $context, $title, $options),
             $types,
         );
     }

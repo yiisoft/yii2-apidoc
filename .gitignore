@@ -32,9 +32,8 @@ phpunit.phar
 # local phpunit config
 /phpunit.xml
 
-# cache
+# phpunit cache
 .phpunit.result.cache
-.php-cs-fixer.cache
 
 # local tests runtime
 /tests/runtime
@@ -45,5 +44,5 @@ phpunit.phar
 # local phpstan config
 phpstan.neon
 
-# local php-cs-fixer config
-.php-cs-fixer.php
+# local phpcs config
+phpcs.xml

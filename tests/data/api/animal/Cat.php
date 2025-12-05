@@ -92,5 +92,7 @@ class Cat extends Animal
     /**
      * @todo Some description for todo tag.
      */
-    public function methodWithTodoTag(): void {}
+    public function methodWithTodoTag(): void
+    {
+    }
 }

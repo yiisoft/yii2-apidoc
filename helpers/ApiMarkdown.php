@@ -39,6 +39,7 @@ class ApiMarkdown extends GithubMarkdown
     protected $renderingContext;
     protected $headings = [];
 
+
     /**
      * @return array the headlines of this document
      * @since 2.0.5
@@ -48,48 +49,6 @@ class ApiMarkdown extends GithubMarkdown
         return $this->headings;
     }
 
-    public function parse($text)
-    {
-        $markup = parent::parse($text);
-        $markup = $this->applyToc($markup);
-        return $markup;
-    }
-
-    /**
-     * Converts markdown into HTML
-     *
-     * @param string $content
-     * @param TypeDoc|string|null $context
-     * @param bool $paragraph
-     * @return string
-     */
-    public static function process($content, $context = null, $paragraph = false)
-    {
-        if (!isset(Markdown::$flavors['api'])) {
-            Markdown::$flavors['api'] = new static();
-        }
-
-        if (is_string($context)) {
-            $context = static::$renderer->apiContext->getType($context);
-        }
-        Markdown::$flavors['api']->renderingContext = $context;
-
-        if ($paragraph) {
-            return Markdown::processParagraph($content, 'api');
-        } else {
-            return Markdown::process($content, 'api');
-        }
-    }
-
-    /**
-     * Add bootstrap classes to tables.
-     * @inheritdoc
-     */
-    public function renderTable($block)
-    {
-        return str_replace('<table>', '<table class="table table-bordered table-striped">', parent::renderTable($block));
-    }
-
     /**
      * @inheritDoc
      */
@@ -97,6 +56,13 @@ class ApiMarkdown extends GithubMarkdown
     {
         parent::prepare();
         $this->headings = [];
+    }
+
+    public function parse($text)
+    {
+        $markup = parent::parse($text);
+        $markup = $this->applyToc($markup);
+        return $markup;
     }
 
     /**
@@ -165,7 +131,7 @@ class ApiMarkdown extends GithubMarkdown
             static::$renderer->apiContext->errors[] = [
                 'line' => null,
                 'file' => null,
-                'message' => "Using empty link.",
+                'message' => 'Using empty link.',
             ];
 
             return parent::renderLink($block);
@@ -213,5 +179,40 @@ class ApiMarkdown extends GithubMarkdown
             $translation = $key;
         }
         return "$translation ";
+    }
+
+    /**
+     * Converts markdown into HTML
+     *
+     * @param string $content
+     * @param TypeDoc|string|null $context
+     * @param bool $paragraph
+     * @return string
+     */
+    public static function process($content, $context = null, $paragraph = false)
+    {
+        if (!isset(Markdown::$flavors['api'])) {
+            Markdown::$flavors['api'] = new static();
+        }
+
+        if (is_string($context)) {
+            $context = static::$renderer->apiContext->getType($context);
+        }
+        Markdown::$flavors['api']->renderingContext = $context;
+
+        if ($paragraph) {
+            return Markdown::processParagraph($content, 'api');
+        } else {
+            return Markdown::process($content, 'api');
+        }
+    }
+
+    /**
+     * Add bootstrap classes to tables.
+     * @inheritdoc
+     */
+    public function renderTable($block)
+    {
+        return str_replace('<table>', '<table class="table table-bordered table-striped">', parent::renderTable($block));
     }
 }

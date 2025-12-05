@@ -79,6 +79,7 @@ class SideNavWidget extends Widget
      */
     public $activeUrl;
 
+
     /**
      * Initializes the widget.
      */
@@ -165,7 +166,7 @@ class SideNavWidget extends Widget
                     'encodeLabels' => $this->encodeLabels,
                     'view' => $this->getView(),
                     'options' => [
-                        'class' => "submenu panel-collapse collapse" . ($active || !$collapsed ? ' in' : ''),
+                        'class' => 'submenu panel-collapse collapse' . ($active || !$collapsed ? ' in' : ''),
                     ],
                 ]);
             }
