@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -8,7 +9,6 @@
 namespace yii\apidoc\templates\online;
 
 use yii\apidoc\models\TypeDoc;
-use Yii;
 use yii\helpers\Console;
 
 /**
@@ -31,7 +31,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         parent::render($context, $targetDir);
 
         if ($this->controller !== null) {
-            $this->controller->stdout("writing packages file...");
+            $this->controller->stdout('writing packages file...');
         }
         $packages = [];
         $notNamespaced = [];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\bootstrap;
 
-use Yii;
 use yii\apidoc\helpers\ApiIndexer;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;
@@ -68,7 +68,7 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
                 'readme' => null,
             ]);
         } else {
-            $readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-framework/master/README.md");
+            $readme = @file_get_contents('https://raw.github.com/yiisoft/yii2-framework/master/README.md');
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $yiiTypes,

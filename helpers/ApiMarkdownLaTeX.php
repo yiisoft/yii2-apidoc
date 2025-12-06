@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -40,7 +41,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         $latex .= str_replace(
             ['\\textbackslash', '::'],
             ['\allowbreak{}\\textbackslash', '\allowbreak{}::\allowbreak{}'],
-            $this->escapeLatex(strip_tags($block[1]))
+            $this->escapeLatex(strip_tags($block[1])),
         );
         $latex .= '}';
 
@@ -99,7 +100,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block['content']);
 
         return implode("\n", [
-            "\\begin{minted}{" . "$language}",
+            '\\begin{minted}{' . "$language}",
             $content,
             '\end{minted}',
             '',
@@ -128,7 +129,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     public static function process($content, $context = null, $paragraph = false)
     {
         if (!isset(Markdown::$flavors['api-latex'])) {
-            Markdown::$flavors['api-latex'] = new static;
+            Markdown::$flavors['api-latex'] = new static();
         }
 
         if (is_string($context)) {

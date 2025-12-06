@@ -43,3 +43,6 @@ phpunit.phar
 
 # local phpstan config
 phpstan.neon
+
+# local phpcs config
+phpcs.xml

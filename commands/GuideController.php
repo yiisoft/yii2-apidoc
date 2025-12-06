@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -80,7 +81,7 @@ class GuideController extends BaseController
 
         // read blocktypes translations
         ApiMarkdown::$blockTranslations = [];
-        foreach($sourceDirs as $dir) {
+        foreach ($sourceDirs as $dir) {
             if (is_file("$dir/blocktypes.json")) {
                 ApiMarkdown::$blockTranslations = Json::decode(file_get_contents("$dir/blocktypes.json"), true);
             }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -114,7 +115,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         $done = 0;
-        $higlighter = new Highlighter;
+        $higlighter = new Highlighter();
 
         foreach ($types as $type) {
             $fileContent = $this->renderWithLayout($this->typeView, [
@@ -274,7 +275,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
                 . ApiMarkdown::highlight(
                     $param->name
                     . ($param->isOptional ? ' = ' . $this->renderDefaultValue($param->defaultValue) : ''),
-                    'php'
+                    'php',
                 );
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -70,7 +71,7 @@ class IndexFileAnalyzer extends Markdown
     {
         if ($this->_chapter > 0) {
             foreach ($block['items'] as $item => $absyElements) {
-                foreach($absyElements as $element) {
+                foreach ($absyElements as $element) {
                     if ($element[0] === 'link') {
                         $this->_chapters[$this->_chapter]['content'][] = [
                             'headline' => $this->renderAbsy($element['text']),

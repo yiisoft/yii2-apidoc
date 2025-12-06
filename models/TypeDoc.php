@@ -16,7 +16,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Trait_;
-use yii\apidoc\helpers\TypeHelper;
 use yii\helpers\StringHelper;
 
 /**

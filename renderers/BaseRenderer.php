@@ -62,7 +62,7 @@ abstract class BaseRenderer extends Component
     /**
      * @deprecated since 2.0.1 use [[$guidePrefix]] instead which allows configuring this options
      */
-    const GUIDE_PREFIX = 'guide-';
+    public const GUIDE_PREFIX = 'guide-';
 
     private const PHP_CLASS_BASE_URL = 'https://www.php.net/class.';
     private const PHP_TYPE_BASE_URL = 'https://www.php.net/language.types.';
@@ -235,8 +235,8 @@ abstract class BaseRenderer extends Component
                 if ($type instanceof Intersection) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $innerTypesLinks = array_map(
-                        fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
-                        $innerTypes
+                        fn (Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
+                        $innerTypes,
                     );
                     $links[] = implode('&amp;', $innerTypesLinks);
                     continue;
@@ -487,7 +487,7 @@ abstract class BaseRenderer extends Component
                 return $this->generateLink(
                     $linkText,
                     self::PHP_CLASS_BASE_URL . strtolower(ltrim($type, '\\')),
-                    $options
+                    $options,
                 );
             }
 
@@ -630,7 +630,7 @@ abstract class BaseRenderer extends Component
                     '%s%s: %s',
                     $itemKey,
                     $item->isOptional() ? '?' : '',
-                    $this->createTypeLink($item->getValue(), $context, $title, $options, $currentTypeDoc)
+                    $this->createTypeLink($item->getValue(), $context, $title, $options, $currentTypeDoc),
                 );
             } else {
                 $links[] = $this->createTypeLink($item->getValue(), $context, $title, $options, $currentTypeDoc);
@@ -653,7 +653,10 @@ abstract class BaseRenderer extends Component
         /**
          * @param Type[] $genericTypes
          */
-        $generateLink = function (Type $mainType, array $genericTypes) use (
+        $generateLink = function (
+            Type $mainType,
+            array $genericTypes
+        ) use (
             $context,
             $title,
             $options,
@@ -742,8 +745,8 @@ abstract class BaseRenderer extends Component
         array $options
     ): array {
         return array_map(
-            fn(Type $type) => $this->createTypeLink($type, $context, $title, $options),
-            $types
+            fn (Type $type) => $this->createTypeLink($type, $context, $title, $options),
+            $types,
         );
     }
 
@@ -764,7 +767,7 @@ abstract class BaseRenderer extends Component
         return $this->generateLink(
             $linkText,
             self::PHP_TYPE_BASE_URL . strtolower(ltrim($type, '\\')),
-            $options
+            $options,
         );
     }
 
@@ -775,7 +778,7 @@ abstract class BaseRenderer extends Component
                 return $this->generateLink(
                     $type,
                     self::PHPSTAN_TYPE_BASE_URL . $phpstanDocLink,
-                    $options
+                    $options,
                 );
             }
         }

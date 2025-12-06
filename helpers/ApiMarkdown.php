@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -130,7 +131,7 @@ class ApiMarkdown extends GithubMarkdown
             static::$renderer->apiContext->errors[] = [
                 'line' => null,
                 'file' => null,
-                'message' => "Using empty link.",
+                'message' => 'Using empty link.',
             ];
 
             return parent::renderLink($block);
@@ -191,7 +192,7 @@ class ApiMarkdown extends GithubMarkdown
     public static function process($content, $context = null, $paragraph = false)
     {
         if (!isset(Markdown::$flavors['api'])) {
-            Markdown::$flavors['api'] = new static;
+            Markdown::$flavors['api'] = new static();
         }
 
         if (is_string($context)) {

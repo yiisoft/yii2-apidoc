@@ -376,7 +376,7 @@ class Context extends Component
     {
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
-            $this->getInterfaces($class)
+            $this->getInterfaces($class),
         );
 
         $methods = [];
@@ -402,7 +402,7 @@ class Context extends Component
     {
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
-            $this->getInterfaces($class)
+            $this->getInterfaces($class),
         );
 
         $properties = [];

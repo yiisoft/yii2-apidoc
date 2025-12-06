@@ -212,7 +212,7 @@ class BaseDoc extends BaseObject
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
-                'message' => "No short description for " . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
+                'message' => 'No short description for ' . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
             ];
         }
         $this->shortDescription = static::convertInlineLinks($this->shortDescription);
@@ -254,7 +254,7 @@ class BaseDoc extends BaseObject
                             PseudoTypeDoc::TYPE_PHPSTAN,
                             $this,
                             trim($tagData[0]),
-                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($phpStanType->name, $this->phpDocContext);
                         $this->phpStanTypes[(string) $fqsen] = $phpStanType;
@@ -265,7 +265,7 @@ class BaseDoc extends BaseObject
                             PseudoTypeDoc::TYPE_PSALM,
                             $this,
                             trim($tagData[0]),
-                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $typeResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($psalmType->name, $this->phpDocContext);
                         $this->psalmTypes[(string) $fqsen] = $psalmType;
@@ -275,7 +275,7 @@ class BaseDoc extends BaseObject
                         $phpStanTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PHPSTAN,
                             trim($tagData[0]),
-                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($phpStanTypeImport->typeName, $this->phpDocContext);
                         $this->phpStanTypeImports[(string) $fqsen] = $phpStanTypeImport;
@@ -285,14 +285,14 @@ class BaseDoc extends BaseObject
                         $psalmTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PSALM,
                             trim($tagData[0]),
-                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext)
+                            $fqsenResolver->resolve(trim($tagData[1]), $this->phpDocContext),
                         );
                         $fqsen = $fqsenResolver->resolve($psalmTypeImport->typeName, $this->phpDocContext);
                         $this->psalmTypeImports[(string) $fqsen] = $psalmTypeImport;
                         unset($this->tags[$i]);
                     }
                 } catch (InvalidArgumentException | RuntimeException $e) {
-                    if ($context !== null){
+                    if ($context !== null) {
                         $context->errors[] = [
                             'line' => $this->startLine,
                             'file' => $this->sourceFile,
@@ -343,7 +343,7 @@ class BaseDoc extends BaseObject
             return $content;
         }
 
-        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', "[[$1]]", $content);
+        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', '[[$1]]', $content);
     }
 
     /**
@@ -371,7 +371,7 @@ class BaseDoc extends BaseObject
                 ) {
                     $sentence .= static::extractFirstSentence(
                         mb_substr($text, $pos + 1, $length, 'utf-8'),
-                        $prevText
+                        $prevText,
                     );
                 }
             }

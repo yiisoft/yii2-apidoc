@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -150,12 +151,12 @@ abstract class GuideRenderer extends BaseGuideRenderer
     public function getGuideReferences()
     {
         // TODO implement for api docs
-//		$refs = [];
-//		foreach ($this->markDownFiles as $file) {
-//			$refName = 'guide-' . basename($file, '.md');
-//			$refs[$refName] = ['url' => $this->generateGuideFileName($file)];
-//		}
-//		return $refs;
+        // $refs = [];
+        // foreach ($this->markDownFiles as $file) {
+        //     $refName = 'guide-' . basename($file, '.md');
+        //     $refs[$refName] = ['url' => $this->generateGuideFileName($file)];
+        // }
+        // return $refs;
     }
 
     /**

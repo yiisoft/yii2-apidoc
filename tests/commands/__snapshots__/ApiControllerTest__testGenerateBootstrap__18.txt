@@ -233,91 +233,91 @@ Array
 
     [33] => Array
         (
-            [line] => 34
+            [line] => 35
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getThreeStringsArray'
         )
 
     [34] => Array
         (
-            [line] => 42
+            [line] => 43
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'testOffsetAccess'
         )
 
     [35] => Array
         (
-            [line] => 50
+            [line] => 51
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getNonEmptyList'
         )
 
     [36] => Array
         (
-            [line] => 58
+            [line] => 59
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getListWithoutGenerics'
         )
 
     [37] => Array
         (
-            [line] => 66
+            [line] => 67
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getNonEmptyListWithoutGenerics'
         )
 
     [38] => Array
         (
-            [line] => 74
+            [line] => 75
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getClassWithTwoGenerics'
         )
 
     [39] => Array
         (
-            [line] => 81
+            [line] => 82
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'methodWithInvalidReturnTag'
         )
 
     [40] => Array
         (
-            [line] => 88
+            [line] => 89
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayOfStatic'
         )
 
     [41] => Array
         (
-            [line] => 95
+            [line] => 96
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayWithStaticGeneric'
         )
 
     [42] => Array
         (
-            [line] => 102
+            [line] => 103
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getIterableWithStaticGeneric'
         )
 
     [43] => Array
         (
-            [line] => 109
+            [line] => 110
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayShapeWithStaticGeneric'
         )
 
     [44] => Array
         (
-            [line] => 116
+            [line] => 117
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getObjectShapeWithStaticGeneric'
         )
 
     [45] => Array
         (
-            [line] => 123
+            [line] => 124
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getStaticOrNull'
         )

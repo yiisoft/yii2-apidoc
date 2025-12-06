@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\renderers;
 
-use Yii;
 use yii\apidoc\helpers\IndexFileAnalyzer;
 
 /**
@@ -46,8 +46,8 @@ abstract class GuideRenderer extends BaseRenderer
             } else {
                 $headlines[$file] = basename($file);
             }
-
         }
+
         return $chapters;
     }
 }
