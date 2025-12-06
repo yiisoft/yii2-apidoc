@@ -12,6 +12,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #339: Fix processing of multidimensional arrays (mspirkov)
 - Enh #342: Remove unnecessary files from Composer package (mspirkov)
 - Enh #341: Add support for nullable types (mspirkov)
+- Enh #347: Add PHPDoc types for properties (mspirkov)
 
 
 3.0.8 November 24, 2025

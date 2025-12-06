@@ -24,10 +24,13 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     use ApiMarkdownTrait;
 
     /**
-     * @var BaseRenderer
+     * @var BaseRenderer|null
      */
     public static $renderer;
 
+    /**
+     * @var TypeDoc|null
+     */
     protected $renderingContext;
 
 

@@ -27,7 +27,7 @@ class ApiMarkdown extends GithubMarkdown
     use MarkdownHighlightTrait;
 
     /**
-     * @var BaseRenderer
+     * @var BaseRenderer|null
      */
     public static $renderer;
     /**
@@ -36,7 +36,13 @@ class ApiMarkdown extends GithubMarkdown
      */
     public static $blockTranslations = [];
 
+    /**
+     * @var TypeDoc|null
+     */
     protected $renderingContext;
+    /**
+     * @var array
+     */
     protected $headings = [];
 
 

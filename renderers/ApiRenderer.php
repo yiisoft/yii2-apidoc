@@ -20,7 +20,7 @@ use yii\apidoc\models\Context;
 abstract class ApiRenderer extends BaseRenderer
 {
     /**
-     * @var string
+     * @var string|null
      * @see ApiController::$repoUrl
      */
     public $repoUrl;

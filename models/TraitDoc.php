@@ -20,7 +20,13 @@ class TraitDoc extends TypeDoc
 {
     // classes using the trait
     // will be set by Context::updateReferences()
+    /**
+     * @var string[]
+     */
     public $usedBy = [];
+    /**
+     * @var string[]
+     */
     public $traits = [];
 
 
