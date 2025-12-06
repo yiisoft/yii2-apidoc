@@ -10,7 +10,7 @@
 
 
 
-    <title>Application, yiiunit\apidoc\data\api\base\Application - Yii Framework 2.0 API Documentation</title>
+    <title>Dog, yiiunit\apidoc\data\api\animal\Dog - Yii Framework 2.0 API Documentation</title>
 </head>
 <body>
 
@@ -38,14 +38,14 @@
 <div class="row">
     <div class="col-md-3">
                 <div class="list-group">
-<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\animal <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\animal <b class="caret"></b></a><div class="submenu panel-collapse collapse in">
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-animal.html">Animal</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-cat.html">Cat</a>
-<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-dog.html">Dog</a>
+<a class="list-group-item active" href="./yiiunit-apidoc-data-api-animal-dog.html">Dog</a>
 </div>
-<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\base <b class="caret"></b></a><div class="submenu panel-collapse collapse in">
+<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\base <b class="caret"></b></a><div class="submenu panel-collapse collapse">
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-action.html">Action</a>
-<a class="list-group-item active" href="./yiiunit-apidoc-data-api-base-application.html">Application</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-base-application.html">Application</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-behavior.html">Behavior</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-component.html">Component</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-controller.html">Controller</a>
@@ -65,11 +65,13 @@
 </div>
 </div>    </div>
     <div class="col-md-9 api-content" role="main">
-<h1>Abstract Class yiiunit\apidoc\data\api\base\Application</h1>
+<h1>Class yiiunit\apidoc\data\api\animal\Dog</h1>
 <div class="top-nav">
     <a href="index">All Classes</a>
             | <a>Properties</a>
-                </div>
+                | <a>Methods</a>
+                    | <a>Constants</a>
+    </div>
 
 <table class="summaryTable docClass table table-bordered">
     <colgroup>
@@ -78,17 +80,45 @@
     </colgroup>
             <tr>
 <th>Inheritance</th>
-<td><a href="yiiunit-apidoc-data-api-base-application.html">yiiunit\apidoc\data\api\base\Application</a></td>
+<td>
+<a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a> &raquo;
+<a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a> &raquo;
+yii\base\BaseObject</td>
 </tr>
-                                        </table>
+                                        <tr>
+<th>Available since version</th>
+<td>1.1</td>
+</tr>
+            </table>
 
 <div class="class-description">
-    <p><strong>Application is the base class for all application classes.</strong></p>
+    <p><strong>Dog represents a dog animal.</strong></p>
     
     </div>
 
 
 
+    
+<div class="doc-method summary toggle-target-container">
+    <h2>PHPStan Types</h2>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-name">
+            <col class="col-value">
+        </colgroup>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+
+                    <tr>
+                <td><a href="yiiunit-apidoc-data-api-animal-dog.html#phpstan-type-MyArray">MyArray</a></td>
+                <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{foo: <a href="https://www.php.net/language.types.integer">integer</a>, bar: <a href="https://www.php.net/language.types.string">string</a>}</td>
+            </tr>
+            </table>
+</div>
 
 
 <a></a>
@@ -112,13 +142,316 @@
             <th>Defined By</th>
         </tr>
 
-                                    <tr class="">
-                    <td><a href="yiiunit-apidoc-data-api-base-application.html#%24requestedAction-detail">$requestedAction</a></td>
+                                    <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24age-detail">$age</a></td>
+                    <td><a href="https://www.php.net/language.types.integer">integer</a></td>
+                    <td>animal age in seconds.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24arrayShapeProperty-detail">$arrayShapeProperty</a></td>
                     <td>
-<a href="yiiunit-apidoc-data-api-base-action.html">yiiunit\apidoc\data\api\base\Action</a>&lt;<a href="yiiunit-apidoc-data-api-base-controller.html">yiiunit\apidoc\data\api\base\Controller</a>&gt;|<a href="https://www.php.net/language.types.null">null</a>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{someKey: <a href="https://www.php.net/language.types.string">string</a>}</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24arrayWithParenthesesProperty-detail">$arrayWithParenthesesProperty</a></td>
+                    <td>(<a href="yiiunit-apidoc-data-api-animal-cat.html">yiiunit\apidoc\data\api\animal\Cat</a>|<a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>)[]</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24arrayWithoutParenthesesProperty-detail">$arrayWithoutParenthesesProperty</a></td>
+                    <td>
+<a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>[]|<a href="yiiunit-apidoc-data-api-animal-cat.html">yiiunit\apidoc\data\api\animal\Cat</a>[]</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24birthDate-detail">$birthDate</a></td>
+                    <td><a href="https://www.php.net/language.types.integer">integer</a></td>
+                    <td>Animal birth date as a UNIX timestamp.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24callableProperty-detail">$callableProperty</a></td>
+                    <td><a href="https://www.php.net/language.types.callable">callable</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24closureProperty-detail">$closureProperty</a></td>
+                    <td><a href="https://www.php.net/language.types.callable">callable</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24genericArrayWithKeyProperty-detail">$genericArrayWithKeyProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://phpstan.org/writing-php-code/phpdoc-types#basic-types">array-key</a>, <a href="https://www.php.net/language.types.string">string</a>[]&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24genericArrayWithoutKeyProperty-detail">$genericArrayWithoutKeyProperty</a></td>
+                    <td>
+<a href="https://www.php.net/language.types.string">string</a>[]</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24intMaskOfProperty-detail">$intMaskOfProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask-of</a>&lt;1|2|4&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24intMaskProperty-detail">$intMaskProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask</a>&lt;1, 2, 4&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24intMaskReadProperty-detail">$intMaskReadProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask</a>&lt;1, 2, 4&gt;</td>
+                    <td>Some description (intMaskReadProperty).</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24intRangeProperty-detail">$intRangeProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-ranges">int</a>&lt;0, max&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24intersectionType-detail">$intersectionType</a></td>
+                    <td>
+<a href="yiiunit-apidoc-data-api-animal-cat.html">yiiunit\apidoc\data\api\animal\Cat</a>&amp;<a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>
 </td>
-                    <td>The requested Action.</td>
-                    <td><a href="yiiunit-apidoc-data-api-base-application.html">yiiunit\apidoc\data\api\base\Application</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24iterableProperty-detail">$iterableProperty</a></td>
+                    <td>
+<a href="https://www.php.net/language.types.iterable">iterable</a>&lt;<a href="https://www.php.net/language.types.integer">integer</a>, <a href="https://www.php.net/language.types.string">string</a>&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24iterableWithoutKeyProperty-detail">$iterableWithoutKeyProperty</a></td>
+                    <td>
+<a href="https://www.php.net/language.types.iterable">iterable</a>&lt;<a href="https://www.php.net/language.types.string">string</a>&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24keyOfProperty-detail">$keyOfProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">key-of</a>&lt;self::COLORS&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24keyOfWriteProperty-detail">$keyOfWriteProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">key-of</a>&lt;self::COLORS&gt;</td>
+                    <td>Some description (keyOfWriteProperty).</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24name-detail">$name</a></td>
+                    <td><a href="https://www.php.net/language.types.string">string</a></td>
+                    <td>Animal name.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24objectShapeProperty-detail">$objectShapeProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#object-shapes">object</a>{someKey: <a href="https://www.php.net/language.types.string">string</a>}</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24valueOfAnnotationProperty-detail">$valueOfAnnotationProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">value-of</a>&lt;self::COLORS&gt;</td>
+                    <td>Some description (valueOfAnnotationProperty).</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#%24valueOfProperty-detail">$valueOfProperty</a></td>
+                    <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">value-of</a>&lt;self::COLORS&gt;</td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                        </table>
+</div>
+
+<a></a>
+
+<div class="doc-method summary toggle-target-container">
+    <h2>Public Methods</h2>
+
+    <p><a class="toggle">Hide inherited methods</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-method">
+            <col class="col-description">
+            <col class="col-defined">
+        </colgroup>
+        <tr>
+            <th>Method</th>
+            <th>Description</th>
+            <th>Defined By</th>
+        </tr>
+
+                                    <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#asArray()-detail">asArray()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#asStdClass()-detail">asStdClass()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getAge()-detail">getAge()</a></td>
+                    <td>Returns animal age in seconds.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayOfStatic()-detail">getArrayOfStatic()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayShapeWithStaticGeneric()-detail">getArrayShapeWithStaticGeneric()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayWithStaticGeneric()-detail">getArrayWithStaticGeneric()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getClassWithTwoGenerics()-detail">getClassWithTwoGenerics()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getIntMaskProperty()-detail">getIntMaskProperty()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getIterableWithStaticGeneric()-detail">getIterableWithStaticGeneric()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getListWithoutGenerics()-detail">getListWithoutGenerics()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getMixed()-detail">getMixed()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyList()-detail">getNonEmptyList()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyListWithoutGenerics()-detail">getNonEmptyListWithoutGenerics()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getNullableString()-detail">getNullableString()</a></td>
+                    <td>Some description</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getObjectShapeWithStaticGeneric()-detail">getObjectShapeWithStaticGeneric()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getSelfWithGenerics()-detail">getSelfWithGenerics()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getSomething()-detail">getSomething()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getStatic()-detail">getStatic()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getStaticOrNull()-detail">getStaticOrNull()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#getThreeStringsArray()-detail">getThreeStringsArray()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#isOlder()-detail">isOlder()</a></td>
+                    <td>Checks whether the animal is older than the specified time.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#methodWithInvalidReturnTag()-detail">methodWithInvalidReturnTag()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#render()-detail">render()</a></td>
+                    <td>Renders animal description.</td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#setBirthDate()-detail">setBirthDate()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#setIntMaskOfProperty()-detail">setIntMaskOfProperty()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#setKeyOfProperty()-detail">setKeyOfProperty()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="inherited">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#setName()-detail">setName()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html#testOffsetAccess()-detail">testOffsetAccess()</a></td>
+                    <td></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
                 </tr>
                         </table>
 </div>
@@ -127,35 +460,1423 @@
 
 <a></a>
 
-<a></a>
+<div class="doc-const summary toggle-target-container">
+    <h2>Constants</h2>
+
+    <p><a class="toggle">Hide inherited constants</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-const">
+            <col class="col-value">
+            <col class="col-description">
+            <col class="col-defined">
+        </colgroup>
+        <tr>
+            <th>Constant</th>
+            <th>Value</th>
+            <th>Description</th>
+            <th>Defined By</th>
+        </tr>
+
+                    <tr class="inherited">
+              <td>COLORS</td>
+              <td>[
+    self::COLOR_GREY,
+    self::COLOR_WHITE,
+]</td>
+              <td>
+                  
+                                </td>
+              <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+            </tr>
+                    <tr class="inherited">
+              <td>COLOR_GREY</td>
+              <td>'grey'</td>
+              <td>
+                  
+                                </td>
+              <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+            </tr>
+                    <tr class="inherited">
+              <td>COLOR_WHITE</td>
+              <td>'white'</td>
+              <td>
+                  
+                                </td>
+              <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+            </tr>
+            </table>
+</div>
 
 
-<h2>Property Details</h2>
+<h2>Method Details</h2>
 
-<div class="property-doc toggle-target-container">
-    <p><a class="toggle">Hide inherited properties</a></p>
+<div class="method-doc toggle-target-container">
+    <p><a class="toggle">Hide inherited methods</a></p>
 
-            <div>
+            <div class="inherited">
             <div class="detail-header h3">
                 <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-                <a class="tool-link hash" href="yiiunit-apidoc-data-api-base-application.html#%24requestedAction-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#asArray()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
                 
-                $requestedAction
+                asArray()
+
                 <span class="detail-header-tag small">
-                    public                                                                                property
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#asArray()-detail">yiiunit\apidoc\data\api\animal\Animal::asArray()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-animal.html#phpstan-type-AnimalData">AnimalData</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#asArray()-detail">asArray</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAsArray">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">asArray</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> [
+        <span class="hljs-string">'name'</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;name,
+        <span class="hljs-string">'birthDate'</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;birthDate,
+    ];
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#asStdClass()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                asStdClass()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#asStdClass()-detail">yiiunit\apidoc\data\api\animal\Animal::asStdClass()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#object-shapes">object</a>{name: <a href="https://www.php.net/language.types.string">string</a>, birthDate: <a href="https://www.php.net/language.types.integer">integer</a>}</span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#asStdClass()-detail">asStdClass</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAsStdClass">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">asStdClass</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> (object) <span class="hljs-keyword">$this</span>-&gt;asArray();
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getAge()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getAge()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getAge()-detail">yiiunit\apidoc\data\api\animal\Animal::getAge()</a>                    </p>
+                
+                <p><strong>Returns animal age in seconds.</strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getAge()-detail">getAge</a></strong> ( )</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                <p>Animal age in seconds.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetAge">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getAge</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> time() - <span class="hljs-keyword">$this</span>-&gt;birthDate;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getArrayOfStatic()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getArrayOfStatic()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
                                     </span>
             </div>
 
             
             <div class="doc-description">
                 
-                <p>The requested Action. If null, it means the request cannot be resolved into an action.</p>
-                            </div>
+                <p><strong></strong></p>
+                                            </div>
 
-            <div class="signature">
-<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-base-action.html">yiiunit\apidoc\data\api\base\Action</a>&lt;<a href="yiiunit-apidoc-data-api-base-controller.html">yiiunit\apidoc\data\api\base\Controller</a>&gt;|<a href="https://www.php.net/language.types.null">null</a></span><a href="yiiunit-apidoc-data-api-base-application.html#%24requestedAction-detail">$requestedAction</a><span style="color: #0000BB"></span><span style="color: #007700">= </span><span style="color: #0000BB">null</span>
-</div>
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>[]</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayOfStatic()-detail">getArrayOfStatic</a></strong> ( )</td></tr>
+
+                            </table>
+
             
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetArrayOfStatic">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getArrayOfStatic</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getArrayShapeWithStaticGeneric()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getArrayShapeWithStaticGeneric()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{someObject: <a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>}</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayShapeWithStaticGeneric()-detail">getArrayShapeWithStaticGeneric</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetArrayShapeWithStaticGeneric">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getArrayShapeWithStaticGeneric</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getArrayWithStaticGeneric()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getArrayWithStaticGeneric()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://www.php.net/language.types.string">string</a>, static&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getArrayWithStaticGeneric()-detail">getArrayWithStaticGeneric</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetArrayWithStaticGeneric">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getArrayWithStaticGeneric</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getClassWithTwoGenerics()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getClassWithTwoGenerics()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>&lt;<a href="yiiunit-apidoc-data-api-animal-cat.html">yiiunit\apidoc\data\api\animal\Cat</a>, <a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a>&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getClassWithTwoGenerics()-detail">getClassWithTwoGenerics</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetClassWithTwoGenerics">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getClassWithTwoGenerics</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getIntMaskProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getIntMaskProperty()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getIntMaskProperty()-detail">yiiunit\apidoc\data\api\animal\Animal::getIntMaskProperty()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask</a>&lt;1, 2, 4&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getIntMaskProperty()-detail">getIntMaskProperty</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetIntMaskProperty">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getIntMaskProperty</span><span class="hljs-params">()</span>: <span class="hljs-title">int</span>
+</span>{
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>-&gt;intMaskProperty;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getIterableWithStaticGeneric()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getIterableWithStaticGeneric()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.iterable">iterable</a>&lt;<a href="https://www.php.net/language.types.string">string</a>, static&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getIterableWithStaticGeneric()-detail">getIterableWithStaticGeneric</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetIterableWithStaticGeneric">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getIterableWithStaticGeneric</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getListWithoutGenerics()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getListWithoutGenerics()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#lists">list</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getListWithoutGenerics()-detail">getListWithoutGenerics</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetListWithoutGenerics">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getListWithoutGenerics</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+</span>{
+    <span class="hljs-keyword">return</span> [];
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getMixed()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getMixed()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getMixed()-detail">yiiunit\apidoc\data\api\animal\Animal::getMixed()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getMixed()-detail">getMixed</a></strong> ( )</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.mixed">mixed</a></td>
+                            <td class="param-desc-col">
+                                                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyList()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getNonEmptyList()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#lists">non-empty-list</a>&lt;<a href="https://www.php.net/language.types.array">array</a>&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyList()-detail">getNonEmptyList</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetNonEmptyList">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getNonEmptyList</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+</span>{
+    <span class="hljs-keyword">return</span> [[]];
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyListWithoutGenerics()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getNonEmptyListWithoutGenerics()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#lists">non-empty-list</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getNonEmptyListWithoutGenerics()-detail">getNonEmptyListWithoutGenerics</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetNonEmptyListWithoutGenerics">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getNonEmptyListWithoutGenerics</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+</span>{
+    <span class="hljs-keyword">return</span> [];
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getNullableString()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getNullableString()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Some description</strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.string">string</a>|<a href="https://www.php.net/language.types.null">null</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getNullableString()-detail">getNullableString</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetNullableString">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getNullableString</span><span class="hljs-params">()</span>: ?<span class="hljs-title">string</span>
+</span>{
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">null</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getObjectShapeWithStaticGeneric()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getObjectShapeWithStaticGeneric()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{someObject: <a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>}</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getObjectShapeWithStaticGeneric()-detail">getObjectShapeWithStaticGeneric</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetObjectShapeWithStaticGeneric">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getObjectShapeWithStaticGeneric</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getSelfWithGenerics()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getSelfWithGenerics()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getSelfWithGenerics()-detail">yiiunit\apidoc\data\api\animal\Animal::getSelfWithGenerics()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type">self&lt;<a href="yiiunit-apidoc-data-api-animal-cat.html">yiiunit\apidoc\data\api\animal\Cat</a>&gt;</span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getSelfWithGenerics()-detail">getSelfWithGenerics</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetSelfWithGenerics">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getSelfWithGenerics</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getSomething()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getSomething()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getSomething()-detail">yiiunit\apidoc\data\api\animal\Animal::getSomething()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getSomething()-detail">getSomething</a></strong> ( <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span><span style="color: #0000BB">$test</span>, <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span><span style="color: #0000BB">$test2</span>, <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a>|<a href="https://www.php.net/language.types.string">string</a></span><span style="color: #0000BB">$test3</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$test</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.mixed">mixed</a></td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$test2</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$test3</span></td>
+                            <td class="param-type-col">
+<a href="https://www.php.net/language.types.integer">integer</a>|<a href="https://www.php.net/language.types.string">string</a>
+</td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getStatic()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getStatic()
+
+                <span class="detail-header-tag small">
+                    public                                        static                    method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#getStatic()-detail">yiiunit\apidoc\data\api\animal\Animal::getStatic()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public static</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#getStatic()-detail">getStatic</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetStatic">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-keyword">static</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getStatic</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> Yii::createObject([
+        <span class="hljs-string">'class'</span> =&gt; get_called_class(),
+    ]);
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getStaticOrNull()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getStaticOrNull()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a>|<a href="https://www.php.net/language.types.null">null</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getStaticOrNull()-detail">getStaticOrNull</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetStaticOrNull">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getStaticOrNull</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#getThreeStringsArray()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                getThreeStringsArray()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{<a href="https://www.php.net/language.types.string">string</a>, <a href="https://www.php.net/language.types.string">string</a>, <a href="https://www.php.net/language.types.string">string</a>}</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#getThreeStringsArray()-detail">getThreeStringsArray</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGetThreeStringsArray">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">getThreeStringsArray</span><span class="hljs-params">()</span>: <span class="hljs-title">array</span>
+</span>{
+    <span class="hljs-keyword">return</span> [<span class="hljs-string">'one'</span>, <span class="hljs-string">'two'</span>, <span class="hljs-string">'three'</span>];
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#isOlder()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                isOlder()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">yiiunit\apidoc\data\api\animal\Animal::isOlder()</a>                    </p>
+                
+                <p><strong>Checks whether the animal is older than the specified time.</strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.boolean">boolean</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#isOlder()-detail">isOlder</a></strong> ( <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span><span style="color: #0000BB">$date</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$date</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                               <p>Date as a UNIX timestamp.</p>
+                            </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseIsOlder">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">isOlder</span><span class="hljs-params">($date)</span>
+</span>{
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>-&gt;getAge() &gt; $date;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#methodWithInvalidReturnTag()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                methodWithInvalidReturnTag()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#methodWithInvalidReturnTag()-detail">methodWithInvalidReturnTag</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseMethodWithInvalidReturnTag">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">methodWithInvalidReturnTag</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#render()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                render()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Renders animal description.</strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="https://www.php.net/language.types.string">string</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#render()-detail">render</a></strong> ( )</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.string">string</a></td>
+                            <td class="param-desc-col">
+                                <p>HTML output.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseRender">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">render</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-comment">// this method has `inheritdoc` tag without brackets</span>
+    <span class="hljs-keyword">return</span><span class="hljs-string">'This is a dog'</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#setBirthDate()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                setBirthDate()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#setBirthDate()-detail">yiiunit\apidoc\data\api\animal\Animal::setBirthDate()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type">self</span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#setBirthDate()-detail">setBirthDate</a></strong> ( <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span><span style="color: #0000BB">$birthDate</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$birthDate</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSetBirthDate">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">setBirthDate</span><span class="hljs-params">(int $birthDate)</span>: <span class="hljs-title">self</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;birthDate = $birthDate;
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#setIntMaskOfProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                setIntMaskOfProperty()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#setIntMaskOfProperty()-detail">yiiunit\apidoc\data\api\animal\Animal::setIntMaskOfProperty()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">$this</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#setIntMaskOfProperty()-detail">setIntMaskOfProperty</a></strong> ( <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask-of</a>&lt;1|2|4&gt;</span><span style="color: #0000BB">$newValue</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$newValue</span></td>
+                            <td class="param-type-col">
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#integer-masks">int-mask-of</a>&lt;1|2|4&gt;</td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSetIntMaskOfProperty">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">setIntMaskOfProperty</span><span class="hljs-params">(int $newValue)</span>: <span class="hljs-title">self</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;intMaskOfProperty = $newValue;
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#setKeyOfProperty()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                setKeyOfProperty()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#setKeyOfProperty()-detail">yiiunit\apidoc\data\api\animal\Animal::setKeyOfProperty()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">$this</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#setKeyOfProperty()-detail">setKeyOfProperty</a></strong> ( <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">key-of</a>&lt;self::COLORS&gt;</span><span style="color: #0000BB">$newValue</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$newValue</span></td>
+                            <td class="param-type-col">
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#key-and-value-types-of-arrays-and-iterables">key-of</a>&lt;self::COLORS&gt;</td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSetKeyOfProperty">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">setKeyOfProperty</span><span class="hljs-params">(int $newValue)</span>: <span class="hljs-title">self</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;keyOfProperty = $newValue;
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="inherited">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#setName()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                setName()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                                    <p>
+                        <strong>Defined in:</strong>
+                        <a href="yiiunit-apidoc-data-api-animal-animal.html#setName()-detail">yiiunit\apidoc\data\api\animal\Animal::setName()</a>                    </p>
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html">$this</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#setName()-detail">setName</a></strong> ( <span class="signature-type"><a href="https://www.php.net/language.types.string">string</a></span><span style="color: #0000BB">$newName</span> )</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$newName</span></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.string">string</a></td>
+                            <td class="param-desc-col">
+                                                           </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseSetName">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">setName</span><span class="hljs-params">(string $newName)</span>: <span class="hljs-title">self</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;name = trim($newName);
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">$this</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#testOffsetAccess()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                testOffsetAccess()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong></strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-dog.html#phpstan-type-MyArray">MyArray</a>["bar"]</span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#testOffsetAccess()-detail">testOffsetAccess</a></strong> ( )</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseTestOffsetAccess">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">testOffsetAccess</span><span class="hljs-params">()</span>: <span class="hljs-title">string</span>
+</span>{
+    <span class="hljs-keyword">return</span><span class="hljs-string">''</span>;
+}
+</code>
+            </pre>
+        </div>
+    </div>
             
         </div>
     </div>
