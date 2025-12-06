@@ -24,7 +24,13 @@ use yii\helpers\StringHelper;
  */
 class PropertyDoc extends BaseDoc
 {
+    /**
+     * @var string|null
+     */
     public $visibility;
+    /**
+     * @var bool|null
+     */
     public $isStatic;
     /**
      * @var Type|null
@@ -35,7 +41,13 @@ class PropertyDoc extends BaseDoc
      */
     public $defaultValue;
     // will be set by creating class
+    /**
+     * @var MethodDoc|null
+     */
     public $getter;
+    /**
+     * @var MethodDoc|null
+     */
     public $setter;
     /**
      * @var string|null

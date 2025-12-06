@@ -58,20 +58,41 @@ class BaseDoc extends BaseObject
      * @var string|null
      */
     public $fullName;
+    /**
+     * @var string|null
+     */
     public $sourceFile;
+    /**
+     * @var int|null
+     */
     public $startLine;
+    /**
+     * @var int|null
+     */
     public $endLine;
+    /**
+     * @var string|null
+     */
     public $shortDescription;
+    /**
+     * @var string|null
+     */
     public $description;
     /**
      * @var string|null Available since this version.
      */
     public $since;
     /**
-     * @var array A mapping where keys are versions and values are descriptions.
+     * @var array<string, string> A mapping where keys are versions and values are descriptions.
      */
     public $sinceMap = [];
+    /**
+     * @var string|null
+     */
     public $deprecatedSince;
+    /**
+     * @var string|null
+     */
     public $deprecatedReason;
     /**
      * @var Tag[]

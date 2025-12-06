@@ -35,6 +35,4 @@ parameters:
         # TODO: fix errors
         - identifier: missingType.parameter
         # TODO: fix errors
-        - identifier: missingType.property
-        # TODO: fix errors
         - identifier: missingType.iterableValue

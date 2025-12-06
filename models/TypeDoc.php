@@ -33,6 +33,9 @@ use yii\helpers\StringHelper;
  */
 class TypeDoc extends BaseDoc
 {
+    /**
+     * @var array<string, string>
+     */
     public $authors = [];
     /**
      * @var MethodDoc[]
@@ -42,6 +45,9 @@ class TypeDoc extends BaseDoc
      * @var PropertyDoc[]
      */
     public $properties = [];
+    /**
+     * @var string
+     */
     public $namespace;
 
 

@@ -162,20 +162,29 @@ abstract class BaseRenderer extends Component
         'int' => 'integer',
     ];
 
+    /**
+     * @var string
+     */
     public $guidePrefix = 'guide-';
+    /**
+     * @var string|null
+     */
     public $apiUrl;
     /**
-     * @var string string to use as the title of the generated page.
+     * @var string|null string to use as the title of the generated page.
      */
     public $pageTitle;
     /**
-     * @var Context the [[Context]] currently being rendered.
+     * @var Context|null the [[Context]] currently being rendered.
      */
     public $apiContext;
     /**
-     * @var Controller the apidoc controller instance. Can be used to control output.
+     * @var Controller|null the apidoc controller instance. Can be used to control output.
      */
     public $controller;
+    /**
+     * @var string|null
+     */
     public $guideUrl;
 
     public function init()

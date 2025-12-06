@@ -18,6 +18,9 @@ use phpDocumentor\Reflection\Php\Interface_;
  */
 class InterfaceDoc extends TypeDoc
 {
+    /**
+     * @var string[]
+     */
     public $parentInterfaces = [];
     /**
      * @var string[] Class names

@@ -31,7 +31,7 @@ abstract class BaseController extends Controller
      */
     public $exclude;
     /**
-     * @var string
+     * @var string|null
      */
     public $pageTitle;
 

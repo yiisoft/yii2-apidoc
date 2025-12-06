@@ -20,19 +20,34 @@ use yii\base\BaseObject;
  */
 class ParamDoc extends BaseObject
 {
+    /**
+     * @var string
+     */
     public $name;
+    /**
+     * @var bool|null
+     */
     public $isOptional;
     /**
      * @var string|null
      */
     public $defaultValue;
+    /**
+     * @var bool|null
+     */
     public $isPassedByReference;
     // will be set by creating class
+    /**
+     * @var string|null
+     */
     public $description;
     /**
      * @var Type|null
      */
     public $type;
+    /**
+     * @var string|null
+     */
     public $sourceFile;
     /**
      * @var FunctionDoc|MethodDoc

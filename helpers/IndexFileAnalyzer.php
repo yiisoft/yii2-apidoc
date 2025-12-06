@@ -15,10 +15,22 @@ use cebe\markdown\Markdown;
  */
 class IndexFileAnalyzer extends Markdown
 {
+    /**
+     * @var string|null
+     */
     public $title;
+    /**
+     * @var string|null
+     */
     public $introduction;
 
+    /**
+     * @var int
+     */
     private $_chapter = 0;
+    /**
+     * @var array
+     */
     private $_chapters = [];
 
 
