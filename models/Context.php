@@ -8,6 +8,8 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
@@ -283,9 +285,27 @@ class Context extends Component
      */
     protected function inheritDocs($class)
     {
+        if ($class->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
+            $inheritTag = $class->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME);
+            $parentClass = $this->classes[$class->parentClass] ?? null;
+            if ($inheritTag !== null && $parentClass !== null) {
+                $class->shortDescription = $parentClass->shortDescription;
+                $class->description = $this->inheritDescription(
+                    $class->description,
+                    $parentClass->description,
+                    $inheritTag,
+                );
+
+                $class->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
+            }
+        }
+
         // inherit for properties
         foreach ($class->properties as $p) {
-            if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
+            if (
+                $p->hasTag(BaseDoc::INHERITDOC_TAG_NAME)
+                && ($inheritTag = $p->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME)) !== null
+            ) {
                 $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
                 if (!$inheritedProperty) {
                     $this->errors[] = [
@@ -307,19 +327,22 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $p->description = implode("\n\n", [
-                    trim($p->description),
-                    trim($inheritedProperty->description),
-                    $inheritTag->getDescription(),
-                ]);
+                $p->description = $this->inheritDescription(
+                    $p->description,
+                    $inheritedProperty->description,
+                    $inheritTag
+                );
 
-                $p->removeTag('inheritdoc');
+                $p->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
             }
         }
 
         // inherit for methods
         foreach ($class->methods as $m) {
-            if ($m->hasTag('inheritdoc') && ($inheritTag = $m->getFirstTag('inheritdoc')) !== null) {
+            if (
+                $m->hasTag(BaseDoc::INHERITDOC_TAG_NAME)
+                && ($inheritTag = $m->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME)) !== null
+            ) {
                 $inheritedMethod = $this->inheritMethodRecursive($m, $class);
                 if (!$inheritedMethod) {
                     $this->errors[] = [
@@ -340,11 +363,11 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $m->description = implode("\n\n", [
-                    trim($m->description),
-                    trim($inheritedMethod->description),
-                    $inheritTag->getDescription(),
-                ]);
+                $m->description = $this->inheritDescription(
+                    $m->description,
+                    $inheritedMethod->description,
+                    $inheritTag,
+                );
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
@@ -362,7 +385,7 @@ class Context extends Component
                         $param->type = $inheritedMethod->params[$i]->type;
                     }
                 }
-                $m->removeTag('inheritdoc');
+                $m->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
             }
         }
     }
@@ -370,10 +393,11 @@ class Context extends Component
     /**
      * @param MethodDoc $method
      * @param ClassDoc $class
-     * @return mixed
+     * @return MethodDoc|false
      */
     private function inheritMethodRecursive($method, $class)
     {
+        /** @var (ClassDoc|InterfaceDoc)[] */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
             $this->getInterfaces($class),
@@ -383,7 +407,7 @@ class Context extends Component
         foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
-                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
                     $this->inheritDocs($candidate);
                 }
                 $methods[] = $cmethod;
@@ -396,10 +420,11 @@ class Context extends Component
     /**
      * @param PropertyDoc $method
      * @param ClassDoc $class
-     * @return mixed
+     * @return PropertyDoc|false
      */
     private function inheritPropertyRecursive($method, $class)
     {
+        /** @var (ClassDoc|InterfaceDoc)[] */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
             $this->getInterfaces($class),
@@ -409,7 +434,7 @@ class Context extends Component
         foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->properties[$method->name])) {
                 $cproperty = $candidate->properties[$method->name];
-                if ($cproperty->hasTag('inheritdoc')) {
+                if ($cproperty->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
                     $this->inheritDocs($candidate);
                 }
                 $properties[] = $cproperty;
@@ -421,7 +446,7 @@ class Context extends Component
 
     /**
      * @param ClassDoc $class
-     * @return array
+     * @return ClassDoc[]
      */
     private function getParents($class)
     {
@@ -433,7 +458,7 @@ class Context extends Component
 
     /**
      * @param ClassDoc $class
-     * @return array
+     * @return InterfaceDoc[]
      */
     private function getInterfaces($class)
     {
@@ -595,5 +620,27 @@ class Context extends Component
         $project = $projectFactory->create('ApiDoc', $files);
 
         return $project;
+    }
+
+    private function inheritDescription(
+        ?string $currentDescription,
+        ?string $parentDescription,
+        Tag $inheritTag
+    ): string {
+        $result = $currentDescription ?? '';
+
+        $parentDescription = trim((string) $parentDescription);
+        if ($parentDescription !== '') {
+            $result .= "\n\n" . $parentDescription;
+        }
+
+        if ($inheritTag instanceof BaseTag) {
+            $inheritTagDescription = trim((string) $inheritTag->getDescription());
+            if ($inheritTagDescription !== '') {
+                $result .= "\n\n" . $inheritTagDescription;
+            }
+        }
+
+        return trim($result);
     }
 }
