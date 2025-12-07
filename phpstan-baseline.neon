@@ -36,6 +36,11 @@ parameters:
 			path: commands/ApiController.php
 
 		-
+			message: "#^Access to an undefined property yii\\\\apidoc\\\\renderers\\\\BaseRenderer\\:\\:\\$repoUrl\\.$#"
+			count: 1
+			path: helpers/ApiMarkdown.php
+
+		-
 			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Property\\:\\:getDefault\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
 			count: 1
 			reportUnmatched: false

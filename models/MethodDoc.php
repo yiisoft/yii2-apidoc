@@ -19,9 +19,21 @@ use phpDocumentor\Reflection\Php\Method;
  */
 class MethodDoc extends FunctionDoc
 {
+    /**
+     * @var bool|null
+     */
     public $isAbstract;
+    /**
+     * @var bool|null
+     */
     public $isFinal;
+    /**
+     * @var bool|null
+     */
     public $isStatic;
+    /**
+     * @var string|null
+     */
     public $visibility;
     /**
      * @var string|null
