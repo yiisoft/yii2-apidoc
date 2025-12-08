@@ -13,6 +13,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #342: Remove unnecessary files from Composer package (mspirkov)
 - Enh #341: Add support for nullable types (mspirkov)
 - Enh #347: Add PHPDoc types for class properties (mspirkov)
+- Enh #348: Inherit descriptions of the parent class (mspirkov)
 
 
 3.0.8 November 24, 2025

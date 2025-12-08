@@ -43,7 +43,7 @@ class BaseDoc extends BaseObject
     private const PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME = 'phpstan-import-type';
     private const PSALM_IMPORT_TYPE_ANNOTATION_NAME = 'psalm-import-type';
 
-    private const INHERITDOC_TAG_NAME = 'inheritdoc';
+    public const INHERITDOC_TAG_NAME = 'inheritdoc';
     private const TODO_TAG_NAME = 'todo';
 
     /**
