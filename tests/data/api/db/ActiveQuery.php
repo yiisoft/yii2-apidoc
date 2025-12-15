@@ -18,6 +18,10 @@ namespace yiiunit\apidoc\data\api\db;
  */
 class ActiveQuery implements ActiveQueryInterface
 {
+    use ActiveRelationTrait;
+
+    public const SOME_CLASS_CONST = 'someClassConst';
+
     /**
      * @return T|null
      */

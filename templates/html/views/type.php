@@ -41,10 +41,10 @@ $renderer = $this->context;
     <?php if (!empty($type->methods)): ?>
         | <a href="#methods">Methods</a>
     <?php endif; ?>
-    <?php if ($type instanceof ClassDoc && !empty($type->events)): ?>
+    <?php if (!empty($type->events)): ?>
         | <a href="#events">Events</a>
     <?php endif; ?>
-    <?php if ($type instanceof ClassDoc && !empty($type->constants)): ?>
+    <?php if (!empty($type->constants)): ?>
         | <a href="#constants">Constants</a>
     <?php endif; ?>
 </div>

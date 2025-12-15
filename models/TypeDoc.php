@@ -46,6 +46,14 @@ class TypeDoc extends BaseDoc
      */
     public $properties = [];
     /**
+     * @var array<string, ConstDoc>
+     */
+    public $constants = [];
+    /**
+     * @var array<string, EventDoc>
+     */
+    public $events = [];
+    /**
      * @var string
      */
     public $namespace;
@@ -269,6 +277,19 @@ class TypeDoc extends BaseDoc
                 $method = new MethodDoc($this, $methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
+            }
+        }
+
+        foreach ($reflector->getConstants() as $constantReflector) {
+            $docBlock = $constantReflector->getDocBlock();
+            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
+                $event = new EventDoc($this, $constantReflector, null, [], $docBlock);
+                $event->definedBy = $this->name;
+                $this->events[$event->name] = $event;
+            } else {
+                $constant = new ConstDoc($this, $constantReflector);
+                $constant->definedBy = $this->name;
+                $this->constants[$constant->name] = $constant;
             }
         }
     }

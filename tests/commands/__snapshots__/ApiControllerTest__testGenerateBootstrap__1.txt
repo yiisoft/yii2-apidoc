@@ -331,14 +331,14 @@ Array
 
     [47] => Array
         (
-            [line] => 24
+            [line] => 28
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'one'
         )
 
     [48] => Array
         (
-            [line] => 31
+            [line] => 35
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'all'
         )
@@ -352,14 +352,14 @@ Array
 
     [50] => Array
         (
-            [line] => 13
+            [line] => 16
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'one'
         )
 
     [51] => Array
         (
-            [line] => 14
+            [line] => 17
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'all'
         )

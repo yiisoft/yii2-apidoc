@@ -45,14 +45,6 @@ class ClassDoc extends TypeDoc
      * @var string[]
      */
     public $subclasses = [];
-    /**
-     * @var EventDoc[]
-     */
-    public $events = [];
-    /**
-     * @var ConstDoc[]
-     */
-    public $constants = [];
 
 
     /**
@@ -119,18 +111,6 @@ class ClassDoc extends TypeDoc
         }
         foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
-        }
-        foreach ($reflector->getConstants() as $constantReflector) {
-            $docBlock = $constantReflector->getDocBlock();
-            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($this, $constantReflector, null, [], $docBlock);
-                $event->definedBy = $this->name;
-                $this->events[$event->name] = $event;
-            } else {
-                $constant = new ConstDoc($this, $constantReflector);
-                $constant->definedBy = $this->name;
-                $this->constants[$constant->name] = $constant;
-            }
         }
     }
 }
