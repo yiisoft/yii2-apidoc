@@ -30,7 +30,7 @@ class ConstDoc extends BaseDoc
 
 
     /**
-     * @param ClassDoc|TraitDoc $parent
+     * @param TypeDoc $parent
      * @param Constant|null $reflector
      * @param Context|null $context
      * @param array $config

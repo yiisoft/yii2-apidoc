@@ -10,6 +10,9 @@ namespace yiiunit\apidoc\data\api\db;
 
 interface ActiveQueryInterface
 {
+    public const FIRST_CONST = 'firstConst';
+    public const SECOND_CONST = 'secondConst';
+
     public function one();
     public function all();
 }

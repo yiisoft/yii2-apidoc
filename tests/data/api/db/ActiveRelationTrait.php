@@ -19,4 +19,5 @@ namespace yiiunit\apidoc\data\api\db;
  */
 trait ActiveRelationTrait
 {
+    public const SOME_TRAIT_CONST = 'someTraitConst';
 }

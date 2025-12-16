@@ -21,7 +21,7 @@ parameters:
 			path: renderers/BaseRenderer.php
 
 		-
-			message: "#^Property yii\\\\apidoc\\\\models\\\\ClassDoc\\:\\:\\$events \\(array\\<yii\\\\apidoc\\\\models\\\\EventDoc\\>\\) does not accept array\\<yii\\\\apidoc\\\\models\\\\ConstDoc\\|yii\\\\apidoc\\\\models\\\\MethodDoc\\|yii\\\\apidoc\\\\models\\\\PropertyDoc\\>\\.$#"
+			message: "#^Property yii\\\\apidoc\\\\models\\\\TypeDoc\\:\\:\\$events \\(array\\<string\\, yii\\\\apidoc\\\\models\\\\EventDoc\\>\\) does not accept array\\<string\\, yii\\\\apidoc\\\\models\\\\ConstDoc\\|yii\\\\apidoc\\\\models\\\\MethodDoc\\|yii\\\\apidoc\\\\models\\\\PropertyDoc\\>\\.$#"
 			count: 1
 			path: models/Context.php
 
