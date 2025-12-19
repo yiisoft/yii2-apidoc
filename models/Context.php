@@ -146,21 +146,7 @@ class Context extends Component
         }
         // update implementedBy and usedBy for interfaces
         foreach ($this->classes as $class) {
-            foreach ($class->interfaces as $interface) {
-                if (!isset($this->interfaces[$interface])) {
-                    continue;
-                }
-                $this->interfaces[$interface]->implementedBy[] = $class->name;
-                if (!$class->isAbstract) {
-                    continue;
-                }
-                // add not implemented interface methods
-                foreach ($this->interfaces[$interface]->methods as $method) {
-                    if (!isset($class->methods[$method->name])) {
-                        $class->methods[$method->name] = $method;
-                    }
-                }
-            }
+            $this->handleInterfaceInheritance($class);
         }
         foreach ($this->interfaces as $interface) {
             $this->updateSubInterfaceInheritance($interface);
@@ -228,6 +214,41 @@ class Context extends Component
                     $class->methods[$method->name] = $method;
                 }
             }
+
+            foreach ($trait->constants as $constant) {
+                if (!isset($class->constants[$constant->name])) {
+                    $class->constants[$constant->name] = $constant;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param ClassDoc $class
+     */
+    private function handleInterfaceInheritance($class)
+    {
+        foreach ($class->interfaces as $interface) {
+            if (!isset($this->interfaces[$interface])) {
+                continue;
+            }
+
+            $this->interfaces[$interface]->implementedBy[] = $class->name;
+
+            foreach ($this->interfaces[$interface]->constants as $constant) {
+                if (!isset($class->constants[$constant->name])) {
+                    $class->constants[$constant->name] = $constant;
+                }
+            }
+
+            // add not implemented interface methods
+            if ($class->isAbstract) {
+                foreach ($this->interfaces[$interface]->methods as $method) {
+                    if (!isset($class->methods[$method->name])) {
+                        $class->methods[$method->name] = $method;
+                    }
+                }
+            }
         }
     }
 
@@ -274,6 +295,7 @@ class Context extends Component
 
             $subInterface = $this->interfaces[$name];
             $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+            $subInterface->constants = array_merge($interface->constants, $subInterface->constants);
             $this->updateSubInterfaceInheritance($subInterface);
         }
     }
