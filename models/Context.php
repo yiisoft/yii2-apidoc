@@ -241,7 +241,7 @@ class Context extends Component
                 }
             }
 
-            // add not implemented interface methods
+            // Add not implemented interface methods
             if ($class->isAbstract) {
                 foreach ($this->interfaces[$interface]->methods as $method) {
                     if (!isset($class->methods[$method->name])) {
