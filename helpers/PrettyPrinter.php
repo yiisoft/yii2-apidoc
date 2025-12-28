@@ -50,18 +50,4 @@ class PrettyPrinter extends BasePrettyPrinter
             return $this->pCommaSeparatedMultiline($nodes, $trailingComma) . $this->nl;
         }
     }
-
-    /**
-     * Returns a simple human readable output for a value.
-     * @param Expr $value The value node as provided by PHP-Parser.
-     * @return string
-     * @deprecated Pretty print is handled in "phpdocumentor/reflection" library. This custom pretty printer is now
-     * injected through strategies and not directly called within "apidoc" extension.
-     */
-    public static function getRepresentationOfValue(Expr $value)
-    {
-        $printer = new static();
-
-        return $printer->prettyPrintExpr($value);
-    }
 }

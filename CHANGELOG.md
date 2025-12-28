@@ -15,6 +15,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #347: Add PHPDoc types for class properties (mspirkov)
 - Enh #348: Inherit descriptions of the parent class (mspirkov)
 - Enh #349: Add support for constants in interfaces and traits (mspirkov)
+- Chg #352: Remove deprecated code (mspirkov)
 
 
 3.0.8 November 24, 2025
