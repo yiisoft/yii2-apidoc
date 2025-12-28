@@ -12,8 +12,14 @@ namespace yiiunit\apidoc\data\api\animal;
  * Dog represents a dog animal.
  *
  * @phpstan-type MyArray array{foo: int, bar: string}
+ * @psalm-type TypeWithoutEqualsSign array<string, mixed>
  *
  * @phpstan-type InvalidType invalid-type
+ *
+ * @phpstan-type InvalidTag1
+ * @psalm-type InvalidTag2
+ * @phpstan-import-type InvalidTag3
+ * @psalm-import-type InvalidTag4
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1

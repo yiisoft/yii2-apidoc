@@ -270,7 +270,7 @@ class BaseDoc extends BaseObject
                         $this->todos[] = $tag;
                         unset($this->tags[$i]);
                     } elseif ($tag->getName() === self::PHPSTAN_TYPE_ANNOTATION_NAME) {
-                        $tagData = explode(' ', trim($tag->getDescription()), 2);
+                        $tagData = $this->parsePseudoTypeTag($tag);
                         $phpStanType = new PseudoTypeDoc(
                             PseudoTypeDoc::TYPE_PHPSTAN,
                             $this,
@@ -281,7 +281,7 @@ class BaseDoc extends BaseObject
                         $this->phpStanTypes[(string) $fqsen] = $phpStanType;
                         unset($this->tags[$i]);
                     } elseif ($tag->getName() === self::PSALM_TYPE_ANNOTATION_NAME) {
-                        $tagData = explode('=', trim($tag->getDescription()), 2);
+                        $tagData = $this->parsePseudoTypeTag($tag);
                         $psalmType = new PseudoTypeDoc(
                             PseudoTypeDoc::TYPE_PSALM,
                             $this,
@@ -292,7 +292,7 @@ class BaseDoc extends BaseObject
                         $this->psalmTypes[(string) $fqsen] = $psalmType;
                         unset($this->tags[$i]);
                     } elseif ($tag->getName() === self::PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME) {
-                        $tagData = explode(' from ', trim($tag->getDescription()), 2);
+                        $tagData = $this->parsePseudoTypeImportTag($tag);
                         $phpStanTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PHPSTAN,
                             trim($tagData[0]),
@@ -302,7 +302,7 @@ class BaseDoc extends BaseObject
                         $this->phpStanTypeImports[(string) $fqsen] = $phpStanTypeImport;
                         unset($this->tags[$i]);
                     } elseif ($tag->getName() === self::PSALM_IMPORT_TYPE_ANNOTATION_NAME) {
-                        $tagData = explode(' from ', trim($tag->getDescription()), 2);
+                        $tagData = $this->parsePseudoTypeImportTag($tag);
                         $psalmTypeImport = new PseudoTypeImportDoc(
                             PseudoTypeImportDoc::TYPE_PSALM,
                             trim($tagData[0]),
@@ -400,5 +400,37 @@ class BaseDoc extends BaseObject
         }
 
         return $text;
+    }
+
+    /**
+     * @throws RuntimeException
+     * @return array{string, string}
+     */
+    private function parsePseudoTypeImportTag(Generic $tag): array
+    {
+        $result = explode(' from ', trim($tag->getDescription()), 2);
+        if (count($result) !== 2) {
+            throw new RuntimeException('Invalid tag: ' . $tag);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @throws RuntimeException
+     * @return array{string, string}
+     */
+    private function parsePseudoTypeTag(Generic $tag): array
+    {
+        // PHPStan and Psalm can read types with and without an equal sign.
+        $signs = $tag->getName() === self::PHPSTAN_TYPE_ANNOTATION_NAME ? [' ', '='] : ['=', ' '];
+        foreach ($signs as $sign) {
+            $result = explode($sign, trim($tag->getDescription()), 2);
+            if (count($result) === 2) {
+                return $result;
+            }
+        }
+
+        throw new RuntimeException('Invalid tag: ' . $tag);
     }
 }
