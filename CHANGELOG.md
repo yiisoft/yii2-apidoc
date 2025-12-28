@@ -6,7 +6,7 @@ Yii Framework 2 apidoc extension Change Log
 
 - Bug #338: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
 - Enh #337: Log invalid tags (mspirkov)
-- Enh #339, #340: Add support for PHPStan/Psalm syntax (mspirkov)
+- Enh #339, #340, #350: Add support for PHPStan/Psalm syntax (mspirkov)
 - Enh #339: Add support for intersection types (mspirkov)
 - Bug #339: Fix the mechanism for replacing `static` with FQCN (mspirkov)
 - Bug #339: Fix processing of multidimensional arrays (mspirkov)
