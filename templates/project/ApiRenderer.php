@@ -12,7 +12,6 @@ use Yii;
 use yii\helpers\Console;
 
 /**
- *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 4.0
  */
