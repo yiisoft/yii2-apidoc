@@ -17,11 +17,6 @@ use yii\helpers\Console;
  */
 class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
 {
-    use \yii\apidoc\templates\bootstrap\RendererTrait;
-
-    public $layout = '@yii/apidoc/templates/bootstrap/layouts/api.php';
-    public $indexView = '@yii/apidoc/templates/bootstrap/views/index.php';
-
     /**
      * @inheritdoc
      */
