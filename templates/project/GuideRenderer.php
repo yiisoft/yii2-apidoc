@@ -16,5 +16,4 @@ use Yii;
  */
 class GuideRenderer extends \yii\apidoc\templates\bootstrap\GuideRenderer
 {
-    use \yii\apidoc\templates\bootstrap\RendererTrait;
 }
