@@ -126,4 +126,3 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         return $url . '#L' . $line;
     }
 }
-
