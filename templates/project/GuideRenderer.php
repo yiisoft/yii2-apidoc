@@ -15,7 +15,7 @@ use yii\helpers\FileHelper;
 /**
  *
  * @author Carsten Brandt <mail@cebe.cc>
- * @since 2.0
+ * @since 4.0
  */
 class GuideRenderer extends \yii\apidoc\templates\bootstrap\GuideRenderer
 {
