@@ -174,23 +174,6 @@ class Context extends Component
     }
 
     /**
-     * Add implemented interfaces and used traits to subclasses
-     * @param ClassDoc $class
-     * @deprecated Use handleClassInheritance() instead
-     */
-    protected function updateSubclassInheritance($class)
-    {
-        foreach ($class->subclasses as $subclass) {
-            $subclass = $this->classes[$subclass];
-            $subclass->events = array_merge($class->events, $subclass->events);
-            $subclass->constants = array_merge($class->constants, $subclass->constants);
-            $subclass->properties = array_merge($class->properties, $subclass->properties);
-            $subclass->methods = array_merge($class->methods, $subclass->methods);
-            $this->updateSubclassInheritance($subclass);
-        }
-    }
-
-    /**
      * @param ClassDoc $class
      */
     protected function handleTraitInheritance($class)
