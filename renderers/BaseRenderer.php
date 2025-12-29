@@ -167,7 +167,7 @@ abstract class BaseRenderer extends Component
      */
     public $guidePrefix = 'guide-';
     /**
-     * @var string URL for the README to use for the index of the guide.
+     * @var string|null URL for the README to use for the index of the guide.
      * @since 4.0
      */
     public $readmeUrl;
