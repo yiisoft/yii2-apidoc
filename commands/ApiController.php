@@ -38,12 +38,11 @@ class ApiController extends BaseController
      * left as is.
      */
     public $repoUrl;
-
     /**
      * @var string URL for the README to use for the index of the guide.
-     * @since 2.0.7
+     * @since 4.0
      */
-    public $readmeUrl = "https://raw.github.com/yiisoft/yii2-framework/master/README.md";
+    public $readmeUrl = 'https://raw.github.com/yiisoft/yii2-framework/master/README.md';
 
 
     // TODO add force update option
