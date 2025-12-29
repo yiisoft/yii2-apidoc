@@ -64,10 +64,13 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
-    public function testGenerateBootstrap(): void
+    /**
+     * @dataProvider provideGenerateHtmlData
+     */
+    public function testGenerateHtml(string $template): void
     {
         $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');
-        $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => 'bootstrap']);
+        $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => $template]);
 
         $this->assertNotEmpty($output);
         $this->assertStringContainsString('generating search index...done.', $output);
@@ -110,6 +113,17 @@ class ApiControllerTest extends TestCase
         $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true]));
 
         $this->assertSame($sourceFilesCount, $filesCount);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function provideGenerateHtmlData(): array
+    {
+        return [
+            'bootstrap' => ['bootstrap'],
+            'project' => ['project'],
+        ];
     }
 
     public function testGenerateJson(): void
