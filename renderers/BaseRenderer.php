@@ -59,11 +59,6 @@ use yii\console\Controller;
  */
 abstract class BaseRenderer extends Component
 {
-    /**
-     * @deprecated since 2.0.1 use [[$guidePrefix]] instead which allows configuring this options
-     */
-    public const GUIDE_PREFIX = 'guide-';
-
     private const PHP_CLASS_BASE_URL = 'https://www.php.net/class.';
     private const PHP_TYPE_BASE_URL = 'https://www.php.net/language.types.';
     private const PHPSTAN_TYPE_BASE_URL = 'https://phpstan.org/writing-php-code/phpdoc-types#';
