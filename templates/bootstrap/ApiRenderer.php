@@ -61,14 +61,13 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
 
         $yiiTypes = $this->filterTypes($types, 'yii');
         if (empty($yiiTypes)) {
-            //$readme = @file_get_contents("https://raw.github.com/yiisoft/yii2-framework/master/README.md");
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $this->filterTypes($types, 'app'),
                 'readme' => null,
             ]);
         } else {
-            $readme = @file_get_contents('https://raw.github.com/yiisoft/yii2-framework/master/README.md');
+            $readme = @file_get_contents($this->readmeUrl);
             $indexFileContent = $this->renderWithLayout($this->indexView, [
                 'docContext' => $context,
                 'types' => $yiiTypes,
