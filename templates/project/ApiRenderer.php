@@ -9,6 +9,7 @@
 namespace yii\apidoc\templates\project;
 
 use Yii;
+use yii\helpers\Console;
 
 /**
  *
@@ -31,21 +32,27 @@ class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
         parent::render($context, $targetDir);
 
         if ($this->controller !== null) {
-            $this->controller->stdout('generating extension index files...');
+            $this->controller->stdout('rendering files...');
         }
 
         $types = array_merge($context->classes, $context->interfaces, $context->traits);
-
         $appTypes = $this->filterTypes($types, 'app');
 
-        // It's a hack, but we'll go with it for now.
-        $readme = @file_get_contents($this->readmeUrl);
+        $readme = null;
+        if (is_file($this->readmeUrl)) {
+            $readme = file_get_contents($this->readmeUrl);
+        }
+
         $indexFileContent = $this->renderWithLayout($this->indexView, [
             'docContext' => $context,
-            'types' => $appTypes ?: null,
-            'readme' => $readme ?: null,
+            'types' => $appTypes,
+            'readme' => $readme,
         ]);
 
         file_put_contents($targetDir . '/index.html', $indexFileContent);
+
+        if ($this->controller !== null) {
+            $this->controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        }
     }
 }
