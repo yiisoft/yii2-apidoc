@@ -19,6 +19,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #349: Add inheritance of trait constants in classes (mspirkov)
 - Enh #261: Add inheritance of interface constants in classes (mspirkov)
 - Chg #352: Remove deprecated code (mspirkov)
+- New #131: Add a new template for custom projects (jcherniak, cebe, mspirkov)
 
 
 3.0.8 November 24, 2025

@@ -38,6 +38,11 @@ class ApiController extends BaseController
      * left as is.
      */
     public $repoUrl;
+    /**
+     * @var string URL for the README to use for the index of the guide.
+     * @since 4.0
+     */
+    public $readmeUrl = 'https://raw.github.com/yiisoft/yii2-framework/master/README.md';
 
 
     // TODO add force update option
@@ -57,6 +62,7 @@ class ApiController extends BaseController
 
         $renderer->apiUrl = './';
         $renderer->guidePrefix = $this->guidePrefix;
+        $renderer->readmeUrl = $this->readmeUrl;
 
         if ($this->pageTitle !== null) {
             $renderer->pageTitle = $this->pageTitle;
@@ -196,6 +202,6 @@ class ApiController extends BaseController
      */
     public function options($actionID)
     {
-        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'repoUrl']);
+        return array_merge(parent::options($actionID), ['guide', 'guidePrefix', 'readmeUrl', 'repoUrl']);
     }
 }
