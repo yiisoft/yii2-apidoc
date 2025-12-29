@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -6,6 +7,8 @@
  */
 
 namespace yii\apidoc\models;
+
+use phpDocumentor\Reflection\Php\Class_;
 
 /**
  * Represents API documentation information for a `class`.
@@ -18,7 +21,7 @@ namespace yii\apidoc\models;
 class ClassDoc extends TypeDoc
 {
     /**
-     * @var string
+     * @var string|null
      */
     public $parentClass;
     /**
@@ -42,14 +45,6 @@ class ClassDoc extends TypeDoc
      * @var string[]
      */
     public $subclasses = [];
-    /**
-     * @var EventDoc[]
-     */
-    public $events = [];
-    /**
-     * @var ConstDoc[]
-     */
-    public $constants = [];
 
 
     /**
@@ -91,7 +86,9 @@ class ClassDoc extends TypeDoc
     }
 
     /**
-     * @inheritdoc
+     * @param Class_|null $reflector
+     * @param Context|null $context
+     * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
     {
@@ -101,7 +98,8 @@ class ClassDoc extends TypeDoc
             return;
         }
 
-        $this->parentClass = ltrim($reflector->getParent(), '\\');
+        $reflectorParent = $reflector->getParent();
+        $this->parentClass = $reflectorParent !== null ? ltrim($reflectorParent, '\\') : null;
         if (empty($this->parentClass)) {
             $this->parentClass = null;
         }
@@ -113,18 +111,6 @@ class ClassDoc extends TypeDoc
         }
         foreach ($reflector->getUsedTraits() as $trait) {
             $this->traits[] = ltrim($trait, '\\');
-        }
-        foreach ($reflector->getConstants() as $constantReflector) {
-            $docBlock = $constantReflector->getDocBlock();
-            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
-                $event = new EventDoc($constantReflector, null, null, $docBlock);
-                $event->definedBy = $this->name;
-                $this->events[$event->name] = $event;
-            } else {
-                $constant = new ConstDoc($constantReflector);
-                $constant->definedBy = $this->name;
-                $this->constants[$constant->name] = $constant;
-            }
         }
     }
 }

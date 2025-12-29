@@ -4,10 +4,12 @@ use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc */
+/**
+ * @var \yii\web\View $this
+ * @var ClassDoc $type
+ */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var \yii\apidoc\templates\html\ApiRenderer $renderer */
 $renderer = $this->context;
 
 if (empty($type->events)) {
@@ -40,14 +42,14 @@ ArrayHelper::multisort($events, 'name');
         <?php foreach ($events as $event) { ?>
             <tr id="<?= $event->name ?>" class="<?= $event->definedBy !== $type->name ? 'inherited' : '' ?>">
                 <td><?= $renderer->createSubjectLink($event, null, [], $type) ?></td>
-                <td><?= $renderer->createTypeLink($event->types) ?></td>
+                <td><?= $renderer->createTypeLink($event->type, $type) ?></td>
                 <td>
                     <?= ApiMarkdown::process($event->shortDescription, $event->definedBy, true) ?>
                     <?php if (!empty($event->since)) { ?>
                         (available since version <?= $event->since ?>)
                     <?php } ?>
                 </td>
-                <td><?= $renderer->createTypeLink($event->definedBy) ?></td>
+                <td><?= $renderer->createTypeLink($event->definedBy, $type) ?></td>
             </tr>
         <?php } ?>
     </table>

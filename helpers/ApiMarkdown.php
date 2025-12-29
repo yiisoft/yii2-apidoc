@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -26,7 +27,7 @@ class ApiMarkdown extends GithubMarkdown
     use MarkdownHighlightTrait;
 
     /**
-     * @var BaseRenderer
+     * @var BaseRenderer|null
      */
     public static $renderer;
     /**
@@ -35,7 +36,13 @@ class ApiMarkdown extends GithubMarkdown
      */
     public static $blockTranslations = [];
 
+    /**
+     * @var TypeDoc|null
+     */
     protected $renderingContext;
+    /**
+     * @var array
+     */
     protected $headings = [];
 
 
@@ -130,7 +137,7 @@ class ApiMarkdown extends GithubMarkdown
             static::$renderer->apiContext->errors[] = [
                 'line' => null,
                 'file' => null,
-                'message' => "Using empty link.",
+                'message' => 'Using empty link.',
             ];
 
             return parent::renderLink($block);
@@ -184,14 +191,14 @@ class ApiMarkdown extends GithubMarkdown
      * Converts markdown into HTML
      *
      * @param string $content
-     * @param TypeDoc $context
+     * @param TypeDoc|string|null $context
      * @param bool $paragraph
      * @return string
      */
     public static function process($content, $context = null, $paragraph = false)
     {
         if (!isset(Markdown::$flavors['api'])) {
-            Markdown::$flavors['api'] = new static;
+            Markdown::$flavors['api'] = new static();
         }
 
         if (is_string($context)) {

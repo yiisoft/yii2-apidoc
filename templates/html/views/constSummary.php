@@ -4,10 +4,12 @@ use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc */
+/**
+ * @var \yii\web\View $this
+ * @var ClassDoc $type
+ */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var \yii\apidoc\templates\html\ApiRenderer $renderer */
 $renderer = $this->context;
 
 if (empty($type->constants)) {
@@ -62,7 +64,7 @@ ArrayHelper::multisort($constants, 'name');
                       </strong>
                   <?php } ?>
               </td>
-              <td><?= $renderer->createTypeLink($constant->definedBy) ?></td>
+              <td><?= $renderer->createTypeLink($constant->definedBy, $type) ?></td>
             </tr>
         <?php } ?>
     </table>

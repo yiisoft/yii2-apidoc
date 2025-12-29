@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -17,6 +18,9 @@ use phpDocumentor\Reflection\Php\Interface_;
  */
 class InterfaceDoc extends TypeDoc
 {
+    /**
+     * @var string[]
+     */
     public $parentInterfaces = [];
     /**
      * @var string[] Class names
@@ -26,8 +30,8 @@ class InterfaceDoc extends TypeDoc
 
 
     /**
-     * @param Interface_ $reflector
-     * @param Context $context
+     * @param Interface_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

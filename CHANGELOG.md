@@ -1,7 +1,45 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-3.0.7 under development
+4.0.0 under development
+-----------------------
+
+- Bug #338: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
+- Enh #337: Log invalid tags (mspirkov)
+- Enh #339, #340, #351: Add support for PHPStan/Psalm syntax (mspirkov)
+- Enh #339: Add support for intersection types (mspirkov)
+- Bug #339: Fix the mechanism for replacing `static` with FQCN (mspirkov)
+- Bug #339: Fix processing of multidimensional arrays (mspirkov)
+- Enh #342: Remove unnecessary files from Composer package (mspirkov)
+- Enh #341: Add support for nullable types (mspirkov)
+- Enh #347: Add PHPDoc types for class properties (mspirkov)
+- Enh #348: Inherit descriptions of the parent class (mspirkov)
+- Enh #349: Add support for constants in interfaces and traits (mspirkov)
+- Enh #349: Add inheritance of constants in interfaces (mspirkov)
+- Enh #349: Add inheritance of trait constants in classes (mspirkov)
+- Enh #261: Add inheritance of interface constants in classes (mspirkov)
+
+
+3.0.8 November 24, 2025
+-----------------------
+
+- Bug #311: Support `nikic/php-parser` v5 (mspirkov)
+- Bug #312: Fix `MarkdownHighlightTrait::highlight()` behavior for PHP 8.3 (mspirkov)
+- Bug #313: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
+- Bug #317: Fix `trim` deprecation errors `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
+- Bug #318: Fix deprecation errors `mb_convert_encoding(): Handling HTML entities via mbstring is deprecated` (mspirkov)
+- Bug #324: Raise minimum PHP version to 7.4 (mspirkov)
+- Bug #325: Fix deprecation errors `The Default value will become of type Expression by default` (mspirkov)
+- Bug #327: Fix deprecation errors `The expression value will become of type Expression by default` (mspirkov)
+- Bug #329, #331: Fix getting parameter types from the `@method` annotation (mspirkov)
+- Bug #334: Fix PHPDoc annotations throughout the code (mspirkov)
+- Bug #335: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
+- Enh #319, #328: Determining types by type hints for properties, methods and params (mspirkov)
+- Enh #320: Expand the list of built-in PHP types (mspirkov)
+- Enh #331: Display `mixed` for parameters that do not have PHPDoc annotations or type hints (mspirkov)
+
+
+3.0.7 February 13, 2025
 -----------------------
 
 - Bug #293: Logged errors and warnings were duplicated in some cases (rhertogh)

@@ -1,15 +1,20 @@
 <?php
 
+use Highlight\Highlighter;
 use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
+use yii\apidoc\templates\html\ApiRenderer;
+use yii\web\View;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc|InterfaceDoc|TraitDoc */
-/* @var $highlighter \Highlight\Highlighter */
+/**
+ * @var View $this
+ * @var ClassDoc|InterfaceDoc|TraitDoc $type
+ * @var Highlighter $highlighter
+ */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var ApiRenderer $renderer */
 $renderer = $this->context;
 ?>
 <h1><?php
@@ -36,10 +41,10 @@ $renderer = $this->context;
     <?php if (!empty($type->methods)): ?>
         | <a href="#methods">Methods</a>
     <?php endif; ?>
-    <?php if ($type instanceof ClassDoc && !empty($type->events)): ?>
+    <?php if (!empty($type->events)): ?>
         | <a href="#events">Events</a>
     <?php endif; ?>
-    <?php if ($type instanceof ClassDoc && !empty($type->constants)): ?>
+    <?php if (!empty($type->constants)): ?>
         | <a href="#constants">Constants</a>
     <?php endif; ?>
 </div>
@@ -92,6 +97,20 @@ $renderer = $this->context;
 </div>
 
 <?= $this->render('@yii/apidoc/templates/html/views/changelog', ['doc' => $type]) ?>
+
+<?php if ($type->phpStanTypes): ?>
+    <?= $this->render('@yii/apidoc/templates/html/views/pseudoTypes', [
+        'types' => $type->phpStanTypes,
+        'title' => 'PHPStan Types',
+    ]) ?>
+<?php endif; ?>
+
+<?php if ($type->psalmTypes): ?>
+    <?= $this->render('@yii/apidoc/templates/html/views/pseudoTypes', [
+        'types' => $type->psalmTypes,
+        'title' => 'Psalm Types',
+    ]) ?>
+<?php endif; ?>
 
 <a id="properties"></a>
 <?= $this->render('@yii/apidoc/templates/html/views/propertySummary', ['type' => $type, 'protected' => false]) ?>

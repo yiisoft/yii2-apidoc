@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\pdf;
 
-use Yii;
 use yii\apidoc\helpers\ApiMarkdownLaTeX;
 use yii\helpers\Console;
 
@@ -40,19 +40,19 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
             if (isset($chapter['headline'])) {
                 $output .= '\chapter{' . $chapter['headline'] . "}\n";
             }
-            foreach($chapter['content'] as $content) {
+            foreach ($chapter['content'] as $content) {
                 // ignore URLs in TOC
                 if (strpos($content['file'], 'http://') === 0 || strpos($content['file'], 'https://') === 0) {
                     continue;
                 }
                 if (isset($fileData[$content['file']])) {
                     $md->labelPrefix = $content['file'] . '#';
-                    $output .= '\label{'. $content['file'] . '}';
+                    $output .= '\label{' . $content['file'] . '}';
                     $output .= $md->parse($fileData[$content['file']]) . "\n\n";
                 } else {
                     $output .= '\newpage';
-                    $output .= '\label{'. $content['file'] . '}';
-                    $output .= '\textbf{Error: not existing file: '.$content['file'].'}\newpage'."\n";
+                    $output .= '\label{' . $content['file'] . '}';
+                    $output .= '\textbf{Error: not existing file: ' . $content['file'] . '}\newpage' . "\n";
                 }
 
                 if ($this->controller !== null) {

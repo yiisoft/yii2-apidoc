@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -8,6 +9,7 @@
 namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
 use yii\helpers\StringHelper;
@@ -20,26 +22,29 @@ use yii\helpers\StringHelper;
  */
 class EventDoc extends ConstDoc
 {
+    /**
+     * @var string|null
+     */
     public $type;
-    public $types;
 
 
     /**
-     * @param Class_|Constant $reflector
-     * @param Context $context
+     * @param TypeDoc $parent
+     * @param Class_|Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
-     * @param DocBlock $docBlock
+     * @param DocBlock|null $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
         }
 
         foreach ($this->tags as $i => $tag) {
-            if ($tag->getName() != 'event') {
+            if (!$tag instanceof Generic || $tag->getName() !== 'event') {
                 continue;
             }
 
@@ -47,7 +52,7 @@ class EventDoc extends ConstDoc
             $className = $parts[0];
             $this->description = StringHelper::mb_ucfirst($parts[1]);
 
-            if (strpos($className, '\\') !== false)  {
+            if (strpos($className, '\\') !== false) {
                 $this->type = $className;
             } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
                 $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];
@@ -55,7 +60,6 @@ class EventDoc extends ConstDoc
                 $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->types = [$this->type];
             $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }

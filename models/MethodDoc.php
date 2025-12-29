@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -18,11 +19,25 @@ use phpDocumentor\Reflection\Php\Method;
  */
 class MethodDoc extends FunctionDoc
 {
+    /**
+     * @var bool|null
+     */
     public $isAbstract;
+    /**
+     * @var bool|null
+     */
     public $isFinal;
+    /**
+     * @var bool|null
+     */
     public $isStatic;
+    /**
+     * @var string|null
+     */
     public $visibility;
-    // will be set by creating class
+    /**
+     * @var string|null
+     */
     public $definedBy;
     /**
      * @var string
@@ -31,13 +46,14 @@ class MethodDoc extends FunctionDoc
 
 
     /**
-     * @param Class_|Method $reflector
-     * @param Context $context
+     * @param TypeDoc $parent
+     * @param Class_|Method|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;

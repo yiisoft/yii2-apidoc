@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -9,7 +10,7 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
-use yii\apidoc\helpers\PrettyPrinter;
+use phpDocumentor\Reflection\Type;
 use yii\helpers\StringHelper;
 
 /**
@@ -23,15 +24,34 @@ use yii\helpers\StringHelper;
  */
 class PropertyDoc extends BaseDoc
 {
+    /**
+     * @var string|null
+     */
     public $visibility;
+    /**
+     * @var bool|null
+     */
     public $isStatic;
+    /**
+     * @var Type|null
+     */
     public $type;
-    public $types;
+    /**
+     * @var string|null
+     */
     public $defaultValue;
     // will be set by creating class
+    /**
+     * @var MethodDoc|null
+     */
     public $getter;
+    /**
+     * @var MethodDoc|null
+     */
     public $setter;
-    // will be set by creating class
+    /**
+     * @var string|null
+     */
     public $definedBy;
 
 
@@ -52,13 +72,14 @@ class PropertyDoc extends BaseDoc
     }
 
     /**
-     * @param Property $reflector
-     * @param Context $context
+     * @param TypeDoc $parent
+     * @param Property|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
-    public function __construct($reflector = null, $context = null, $config = [])
+    public function __construct($parent, $reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
@@ -66,27 +87,35 @@ class PropertyDoc extends BaseDoc
 
         $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
-        $this->defaultValue = $reflector->getDefault();
+
+        if (PHP_VERSION_ID >= 80100) {
+            $reflectorDefault = $reflector->getDefault(false);
+            $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
+        } else {
+            $this->defaultValue = $reflector->getDefault();
+        }
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
-            if ($tag->getName() === 'inheritdoc') {
-                $hasInheritdoc = true;
-            }
             if ($tag instanceof Var_) {
-                $this->type = (string) $tag->getType();
-                $this->types = $this->splitTypes($tag->getType());
-
+                $this->type = $tag->getType();
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
                 $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            } elseif ($this->isInheritdocTag($tag)) {
+                $hasInheritdoc = true;
             }
         }
+
         if (empty($this->shortDescription) && $context !== null && !$hasInheritdoc) {
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
                 'message' => "No short description for element '{$this->name}'",
             ];
+        }
+
+        if (!$hasInheritdoc && $this->type === null) {
+            $this->type = $reflector->getType();
         }
     }
 }

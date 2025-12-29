@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\bootstrap;
 
-use Yii;
 use yii\base\InvalidConfigException;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap\Widget;
@@ -43,8 +43,8 @@ use yii\helpers\Html;
  *
  * Note: Multilevel dropdowns beyond Level 1 are not supported in Bootstrap 3.
  *
- * @see http://getbootstrap.com/components.html#dropdowns
- * @see http://getbootstrap.com/components/#nav
+ * @see https://getbootstrap.com/components.html#dropdowns
+ * @see https://getbootstrap.com/components/#nav
  *
  * @author Antonio Ramirez <amigo.cobos@gmail.com>
  * @since 2.0
@@ -166,8 +166,8 @@ class SideNavWidget extends Widget
                     'encodeLabels' => $this->encodeLabels,
                     'view' => $this->getView(),
                     'options' => [
-                        'class' => "submenu panel-collapse collapse" . ($active || !$collapsed ? ' in' : '')
-                    ]
+                        'class' => 'submenu panel-collapse collapse' . ($active || !$collapsed ? ' in' : ''),
+                    ],
                 ]);
             }
         }

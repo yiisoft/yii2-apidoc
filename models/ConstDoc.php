@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -9,7 +10,6 @@ namespace yii\apidoc\models;
 
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Php\Constant;
-use yii\apidoc\helpers\PrettyPrinter;
 
 /**
  * Represents API documentation information for a `constant`.
@@ -19,24 +19,36 @@ use yii\apidoc\helpers\PrettyPrinter;
  */
 class ConstDoc extends BaseDoc
 {
+    /**
+     * @var string|null
+     */
     public $definedBy;
+    /**
+     * @var string|null
+     */
     public $value;
 
 
     /**
-     * @param Constant $reflector
-     * @param Context $context
+     * @param TypeDoc $parent
+     * @param Constant|null $reflector
+     * @param Context|null $context
      * @param array $config
-     * @param DocBlock $docBlock
+     * @param DocBlock|null $docBlock
      */
-    public function __construct($reflector = null, $context = null, $config = [], $docBlock = null)
+    public function __construct($parent, $reflector = null, $context = null, $config = [], $docBlock = null)
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct($parent, $reflector, $context, $config);
 
         if ($reflector === null) {
             return;
         }
 
-        $this->value = $reflector->getValue();
+        if (PHP_VERSION_ID >= 80100) {
+            $reflectorValue = $reflector->getValue(false);
+            $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
+        } else {
+            $this->value = $reflector->getValue();
+        }
     }
 }

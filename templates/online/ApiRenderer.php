@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -8,7 +9,6 @@
 namespace yii\apidoc\templates\online;
 
 use yii\apidoc\models\TypeDoc;
-use Yii;
 use yii\helpers\Console;
 
 /**
@@ -18,6 +18,7 @@ use yii\helpers\Console;
  */
 class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
 {
+    /** @var string|false */
     public $layout = false;
     public $indexView = '@yii/apidoc/templates/online/views/index.php';
 
@@ -30,12 +31,12 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
         parent::render($context, $targetDir);
 
         if ($this->controller !== null) {
-            $this->controller->stdout("writing packages file...");
+            $this->controller->stdout('writing packages file...');
         }
         $packages = [];
         $notNamespaced = [];
         foreach (array_merge($context->classes, $context->interfaces, $context->traits) as $type) {
-            /* @var $type TypeDoc */
+            /** @var TypeDoc $type */
             if (empty($type->namespace)) {
                 $notNamespaced[] = str_replace('\\', '-', $type->name);
             } else {

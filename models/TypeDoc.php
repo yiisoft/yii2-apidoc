@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -13,6 +14,8 @@ use phpDocumentor\Reflection\DocBlock\Tags\Property;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyRead;
 use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
+use phpDocumentor\Reflection\Php\Interface_;
+use phpDocumentor\Reflection\Php\Trait_;
 use yii\helpers\StringHelper;
 
 /**
@@ -30,6 +33,9 @@ use yii\helpers\StringHelper;
  */
 class TypeDoc extends BaseDoc
 {
+    /**
+     * @var array<string, string>
+     */
     public $authors = [];
     /**
      * @var MethodDoc[]
@@ -39,6 +45,17 @@ class TypeDoc extends BaseDoc
      * @var PropertyDoc[]
      */
     public $properties = [];
+    /**
+     * @var array<string, ConstDoc>
+     */
+    public $constants = [];
+    /**
+     * @var array<string, EventDoc>
+     */
+    public $events = [];
+    /**
+     * @var string
+     */
     public $namespace;
 
 
@@ -55,7 +72,7 @@ class TypeDoc extends BaseDoc
      * - `$subjectName = 'attributes'` finds the method if it exists, if not it will find the property.
      *
      * @param $subjectName
-     * @return null|MethodDoc|PropertyDoc
+     * @return BaseDoc|null
      */
     public function findSubject($subjectName)
     {
@@ -156,8 +173,8 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param null $visibility
-     * @param null $definedBy
+     * @param string|null $visibility
+     * @param string|null $definedBy
      * @return PropertyDoc[]
      */
     private function getFilteredProperties($visibility = null, $definedBy = null)
@@ -180,13 +197,13 @@ class TypeDoc extends BaseDoc
     }
 
     /**
-     * @param Class_ $reflector
-     * @param Context $context
+     * @param Class_|Trait_|Interface_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])
     {
-        parent::__construct($reflector, $context, $config);
+        parent::__construct(null, $reflector, $context, $config);
 
         $this->namespace = trim(StringHelper::dirname($this->name), '\\');
 
@@ -201,18 +218,17 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $name = '$' . $tag->getVariableName();
 
-                $property = new PropertyDoc(null, $context, [
+                $property = new PropertyDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $name,
                     'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $name,
                     'isStatic' => false,
                     'visibility' => 'public',
                     'definedBy' => $this->name,
-                    'type' => (string) $tag->getType(),
-                    'types' => $this->splitTypes($tag->getType()),
+                    'type' => $tag->getType(),
                     'shortDescription' => $shortDescription,
                     'description' => $tag->getDescription(),
                 ]);
@@ -221,36 +237,30 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Method) {
-                $params = [];
-
-                foreach ($tag->getArguments() as $tagArgument) {
-                    $argumentType = (string) $tagArgument['type'];
-
-                    $params[] = new ParamDoc(null, $context, [
-                        'sourceFile' => $this->sourceFile,
-                        'name' => $tagArgument['name'],
-                        'typeHint' => $argumentType,
-                        'type' => $argumentType,
-                        'types' => [],
-                    ]);
-                }
-
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()): '';
+                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
                 $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
 
-                $method = new MethodDoc(null, $context, [
+                $method = new MethodDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getMethodName(),
                     'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $tag->getMethodName(),
                     'shortDescription' => $shortDescription,
                     'description' => $description,
                     'visibility' => 'public',
-                    'params' => $params,
+                    'params' => [],
                     'isStatic' => $tag->isStatic(),
                     'return' => ' ',
-                    'returnType' => (string) $tag->getReturnType(),
-                    'returnTypes' => $this->splitTypes($tag->getReturnType()),
+                    'returnType' => $tag->getReturnType(),
                 ]);
+
+                foreach ($tag->getParameters() as $parameter) {
+                    $method->params[] = new ParamDoc($method, null, $context, [
+                        'sourceFile' => $this->sourceFile,
+                        'name' => $parameter->getName(),
+                        'type' => $parameter->getType(),
+                    ]);
+                }
+
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
             }
@@ -264,9 +274,22 @@ class TypeDoc extends BaseDoc
             }
 
             if ((string) $methodReflector->getVisibility() !== 'private') {
-                $method = new MethodDoc($methodReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $method = new MethodDoc($this, $methodReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $method->definedBy = $this->name;
                 $this->methods[$method->name] = $method;
+            }
+        }
+
+        foreach ($reflector->getConstants() as $constantReflector) {
+            $docBlock = $constantReflector->getDocBlock();
+            if ($docBlock !== null && count($docBlock->getTagsByName('event')) > 0) {
+                $event = new EventDoc($this, $constantReflector, null, [], $docBlock);
+                $event->definedBy = $this->name;
+                $this->events[$event->name] = $event;
+            } else {
+                $constant = new ConstDoc($this, $constantReflector);
+                $constant->definedBy = $this->name;
+                $this->constants[$constant->name] = $constant;
             }
         }
     }
@@ -283,7 +306,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ((string) $propertyReflector->getVisibility() !== 'private') {
-                $property = new PropertyDoc($propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
+                $property = new PropertyDoc($this, $propertyReflector, $context, ['sourceFile' => $this->sourceFile]);
                 $property->definedBy = $this->name;
                 $this->properties[$property->name] = $property;
             }

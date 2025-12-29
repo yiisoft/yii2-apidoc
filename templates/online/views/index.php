@@ -3,9 +3,15 @@
 use yii\apidoc\models\ClassDoc;
 use yii\apidoc\models\InterfaceDoc;
 use yii\apidoc\models\TraitDoc;
+use yii\apidoc\templates\online\ApiRenderer;
 
-/* @var $types ClassDoc[]|InterfaceDoc[]|TraitDoc[] */
-/* @var $this yii\web\View */
+/**
+ * @var ClassDoc[]|InterfaceDoc[]|TraitDoc[] $types
+ * @var \yii\web\View $this
+ */
+
+/** @var ApiRenderer $renderer */
+$renderer = $this->context;
 
 ksort($types);
 ?>
@@ -23,7 +29,7 @@ ksort($types);
     </tr>
 <?php foreach ($types as $i => $class): ?>
     <tr>
-        <td><?= $this->context->createTypeLink($class, $class, $class->name) ?></td>
+        <td><?= $renderer->createTypeLink($class, $class, $class->name) ?></td>
         <td><?= \yii\apidoc\helpers\ApiMarkdown::process($class->shortDescription, $class, true) ?></td>
     </tr>
 <?php endforeach; ?>

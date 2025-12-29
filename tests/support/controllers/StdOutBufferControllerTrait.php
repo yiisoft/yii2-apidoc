@@ -1,8 +1,9 @@
 <?php
+
 /**
- * @link http://www.yiiframework.com/
+ * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
+ * @license https://www.yiiframework.com/license/
  */
 
 namespace yiiunit\apidoc\support\controllers;
@@ -16,34 +17,36 @@ trait StdOutBufferControllerTrait
     /**
      * @var string output buffer.
      */
-    private $stdOutBuffer = '';
+    private $_stdOutBuffer = '';
     /**
      * @var string error buffer.
      */
-    private $stdErrBuffer = '';
+    private $_stdErrBuffer = '';
 
 
     public function stdout($string)
     {
-        $this->stdOutBuffer .= $string;
+        $this->_stdOutBuffer .= $string;
+        return 0;
     }
 
     public function stderr($string)
     {
-        $this->stdErrBuffer .= $string;
+        $this->_stdErrBuffer .= $string;
+        return 0;
     }
 
     public function flushStdOutBuffer()
     {
-        $result = $this->stdOutBuffer;
-        $this->stdOutBuffer = '';
+        $result = $this->_stdOutBuffer;
+        $this->_stdOutBuffer = '';
         return $result;
     }
 
     public function flushStdErrBuffer()
     {
-        $result = $this->stdErrBuffer;
-        $this->stdErrBuffer = '';
+        $result = $this->_stdErrBuffer;
+        $this->_stdErrBuffer = '';
         return $result;
     }
 }

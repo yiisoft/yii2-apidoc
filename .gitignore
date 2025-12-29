@@ -4,6 +4,9 @@
 # netbeans project files
 nbproject
 
+# visual studio code project files
+.vscode
+
 # zend studio for eclipse project files
 .buildpath
 .project
@@ -37,3 +40,9 @@ phpunit.phar
 
 # local tests configuration
 /tests/data/config.local.php
+
+# local phpstan config
+phpstan.neon
+
+# local phpcs config
+phpcs.xml

@@ -1,0 +1,73 @@
+Array
+(
+    [0] => Array
+        (
+            [line] => 
+            [file] => 
+            [message] => Using relative link (https://en.wikipedia.org/wiki/Dependency_injection) but repoUrl is not set.
+        )
+
+    [1] => Array
+        (
+            [line] => 22
+            [file] => /tests/data/api/animal/Cat.php
+            [message] => Invalid tag: @@method $first is true ? string : string[] methodWithInvalidReturnType2(bool $first) Will be ignored.
+        )
+
+    [2] => Array
+        (
+            [line] => 46
+            [file] => /tests/data/api/animal/Cat.php
+            [message] => Invalid tag: @@return $first is true ? string : string[] Incorrect conditional type (without parentheses).
+        )
+
+    [3] => Array
+        (
+            [line] => 87
+            [file] => /tests/data/api/animal/Cat.php
+            [message] => Undefined parameter documented: $ in getInterfaceStringByClassString().
+        )
+
+    [4] => Array
+        (
+            [line] => 27
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Exception: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
+        )
+
+    [5] => Array
+        (
+            [line] => 27
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Exception: Invalid tag: InvalidTag1
+        )
+
+    [6] => Array
+        (
+            [line] => 27
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Exception: Invalid tag: InvalidTag2
+        )
+
+    [7] => Array
+        (
+            [line] => 27
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Exception: Invalid tag: InvalidTag3
+        )
+
+    [8] => Array
+        (
+            [line] => 27
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Exception: Invalid tag: InvalidTag4
+        )
+
+    [9] => Array
+        (
+            [line] => 88
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Invalid tag: @return invalid-type. Exception message: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
+        )
+
+)

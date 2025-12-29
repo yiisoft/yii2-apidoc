@@ -4,10 +4,12 @@ use yii\apidoc\helpers\ApiMarkdown;
 use yii\apidoc\models\ClassDoc;
 use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $type ClassDoc */
+/**
+ * @var \yii\web\View $this
+ * @var ClassDoc $type
+ */
 
-/* @var $renderer \yii\apidoc\templates\html\ApiRenderer */
+/** @var \yii\apidoc\templates\html\ApiRenderer $renderer */
 $renderer = $this->context;
 
 $events = $type->getNativeEvents();
@@ -46,7 +48,7 @@ ArrayHelper::multisort($events, 'name');
 
                 <span class="detail-header-tag small">
                     event of type
-                    <?= $renderer->createTypeLink($event->types) ?>
+                    <?= $renderer->createTypeLink($event->type, $type) ?>
                     <?= !empty($event->since) ? "(available since version $event->since)" : '' ?>
                 </span>
             </div>

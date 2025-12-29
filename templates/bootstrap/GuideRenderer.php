@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,7 +8,6 @@
 
 namespace yii\apidoc\templates\bootstrap;
 
-use Yii;
 use yii\apidoc\helpers\ApiIndexer;
 use yii\helpers\Console;
 use yii\helpers\FileHelper;

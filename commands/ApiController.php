@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -31,7 +32,7 @@ class ApiController extends BaseController
      */
     public $guidePrefix = 'guide-';
     /**
-     * @var string Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
+     * @var string|null Repository url (e.g. "https://github.com/yiisoft/yii2"). Optional, used for resolving relative links
      * within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
      * skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
      * left as is.
@@ -81,7 +82,7 @@ class ApiController extends BaseController
             }
         }
 
-        $renderer->repoUrl = rtrim($this->repoUrl, '/');
+        $renderer->repoUrl = $this->repoUrl !== null ? rtrim($this->repoUrl, '/') : null;
 
         // search for files to process
         if (($files = $this->searchFiles($sourceDirs)) === false) {
@@ -160,15 +161,15 @@ class ApiController extends BaseController
         $path = FileHelper::normalizePath($path);
         $options = [
             'filter' => function ($path) {
-                    if (is_file($path)) {
-                        $file = basename($path);
-                        if ($file[0] < 'A' || $file[0] > 'Z') {
-                            return false;
-                        }
+                if (is_file($path)) {
+                    $file = basename($path);
+                    if ($file[0] < 'A' || $file[0] > 'Z') {
+                        return false;
                     }
+                }
 
-                    return null;
-                },
+                return null;
+            },
             'only' => ['*.php'],
             'except' => $except,
         ];

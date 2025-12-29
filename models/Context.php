@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,10 +8,13 @@
 
 namespace yii\apidoc\models;
 
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\Tags\BaseTag;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\File\LocalFile;
 use phpDocumentor\Reflection\Php\Factory\ClassConstant as ClassConstantFactory;
 use phpDocumentor\Reflection\Php\Factory\Property as PropertyFactory;
+use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\apidoc\helpers\PrettyPrinter;
@@ -45,7 +49,6 @@ class Context extends Component
      * @var array
      */
     public $warnings = [];
-
 
     /**
      * Returning TypeDoc for a type given
@@ -88,6 +91,10 @@ class Context extends Component
         $this->files[$fileName] = sha1_file($fileName);
     }
 
+    /**
+     * @param File $reflection
+     * @param string $fileName
+     */
     private function parseFile($reflection, $fileName)
     {
         foreach ($reflection->getClasses() as $class) {
@@ -109,7 +116,7 @@ class Context extends Component
         // update all subclass references
         foreach ($this->classes as $class) {
             $className = $class->name;
-            while (isset($this->classes[$class->parentClass])) {
+            while ($class->parentClass !== null && isset($this->classes[$class->parentClass])) {
                 $class = $this->classes[$class->parentClass];
                 $class->subclasses[] = $className;
             }
@@ -139,21 +146,7 @@ class Context extends Component
         }
         // update implementedBy and usedBy for interfaces
         foreach ($this->classes as $class) {
-            foreach ($class->interfaces as $interface) {
-                if (!isset($this->interfaces[$interface])) {
-                    continue;
-                }
-                $this->interfaces[$interface]->implementedBy[] = $class->name;
-                if (!$class->isAbstract) {
-                    continue;
-                }
-                // add not implemented interface methods
-                foreach ($this->interfaces[$interface]->methods as $method) {
-                    if (!isset($class->methods[$method->name])) {
-                        $class->methods[$method->name] = $method;
-                    }
-                }
-            }
+            $this->handleInterfaceInheritance($class);
         }
         foreach ($this->interfaces as $interface) {
             $this->updateSubInterfaceInheritance($interface);
@@ -221,6 +214,41 @@ class Context extends Component
                     $class->methods[$method->name] = $method;
                 }
             }
+
+            foreach ($trait->constants as $constant) {
+                if (!isset($class->constants[$constant->name])) {
+                    $class->constants[$constant->name] = $constant;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param ClassDoc $class
+     */
+    private function handleInterfaceInheritance($class)
+    {
+        foreach ($class->interfaces as $interface) {
+            if (!isset($this->interfaces[$interface])) {
+                continue;
+            }
+
+            $this->interfaces[$interface]->implementedBy[] = $class->name;
+
+            foreach ($this->interfaces[$interface]->constants as $constant) {
+                if (!isset($class->constants[$constant->name])) {
+                    $class->constants[$constant->name] = $constant;
+                }
+            }
+
+            // add not implemented interface methods
+            if ($class->isAbstract) {
+                foreach ($this->interfaces[$interface]->methods as $method) {
+                    if (!isset($class->methods[$method->name])) {
+                        $class->methods[$method->name] = $method;
+                    }
+                }
+            }
         }
     }
 
@@ -267,6 +295,7 @@ class Context extends Component
 
             $subInterface = $this->interfaces[$name];
             $subInterface->methods = array_merge($interface->methods, $subInterface->methods);
+            $subInterface->constants = array_merge($interface->constants, $subInterface->constants);
             $this->updateSubInterfaceInheritance($subInterface);
         }
     }
@@ -274,13 +303,31 @@ class Context extends Component
     /**
      * Inherit docsblocks using `@inheritDoc` tag.
      * @param ClassDoc $class
-     * @see http://phpdoc.org/docs/latest/guides/inheritance.html
+     * @see https://docs.phpdoc.org/3.0/guide/guides/inheritance.html
      */
     protected function inheritDocs($class)
     {
+        if ($class->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
+            $inheritTag = $class->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME);
+            $parentClass = $this->classes[$class->parentClass] ?? null;
+            if ($inheritTag !== null && $parentClass !== null) {
+                $class->shortDescription = $parentClass->shortDescription;
+                $class->description = $this->inheritDescription(
+                    $class->description,
+                    $parentClass->description,
+                    $inheritTag,
+                );
+
+                $class->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
+            }
+        }
+
         // inherit for properties
         foreach ($class->properties as $p) {
-            if ($p->hasTag('inheritdoc') && ($inheritTag = $p->getFirstTag('inheritdoc')) !== null) {
+            if (
+                $p->hasTag(BaseDoc::INHERITDOC_TAG_NAME)
+                && ($inheritTag = $p->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME)) !== null
+            ) {
                 $inheritedProperty = $this->inheritPropertyRecursive($p, $class);
                 if (!$inheritedProperty) {
                     $this->errors[] = [
@@ -292,7 +339,7 @@ class Context extends Component
                 }
 
                 // set all properties that are empty.
-                foreach (['shortDescription', 'type', 'types', 'since'] as $property) {
+                foreach (['shortDescription', 'type', 'since'] as $property) {
                     if (empty($p->$property) || is_string($p->$property) && trim($p->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $p->getPackageName() !== $inheritedProperty->getPackageName()) {
@@ -302,19 +349,22 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $p->description = implode("\n\n", [
-                    trim($p->description),
-                    trim($inheritedProperty->description),
-                    $inheritTag->getDescription(),
-                ]);
+                $p->description = $this->inheritDescription(
+                    $p->description,
+                    $inheritedProperty->description,
+                    $inheritTag
+                );
 
-                $p->removeTag('inheritdoc');
+                $p->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
             }
         }
 
         // inherit for methods
         foreach ($class->methods as $m) {
-            if ($m->hasTag('inheritdoc') && ($inheritTag = $m->getFirstTag('inheritdoc')) !== null) {
+            if (
+                $m->hasTag(BaseDoc::INHERITDOC_TAG_NAME)
+                && ($inheritTag = $m->getFirstTag(BaseDoc::INHERITDOC_TAG_NAME)) !== null
+            ) {
                 $inheritedMethod = $this->inheritMethodRecursive($m, $class);
                 if (!$inheritedMethod) {
                     $this->errors[] = [
@@ -325,7 +375,7 @@ class Context extends Component
                     continue;
                 }
                 // set all properties that are empty.
-                foreach (['shortDescription', 'return', 'returnType', 'returnTypes', 'exceptions', 'since'] as $property) {
+                foreach (['shortDescription', 'return', 'returnType', 'exceptions', 'since'] as $property) {
                     if (empty($m->$property) || is_string($m->$property) && trim($m->$property) === '') {
                         // only copy @since if the package names are equal (or missing)
                         if ($property === 'since' && $m->getPackageName() !== $inheritedMethod->getPackageName()) {
@@ -335,11 +385,11 @@ class Context extends Component
                     }
                 }
                 // descriptions will be concatenated.
-                $m->description = implode("\n\n", [
-                    trim($m->description),
-                    trim($inheritedMethod->description),
-                    $inheritTag->getDescription(),
-                ]);
+                $m->description = $this->inheritDescription(
+                    $m->description,
+                    $inheritedMethod->description,
+                    $inheritTag,
+                );
 
                 foreach ($m->params as $i => $param) {
                     if (!isset($inheritedMethod->params[$i])) {
@@ -353,14 +403,11 @@ class Context extends Component
                     if (empty($param->description) || trim($param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
-                    if (empty($param->type) || trim($param->type) === '') {
+                    if ($param->type === null) {
                         $param->type = $inheritedMethod->params[$i]->type;
                     }
-                    if (empty($param->types)) {
-                        $param->types = $inheritedMethod->params[$i]->types;
-                    }
                 }
-                $m->removeTag('inheritdoc');
+                $m->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
             }
         }
     }
@@ -368,20 +415,21 @@ class Context extends Component
     /**
      * @param MethodDoc $method
      * @param ClassDoc $class
-     * @return mixed
+     * @return MethodDoc|false
      */
     private function inheritMethodRecursive($method, $class)
     {
+        /** @var (ClassDoc|InterfaceDoc)[] */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
-            $this->getInterfaces($class)
+            $this->getInterfaces($class),
         );
 
         $methods = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->methods[$method->name])) {
                 $cmethod = $candidate->methods[$method->name];
-                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag('inheritdoc')) {
+                if (!$candidate instanceof InterfaceDoc && $cmethod->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
                     $this->inheritDocs($candidate);
                 }
                 $methods[] = $cmethod;
@@ -394,20 +442,21 @@ class Context extends Component
     /**
      * @param PropertyDoc $method
      * @param ClassDoc $class
-     * @return mixed
+     * @return PropertyDoc|false
      */
     private function inheritPropertyRecursive($method, $class)
     {
+        /** @var (ClassDoc|InterfaceDoc)[] */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
-            $this->getInterfaces($class)
+            $this->getInterfaces($class),
         );
 
         $properties = [];
-        foreach($inheritanceCandidates as $candidate) {
+        foreach ($inheritanceCandidates as $candidate) {
             if (isset($candidate->properties[$method->name])) {
                 $cproperty = $candidate->properties[$method->name];
-                if ($cproperty->hasTag('inheritdoc')) {
+                if ($cproperty->hasTag(BaseDoc::INHERITDOC_TAG_NAME)) {
                     $this->inheritDocs($candidate);
                 }
                 $properties[] = $cproperty;
@@ -419,7 +468,7 @@ class Context extends Component
 
     /**
      * @param ClassDoc $class
-     * @return array
+     * @return ClassDoc[]
      */
     private function getParents($class)
     {
@@ -431,12 +480,12 @@ class Context extends Component
 
     /**
      * @param ClassDoc $class
-     * @return array
+     * @return InterfaceDoc[]
      */
     private function getInterfaces($class)
     {
         $interfaces = [];
-        foreach($class->interfaces as $interface) {
+        foreach ($class->interfaces as $interface) {
             if (isset($this->interfaces[$interface])) {
                 $interfaces[] = $this->interfaces[$interface];
             }
@@ -468,7 +517,7 @@ class Context extends Component
                     ];
                 } else {
                     // Override the setter-defined property if it exists already
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
@@ -476,7 +525,6 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $method->returnType,
-                        'types' => $method->returnTypes,
                         'shortDescription' => BaseDoc::extractFirstSentence($method->return),
                         'description' => $method->return,
                         'since' => $method->since,
@@ -502,7 +550,7 @@ class Context extends Component
                     }
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
-                    $class->properties[$propertyName] = new PropertyDoc(null, $this, [
+                    $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
                         'definedBy' => $method->definedBy,
@@ -510,7 +558,6 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $param->type,
-                        'types' => $param->types,
                         'shortDescription' => BaseDoc::extractFirstSentence($param->description),
                         'description' => $param->description,
                         'since' => $method->since,
@@ -540,7 +587,7 @@ class Context extends Component
 
     /**
      * @param MethodDoc $method
-     * @return ParamDoc
+     * @return ParamDoc|null
      */
     private function getFirstNotOptionalParameter($method)
     {
@@ -574,6 +621,9 @@ class Context extends Component
         return false;
     }
 
+    /**
+     * @return Project
+     */
     public function getReflectionProject()
     {
         $files = [];
@@ -588,6 +638,31 @@ class Context extends Component
         $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
-        return $projectFactory->create('ApiDoc', $files);
+        /** @var Project */
+        $project = $projectFactory->create('ApiDoc', $files);
+
+        return $project;
+    }
+
+    private function inheritDescription(
+        ?string $currentDescription,
+        ?string $parentDescription,
+        Tag $inheritTag
+    ): string {
+        $result = $currentDescription ?? '';
+
+        $parentDescription = trim((string) $parentDescription);
+        if ($parentDescription !== '') {
+            $result .= "\n\n" . $parentDescription;
+        }
+
+        if ($inheritTag instanceof BaseTag) {
+            $inheritTagDescription = trim((string) $inheritTag->getDescription());
+            if ($inheritTagDescription !== '') {
+                $result .= "\n\n" . $inheritTagDescription;
+            }
+        }
+
+        return trim($result);
     }
 }

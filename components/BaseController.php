@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -26,11 +27,11 @@ abstract class BaseController extends Controller
      */
     public $template = 'bootstrap';
     /**
-     * @var string|array files to exclude.
+     * @var string|array|null files to exclude.
      */
     public $exclude;
     /**
-     * @var string
+     * @var string|null
      */
     public $pageTitle;
 
@@ -64,7 +65,7 @@ abstract class BaseController extends Controller
     /**
      * Finds files to process
      * @param array $sourceDirs
-     * @return array|bool list of files to process or false on failure
+     * @return array|false list of files to process or false on failure
      */
     protected function searchFiles($sourceDirs)
     {

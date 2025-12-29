@@ -1,12 +1,18 @@
 <?php
 
+use yii\apidoc\templates\bootstrap\ApiRenderer;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
-/* @var $content string */
+/**
+ * @var \yii\web\View $this
+ * @var string $content
+ */
+
+/** @var ApiRenderer $renderer */
+$renderer = $this->context;
 
 \yii\apidoc\templates\bootstrap\assets\AssetBundle::register($this);
 
@@ -32,11 +38,11 @@ $this->beginPage();
     <?php $this->registerCsrfMetaTags() ?>
     <?php $this->head() ?>
     <title><?php if (isset($type)) {
-            echo Html::encode(StringHelper::basename($type->name) . ", {$type->name} - {$this->context->pageTitle}");
+            echo Html::encode(StringHelper::basename($type->name) . ", {$type->name} - {$renderer->pageTitle}");
         } elseif (isset($guideHeadline)) {
-            echo Html::encode("$guideHeadline - {$this->context->pageTitle}");
+            echo Html::encode("$guideHeadline - {$renderer->pageTitle}");
         } else {
-            echo Html::encode($this->context->pageTitle);
+            echo Html::encode($renderer->pageTitle);
         }
     ?></title>
 </head>
@@ -46,8 +52,8 @@ $this->beginPage();
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => $this->context->pageTitle,
-        'brandUrl' => ($this->context->apiUrl === null && $this->context->guideUrl !== null) ? './guide-index.html' : './index.html',
+        'brandLabel' => $renderer->pageTitle,
+        'brandUrl' => ($renderer->apiUrl === null && $renderer->guideUrl !== null) ? './guide-index.html' : './index.html',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
@@ -56,11 +62,11 @@ $this->beginPage();
     ]);
     $nav = [];
 
-    if ($this->context->apiUrl !== null) {
-        $nav[] = ['label' => 'Class reference', 'url' => rtrim($this->context->apiUrl, '/') . '/index.html'];
-        if (!empty($this->context->extensions)) {
+    if ($renderer->apiUrl !== null) {
+        $nav[] = ['label' => 'Class reference', 'url' => rtrim($renderer->apiUrl, '/') . '/index.html'];
+        if (!empty($renderer->extensions)) {
             $extItems = [];
-            foreach ($this->context->extensions as $ext) {
+            foreach ($renderer->extensions as $ext) {
                 $extItems[] = [
                     'label' => $ext,
                     'url' => "./ext-{$ext}-index.html",
@@ -70,8 +76,8 @@ $this->beginPage();
         }
     }
 
-    if ($this->context->guideUrl !== null) {
-        $nav[] = ['label' => 'Guide', 'url' => rtrim($this->context->guideUrl, '/') . '/' . $this->context->guidePrefix . 'README.html'];
+    if ($renderer->guideUrl !== null) {
+        $nav[] = ['label' => 'Guide', 'url' => rtrim($renderer->guideUrl, '/') . '/' . $renderer->guidePrefix . 'README.html'];
     }
 
     echo Nav::widget([

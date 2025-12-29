@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -37,7 +38,7 @@ trait ApiMarkdownTrait
 
         /** @var TypeDoc[] $contexts */
         $contexts = [];
-        $this->_findContexts($this->renderingContext, $contexts);
+        $this->findContexts($this->renderingContext, $contexts);
         $contexts = array_unique($contexts, SORT_REGULAR);
         $contexts[] = null;
 
@@ -60,15 +61,15 @@ trait ApiMarkdownTrait
 
         return [
             ['brokenApiLink', '<span class="broken-link">' . $object . '</span>'],
-            $offset
+            $offset,
         ];
     }
 
     /**
-     * @param TypeDoc $type
+     * @param TypeDoc|null $type
      * @param array $contexts
      */
-    private function _findContexts($type, &$contexts = [])
+    private function findContexts($type, &$contexts = [])
     {
         if ($type === null) {
             return;
@@ -78,17 +79,17 @@ trait ApiMarkdownTrait
 
         if ($type instanceof ClassDoc) {
             foreach ($type->traits as $trait) {
-                $this->_findContexts(static::$renderer->apiContext->getType($trait), $contexts);
+                $this->findContexts(static::$renderer->apiContext->getType($trait), $contexts);
             }
             foreach ($type->interfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+                $this->findContexts(static::$renderer->apiContext->getType($interface), $contexts);
             }
             if ($type->parentClass) {
-                $this->_findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
+                $this->findContexts(static::$renderer->apiContext->getType($type->parentClass), $contexts);
             }
         } elseif ($type instanceof InterfaceDoc) {
             foreach ($type->parentInterfaces as $interface) {
-                $this->_findContexts(static::$renderer->apiContext->getType($interface), $contexts);
+                $this->findContexts(static::$renderer->apiContext->getType($interface), $contexts);
             }
         }
     }
@@ -122,7 +123,7 @@ trait ApiMarkdownTrait
                 }
             }
 
-            /** @var $type TypeDoc */
+            /** @var TypeDoc|null $type */
             $type = static::$renderer->apiContext->getType($typeName);
 
             if ($type === null || $subjectName === '') {
@@ -141,7 +142,7 @@ trait ApiMarkdownTrait
 
             return [
                 ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
-                $offset
+                $offset,
             ];
         }
 
@@ -149,7 +150,7 @@ trait ApiMarkdownTrait
             if (($subject = $context->findSubject($object)) !== null) {
                 return [
                     ['apiLink', static::$renderer->createSubjectLink($subject, $title)],
-                    $offset
+                    $offset,
                 ];
             }
 
@@ -167,14 +168,14 @@ trait ApiMarkdownTrait
         if (($type = static::$renderer->apiContext->getType($object)) !== null) {
             return [
                 ['apiLink', static::$renderer->createTypeLink($type, null, $title)],
-                $offset
+                $offset,
             ];
         }
 
         if (strpos($typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href') !== false) {
             return [
                 ['apiLink', $typeLink],
-                $offset
+                $offset,
             ];
         }
 
@@ -212,7 +213,7 @@ trait ApiMarkdownTrait
         }
 
         $title = Markdown::process($title);
-        $title = mb_convert_encoding($title, 'HTML-ENTITIES', 'UTF-8');
+        $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
         $doc = new DOMDocument();
         $doc->loadHTML($title);
 
@@ -262,7 +263,7 @@ trait ApiMarkdownTrait
     /**
      * @since 2.0.5
      */
-    protected abstract function translateBlockType($type);
+    abstract protected function translateBlockType($type);
 
     /**
      * Renders a blockquote

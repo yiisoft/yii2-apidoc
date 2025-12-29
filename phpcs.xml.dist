@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="Yii2">
+    <rule ref="vendor/yiisoft/yii2-coding-standards/Yii2"></rule>
+
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <exclude-pattern>tests/bootstrap.php</exclude-pattern>
+    </rule>
+
+    <!-- display progress -->
+    <arg value="p"/>
+    <!-- Show error codes -->
+    <arg value="s"/>
+    <arg name="colors"/>
+
+    <!-- generate relative paths -->
+    <arg name="basepath" value="."/>
+
+    <exclude-pattern>templates/*/views/*</exclude-pattern>
+    <exclude-pattern>templates/*/layouts/*</exclude-pattern>
+</ruleset>

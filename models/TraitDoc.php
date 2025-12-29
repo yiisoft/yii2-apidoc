@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -19,13 +20,19 @@ class TraitDoc extends TypeDoc
 {
     // classes using the trait
     // will be set by Context::updateReferences()
+    /**
+     * @var string[]
+     */
     public $usedBy = [];
+    /**
+     * @var string[]
+     */
     public $traits = [];
 
 
     /**
-     * @param Trait_ $reflector
-     * @param Context $context
+     * @param Trait_|null $reflector
+     * @param Context|null $context
      * @param array $config
      */
     public function __construct($reflector = null, $context = null, $config = [])

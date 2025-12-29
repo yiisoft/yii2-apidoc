@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -12,6 +13,7 @@ use yii\apidoc\helpers\ApiMarkdown;
 use yii\helpers\Console;
 use yii\apidoc\renderers\GuideRenderer as BaseGuideRenderer;
 use Yii;
+use yii\apidoc\helpers\EncodingHelper;
 use yii\helpers\Html;
 use yii\helpers\Markdown;
 use yii\web\AssetManager;
@@ -26,6 +28,9 @@ use yii\web\View;
  */
 abstract class GuideRenderer extends BaseGuideRenderer
 {
+    /**
+     * @var string|false
+     */
     public $layout;
 
     /**
@@ -149,12 +154,12 @@ abstract class GuideRenderer extends BaseGuideRenderer
     public function getGuideReferences()
     {
         // TODO implement for api docs
-//		$refs = [];
-//		foreach ($this->markDownFiles as $file) {
-//			$refName = 'guide-' . basename($file, '.md');
-//			$refs[$refName] = ['url' => $this->generateGuideFileName($file)];
-//		}
-//		return $refs;
+        // $refs = [];
+        // foreach ($this->markDownFiles as $file) {
+        //     $refName = 'guide-' . basename($file, '.md');
+        //     $refs[$refName] = ['url' => $this->generateGuideFileName($file)];
+        // }
+        // return $refs;
     }
 
     /**
@@ -164,7 +169,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     protected function fixMarkdownLinks($content)
     {
-        $content = mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8');
+        $content = EncodingHelper::convertToUtf8WithHtmlEntities($content);
         $doc = new DOMDocument();
         $doc->loadHTML($content);
 
