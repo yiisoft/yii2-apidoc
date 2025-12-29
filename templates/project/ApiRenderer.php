@@ -31,7 +31,7 @@ class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
         parent::render($context, $targetDir);
 
         if ($this->controller !== null) {
-            $this->controller->stdout('rendering files...');
+            $this->controller->stdout('rendering the index file...');
         }
 
         $types = array_merge($context->classes, $context->interfaces, $context->traits);
