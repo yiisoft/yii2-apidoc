@@ -37,11 +37,7 @@ class ApiRenderer extends \yii\apidoc\templates\bootstrap\ApiRenderer
 
         $types = array_merge($context->classes, $context->interfaces, $context->traits);
         $appTypes = $this->filterTypes($types, 'app');
-
-        $readme = null;
-        if (is_file($this->readmeUrl)) {
-            $readme = file_get_contents($this->readmeUrl);
-        }
+        $readme = $this->readmeUrl !== null && is_file($this->readmeUrl) ? file_get_contents($this->readmeUrl) : null;
 
         $indexFileContent = $this->renderWithLayout($this->indexView, [
             'docContext' => $context,
