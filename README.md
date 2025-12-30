@@ -14,15 +14,13 @@ For license information check the [LICENSE](LICENSE.md)-file.
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Build Status](https://github.com/yiisoft/yii2-apidoc/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-apidoc/actions)
 
-
-Installation
-------------
+## Installation
 
 The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
 Either run
 
-```
+```sh
 composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.6"
 ```
 
@@ -36,15 +34,14 @@ is preferred to add the package manually to the `require` section of your compos
 afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
 want to avoid updating unrelated packages.
 
+## Usage
 
-Usage
------
-This extension creates executable at `/vendor/bin`. Please do change directory to that directory if you  do not want to use full path i.e `/vendor/bin/apidoc` and use just the executable name as with below examples.
+This extension creates executable at `/vendor/bin`. Please do change directory to that directory if you do not want to use full path i.e `/vendor/bin/apidoc` and use just the executable name as with below examples.
 
 This extension offers two commands:
 
 1)`api` to generate class API documentation. [phpDocumentor](https://www.phpdoc.org/) is used as a base framework
-  so refer to its guide for the syntax.
+so refer to its guide for the syntax.
 
 The output of `help api` command (i.e `apidoc help api`):
 
@@ -95,6 +92,9 @@ OPTIONS
   within a repository (e.g. "[docs/guide/README.md](docs/guide/README.md)"). If you don't have such links you can
   skip this. Otherwise, skipping this will cause generation of broken links because they will be not resolved and
   left as is.
+
+--readme-url: string
+  URL for the README to use for the index of the guide.
 
 --silent-exit-on-exception: boolean, 0 or 1
   if true - script finish with `ExitCode::OK` in case of exception.
@@ -162,22 +162,28 @@ OPTIONS
 
 Simple usage for stand-alone class documentation:
 
-    vendor/bin/apidoc api source/directory ./output
+```sh
+vendor/bin/apidoc api source/directory ./output
+```
 
 Simple usage for stand-alone guide documentation:
 
-    vendor/bin/apidoc guide source/docs ./output
+```sh
+vendor/bin/apidoc guide source/docs ./output
+```
 
-Note that in order to generate a proper index file, the `README.md` file containing links to guide sections must be 
-present. An example of such file can be found 
+Note that in order to generate a proper index file, the `README.md` file containing links to guide sections must be
+present. An example of such file can be found
 in the [yii2 repository](https://raw.githubusercontent.com/yiisoft/yii2/master/docs/guide/README.md).
 
 You can combine them to generate class API and guide documentation in one place:
 
-    # generate API docs
-    vendor/bin/apidoc api source/directory ./output
-    # generate the guide (order is important to allow the guide to link to the apidoc)
-    vendor/bin/apidoc guide source/docs ./output
+```sh
+# generate API docs
+vendor/bin/apidoc api source/directory ./output
+# generate the guide (order is important to allow the guide to link to the apidoc)
+vendor/bin/apidoc guide source/docs ./output
+```
 
 By default, the `bootstrap` template will be used. You can choose a different template with the `--template=name` parameter.
 Currently, there is only the `bootstrap` template available.
@@ -192,8 +198,10 @@ docs to enable links between your classes and framework classes. This also allow
 for your classes that extend from the framework.
 Use the following command to generate combined api docs:
 
-    ./vendor/bin/apidoc api ./vendor/yiisoft/yii2,. docs/json --exclude="docs,vendor"
-    
+```sh
+./vendor/bin/apidoc api ./vendor/yiisoft/yii2,. docs/json --exclude="docs,vendor"
+```
+
 This will read the source files from `./vendor/yiisoft/yii2` directory and `.` which is the current directory (you may replace this with the location of your code if it is not in the current working directory).
 
 ### Advanced usage
@@ -210,9 +218,9 @@ APIDOC_PATH=~/dev/yiisoft/yii2/extensions/apidoc
 OUTPUT=yii2docs
 
 cd $APIDOC_PATH
-./apidoc api $YII_PATH/framework/,$YII_PATH/extensions $OUTPUT/api --guide=../guide-en --guidePrefix= --interactive=0
-./apidoc guide $YII_PATH/docs/guide    $OUTPUT/guide-en --apiDocs=../api --guidePrefix= --interactive=0
-./apidoc guide $YII_PATH/docs/guide-ru $OUTPUT/guide-ru --apiDocs=../api --guidePrefix= --interactive=0
+./apidoc api $YII_PATH/framework/,$YII_PATH/extensions $OUTPUT/api --guide=../guide-en --guide-prefix= --interactive=0
+./apidoc guide $YII_PATH/docs/guide $OUTPUT/guide-en --apiDocs=../api --guide-prefix= --interactive=0
+./apidoc guide $YII_PATH/docs/guide-ru $OUTPUT/guide-ru --apiDocs=../api --guide-prefix= --interactive=0
 # repeat the last line for more languages
 ```
 
@@ -226,7 +234,7 @@ Prerequisites:
 
 Generation:
 
-```
+```sh
 vendor/bin/apidoc guide source/docs ./output --template=pdf
 cd ./output
 make pdf
@@ -234,30 +242,29 @@ make pdf
 
 If all runs without errors the PDF will be `guide.pdf` in the `output` dir.
 
-Special Markdown Syntax
------------------------
+## Special Markdown Syntax
 
 We have a special Syntax for linking to a class in the API documentation.
 See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/internals/core-code-style.md#markdown) for details.
 
-Generating documentation for your own project
----------------------------------------------
+## Generating documentation for your own project
 
-To generate API documentation for your own project, use the "project" template and specify the README.md of your repository using the "readmeUrl" parameter
+To generate API documentation for your own project, use the "project" template and specify the README.md of your repository using the "readmeUrl" parameter:
 
-    apidoc api YOUR_REPO_PATH OUTPUT_PATH --exclude="vendor" --template="project"  --readmeUrl="file://YOUR_REPO_PATH/README.md" --pageTitle="TITLE_OF_YOUR_DOCS"
+```sh
+apidoc api YOUR_REPO_PATH OUTPUT_PATH --exclude="vendor" --template="project" --readme-url="file://YOUR_REPO_PATH/README.md" --page-title="TITLE_OF_YOUR_DOCS"
+```
 
-To also include links to the Yii2 documentation, you can do
-    
-    apidoc api "YOUR_REPO_PATH,vendor/yiisoft/yii2" OUTPUT_PATH --exclude="vendor" --template="project"  --readmeUrl="file://YOUR_REPO_PATH/README.md" --pageTitle="TITLE_OF_YOUR_DOCS"
+To also include links to the Yii2 documentation, you can do:
 
+```sh
+apidoc api "YOUR_REPO_PATH,vendor/yiisoft/yii2" OUTPUT_PATH --exclude="vendor" --template="project" --readme-url="file://YOUR_REPO_PATH/README.md" --page-title="TITLE_OF_YOUR_DOCS"
+```
 
-Creating your own templates
----------------------------
+## Creating your own templates
 
 TBD
 
-Using the model layer
----------------------
+## Using the model layer
 
 TBD
