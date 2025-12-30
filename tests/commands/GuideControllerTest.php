@@ -60,9 +60,12 @@ class GuideControllerTest extends TestCase
         $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
-    public function testGenerateBootstrap()
+    /**
+     * @dataProvider provideGenerateHtmlData
+     */
+    public function testGenerateHtml(string $template): void
     {
-        $output = $this->generateGuide(Yii::getAlias('@yiiunit/apidoc/data/guide'), '@runtime', ['template' => 'bootstrap']);
+        $output = $this->generateGuide(Yii::getAlias('@yiiunit/apidoc/data/guide'), '@runtime', ['template' => $template]);
 
         $this->assertNotEmpty($output);
         $this->assertStringContainsString('generating search index...done.', $output);
@@ -83,6 +86,17 @@ class GuideControllerTest extends TestCase
 
         $this->assertStringContainsString('<h1>TOC Test <span id="toc-test"></span><a href="#toc-test" class="hashlink">', $tocFile);
         $this->assertEquals(1, substr_count($tocFile, '<div class="toc">'));
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function provideGenerateHtmlData(): array
+    {
+        return [
+            'bootstrap' => ['bootstrap'],
+            'project' => ['project'],
+        ];
     }
 
     public function testGeneratePdf()
