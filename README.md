@@ -249,13 +249,13 @@ See the [code style guide](https://github.com/yiisoft/yii2/blob/master/docs/inte
 
 ## Generating documentation for your own project
 
-To generate API documentation for your own project, use the "project" template and specify the README.md of your repository using the "readmeUrl" parameter
+To generate API documentation for your own project, use the "project" template and specify the README.md of your repository using the "readmeUrl" parameter:
 
 ```sh
 apidoc api YOUR_REPO_PATH OUTPUT_PATH --exclude="vendor" --template="project" --readme-url="file://YOUR_REPO_PATH/README.md" --page-title="TITLE_OF_YOUR_DOCS"
 ```
 
-To also include links to the Yii2 documentation, you can do
+To also include links to the Yii2 documentation, you can do:
 
 ```sh
 apidoc api "YOUR_REPO_PATH,vendor/yiisoft/yii2" OUTPUT_PATH --exclude="vendor" --template="project" --readme-url="file://YOUR_REPO_PATH/README.md" --page-title="TITLE_OF_YOUR_DOCS"
