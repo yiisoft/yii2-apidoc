@@ -58,42 +58,42 @@ Array
 
     [8] => Array
         (
-            [line] => 27
+            [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )
 
     [9] => Array
         (
-            [line] => 27
+            [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag1
         )
 
     [10] => Array
         (
-            [line] => 27
+            [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag2
         )
 
     [11] => Array
         (
-            [line] => 27
+            [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag3
         )
 
     [12] => Array
         (
-            [line] => 27
+            [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag4
         )
 
     [13] => Array
         (
-            [line] => 88
+            [line] => 90
             [file] => /tests/data/api/animal/Dog.php
             [message] => Invalid tag: @return invalid-type. Exception message: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )

@@ -21,6 +21,8 @@ namespace yiiunit\apidoc\data\api\animal;
  * @phpstan-import-type InvalidTag3
  * @psalm-import-type InvalidTag4
  *
+ * @psalm-import-type AnimalData from Animal
+ *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.1
  */
@@ -137,5 +139,13 @@ class Dog extends Animal
     public function getNullableString(): ?string
     {
         return null;
+    }
+
+    /**
+     * @return AnimalData
+     */
+    public function asArray()
+    {
+        return parent::asArray();
     }
 }

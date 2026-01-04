@@ -2,175 +2,175 @@ Array
 (
     [0] => Array
         (
-            [line] => 56
+            [line] => 57
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$arrayWithParenthesesProperty'
         )
 
     [1] => Array
         (
-            [line] => 60
+            [line] => 61
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$arrayWithoutParenthesesProperty'
         )
 
     [2] => Array
         (
-            [line] => 64
+            [line] => 65
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$intRangeProperty'
         )
 
     [3] => Array
         (
-            [line] => 68
+            [line] => 69
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$arrayShapeProperty'
         )
 
     [4] => Array
         (
-            [line] => 72
+            [line] => 73
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$objectShapeProperty'
         )
 
     [5] => Array
         (
-            [line] => 76
+            [line] => 77
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$iterableProperty'
         )
 
     [6] => Array
         (
-            [line] => 80
+            [line] => 81
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$iterableWithoutKeyProperty'
         )
 
     [7] => Array
         (
-            [line] => 84
+            [line] => 85
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$genericArrayWithoutKeyProperty'
         )
 
     [8] => Array
         (
-            [line] => 88
+            [line] => 89
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$genericArrayWithKeyProperty'
         )
 
     [9] => Array
         (
-            [line] => 92
+            [line] => 93
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$callableProperty'
         )
 
     [10] => Array
         (
-            [line] => 96
+            [line] => 97
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$closureProperty'
         )
 
     [11] => Array
         (
-            [line] => 100
+            [line] => 101
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$intersectionType'
         )
 
     [12] => Array
         (
-            [line] => 104
+            [line] => 105
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$intMaskProperty'
         )
 
     [13] => Array
         (
-            [line] => 108
+            [line] => 109
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$intMaskOfProperty'
         )
 
     [14] => Array
         (
-            [line] => 112
+            [line] => 113
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$valueOfProperty'
         )
 
     [15] => Array
         (
-            [line] => 116
+            [line] => 117
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for element '$keyOfProperty'
         )
 
     [16] => Array
         (
-            [line] => 146
+            [line] => 147
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'asArray'
         )
 
     [17] => Array
         (
-            [line] => 157
+            [line] => 158
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'asStdClass'
         )
 
     [18] => Array
         (
-            [line] => 165
+            [line] => 166
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setName'
         )
 
     [19] => Array
         (
-            [line] => 171
+            [line] => 172
             [file] => /tests/data/api/animal/Animal.php
             [message] => No docblock for element 'setBirthDate'
         )
 
     [20] => Array
         (
-            [line] => 180
+            [line] => 181
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getIntMaskProperty'
         )
 
     [21] => Array
         (
-            [line] => 189
+            [line] => 190
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setIntMaskOfProperty'
         )
 
     [22] => Array
         (
-            [line] => 199
+            [line] => 200
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setKeyOfProperty'
         )
 
     [23] => Array
         (
-            [line] => 208
+            [line] => 209
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getStatic'
         )
 
     [24] => Array
         (
-            [line] => 218
+            [line] => 219
             [file] => /tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getSelfWithGenerics'
         )
@@ -233,145 +233,152 @@ Array
 
     [33] => Array
         (
-            [line] => 41
+            [line] => 43
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getThreeStringsArray'
         )
 
     [34] => Array
         (
-            [line] => 49
+            [line] => 51
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'testOffsetAccess'
         )
 
     [35] => Array
         (
-            [line] => 57
+            [line] => 59
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getNonEmptyList'
         )
 
     [36] => Array
         (
-            [line] => 65
+            [line] => 67
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getListWithoutGenerics'
         )
 
     [37] => Array
         (
-            [line] => 73
+            [line] => 75
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getNonEmptyListWithoutGenerics'
         )
 
     [38] => Array
         (
-            [line] => 81
+            [line] => 83
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getClassWithTwoGenerics'
         )
 
     [39] => Array
         (
-            [line] => 88
+            [line] => 90
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'methodWithInvalidReturnTag'
         )
 
     [40] => Array
         (
-            [line] => 95
+            [line] => 97
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayOfStatic'
         )
 
     [41] => Array
         (
-            [line] => 102
+            [line] => 104
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayWithStaticGeneric'
         )
 
     [42] => Array
         (
-            [line] => 109
+            [line] => 111
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getIterableWithStaticGeneric'
         )
 
     [43] => Array
         (
-            [line] => 116
+            [line] => 118
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getArrayShapeWithStaticGeneric'
         )
 
     [44] => Array
         (
-            [line] => 123
+            [line] => 125
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getObjectShapeWithStaticGeneric'
         )
 
     [45] => Array
         (
-            [line] => 130
+            [line] => 132
             [file] => /tests/data/api/animal/Dog.php
             [message] => No short description for Method 'getStaticOrNull'
         )
 
     [46] => Array
         (
+            [line] => 147
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => No short description for Method 'asArray'
+        )
+
+    [47] => Array
+        (
             [line] => 11
             [file] => /tests/data/api/base/Component.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\base\Component'
         )
 
-    [47] => Array
+    [48] => Array
         (
             [line] => 28
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'one'
         )
 
-    [48] => Array
+    [49] => Array
         (
             [line] => 35
             [file] => /tests/data/api/db/ActiveQuery.php
             [message] => No short description for Method 'all'
         )
 
-    [49] => Array
+    [50] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveQueryInterface'
         )
 
-    [50] => Array
+    [51] => Array
         (
             [line] => 16
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'one'
         )
 
-    [51] => Array
+    [52] => Array
         (
             [line] => 17
             [file] => /tests/data/api/db/ActiveQueryInterface.php
             [message] => No docblock for element 'all'
         )
 
-    [52] => Array
+    [53] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecord.php
             [message] => No docblock for element 'yiiunit\apidoc\data\api\db\ActiveRecord'
         )
 
-    [53] => Array
+    [54] => Array
         (
             [line] => 11
             [file] => /tests/data/api/db/ActiveRecordInterface.php

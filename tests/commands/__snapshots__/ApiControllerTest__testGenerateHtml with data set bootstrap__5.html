@@ -337,10 +337,10 @@ yii\base\BaseObject</td>
             <th>Defined By</th>
         </tr>
 
-                                    <tr class="inherited">
+                                    <tr class="">
                     <td><a href="yiiunit-apidoc-data-api-animal-dog.html#asArray()-detail">asArray()</a></td>
                     <td></td>
-                    <td><a href="yiiunit-apidoc-data-api-animal-animal.html">yiiunit\apidoc\data\api\animal\Animal</a></td>
+                    <td><a href="yiiunit-apidoc-data-api-animal-dog.html">yiiunit\apidoc\data\api\animal\Dog</a></td>
                 </tr>
                                                 <tr class="inherited">
                     <td><a href="yiiunit-apidoc-data-api-animal-dog.html#asStdClass()-detail">asStdClass()</a></td>
@@ -539,7 +539,7 @@ yii\base\BaseObject</td>
 <div class="method-doc toggle-target-container">
     <p><a class="toggle">Hide inherited methods</a></p>
 
-            <div class="inherited">
+            <div class="">
             <div class="detail-header h3">
                 <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
                 <a class="tool-link hash" href="yiiunit-apidoc-data-api-animal-dog.html#asArray()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
@@ -553,16 +553,13 @@ yii\base\BaseObject</td>
 
             
             <div class="doc-description">
-                                    <p>
-                        <strong>Defined in:</strong>
-                        <a href="yiiunit-apidoc-data-api-animal-animal.html#asArray()-detail">yiiunit\apidoc\data\api\animal\Animal::asArray()</a>                    </p>
                 
                 <p><strong></strong></p>
                                             </div>
 
             <table class="detail-table table table-striped table-bordered table-hover">
                 <tr><td colspan="3" class="signature">
-<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-animal.html#phpstan-type-AnimalData">AnimalData</a></span><strong><a href="yiiunit-apidoc-data-api-animal-animal.html#asArray()-detail">asArray</a></strong> ( )</td></tr>
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-animal-animal.html#psalm-type-AnimalData">AnimalData</a></span><strong><a href="yiiunit-apidoc-data-api-animal-dog.html#asArray()-detail">asArray</a></strong> ( )</td></tr>
 
                             </table>
 
@@ -579,10 +576,7 @@ yii\base\BaseObject</td>
             <pre>
                 <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">asArray</span><span class="hljs-params">()</span>
 </span>{
-    <span class="hljs-keyword">return</span> [
-        <span class="hljs-string">'name'</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;name,
-        <span class="hljs-string">'birthDate'</span> =&gt; <span class="hljs-keyword">$this</span>-&gt;birthDate,
-    ];
+    <span class="hljs-keyword">return</span><span class="hljs-keyword">parent</span>::asArray();
 }
 </code>
             </pre>
