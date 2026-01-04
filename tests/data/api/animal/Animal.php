@@ -28,6 +28,7 @@ use yii\base\BaseObject;
  * @phan-property int-mask<1, 2, 4> $intMaskPhanProperty Ignored annotation.
  *
  * @phpstan-type AnimalData array{name: string, birthDate: int}
+ * @psalm-type AnimalData array{name: string, birthDate: int}
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
