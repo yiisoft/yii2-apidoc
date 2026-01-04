@@ -4,94 +4,66 @@ Array
         (
             [line] => 
             [file] => 
-            [message] => Using relative link (https://en.wikipedia.org/wiki/Dependency_injection) but repoUrl is not set.
-        )
-
-    [1] => Array
-        (
-            [line] => 
-            [file] => 
-            [message] => Using relative link (https://github.com/yiisoft/yii2#readme) but repoUrl is not set.
-        )
-
-    [2] => Array
-        (
-            [line] => 
-            [file] => 
             [message] => Using relative link (LICENSE.md) but repoUrl is not set.
         )
 
-    [3] => Array
-        (
-            [line] => 
-            [file] => 
-            [message] => Using relative link (https://getcomposer.org/download/) but repoUrl is not set.
-        )
-
-    [4] => Array
-        (
-            [line] => 
-            [file] => 
-            [message] => Using relative link (https://www.yiiframework.com/doc/guide/2.0/en/structure-assets#bower-npm-assets) but repoUrl is not set.
-        )
-
-    [5] => Array
+    [1] => Array
         (
             [line] => 22
             [file] => /tests/data/api/animal/Cat.php
             [message] => Invalid tag: @@method $first is true ? string : string[] methodWithInvalidReturnType2(bool $first) Will be ignored.
         )
 
-    [6] => Array
+    [2] => Array
         (
             [line] => 46
             [file] => /tests/data/api/animal/Cat.php
             [message] => Invalid tag: @@return $first is true ? string : string[] Incorrect conditional type (without parentheses).
         )
 
-    [7] => Array
+    [3] => Array
         (
             [line] => 87
             [file] => /tests/data/api/animal/Cat.php
             [message] => Undefined parameter documented: $ in getInterfaceStringByClassString().
         )
 
-    [8] => Array
+    [4] => Array
         (
             [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )
 
-    [9] => Array
+    [5] => Array
         (
             [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag1
         )
 
-    [10] => Array
+    [6] => Array
         (
             [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag2
         )
 
-    [11] => Array
+    [7] => Array
         (
             [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag3
         )
 
-    [12] => Array
+    [8] => Array
         (
             [line] => 29
             [file] => /tests/data/api/animal/Dog.php
             [message] => Exception: Invalid tag: InvalidTag4
         )
 
-    [13] => Array
+    [9] => Array
         (
             [line] => 90
             [file] => /tests/data/api/animal/Dog.php

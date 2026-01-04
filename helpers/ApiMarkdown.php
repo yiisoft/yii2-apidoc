@@ -14,6 +14,7 @@ use yii\apidoc\renderers\BaseRenderer;
 use yii\helpers\Html;
 use yii\helpers\Inflector;
 use yii\helpers\Markdown;
+use yii\helpers\Url;
 
 /**
  * A Markdown helper with support for class reference links.
@@ -158,11 +159,13 @@ class ApiMarkdown extends GithubMarkdown
 
         $repoUrl = static::$renderer->repoUrl;
         if (!$repoUrl) {
-            static::$renderer->apiContext->errors[] = [
-                'line' => null,
-                'file' => null,
-                'message' => "Using relative link ($url) but repoUrl is not set.",
-            ];
+            if (Url::isRelative($url)) {
+                static::$renderer->apiContext->errors[] = [
+                    'line' => null,
+                    'file' => null,
+                    'message' => "Using relative link ($url) but repoUrl is not set.",
+                ];
+            }
 
             return $linkHtml;
         }
