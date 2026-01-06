@@ -2,11 +2,9 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
     </a>
-    <h1 align="center">API documentation generator for Yii 2</h1>
+    <h1 align="center">API documentation generator</h1>
     <br>
 </p>
-
-This extension provides an API documentation generator for the [Yii framework 2.0](https://www.yiiframework.com).
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
