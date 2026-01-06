@@ -27,6 +27,9 @@ class ApiMarkdown extends GithubMarkdown
     use ApiMarkdownTrait;
     use MarkdownHighlightTrait;
 
+    private const INLINE_TAG_LINK = 'link';
+    private const INLINE_TAG_SEE = 'see';
+
     /**
      * @var BaseRenderer|null
      */
@@ -193,13 +196,14 @@ class ApiMarkdown extends GithubMarkdown
     /**
      * Converts markdown into HTML
      *
-     * @param string $content
      * @param TypeDoc|string|null $context
-     * @param bool $paragraph
-     * @return string
      */
-    public static function process($content, $context = null, $paragraph = false)
+    public static function process(?string $content, $context = null, bool $paragraph = false): string
     {
+        if (!$content) {
+            return '';
+        }
+
         if (!isset(Markdown::$flavors['api'])) {
             Markdown::$flavors['api'] = new static();
         }
@@ -207,13 +211,13 @@ class ApiMarkdown extends GithubMarkdown
         if (is_string($context)) {
             $context = static::$renderer->apiContext->getType($context);
         }
+
         Markdown::$flavors['api']->renderingContext = $context;
 
-        if ($paragraph) {
-            return Markdown::processParagraph($content, 'api');
-        } else {
-            return Markdown::process($content, 'api');
-        }
+        $result = self::processInlineTags($content, self::INLINE_TAG_LINK);
+        $result = self::processInlineTags($result, self::INLINE_TAG_SEE);
+
+        return $paragraph ? Markdown::processParagraph($result, 'api') : Markdown::process($result, 'api');
     }
 
     /**
@@ -223,5 +227,13 @@ class ApiMarkdown extends GithubMarkdown
     public function renderTable($block)
     {
         return str_replace('<table>', '<table class="table table-bordered table-striped">', parent::renderTable($block));
+    }
+
+    private static function processInlineTags(string $content, string $tag): string
+    {
+        $result = preg_replace('/{@' . $tag . '\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', '[[$1]]', $content);
+        $result = preg_replace('/{@' . $tag . '\s+([^}]+)}/', '$1', $result);
+
+        return $result;
     }
 }
