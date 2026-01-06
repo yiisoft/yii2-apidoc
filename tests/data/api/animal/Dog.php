@@ -148,4 +148,42 @@ class Dog extends Animal
     {
         return parent::asArray();
     }
+
+    /**
+     * Some description. See {@see Animal::asArray()}.
+     *
+     * See {@see Animal::asArray()}.
+     *
+     * See {@see Animal::$name}.
+     *
+     * See {@see Animal}.
+     *
+     * See {@see \yiiunit\apidoc\data\api\db\ActiveQuery}.
+     *
+     * See {@see https://www.php.net/manual/intro.filter.php}.
+     *
+     * See {@see Dog::getNullableString()}.
+     */
+    public function testInlineSee(): void
+    {
+    }
+
+    /**
+     * Some description. See {@link Animal::asArray()}.
+     *
+     * See {@link Animal::asArray()}.
+     *
+     * See {@link Animal::$name}.
+     *
+     * See {@link Animal}.
+     *
+     * See {@link \yiiunit\apidoc\data\api\db\ActiveQuery}.
+     *
+     * See {@link https://www.php.net/manual/intro.filter.php}.
+     *
+     * See {@link Dog::getNullableString()}.
+     */
+    public function testInlineLink(): void
+    {
+    }
 }

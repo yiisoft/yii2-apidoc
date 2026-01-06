@@ -21,6 +21,8 @@ Yii Framework 2 apidoc extension Change Log
 - Chg #352: Remove deprecated code (mspirkov)
 - New #131: Add a new template for custom projects (jcherniak, cebe, mspirkov)
 - Fix #275: Fix logging in `ApiMarkdown::renderLink()` (mspirkov)
+- Enh #353: Add support for inline tags `@see` (mspirkov)
+- Fix #360: Fix URL processing in inline tags `@link` (mspirkov)
 
 
 3.0.8 November 24, 2025
