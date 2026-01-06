@@ -2,11 +2,11 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
     </a>
-    <h1 align="center">API documentation generator for Yii 2</h1>
+    <h1 align="center">API documentation generator</h1>
     <br>
 </p>
 
-This extension provides an API documentation generator for the [Yii framework 2.0](https://www.yiiframework.com).
+This extension provides an API documentation generator.
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
@@ -21,14 +21,14 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```sh
-composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.6"
+composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.8"
 ```
 
 The above command may not work on an existing project due to version conflicts that need to be resolved, so it
 is preferred to add the package manually to the `require` section of your composer.json:
 
 ```json
-"yiisoft/yii2-apidoc": "~3.0.6"
+"yiisoft/yii2-apidoc": "~3.0.8"
 ```
 
 afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
