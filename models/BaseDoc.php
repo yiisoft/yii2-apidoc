@@ -236,11 +236,8 @@ class BaseDoc extends BaseObject
                 'message' => 'No short description for ' . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
             ];
         }
-        $this->shortDescription = static::convertInlineLinks($this->shortDescription);
 
         $this->description = $docBlock->getDescription()->render();
-        $this->description = static::convertInlineLinks($this->description);
-
         $this->phpDocContext = $docBlock->getContext();
 
         $this->tags = $docBlock->getTags();
@@ -350,21 +347,6 @@ class BaseDoc extends BaseObject
     protected function isInheritdocTag(Tag $tag): bool
     {
         return $tag instanceof Generic && $tag->getName() === self::INHERITDOC_TAG_NAME;
-    }
-
-    /**
-     * Converts inline links to unified format.
-     * @see ApiMarkdownTrait::parseApiLinks()
-     * @param string|null $content
-     * @return string|null
-     */
-    protected static function convertInlineLinks($content)
-    {
-        if (!$content) {
-            return $content;
-        }
-
-        return preg_replace('/{@link\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', '[[$1]]', $content);
     }
 
     /**
