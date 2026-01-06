@@ -152,6 +152,8 @@ class Dog extends Animal
     /**
      * Some description. See {@see Animal::asArray()}.
      *
+     * See {@see Animal::COLOR_GREY}.
+     *
      * See {@see Animal::asArray()}.
      *
      * See {@see Animal::$name}.
@@ -170,6 +172,8 @@ class Dog extends Animal
 
     /**
      * Some description. See {@link Animal::asArray()}.
+     *
+     * See {@link Animal::COLOR_GREY}.
      *
      * See {@link Animal::asArray()}.
      *
