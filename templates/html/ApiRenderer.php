@@ -289,10 +289,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
-            . $this->createTypeLink($method->returnType, $method, null, [], $context) . '</span> '
             . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
-            . str_replace('  ', ' ', ' ( ' . implode(', ', $params) . ' )');
+            . str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )')
+            . ': <span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
+            . $this->createTypeLink($method->returnType, $method, null, [], $context) . '</span>';
     }
 
     /**

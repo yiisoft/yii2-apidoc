@@ -23,6 +23,7 @@ Yii Framework 2 apidoc extension Change Log
 - Fix #275: Fix logging in `ApiMarkdown::renderLink()` (mspirkov)
 - Enh #353: Add support for inline tags `@see` (mspirkov)
 - Fix #360: Fix URL processing in inline tags `@link` (mspirkov)
+- Enh #362: Display the method signature like in PHP (mspirkov)
 
 
 3.0.8 November 24, 2025
