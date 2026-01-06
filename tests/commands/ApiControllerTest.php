@@ -67,13 +67,13 @@ class ApiControllerTest extends TestCase
     /**
      * @dataProvider provideGenerateHtmlData
      */
-    public function testGenerateHtml(string $template): void
+    public function testGenerateHtml(string $template, string $outputPart): void
     {
         $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');
         $output = $this->generateApi($sourceFilesDir, '@runtime', ['template' => $template]);
 
         $this->assertNotEmpty($output);
-        $this->assertStringContainsString('generating search index...done.', $output);
+        $this->assertStringContainsString($outputPart, $output);
 
         $filesCount = 0;
         $outputPath = Yii::getAlias('@runtime');
@@ -121,8 +121,9 @@ class ApiControllerTest extends TestCase
     public static function provideGenerateHtmlData(): array
     {
         return [
-            'bootstrap' => ['bootstrap'],
-            'project' => ['project'],
+            'bootstrap' => ['bootstrap', 'generating search index...done.'],
+            'project' => ['project', 'generating search index...done.'],
+            'online' => ['online', 'writing packages file'],
         ];
     }
 
