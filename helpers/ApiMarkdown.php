@@ -30,6 +30,8 @@ class ApiMarkdown extends GithubMarkdown
     private const INLINE_TAG_LINK = 'link';
     private const INLINE_TAG_SEE = 'see';
 
+    private const PHP_FUNCTION_BASE_URL = 'https://www.php.net/manual/en/function.';
+
     /**
      * @var BaseRenderer|null
      */
@@ -231,7 +233,24 @@ class ApiMarkdown extends GithubMarkdown
 
     private static function processInlineTags(string $content, string $tag): string
     {
-        $result = preg_replace('/{@' . $tag . '\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/', '[[$1]]', $content);
+        $result = preg_replace_callback(
+            '/{@' . $tag . '\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/',
+            function (array $matches) {
+                $linkContent = $matches[1];
+
+                if (strpos($linkContent, '()') !== false) {
+                    $functionName = trim(substr($linkContent, strripos($linkContent, '\\') ?: 0, -2), '\\');
+                    if (function_exists($functionName)) {
+                        $functionUrl =  self::PHP_FUNCTION_BASE_URL . str_replace('_', '-', $functionName) . '.php';
+                        return '[' . $functionName . '](' . $functionUrl . ')';
+                    }
+                }
+
+                return '[[' . $linkContent . ']]';
+            },
+            $content
+        );
+
         $result = preg_replace('/{@' . $tag . '\s+([^}]+)}/', '$1', $result);
 
         return $result;
