@@ -165,6 +165,16 @@ class Dog extends Animal
      * See {@see https://www.php.net/manual/intro.filter.php}.
      *
      * See {@see Dog::getNullableString()}.
+     *
+     * See {@see \ArrayAccess}.
+     *
+     * See {@see in_array()}.
+     *
+     * See {@see \in_array()}.
+     *
+     * See {@see array_merge()}.
+     *
+     * See {@see array_merge_recursive()}.
      */
     public function testInlineSee(): void
     {
@@ -186,6 +196,16 @@ class Dog extends Animal
      * See {@link https://www.php.net/manual/intro.filter.php}.
      *
      * See {@link Dog::getNullableString()}.
+     *
+     * See {@link \ArrayAccess}.
+     *
+     * See {@link in_array()}.
+     *
+     * See {@link \in_array()}.
+     *
+     * See {@link array_merge()}.
+     *
+     * See {@link array_merge_recursive()}.
      */
     public function testInlineLink(): void
     {
