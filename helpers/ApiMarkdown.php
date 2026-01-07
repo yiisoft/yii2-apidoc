@@ -242,7 +242,7 @@ class ApiMarkdown extends GithubMarkdown
                     $functionName = trim(substr($linkContent, strripos($linkContent, '\\') ?: 0, -2), '\\');
                     if (function_exists($functionName)) {
                         $functionUrl =  self::PHP_FUNCTION_BASE_URL . str_replace('_', '-', $functionName) . '.php';
-                        return '[' . $functionName . '](' . $functionUrl . ')';
+                        return '[' . $functionName . '()](' . $functionUrl . ')';
                     }
                 }
 
