@@ -8,6 +8,7 @@
 
 namespace yii\apidoc\components;
 
+use yii\console\Application;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\console\Controller;
 use yii\helpers\Console;
@@ -19,6 +20,8 @@ use Yii;
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
+ *
+ * @extends Controller<Application>
  */
 abstract class BaseController extends Controller
 {

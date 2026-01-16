@@ -6,6 +6,8 @@ use Exception;
 use yii\di\Container;
 use yii\helpers\ArrayHelper;
 use Yii;
+use yii\console\Application;
+use yii\console\Controller;
 use yii\helpers\FileHelper;
 
 /**
@@ -97,7 +99,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * Emulates running of the console controller action.
-     * @param \yii\console\Controller $controller controller instance.
+     * @param Controller<Application> $controller controller instance.
      * @param string $actionId id of action to be run.
      * @param array $args action arguments.
      * @return string command output.

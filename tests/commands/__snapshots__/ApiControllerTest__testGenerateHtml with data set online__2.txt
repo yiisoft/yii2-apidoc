@@ -63,4 +63,16 @@ Array
             [message] => Invalid tag: @return invalid-type. Exception message: "\yiiunit\apidoc\data\api\animal\invalid-type" is not a valid Fqsen.
         )
 
+    [9] => Array
+        (
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Invalid inline tag "@link": {@link Animal::COLOR_GREY}
+        )
+
+    [10] => Array
+        (
+            [file] => /tests/data/api/animal/Dog.php
+            [message] => Invalid inline tag "@link": {@link array_merge() description}
+        )
+
 )
