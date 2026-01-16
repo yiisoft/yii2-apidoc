@@ -11,7 +11,7 @@ parameters:
 			path: models/ParamDoc.php
 
 		-
-			message: "#^Static property yii\\\\BaseYii\\:\\:\\$app \\(yii\\\\console\\\\Application\\|yii\\\\web\\\\Application\\) does not accept null\\.$#"
+			message: "#^Static property yii\\\\BaseYii\\<yii\\\\web\\\\IdentityInterface\\>\\:\\:\\$app \\(yii\\\\console\\\\Application\\|yii\\\\web\\\\Application\\<yii\\\\web\\\\IdentityInterface\\>\\) does not accept null\\.$#"
 			count: 1
 			path: tests/TestCase.php
 

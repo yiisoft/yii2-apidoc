@@ -49,6 +49,7 @@ use yii\apidoc\models\PseudoTypeImportDoc;
 use yii\apidoc\models\TraitDoc;
 use yii\apidoc\models\TypeDoc;
 use yii\base\Component;
+use yii\console\Application;
 use yii\console\Controller;
 
 /**
@@ -179,7 +180,7 @@ abstract class BaseRenderer extends Component
      */
     public $apiContext;
     /**
-     * @var Controller|null the apidoc controller instance. Can be used to control output.
+     * @var Controller<Application>|null the apidoc controller instance. Can be used to control output.
      */
     public $controller;
     /**
