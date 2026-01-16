@@ -216,8 +216,8 @@ class ApiMarkdown extends GithubMarkdown
 
         Markdown::$flavors['api']->renderingContext = $context;
 
-        $result = self::processInlineTags($content, self::INLINE_TAG_LINK);
-        $result = self::processInlineTags($result, self::INLINE_TAG_SEE);
+        $result = self::processInlineTags($context, $content, self::INLINE_TAG_LINK);
+        $result = self::processInlineTags($context, $result, self::INLINE_TAG_SEE);
 
         return $paragraph ? Markdown::processParagraph($result, 'api') : Markdown::process($result, 'api');
     }
@@ -231,28 +231,40 @@ class ApiMarkdown extends GithubMarkdown
         return str_replace('<table>', '<table class="table table-bordered table-striped">', parent::renderTable($block));
     }
 
-    private static function processInlineTags(string $content, string $tag): string
+    private static function processInlineTags(?TypeDoc $context, string $content, string $tag): string
     {
-        $result = preg_replace_callback(
-            '/{@' . $tag . '\s*([\w\d\\\\():$]+(?:\|[^}]*)?)}/',
-            function (array $matches) {
-                $linkContent = $matches[1];
+        return preg_replace_callback(
+            '/{@' . $tag . '\s+([^\s|}]+)(?:\s+([^}]+))?}/',
+            function (array $matches) use ($context, $tag) {
+                $value = $matches[1];
+                $description = $matches[2] ?? null;
 
-                if (strpos($linkContent, '()') !== false) {
-                    $functionName = trim(substr($linkContent, strripos($linkContent, '\\') ?: 0, -2), '\\');
+                if (filter_var($value, FILTER_VALIDATE_URL) !== false) {
+                    return $description !== null ? '[' . $description . '](' . $value . ')' : $value;
+                }
+
+                // The `@link` tag only supports links.
+                // See https://docs.phpdoc.org/guide/references/phpdoc/tags/link.html
+                if ($tag === self::INLINE_TAG_LINK) {
+                    static::$renderer->apiContext->errors[] = [
+                        'file' => $context->sourceFile ?? null,
+                        'message' => 'Invalid inline tag "@link": ' . $matches[0],
+                    ];
+
+                    return $description ?? $value;
+                }
+
+                if (strpos($value, '()') !== false) {
+                    $functionName = trim(substr($value, strripos($value, '\\') ?: 0, -2), '\\');
                     if (function_exists($functionName)) {
                         $functionUrl =  self::PHP_FUNCTION_BASE_URL . str_replace('_', '-', $functionName) . '.php';
-                        return '[' . $functionName . '()](' . $functionUrl . ')';
+                        return '[' . ($description ?? ($functionName . '()')) . '](' . $functionUrl . ')';
                     }
                 }
 
-                return '[[' . $linkContent . ']]';
+                return '[[' . $value . ($description !== null ? '|' . $description : '') . ']]';
             },
             $content
         );
-
-        $result = preg_replace('/{@' . $tag . '\s+([^}]+)}/', '$1', $result);
-
-        return $result;
     }
 }

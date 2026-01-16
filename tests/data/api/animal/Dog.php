@@ -150,11 +150,9 @@ class Dog extends Animal
     }
 
     /**
-     * Some description. See {@see Animal::asArray()}.
+     * Some description. See {@see Animal::asArray() parent method}.
      *
      * See {@see Animal::COLOR_GREY}.
-     *
-     * See {@see Animal::asArray()}.
      *
      * See {@see Animal::$name}.
      *
@@ -162,9 +160,9 @@ class Dog extends Animal
      *
      * See {@see \yiiunit\apidoc\data\api\db\ActiveQuery}.
      *
-     * See {@see https://www.php.net/manual/intro.filter.php}.
+     * See {@see https://www.php.net/manual/intro.filter.php documentation}.
      *
-     * See {@see Dog::getNullableString()}.
+     * See {@see Dog::getNullableString() }.
      *
      * See {@see \ArrayAccess}.
      *
@@ -172,7 +170,7 @@ class Dog extends Animal
      *
      * See {@see \in_array()}.
      *
-     * See {@see array_merge()}.
+     * See {@see array_merge() documentation}.
      *
      * See {@see array_merge_recursive()}.
      */
@@ -181,31 +179,11 @@ class Dog extends Animal
     }
 
     /**
-     * Some description. See {@link Animal::asArray()}.
+     * Some description. See {@link https://docs.phpdoc.org/guide/references/phpdoc/tags/link.html documentation}.
      *
-     * See {@link Animal::COLOR_GREY}.
+     * See invalid link {@link Animal::COLOR_GREY}.
      *
-     * See {@link Animal::asArray()}.
-     *
-     * See {@link Animal::$name}.
-     *
-     * See {@link Animal}.
-     *
-     * See {@link \yiiunit\apidoc\data\api\db\ActiveQuery}.
-     *
-     * See {@link https://www.php.net/manual/intro.filter.php}.
-     *
-     * See {@link Dog::getNullableString()}.
-     *
-     * See {@link \ArrayAccess}.
-     *
-     * See {@link in_array()}.
-     *
-     * See {@link \in_array()}.
-     *
-     * See {@link array_merge()}.
-     *
-     * See {@link array_merge_recursive()}.
+     * See invalid link with {@link array_merge() description}.
      */
     public function testInlineLink(): void
     {
