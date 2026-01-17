@@ -304,7 +304,7 @@ class BaseDoc extends BaseObject
                         $this->psalmTypeImports[$psalmTypeImport->typeName] = $psalmTypeImport;
                         unset($this->tags[$i]);
                     }
-                } catch (InvalidArgumentException|RuntimeException $e) {
+                } catch (InvalidArgumentException | RuntimeException $e) {
                     if ($context !== null) {
                         $context->errors[] = [
                             'line' => $this->startLine,
