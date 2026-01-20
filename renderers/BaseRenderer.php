@@ -266,8 +266,8 @@ abstract class BaseRenderer extends Component
 
                 if ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
                     $valueType = $type->getValueType();
-                    if ($valueType instanceof Object_ && $valueType->getFqsen() !== null) {
-                        $templateType = $this->getTemplateType((string) $valueType->getFqsen(), $context);
+                    if ($valueType instanceof Object_ && ($valueTypeFqsen = $valueType->getFqsen()) !== null) {
+                        $templateType = $this->getTemplateType($valueTypeFqsen->getName(), $context);
                         if ($templateType !== null) {
                             $typeLink = $this->createTypeLink($templateType, $context, $title, $options, $currentTypeDoc);
                             $links[] = $templateType instanceof Compound ? "({$typeLink})[]" : "{$typeLink}[]";
@@ -313,36 +313,35 @@ abstract class BaseRenderer extends Component
                     continue;
                 }
 
-                if ($type instanceof Object_ && $type->getFqsen() !== null) {
-                    /** @var class-string */
-                    $fqsen = (string) $type->getFqsen();
+                if ($type instanceof Object_ && ($typeFqsen = $type->getFqsen()) !== null) {
+                    $typeName = $typeFqsen->getName();
 
-                    if (($typeDoc = $this->getTypeDocByQualifiedClassName($fqsen, $context)) !== null) {
+                    if (($typeDoc = $this->getTypeDocByQualifiedClassName((string) $typeFqsen, $context)) !== null) {
                         $links[] = $this->createTypeLink($typeDoc, $context, $typeDoc->name, $options);
                         continue;
                     }
 
-                    if (($templateType = $this->getTemplateType($fqsen, $context)) !== null) {
+                    if (($templateType = $this->getTemplateType($typeName, $context)) !== null) {
                         $links[] = $this->createTypeLink($templateType, $context, $title, $options, $currentTypeDoc);
                         continue;
                     }
 
-                    if (($phpStanType = $this->getPhpStanType($fqsen, $context)) !== null) {
+                    if (($phpStanType = $this->getPhpStanType($typeName, $context)) !== null) {
                         $links[] = $this->createSubjectLink($phpStanType);
                         continue;
                     }
 
-                    if (($psalmType = $this->getPsalmType($fqsen, $context)) !== null) {
+                    if (($psalmType = $this->getPsalmType($typeName, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmType);
                         continue;
                     }
 
-                    if (($phpStanTypeImport = $this->getPhpStanTypeImport($fqsen, $context)) !== null) {
+                    if (($phpStanTypeImport = $this->getPhpStanTypeImport($typeName, $context)) !== null) {
                         $links[] = $this->createSubjectLink($phpStanTypeImport);
                         continue;
                     }
 
-                    if (($psalmTypeImport = $this->getPsalmTypeImport($fqsen, $context)) !== null) {
+                    if (($psalmTypeImport = $this->getPsalmTypeImport($typeName, $context)) !== null) {
                         $links[] = $this->createSubjectLink($psalmTypeImport);
                         continue;
                     }
@@ -521,86 +520,71 @@ abstract class BaseRenderer extends Component
         return $this->generateLink($linkText, $this->generateApiUrl($type->name), $options);
     }
 
-    /**
-     * @param class-string $fqsen
-     */
-    private function getPhpStanType(string $fqsen, ?BaseDoc $context): ?PseudoTypeDoc
+    private function getPhpStanType(string $name, ?BaseDoc $context): ?PseudoTypeDoc
     {
         if ($context === null) {
             return null;
         }
 
-        $phpStanType = $context->phpStanTypes[$fqsen] ?? null;
+        $phpStanType = $context->phpStanTypes[$name] ?? null;
         if ($phpStanType === null) {
-            return $context->parent !== null ? $this->getPhpStanType($fqsen, $context->parent) : null;
+            return $context->parent !== null ? $this->getPhpStanType($name, $context->parent) : null;
         }
 
         return $phpStanType;
     }
 
-    /**
-     * @param class-string $fqsen
-     */
-    private function getPhpStanTypeImport(string $fqsen, ?BaseDoc $context): ?PseudoTypeImportDoc
+    private function getPhpStanTypeImport(string $name, ?BaseDoc $context): ?PseudoTypeImportDoc
     {
         if ($context === null) {
             return null;
         }
 
-        $phpStanTypeImport = $context->phpStanTypeImports[$fqsen] ?? null;
+        $phpStanTypeImport = $context->phpStanTypeImports[$name] ?? null;
         if ($phpStanTypeImport === null) {
-            return $context->parent !== null ? $this->getPhpStanTypeImport($fqsen, $context->parent) : null;
+            return $context->parent !== null ? $this->getPhpStanTypeImport($name, $context->parent) : null;
         }
 
         return $phpStanTypeImport;
     }
 
-    /**
-     * @param class-string $fqsen
-     */
-    private function getPsalmType(string $fqsen, ?BaseDoc $context): ?PseudoTypeDoc
+    private function getPsalmType(string $name, ?BaseDoc $context): ?PseudoTypeDoc
     {
         if ($context === null) {
             return null;
         }
 
-        $psalmType = $context->psalmTypes[$fqsen] ?? null;
+        $psalmType = $context->psalmTypes[$name] ?? null;
         if ($psalmType === null) {
-            return $context->parent !== null ? $this->getPsalmType($fqsen, $context->parent) : null;
+            return $context->parent !== null ? $this->getPsalmType($name, $context->parent) : null;
         }
 
         return $psalmType;
     }
 
-    /**
-     * @param class-string $fqsen
-     */
-    private function getPsalmTypeImport(string $fqsen, ?BaseDoc $context): ?PseudoTypeImportDoc
+    private function getPsalmTypeImport(string $name, ?BaseDoc $context): ?PseudoTypeImportDoc
     {
         if ($context === null) {
             return null;
         }
 
-        $psalmTypeImport = $context->psalmTypeImports[$fqsen] ?? null;
+        $psalmTypeImport = $context->psalmTypeImports[$name] ?? null;
         if ($psalmTypeImport === null) {
-            return $context->parent !== null ? $this->getPsalmTypeImport($fqsen, $context->parent) : null;
+            return $context->parent !== null ? $this->getPsalmTypeImport($name, $context->parent) : null;
         }
 
         return $psalmTypeImport;
     }
 
-    /**
-     * @param class-string $fqsen
-     */
-    private function getTemplateType(string $fqsen, ?BaseDoc $context): ?Type
+    private function getTemplateType(string $name, ?BaseDoc $context): ?Type
     {
         if ($context === null) {
             return null;
         }
 
-        $template = $context->templates[$fqsen] ?? null;
+        $template = $context->templates[$name] ?? null;
         if ($template === null) {
-            return $context->parent !== null ? $this->getTemplateType($fqsen, $context->parent) : null;
+            return $context->parent !== null ? $this->getTemplateType($name, $context->parent) : null;
         }
 
         return $template->getBound();
@@ -691,12 +675,12 @@ abstract class BaseRenderer extends Component
             return $generateLink(new Array_(), $genericTypes);
         }
 
-        if ($type instanceof ClassString && $type->getFqsen() !== null) {
-            return $generateLink(new ClassString(), [new Object_($type->getFqsen())]);
+        if ($type instanceof ClassString && ($typeFqsen = $type->getFqsen()) !== null) {
+            return $generateLink(new ClassString(), [new Object_($typeFqsen)]);
         }
 
-        if ($type instanceof InterfaceString && $type->getFqsen() !== null) {
-            return $generateLink(new InterfaceString(), [new Object_($type->getFqsen())]);
+        if ($type instanceof InterfaceString && ($typeFqsen = $type->getFqsen()) !== null) {
+            return $generateLink(new InterfaceString(), [new Object_($typeFqsen)]);
         }
 
         if ($type instanceof Static_ && $type->getGenericTypes()) {
