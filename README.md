@@ -13,8 +13,15 @@ For license information check the [LICENSE](LICENSE.md)-file.
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-apidoc/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii2-apidoc/downloads.png)](https://packagist.org/packages/yiisoft/yii2-apidoc)
 [![Build Status](https://github.com/yiisoft/yii2-apidoc/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-apidoc/actions)
+[![Static status](https://github.com/yiisoft/yii2-apidoc/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/yii2-apidoc/actions?query=workflow%3A%22static+analysis%22)
+[![Codecov](https://codecov.io/gh/yiisoft/yii2-apidoc/graph/badge.svg)](https://codecov.io/gh/yiisoft/yii2-apidoc)
 
 ## Installation
+
+> [!IMPORTANT]
+>
+> - The minimum required [PHP](https://www.php.net/) version is PHP `7.4`.
+> - It works best with PHP `8`.
 
 The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 

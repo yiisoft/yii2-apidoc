@@ -15,4 +15,14 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">commands</directory>
+            <directory suffix=".php">components</directory>
+            <directory suffix=".php">helpers</directory>
+            <directory suffix=".php">models</directory>
+            <directory suffix=".php">renderers</directory>
+            <directory suffix=".php">templates</directory>
+        </include>
+    </source>
 </phpunit>
