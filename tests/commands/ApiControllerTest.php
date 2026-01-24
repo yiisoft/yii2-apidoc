@@ -81,10 +81,9 @@ class ApiControllerTest extends TestCase
         foreach (['warnings', 'errors'] as $filename) {
             $fileContent = file_get_contents("{$outputPath}/{$filename}.txt");
             // Normalize file paths
-            $fileContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $fileContent);
             $fileContent = preg_replace_callback(
-                '#[\\\\/][^"\s:]+\.php#',
-                fn(array $m) => str_replace('\\', '/', $m[0]),
+                '#(?:[A-Za-z]:)?[\\\\/](?:[^"\s]+[\\\\/])*?(tests[\\\\/][^"\s]+\.php)#',
+                fn(array $m) => str_replace('\\', '/', $m[1]),
                 $fileContent
             );
             $this->assertMatchesTextSnapshot($fileContent);
