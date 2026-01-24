@@ -30,6 +30,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     with:
       php-version: '["7.4"]'
+      os: '["ubuntu-latest"]'
       phpunit-configuration: phpunit-7x.xml.dist
 
   phpunit:
@@ -38,3 +39,4 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     with:
       php-version: '["8.0", "8.1", "8.2", "8.3", "8.4", "8.5"]'
+      os: '["ubuntu-latest"]'
