@@ -25,7 +25,7 @@ on:
 
 jobs:
   phpunit-7x:
-    uses: yiisoft/yii2-actions/.github/workflows/phpunit.yml@main
+    uses: yiisoft/yii2-actions/.github/workflows/phpunit.yml@master
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     with:
@@ -33,7 +33,7 @@ jobs:
       configuration: phpunit-7x.xml.dist
 
   phpunit:
-    uses: yiisoft/yii2-actions/.github/workflows/phpunit.yml@main
+    uses: yiisoft/yii2-actions/.github/workflows/phpunit.yml@master
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     with:
