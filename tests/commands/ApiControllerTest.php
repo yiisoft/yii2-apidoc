@@ -87,7 +87,7 @@ class ApiControllerTest extends TestCase
                 $fileContent
             );
             // Normalize line endings
-            $fileContent = str_replace("\r\n", "\n", $fileContent);
+            $fileContent = str_replace("\n", PHP_EOL, $fileContent);
             $this->assertMatchesTextSnapshot($fileContent);
         }
 
