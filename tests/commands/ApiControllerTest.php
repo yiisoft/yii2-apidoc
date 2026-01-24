@@ -86,6 +86,8 @@ class ApiControllerTest extends TestCase
                 fn(array $m) => str_replace('\\', '/', $m[1]),
                 $fileContent
             );
+            // Normalize line endings
+            $fileContent = str_replace("\r\n", "\n", $fileContent);
             $this->assertMatchesTextSnapshot($fileContent);
         }
 
