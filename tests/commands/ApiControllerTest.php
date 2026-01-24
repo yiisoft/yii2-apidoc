@@ -78,15 +78,17 @@ class ApiControllerTest extends TestCase
         $filesCount = 0;
         $outputPath = Yii::getAlias('@runtime');
 
-        $warningsContent = file_get_contents("{$outputPath}/warnings.txt");
-        // Remove the dynamic parts of the file paths
-        $warningsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $warningsContent);
-        $this->assertMatchesTextSnapshot($warningsContent);
-
-        $errorsContent = file_get_contents("{$outputPath}/errors.txt");
-        // Remove the dynamic parts of the file paths
-        $errorsContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $errorsContent);
-        $this->assertMatchesTextSnapshot($errorsContent);
+        foreach (['warnings', 'errors'] as $filename) {
+            $fileContent = file_get_contents("{$outputPath}/{$filename}.txt");
+            // Normalize file paths
+            $fileContent = preg_replace('/(\s*\[file\] => ).*(\/tests\/.*\.php)/', '$1$2', $fileContent);
+            $fileContent = preg_replace_callback(
+                '#[\\\\/][^"\s:]+\.php#',
+                fn(array $m) => str_replace('\\', '/', $m[0]),
+                $fileContent
+            );
+            $this->assertMatchesTextSnapshot($fileContent);
+        }
 
         foreach (glob("{$outputPath}/yiiunit-apidoc-data-api*") as $filePath) {
             $fileContent = file_get_contents($filePath);
