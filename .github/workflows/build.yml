@@ -30,7 +30,7 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     with:
       php-version: '["7.4"]'
-      configuration: phpunit-7x.xml.dist
+      phpunit-configuration: phpunit-7x.xml.dist
 
   phpunit:
     uses: yiisoft/yii2-actions/.github/workflows/phpunit.yml@master
