@@ -107,6 +107,10 @@ class ApiControllerTest extends TestCase
             $fileContent = str_replace('=&nbsp;', '= ', $fileContent);
             $fileContent = str_replace('&nbsp;<', ' <', $fileContent);
 
+            // Snapshots on Windows are generated slightly differently starting with PHP 8.4
+            // The string `#$` is not converted to `#%24`, and the tests fail.
+            $fileContent = str_replace('#$', '#%24', $fileContent);
+
             $this->assertMatchesHtmlSnapshot($fileContent);
             $filesCount++;
         }
