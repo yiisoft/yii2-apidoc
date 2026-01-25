@@ -1,3 +1,26 @@
+# Autodetect text files
+* text=auto eol=lf
+
+# ...Unless the name matches the following overriding patterns
+
+# Definitively text files
+*.php  text
+*.css  text
+*.js   text
+*.txt  text
+*.md   text
+*.xml  text
+*.json text
+*.bat  text
+*.sql  text
+*.yml  text
+
+# Ensure those won't be messed up with
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ttf  binary
+
 # Ignore all test and documentation for archive
 /.github                    export-ignore
 /tests                      export-ignore
