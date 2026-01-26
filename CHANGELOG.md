@@ -27,6 +27,7 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #366: Generating links to built-in PHP functions in the `@see` and `@link` tags (mspirkov)
 - Enh #367: Add support for descriptions in inline tags `@see` and `@link` (mspirkov)
 - Chg #367: Remove support for FQSEN in inline tags `@link` (mspirkov)
+- Bug #294: Make the `yiisoft/yii2-bootstrap` dependency optional (mspirkov)
 
 
 3.0.8 November 24, 2025
