@@ -47,7 +47,7 @@
     "suggest": {
         "ext-json": "for outputting documentation data structures as a JSON text",
         "ext-intl": "for generating slugs in non-English guides",
-        "yiisoft/yii2-bootstrap": "for generating API documentation based on the Bootstap template"
+        "yiisoft/yii2-bootstrap": "for generating API documentation based on the Bootstrap template"
     },
     "autoload": {
         "psr-4": {
