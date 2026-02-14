@@ -8,6 +8,7 @@
 
 namespace yiiunit\apidoc\commands;
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
 use yiiunit\apidoc\support\controllers\GuideControllerMock;
 use yiiunit\apidoc\TestCase;
@@ -17,6 +18,8 @@ use yiiunit\apidoc\TestCase;
  */
 class GuideControllerTest extends TestCase
 {
+    use MatchesSnapshots;
+
     /**
      * {@inheritdoc}
      */
@@ -52,7 +55,7 @@ class GuideControllerTest extends TestCase
 
     // Tests :
 
-    public function testNoFiles()
+    public function testNoFiles(): void
     {
         $output = $this->generateGuide(Yii::getAlias('@yiiunit/apidoc/support'));
 
@@ -65,7 +68,11 @@ class GuideControllerTest extends TestCase
      */
     public function testGenerateHtml(string $template): void
     {
-        $output = $this->generateGuide(Yii::getAlias('@yiiunit/apidoc/data/guide'), '@runtime', ['template' => $template]);
+        $output = $this->generateGuide(
+            Yii::getAlias('@yiiunit/apidoc/data/guide'),
+            '@runtime',
+            ['template' => $template]
+        );
 
         $this->assertNotEmpty($output);
         $this->assertStringContainsString('generating search index...done.', $output);
@@ -73,19 +80,12 @@ class GuideControllerTest extends TestCase
 
         $outputPath = Yii::getAlias('@runtime');
 
-        $readmeFile = $outputPath . DIRECTORY_SEPARATOR . 'guide-README.html';
-        $this->assertTrue(file_exists($readmeFile));
-        $readmeContent = file_get_contents($readmeFile);
-        $this->assertStringContainsString('<h1>The Test Guide <span id="the-test-guide"></span><a href="#the-test-guide" class="hashlink">', $readmeContent);
-        $this->assertStringContainsString('<a href="guide-intro.html">Intro</a>', $readmeContent);
-        $this->assertStringContainsString('<a href="guide-intro-upgrade.html">Upgrade</a>', $readmeContent);
-
-        $tocFile = $outputPath . DIRECTORY_SEPARATOR . 'guide-TOC.html';
-        $this->assertTrue(file_exists($tocFile));
-        $tocFile = file_get_contents($tocFile);
-
-        $this->assertStringContainsString('<h1>TOC Test <span id="toc-test"></span><a href="#toc-test" class="hashlink">', $tocFile);
-        $this->assertEquals(1, substr_count($tocFile, '<div class="toc">'));
+        foreach (['README', 'intro', 'TOC'] as $filename) {
+            $filePath = $outputPath . DIRECTORY_SEPARATOR . "guide-{$filename}.html";
+            $this->assertTrue(file_exists($filePath));
+            $fileContent = $this->removeDynamicContentFromHtml(file_get_contents($filePath));
+            $this->assertMatchesHtmlSnapshot($fileContent);
+        }
     }
 
     /**
@@ -99,7 +99,7 @@ class GuideControllerTest extends TestCase
         ];
     }
 
-    public function testGeneratePdf()
+    public function testGeneratePdf(): void
     {
         $output = $this->generateGuide(Yii::getAlias('@yiiunit/apidoc/data/guide'), '@runtime', ['template' => 'pdf']);
 

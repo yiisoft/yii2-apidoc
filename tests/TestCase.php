@@ -127,4 +127,16 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         }
         FileHelper::removeDirectory($runtimePath);
     }
+
+    protected function removeDynamicContentFromHtml(string $content): string
+    {
+        $result = preg_replace('/<p\s+class="pull-right">.*?<\/p>/is', '', $content);
+        $result = preg_replace('/<script\s+src=".*?"><\/script>/is', '', $result);
+        $result = preg_replace('/<link\s+href=".*?" rel="stylesheet">/is', '', $result);
+        $result = preg_replace('/\s+id\s*=\s*(["\'])[^"\']*\1/i', '', $result);
+        $result = preg_replace('/\s+href\s*=\s*(["\'])#[^"\']*\1/i', '', $result);
+        $result = preg_replace('/\s+data-target\s*=\s*(["\'])#[^"\']*\1/i', '', $result);
+
+        return $result;
+    }
 }
