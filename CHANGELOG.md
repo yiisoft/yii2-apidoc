@@ -28,6 +28,8 @@ Yii Framework 2 apidoc extension Change Log
 - Enh #367: Add support for descriptions in inline tags `@see` and `@link` (mspirkov)
 - Chg #367: Remove support for FQSEN in inline tags `@link` (mspirkov)
 - Bug #294: Make the `yiisoft/yii2-bootstrap` dependency optional (mspirkov)
+- Chg #373: Move `BaseDoc::extractFirstSentence()` to `TextHelper::extractFirstSentence()` (mspirkov)
+- Bug #283: Fix extracting the first sentence from the text (mspirkov)
 
 
 3.0.8 November 24, 2025

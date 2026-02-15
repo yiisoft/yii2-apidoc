@@ -12,6 +12,7 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Constant;
+use yii\apidoc\helpers\TextHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -60,7 +61,7 @@ class EventDoc extends ConstDoc
                 $this->type = $docBlock->getContext()->getNamespace() . '\\' . $className;
             }
 
-            $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+            $this->shortDescription = TextHelper::extractFirstSentence($this->description);
             unset($this->tags[$i]);
         }
     }
