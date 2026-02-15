@@ -1,30 +1,74 @@
 <html><body>
-<h1>Interface yiiunit\apidoc\data\api\web\SomeInterface</h1>
+<h1>Class yiiunit\apidoc\data\api\web\AssetManager</h1>
 <div class="top-nav">
     <a href="index">All Classes</a>
                 | <a>Methods</a>
-                    | <a>Constants</a>
-    </div>
+            </div>
 
 <table class="summaryTable docClass table table-bordered">
     <colgroup>
         <col class="col-name">
         <col class="col-value">
     </colgroup>
-                                <tr>
-<th>Implemented by</th>
-<td><a href="yiiunit-apidoc-data-api-web-somesubinterface">yiiunit\apidoc\data\api\web\SomeSubInterface</a></td>
+            <tr>
+<th>Inheritance</th>
+<td>
+<a href="yiiunit-apidoc-data-api-web-assetmanager">yiiunit\apidoc\data\api\web\AssetManager</a> &raquo;
+<a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a>
+</td>
 </tr>
-                    </table>
+                                        </table>
 
 <div class="class-description">
-    <p><strong>Some description.</strong></p>
+    <p><strong>AssetManager manages asset bundle configuration and loading.</strong></p>
     
     </div>
 
 
 
+    
+<div class="doc-method summary toggle-target-container">
+    <h2>PHPStan Types</h2>
 
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-name">
+            <col class="col-value">
+        </colgroup>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+
+                    <tr>
+                <td><a href="yiiunit-apidoc-data-api-web-assetmanager#phpstan-type-PublishOptions">PublishOptions</a></td>
+                <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{only?: <a href="https://www.php.net/language.types.string">string</a>[], except?: <a href="https://www.php.net/language.types.string">string</a>[], caseSensitive?: <a href="https://www.php.net/language.types.boolean">boolean</a>, beforeCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, afterCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, forceCopy?: <a href="https://www.php.net/language.types.boolean">boolean</a>}</td>
+            </tr>
+            </table>
+</div>
+
+    
+<div class="doc-method summary toggle-target-container">
+    <h2>Psalm Types</h2>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-name">
+            <col class="col-value">
+        </colgroup>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+
+                    <tr>
+                <td><a href="yiiunit-apidoc-data-api-web-assetmanager#psalm-type-PublishOptions">PublishOptions</a></td>
+                <td>
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{only?: <a href="https://www.php.net/language.types.string">string</a>[], except?: <a href="https://www.php.net/language.types.string">string</a>[], caseSensitive?: <a href="https://www.php.net/language.types.boolean">boolean</a>, beforeCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, afterCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, forceCopy?: <a href="https://www.php.net/language.types.boolean">boolean</a>}</td>
+            </tr>
+            </table>
+</div>
 
 <a></a>
 
@@ -48,9 +92,9 @@
         </tr>
 
                                     <tr class="">
-                    <td><a href="yiiunit-apidoc-data-api-web-someinterface#doSomething()-detail">doSomething()</a></td>
-                    <td>Some description.</td>
-                    <td><a href="yiiunit-apidoc-data-api-web-someinterface">yiiunit\apidoc\data\api\web\SomeInterface</a></td>
+                    <td><a href="yiiunit-apidoc-data-api-web-assetmanager#publish()-detail">publish()</a></td>
+                    <td>Publishes a file or a directory.</td>
+                    <td><a href="yiiunit-apidoc-data-api-web-assetmanager">yiiunit\apidoc\data\api\web\AssetManager</a></td>
                 </tr>
                         </table>
 </div>
@@ -58,36 +102,6 @@
 <a></a>
 
 <a></a>
-
-<div class="doc-const summary toggle-target-container">
-    <h2>Constants</h2>
-
-    <p><a class="toggle">Hide inherited constants</a></p>
-
-    <table class="summary-table table table-striped table-bordered table-hover">
-        <colgroup>
-            <col class="col-const">
-            <col class="col-value">
-            <col class="col-description">
-            <col class="col-defined">
-        </colgroup>
-        <tr>
-            <th>Constant</th>
-            <th>Value</th>
-            <th>Description</th>
-            <th>Defined By</th>
-        </tr>
-
-                    <tr class="">
-              <td>SOME_INTERFACE_CONSTANT</td>
-              <td>'SomeInterfaceConstant'</td>
-              <td>
-                  
-                                </td>
-              <td><a href="yiiunit-apidoc-data-api-web-someinterface">yiiunit\apidoc\data\api\web\SomeInterface</a></td>
-            </tr>
-            </table>
-</div>
 
 
 <h2>Method Details</h2>
@@ -98,40 +112,65 @@
             <div class="">
             <div class="detail-header h3">
                 <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-                <a class="tool-link hash" href="yiiunit-apidoc-data-api-web-someinterface#doSomething()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-web-assetmanager#publish()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
                 
-                doSomething()
+                publish()
 
                 <span class="detail-header-tag small">
-                    public                    abstract                                        method
+                    public                                                            method
                                     </span>
             </div>
 
             
             <div class="doc-description">
                 
-                <p><strong>Some description.</strong></p>
+                <p><strong>Publishes a file or a directory.</strong></p>
                                             </div>
 
             <table class="detail-table table table-striped table-bordered table-hover">
                 <tr><td colspan="3" class="signature">
-<span class="signature-defs">public abstract</span><strong><a href="yiiunit-apidoc-data-api-web-someinterface#doSomething()-detail">doSomething</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span>
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-web-assetmanager#publish()-detail">publish</a></strong>( <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#other-advanced-string-types">non-empty-string</a></span><span style="color: #0000BB">$path</span>, <span class="signature-type"><a href="yiiunit-apidoc-data-api-web-assetmanager#phpstan-type-PublishOptions">PublishOptions</a></span><span style="color: #0000BB">$options </span><span style="color: #007700">= []</span> ): <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">non-empty-array</a></span>
 </td></tr>
 
-                            </table>
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$path</span></td>
+                            <td class="param-type-col"><a href="https://phpstan.org/writing-php-code/phpdoc-types#other-advanced-string-types">non-empty-string</a></td>
+                            <td class="param-desc-col">
+                               <p>The asset (file or directory) to be published</p>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$options</span></td>
+                            <td class="param-type-col"><a href="yiiunit-apidoc-data-api-web-assetmanager#phpstan-type-PublishOptions">PublishOptions</a></td>
+                            <td class="param-desc-col">
+                               <p>The options to be applied when publishing a directory.</p>
+                            </td>
+                        </tr>
+                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">non-empty-array</a></td>
+                            <td class="param-desc-col">
+                                <p>The path (directory or file path) and the URL that the asset is published as.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
 
             
             
 
     <p>
-        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseDoSomething">
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePublish">
             Source code
         </a>
     </p>
     <div class="collapse">
         <div class="card card-body">
             <pre>
-                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">doSomething</span><span class="hljs-params">()</span></span>;
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">publish</span><span class="hljs-params">($path, $options = [])</span>
+</span>{
+}
 </code>
             </pre>
         </div>
@@ -139,4 +178,4 @@
             
         </div>
     </div>
-</body></html>
+    </body></html>

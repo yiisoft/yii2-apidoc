@@ -10,7 +10,7 @@
 
 
 
-    <title>AssetManager, yiiunit\apidoc\data\api\web\AssetManager - Yii Framework 2.0 API Documentation</title>
+    <title>Container, yiiunit\apidoc\data\api\di\Container - Yii Framework 2.0 API Documentation</title>
 </head>
 <body>
 
@@ -39,8 +39,10 @@
     <div class="col-md-3">
                 <div class="list-group">
 <a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\animal <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-alabai.html">Alabai</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-animal.html">Animal</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-cat.html">Cat</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-doberman.html">Doberman</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-dog.html">Dog</a>
 </div>
 <a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\base <b class="caret"></b></a><div class="submenu panel-collapse collapse">
@@ -58,17 +60,17 @@
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activerelationtrait.html">ActiveRelationTrait</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-batchqueryresult.html">BatchQueryResult</a>
 </div>
-<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\di <b class="caret"></b></a><div class="submenu panel-collapse collapse"><a class="list-group-item" href="./yiiunit-apidoc-data-api-di-container.html">Container</a></div>
-<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\web <b class="caret"></b></a><div class="submenu panel-collapse collapse in">
+<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\di <b class="caret"></b></a><div class="submenu panel-collapse collapse in"><a class="list-group-item active" href="./yiiunit-apidoc-data-api-di-container.html">Container</a></div>
+<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\web <b class="caret"></b></a><div class="submenu panel-collapse collapse">
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-assetbundle.html">AssetBundle</a>
-<a class="list-group-item active" href="./yiiunit-apidoc-data-api-web-assetmanager.html">AssetManager</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-web-assetmanager.html">AssetManager</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-erroraction.html">ErrorAction</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-someinterface.html">SomeInterface</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-somesubinterface.html">SomeSubInterface</a>
 </div>
 </div>    </div>
     <div class="col-md-9 api-content" role="main">
-<h1>Class yiiunit\apidoc\data\api\web\AssetManager</h1>
+<h1>Class yiiunit\apidoc\data\api\di\Container</h1>
 <div class="top-nav">
     <a href="index">All Classes</a>
                 | <a>Methods</a>
@@ -81,63 +83,18 @@
     </colgroup>
             <tr>
 <th>Inheritance</th>
-<td>
-<a href="yiiunit-apidoc-data-api-web-assetmanager.html">yiiunit\apidoc\data\api\web\AssetManager</a> &raquo;
-<a href="yiiunit-apidoc-data-api-base-component.html">yiiunit\apidoc\data\api\base\Component</a>
-</td>
+<td><a href="yiiunit-apidoc-data-api-di-container.html">yiiunit\apidoc\data\api\di\Container</a></td>
 </tr>
                                         </table>
 
 <div class="class-description">
-    <p><strong>AssetManager manages asset bundle configuration and loading.</strong></p>
+    <p><strong>Container implements a <a href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> container.</strong></p>
     
     </div>
 
 
 
-    
-<div class="doc-method summary toggle-target-container">
-    <h2>PHPStan Types</h2>
 
-    <table class="summary-table table table-striped table-bordered table-hover">
-        <colgroup>
-            <col class="col-name">
-            <col class="col-value">
-        </colgroup>
-        <tr>
-            <th>Name</th>
-            <th>Value</th>
-        </tr>
-
-                    <tr>
-                <td><a href="yiiunit-apidoc-data-api-web-assetmanager.html#phpstan-type-PublishOptions">PublishOptions</a></td>
-                <td>
-<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{only?: <a href="https://www.php.net/language.types.string">string</a>[], except?: <a href="https://www.php.net/language.types.string">string</a>[], caseSensitive?: <a href="https://www.php.net/language.types.boolean">boolean</a>, beforeCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, afterCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, forceCopy?: <a href="https://www.php.net/language.types.boolean">boolean</a>}</td>
-            </tr>
-            </table>
-</div>
-
-    
-<div class="doc-method summary toggle-target-container">
-    <h2>Psalm Types</h2>
-
-    <table class="summary-table table table-striped table-bordered table-hover">
-        <colgroup>
-            <col class="col-name">
-            <col class="col-value">
-        </colgroup>
-        <tr>
-            <th>Name</th>
-            <th>Value</th>
-        </tr>
-
-                    <tr>
-                <td><a href="yiiunit-apidoc-data-api-web-assetmanager.html#psalm-type-PublishOptions">PublishOptions</a></td>
-                <td>
-<a href="https://phpstan.org/writing-php-code/phpdoc-types#array-shapes">array</a>{only?: <a href="https://www.php.net/language.types.string">string</a>[], except?: <a href="https://www.php.net/language.types.string">string</a>[], caseSensitive?: <a href="https://www.php.net/language.types.boolean">boolean</a>, beforeCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, afterCopy?: <a href="https://www.php.net/language.types.callable">callable</a>, forceCopy?: <a href="https://www.php.net/language.types.boolean">boolean</a>}</td>
-            </tr>
-            </table>
-</div>
 
 <a></a>
 
@@ -161,9 +118,9 @@
         </tr>
 
                                     <tr class="">
-                    <td><a href="yiiunit-apidoc-data-api-web-assetmanager.html#publish()-detail">publish()</a></td>
-                    <td>Publishes a file or a directory.</td>
-                    <td><a href="yiiunit-apidoc-data-api-web-assetmanager.html">yiiunit\apidoc\data\api\web\AssetManager</a></td>
+                    <td><a href="yiiunit-apidoc-data-api-di-container.html#get()-detail">get()</a></td>
+                    <td>Returns an instance of the requested class.</td>
+                    <td><a href="yiiunit-apidoc-data-api-di-container.html">yiiunit\apidoc\data\api\di\Container</a></td>
                 </tr>
                         </table>
 </div>
@@ -181,9 +138,9 @@
             <div class="">
             <div class="detail-header h3">
                 <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-                <a class="tool-link hash" href="yiiunit-apidoc-data-api-web-assetmanager.html#publish()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-di-container.html#get()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
                 
-                publish()
+                get()
 
                 <span class="detail-header-tag small">
                     public                                                            method
@@ -193,34 +150,51 @@
             
             <div class="doc-description">
                 
-                <p><strong>Publishes a file or a directory.</strong></p>
+                <p><strong>Returns an instance of the requested class.</strong></p>
                                             </div>
 
             <table class="detail-table table table-striped table-bordered table-hover">
                 <tr><td colspan="3" class="signature">
-<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-web-assetmanager.html#publish()-detail">publish</a></strong>( <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#other-advanced-string-types">non-empty-string</a></span><span style="color: #0000BB">$path</span>, <span class="signature-type"><a href="yiiunit-apidoc-data-api-web-assetmanager.html#phpstan-type-PublishOptions">PublishOptions</a></span><span style="color: #0000BB">$options </span><span style="color: #007700">= []</span> ): <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">non-empty-array</a></span>
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-di-container.html#get()-detail">get</a></strong>( <span class="signature-type"><a href="https://www.php.net/language.types.string">string</a>|<a href="https://phpstan.org/writing-php-code/phpdoc-types#class-string">class-string</a>&lt;<a href="https://www.php.net/language.types.object">object</a>&gt;</span><span style="color: #0000BB">$class</span>, <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://phpstan.org/writing-php-code/phpdoc-types#basic-types">array-key</a>, <a href="https://www.php.net/language.types.mixed">mixed</a>&gt;</span><span style="color: #0000BB">$params </span><span style="color: #007700">= []</span>, <span class="signature-type"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://www.php.net/language.types.string">string</a>, <a href="https://www.php.net/language.types.mixed">mixed</a>&gt;</span><span style="color: #0000BB">$config </span><span style="color: #007700">= []</span> ): <span class="signature-type"><a href="https://www.php.net/language.types.object">object</a></span>
 </td></tr>
 
                                                             <tr>
-                            <td class="param-name-col"><span style="color: #0000BB">$path</span></td>
-                            <td class="param-type-col"><a href="https://phpstan.org/writing-php-code/phpdoc-types#other-advanced-string-types">non-empty-string</a></td>
+                            <td class="param-name-col"><span style="color: #0000BB">$class</span></td>
+                            <td class="param-type-col">
+<a href="https://www.php.net/language.types.string">string</a>|<a href="https://phpstan.org/writing-php-code/phpdoc-types#class-string">class-string</a>&lt;<a href="https://www.php.net/language.types.object">object</a>&gt;</td>
                             <td class="param-desc-col">
-                               <p>The asset (file or directory) to be published</p>
+                               <p>The class name, or an alias name (e.g. <code>foo</code>).</p>
                             </td>
                         </tr>
                                             <tr>
-                            <td class="param-name-col"><span style="color: #0000BB">$options</span></td>
-                            <td class="param-type-col"><a href="yiiunit-apidoc-data-api-web-assetmanager.html#phpstan-type-PublishOptions">PublishOptions</a></td>
+                            <td class="param-name-col"><span style="color: #0000BB">$params</span></td>
+                            <td class="param-type-col">
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://phpstan.org/writing-php-code/phpdoc-types#basic-types">array-key</a>, <a href="https://www.php.net/language.types.mixed">mixed</a>&gt;</td>
                             <td class="param-desc-col">
-                               <p>The options to be applied when publishing a directory.</p>
+                               <p>A list of constructor parameter values. Use one of two definitions:</p>
+<ul>
+<li>Parameters as name-value pairs, for example: <code>['posts' =&gt; PostRepository::class]</code>.</li>
+<li>Parameters in the order they appear in the constructor declaration. If you want to skip some parameters,
+you should index the remaining ones with the integers that represent their positions in the constructor
+parameter list.
+Dependencies indexed by name and by position in the same array are not allowed.</li>
+</ul>
+                            </td>
+                        </tr>
+                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$config</span></td>
+                            <td class="param-type-col">
+<a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">array</a>&lt;<a href="https://www.php.net/language.types.string">string</a>, <a href="https://www.php.net/language.types.mixed">mixed</a>&gt;</td>
+                            <td class="param-desc-col">
+                               <p>A list of name-value pairs that will be used to initialize the object properties.</p>
                             </td>
                         </tr>
                     
                                             <tr>
                             <th class="param-name-col">return</th>
-                            <td class="param-type-col"><a href="https://phpstan.org/writing-php-code/phpdoc-types#general-arrays">non-empty-array</a></td>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.object">object</a></td>
                             <td class="param-desc-col">
-                                <p>The path (directory or file path) and the URL that the asset is published as.</p>
+                                <p>An instance of the requested class.</p>
                             </td>
                         </tr>
                     
@@ -230,14 +204,14 @@
             
 
     <p>
-        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapsePublish">
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseGet">
             Source code
         </a>
     </p>
     <div class="collapse">
         <div class="card card-body">
             <pre>
-                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">publish</span><span class="hljs-params">($path, $options = [])</span>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">get</span><span class="hljs-params">($class, $params = [], $config = [])</span>
 </span>{
 }
 </code>
