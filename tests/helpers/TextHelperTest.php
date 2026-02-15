@@ -91,7 +91,7 @@ class TextHelperTest extends TestCase
                 'This text has no sentence terminator',
             ],
             'leading whitespace' => [
-                "   First sentence with leading spaces. Second sentence.",
+                '   First sentence with leading spaces. Second sentence.',
                 'First sentence with leading spaces.',
             ],
             'sentence with numbers' => [
