@@ -1,8 +1,10 @@
 <html><body>
-<h1>Class yiiunit\apidoc\data\api\base\Controller</h1>
+<h1>Class yiiunit\apidoc\data\api\base\Behavior</h1>
 <div class="top-nav">
     <a href="index">All Classes</a>
-                </div>
+            | <a>Properties</a>
+                | <a>Methods</a>
+            </div>
 
 <table class="summaryTable docClass table table-bordered">
     <colgroup>
@@ -11,16 +13,17 @@
     </colgroup>
             <tr>
 <th>Inheritance</th>
-<td>
-<a href="yiiunit-apidoc-data-api-base-controller">yiiunit\apidoc\data\api\base\Controller</a> &raquo;
-<a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a>
-</td>
+<td><a href="yiiunit-apidoc-data-api-base-behavior">yiiunit\apidoc\data\api\base\Behavior</a></td>
 </tr>
                                         </table>
 
 <div class="class-description">
-    <p><strong>Controller is the base class for classes containing controller logic.</strong></p>
-    
+    <p><strong>Behavior is the base class for all behavior classes.</strong></p>
+    <p>A behavior can be used to enhance the functionality of an existing component without modifying its code.
+In particular, it can "inject" its own methods and properties into the component
+and make them directly accessible via the component. It can also respond to the events triggered in the component
+and thus intercept the normal code execution.</p>
+
     </div>
 
 
@@ -29,10 +32,157 @@
 
 <a></a>
 
+<div class="doc-property summary toggle-target-container">
+    <h2>Public Properties</h2>
+
+    <p><a class="toggle">Hide inherited properties</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-property">
+            <col class="col-type">
+            <col class="col-description">
+            <col class="col-defined">
+        </colgroup>
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Defined By</th>
+        </tr>
+
+                                    <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-base-behavior#%24owner-detail">$owner</a></td>
+                    <td>
+<a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a>|<a href="https://www.php.net/language.types.null">null</a>
+</td>
+                    <td>The owner of this behavior</td>
+                    <td><a href="yiiunit-apidoc-data-api-base-behavior">yiiunit\apidoc\data\api\base\Behavior</a></td>
+                </tr>
+                        </table>
+</div>
+
 <a></a>
+
+<div class="doc-method summary toggle-target-container">
+    <h2>Public Methods</h2>
+
+    <p><a class="toggle">Hide inherited methods</a></p>
+
+    <table class="summary-table table table-striped table-bordered table-hover">
+        <colgroup>
+            <col class="col-method">
+            <col class="col-description">
+            <col class="col-defined">
+        </colgroup>
+        <tr>
+            <th>Method</th>
+            <th>Description</th>
+            <th>Defined By</th>
+        </tr>
+
+                                    <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-base-behavior#attach()-detail">attach()</a></td>
+                    <td>Attaches the behavior object to the component.</td>
+                    <td><a href="yiiunit-apidoc-data-api-base-behavior">yiiunit\apidoc\data\api\base\Behavior</a></td>
+                </tr>
+                        </table>
+</div>
 
 <a></a>
 
 <a></a>
 
+
+<h2>Property Details</h2>
+
+<div class="property-doc toggle-target-container">
+    <p><a class="toggle">Hide inherited properties</a></p>
+
+            <div>
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-base-behavior#%24owner-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                $owner
+                <span class="detail-header-tag small">
+                    public                                                                                property
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p>The owner of this behavior</p>
+                            </div>
+
+            <div class="signature">
+<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a>|<a href="https://www.php.net/language.types.null">null</a></span><a href="yiiunit-apidoc-data-api-base-behavior#%24owner-detail">$owner</a><span style="color: #0000BB"></span><span style="color: #007700">= </span><span style="color: #0000BB">null</span>
+</div>
+            
+            
+        </div>
+    </div>
+
+<h2>Method Details</h2>
+
+<div class="method-doc toggle-target-container">
+    <p><a class="toggle">Hide inherited methods</a></p>
+
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-base-behavior#attach()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                attach()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Attaches the behavior object to the component.</strong></p>
+                                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-base-behavior#attach()-detail">attach</a></strong>( <span class="signature-type"><a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a></span><span style="color: #0000BB">$owner</span> ): <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span>
+</td></tr>
+
+                                                            <tr>
+                            <td class="param-name-col"><span style="color: #0000BB">$owner</span></td>
+                            <td class="param-type-col"><a href="yiiunit-apidoc-data-api-base-component">yiiunit\apidoc\data\api\base\Component</a></td>
+                            <td class="param-desc-col">
+                               <p>The component that this behavior is to be attached to.</p>
+                            </td>
+                        </tr>
+                    
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseAttach">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">attach</span><span class="hljs-params">($owner)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;owner = $owner;
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+    </div>
     </body></html>

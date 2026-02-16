@@ -10,7 +10,7 @@
 
 
 
-    <title>AssetBundle, yiiunit\apidoc\data\api\web\AssetBundle - Yii Framework 2.0 API Documentation</title>
+    <title>BatchQueryResult, yiiunit\apidoc\data\api\db\BatchQueryResult - Yii Framework 2.0 API Documentation</title>
 </head>
 <body>
 
@@ -39,8 +39,10 @@
     <div class="col-md-3">
                 <div class="list-group">
 <a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\animal <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-alabai.html">Alabai</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-animal.html">Animal</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-cat.html">Cat</a>
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-doberman.html">Doberman</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-animal-dog.html">Dog</a>
 </div>
 <a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\base <b class="caret"></b></a><div class="submenu panel-collapse collapse">
@@ -50,17 +52,17 @@
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-component.html">Component</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-base-controller.html">Controller</a>
 </div>
-<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\db <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\db <b class="caret"></b></a><div class="submenu panel-collapse collapse in">
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activequery.html">ActiveQuery</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activequeryinterface.html">ActiveQueryInterface</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activerecord.html">ActiveRecord</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activerecordinterface.html">ActiveRecordInterface</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-db-activerelationtrait.html">ActiveRelationTrait</a>
-<a class="list-group-item" href="./yiiunit-apidoc-data-api-db-batchqueryresult.html">BatchQueryResult</a>
+<a class="list-group-item active" href="./yiiunit-apidoc-data-api-db-batchqueryresult.html">BatchQueryResult</a>
 </div>
 <a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\di <b class="caret"></b></a><div class="submenu panel-collapse collapse"><a class="list-group-item" href="./yiiunit-apidoc-data-api-di-container.html">Container</a></div>
-<a class="list-group-item active" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\web <b class="caret"></b></a><div class="submenu panel-collapse collapse in">
-<a class="list-group-item active" href="./yiiunit-apidoc-data-api-web-assetbundle.html">AssetBundle</a>
+<a class="list-group-item" data-toggle="collapse" data-parent="#navigation">yiiunit\apidoc\data\api\web <b class="caret"></b></a><div class="submenu panel-collapse collapse">
+<a class="list-group-item" href="./yiiunit-apidoc-data-api-web-assetbundle.html">AssetBundle</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-assetmanager.html">AssetManager</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-erroraction.html">ErrorAction</a>
 <a class="list-group-item" href="./yiiunit-apidoc-data-api-web-someinterface.html">SomeInterface</a>
@@ -68,11 +70,11 @@
 </div>
 </div>    </div>
     <div class="col-md-9 api-content" role="main">
-<h1>Class yiiunit\apidoc\data\api\web\AssetBundle</h1>
+<h1>Class yiiunit\apidoc\data\api\db\BatchQueryResult</h1>
 <div class="top-nav">
     <a href="index">All Classes</a>
-            | <a>Properties</a>
-                </div>
+                | <a>Methods</a>
+            </div>
 
 <table class="summaryTable docClass table table-bordered">
     <colgroup>
@@ -81,12 +83,18 @@
     </colgroup>
             <tr>
 <th>Inheritance</th>
-<td><a href="yiiunit-apidoc-data-api-web-assetbundle.html">yiiunit\apidoc\data\api\web\AssetBundle</a></td>
+<td>
+<a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a> &raquo;
+yii\base\Component</td>
 </tr>
-                                        </table>
+                <tr>
+<th>Implements</th>
+<td><a href="https://www.php.net/class.iterator">Iterator</a></td>
+</tr>
+                                    </table>
 
 <div class="class-description">
-    <p><strong>AssetBundle represents a collection of asset files, such as CSS, JS, images.</strong></p>
+    <p><strong>BatchQueryResult represents a batch query from which you can retrieve data in batches.</strong></p>
     
     </div>
 
@@ -96,30 +104,49 @@
 
 <a></a>
 
-<div class="doc-property summary toggle-target-container">
-    <h2>Public Properties</h2>
+<a></a>
 
-    <p><a class="toggle">Hide inherited properties</a></p>
+<div class="doc-method summary toggle-target-container">
+    <h2>Public Methods</h2>
+
+    <p><a class="toggle">Hide inherited methods</a></p>
 
     <table class="summary-table table table-striped table-bordered table-hover">
         <colgroup>
-            <col class="col-property">
-            <col class="col-type">
+            <col class="col-method">
             <col class="col-description">
             <col class="col-defined">
         </colgroup>
         <tr>
-            <th>Property</th>
-            <th>Type</th>
+            <th>Method</th>
             <th>Description</th>
             <th>Defined By</th>
         </tr>
 
                                     <tr class="">
-                    <td><a href="yiiunit-apidoc-data-api-web-assetbundle.html#%24publishOptions-detail">$publishOptions</a></td>
-                    <td><a href="yiiunit-apidoc-data-api-web-assetmanager.html#phpstan-type-PublishOptions">PublishOptions</a></td>
-                    <td>The options to be passed to <a href="yiiunit-apidoc-data-api-web-assetmanager.html#publish()-detail">yiiunit\apidoc\data\api\web\AssetManager::publish()</a> when the asset bundle is being published.</td>
-                    <td><a href="yiiunit-apidoc-data-api-web-assetbundle.html">yiiunit\apidoc\data\api\web\AssetBundle</a></td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#current()-detail">current()</a></td>
+                    <td>Returns the current dataset.</td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#key()-detail">key()</a></td>
+                    <td>Returns the index of the current dataset.</td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#next()-detail">next()</a></td>
+                    <td>Moves the internal pointer to the next dataset.</td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#rewind()-detail">rewind()</a></td>
+                    <td>Resets the iterator to the initial state.</td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a></td>
+                </tr>
+                                                <tr class="">
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#valid()-detail">valid()</a></td>
+                    <td>Returns whether there is a valid dataset at the current position.</td>
+                    <td><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html">yiiunit\apidoc\data\api\db\BatchQueryResult</a></td>
                 </tr>
                         </table>
 </div>
@@ -128,36 +155,272 @@
 
 <a></a>
 
-<a></a>
 
+<h2>Method Details</h2>
 
-<h2>Property Details</h2>
+<div class="method-doc toggle-target-container">
+    <p><a class="toggle">Hide inherited methods</a></p>
 
-<div class="property-doc toggle-target-container">
-    <p><a class="toggle">Hide inherited properties</a></p>
-
-            <div>
+            <div class="">
             <div class="detail-header h3">
                 <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
-                <a class="tool-link hash" href="yiiunit-apidoc-data-api-web-assetbundle.html#%24publishOptions-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-db-batchqueryresult.html#current()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
                 
-                $publishOptions
+                current()
+
                 <span class="detail-header-tag small">
-                    public                                                                                property
+                    public                                                            method
                                     </span>
             </div>
 
             
             <div class="doc-description">
                 
-                <p>The options to be passed to <a href="yiiunit-apidoc-data-api-web-assetmanager.html#publish()-detail">yiiunit\apidoc\data\api\web\AssetManager::publish()</a> when the asset bundle
-is being published.</p>
+                <p><strong>Returns the current dataset.</strong></p>
+                <p>This method is required by the interface <a href="https://www.php.net/class.iterator">Iterator</a>.</p>
                             </div>
 
-            <div class="signature">
-<span class="signature-defs">public</span><span class="signature-type"><a href="yiiunit-apidoc-data-api-web-assetmanager.html#phpstan-type-PublishOptions">PublishOptions</a></span><a href="yiiunit-apidoc-data-api-web-assetbundle.html#%24publishOptions-detail">$publishOptions</a><span style="color: #0000BB"></span><span style="color: #007700">= []</span>
-</div>
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#current()-detail">current</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span>
+</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.mixed">mixed</a></td>
+                            <td class="param-desc-col">
+                                <p>The current dataset.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
+
             
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseCurrent">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-comment">#[\ReturnTypeWillChange]</span>
+<span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">current</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-db-batchqueryresult.html#key()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                key()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Returns the index of the current dataset.</strong></p>
+                <p>This method is required by the interface <a href="https://www.php.net/class.iterator">Iterator</a>.</p>
+                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#key()-detail">key</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.integer">integer</a></span>
+</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.integer">integer</a></td>
+                            <td class="param-desc-col">
+                                <p>The index of the current row.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseKey">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-comment">#[\ReturnTypeWillChange]</span>
+<span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">key</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-db-batchqueryresult.html#next()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                next()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Moves the internal pointer to the next dataset.</strong></p>
+                <p>This method is required by the interface <a href="https://www.php.net/class.iterator">Iterator</a>.</p>
+                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#next()-detail">next</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span>
+</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseNext">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-comment">#[\ReturnTypeWillChange]</span>
+<span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">next</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-db-batchqueryresult.html#rewind()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                rewind()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Resets the iterator to the initial state.</strong></p>
+                <p>This method is required by the interface <a href="https://www.php.net/class.iterator">Iterator</a>.</p>
+                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#rewind()-detail">rewind</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.mixed">mixed</a></span>
+</td></tr>
+
+                            </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseRewind">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-comment">#[\ReturnTypeWillChange]</span>
+<span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">rewind</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
+            
+        </div>
+            <div class="">
+            <div class="detail-header h3">
+                <a class="tool-link" title="go to top"><span class="glyphicon glyphicon-arrow-up"></span></a>
+                <a class="tool-link hash" href="yiiunit-apidoc-data-api-db-batchqueryresult.html#valid()-detail" title="direct link to this method"><span class="glyphicon icon-hash"></span></a>
+                
+                valid()
+
+                <span class="detail-header-tag small">
+                    public                                                            method
+                                    </span>
+            </div>
+
+            
+            <div class="doc-description">
+                
+                <p><strong>Returns whether there is a valid dataset at the current position.</strong></p>
+                <p>This method is required by the interface <a href="https://www.php.net/class.iterator">Iterator</a>.</p>
+                            </div>
+
+            <table class="detail-table table table-striped table-bordered table-hover">
+                <tr><td colspan="3" class="signature">
+<span class="signature-defs">public</span><strong><a href="yiiunit-apidoc-data-api-db-batchqueryresult.html#valid()-detail">valid</a></strong>( ): <span class="signature-type"><a href="https://www.php.net/language.types.boolean">boolean</a></span>
+</td></tr>
+
+                                    
+                                            <tr>
+                            <th class="param-name-col">return</th>
+                            <td class="param-type-col"><a href="https://www.php.net/language.types.boolean">boolean</a></td>
+                            <td class="param-desc-col">
+                                <p>Whether there is a valid dataset at the current position.</p>
+                            </td>
+                        </tr>
+                    
+                                                </table>
+
+            
+            
+
+    <p>
+        <a class="btn btn-link" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseValid">
+            Source code
+        </a>
+    </p>
+    <div class="collapse">
+        <div class="card card-body">
+            <pre>
+                <code class="hljs php language-php"><span class="hljs-comment">#[\ReturnTypeWillChange]</span>
+<span class="hljs-keyword">public</span><span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-title">valid</span><span class="hljs-params">()</span>
+</span>{
+}
+</code>
+            </pre>
+        </div>
+    </div>
             
         </div>
     </div>
