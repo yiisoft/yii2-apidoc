@@ -91,14 +91,7 @@ class ApiControllerTest extends TestCase
 
         foreach (glob("{$outputPath}/yiiunit-apidoc-data-api*") as $filePath) {
             $fileContent = file_get_contents($filePath);
-
-            // Deleting dynamic content
-            $fileContent = preg_replace('/<p\s+class="pull-right">.*?<\/p>/is', '', $fileContent);
-            $fileContent = preg_replace('/<script\s+src=".*?"><\/script>/is', '', $fileContent);
-            $fileContent = preg_replace('/<link\s+href=".*?" rel="stylesheet">/is', '', $fileContent);
-            $fileContent = preg_replace('/\s+id\s*=\s*(["\'])[^"\']*\1/i', '', $fileContent);
-            $fileContent = preg_replace('/\s+href\s*=\s*(["\'])#[^"\']*\1/i', '', $fileContent);
-            $fileContent = preg_replace('/\s+data-target\s*=\s*(["\'])#[^"\']*\1/i', '', $fileContent);
+            $fileContent = $this->removeDynamicContentFromHtml($fileContent);
 
             // The `highlight_string` result format has changed since PHP8.3
             // To prevent test failures, we remove some spaces.
