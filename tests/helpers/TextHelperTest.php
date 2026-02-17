@@ -108,4 +108,60 @@ class TextHelperTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideGetDescriptionsByFullDescriptionData
+     */
+    public function testGetDescriptionsByFullDescription(string $text, array $expectedResult)
+    {
+        $result = TextHelper::getDescriptionsByFullDescription($text);
+        $this->assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{string, array{short: string, detailed: string}}>
+     */
+    public static function provideGetDescriptionsByFullDescriptionData(): array
+    {
+        return [
+            'basic' => [
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem '
+                    . 'Ipsum has been the industry\'s standard dummy text ever since the 1500s, when '
+                    . 'an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                [
+                    'short' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                    'detailed' => 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when '
+                        . 'an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+                ],
+            ],
+            'empty' => [
+                '',
+                [
+                    'short' => '',
+                    'detailed' => '',
+                ],
+            ],
+            'only spaces' => [
+                '     ',
+                [
+                    'short' => '',
+                    'detailed' => '',
+                ],
+            ],
+            'abbreviation etc.' => [
+                'Supported formats are JSON, XML, YAML, etc. This list may grow.',
+                [
+                    'short' => 'Supported formats are JSON, XML, YAML, etc.',
+                    'detailed' => 'This list may grow.',
+                ],
+            ],
+            'exclamation mark' => [
+                'Warning! This operation is irreversible.',
+                [
+                    'short' => 'Warning!',
+                    'detailed' => 'This operation is irreversible.',
+                ],
+            ],
+        ];
+    }
 }

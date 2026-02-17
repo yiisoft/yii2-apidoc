@@ -115,6 +115,10 @@ abstract class Animal extends BaseObject
      * @var key-of<self::COLORS>
      */
     public $keyOfProperty;
+    /**
+     * @var mixed See the configuration options (e.g. cache.enabled). This option is important.
+     */
+    public $propertyWithLongDescription;
 
     /**
      * Renders animal description.

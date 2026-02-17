@@ -8,6 +8,8 @@
 
 namespace yii\apidoc\helpers;
 
+use yii\helpers\StringHelper;
+
 /**
  * An auxiliary class for working with texts.
  *
@@ -15,6 +17,25 @@ namespace yii\apidoc\helpers;
  */
 final class TextHelper
 {
+    /**
+     * Gets a short and detailed description based on the full description of the tag.
+     *
+     * Needed for cases where there is only a full description of the tag (i.e., no summary).
+     *
+     * @return array{short: string, detailed: string}
+     */
+    public static function getDescriptionsByFullDescription(string $fullDescription): array
+    {
+        $fullDescription = trim($fullDescription);
+        $shortDescription = self::extractFirstSentence($fullDescription);
+        $description = $shortDescription ? substr($fullDescription, strlen($shortDescription)) : '';
+
+        return [
+            'short' => StringHelper::mb_ucfirst($shortDescription),
+            'detailed' => trim($description),
+        ];
+    }
+
     /**
      * Tries to extract the first sentence from the text.
      *

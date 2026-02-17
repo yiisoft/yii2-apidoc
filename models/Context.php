@@ -500,6 +500,7 @@ class Context extends Component
                         'message' => "Property $propertyName conflicts with a defined getter {$method->name} in {$class->name}.",
                     ];
                 } else {
+                    $descriptions = TextHelper::getDescriptionsByFullDescription((string) $method->return);
                     // Override the setter-defined property if it exists already
                     $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
@@ -509,8 +510,8 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $method->returnType,
-                        'shortDescription' => TextHelper::extractFirstSentence((string) $method->return),
-                        'description' => $method->return,
+                        'shortDescription' => $descriptions['short'],
+                        'description' => $descriptions['detailed'],
                         'since' => $method->since,
                         'getter' => $method,
                         'setter' => isset($property->setter) ? $property->setter : null,
@@ -534,6 +535,7 @@ class Context extends Component
                     }
                 } else {
                     $param = $this->getFirstNotOptionalParameter($method);
+                    $descriptions = TextHelper::getDescriptionsByFullDescription((string) $param->description);
                     $class->properties[$propertyName] = new PropertyDoc($class, null, $this, [
                         'name' => $propertyName,
                         'fullName' => "$class->name::$propertyName",
@@ -542,8 +544,8 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $param->type,
-                        'shortDescription' => TextHelper::extractFirstSentence((string) $param->description),
-                        'description' => $param->description,
+                        'shortDescription' => $descriptions['short'],
+                        'description' => $descriptions['detailed'],
                         'since' => $method->since,
                         'setter' => $method,
                     ]);

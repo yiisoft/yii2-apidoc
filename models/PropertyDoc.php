@@ -12,7 +12,6 @@ use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Type;
 use yii\apidoc\helpers\TextHelper;
-use yii\helpers\StringHelper;
 
 /**
  * Represents API documentation information for a `property`.
@@ -100,8 +99,9 @@ class PropertyDoc extends BaseDoc
         foreach ($this->tags as $tag) {
             if ($tag instanceof Var_) {
                 $this->type = $tag->getType();
-                $this->description = StringHelper::mb_ucfirst($tag->getDescription());
-                $this->shortDescription = TextHelper::extractFirstSentence($this->description);
+                $descriptions = TextHelper::getDescriptionsByFullDescription((string) $tag->getDescription());
+                $this->shortDescription = $descriptions['short'];
+                $this->description = $descriptions['detailed'];
             } elseif ($this->isInheritdocTag($tag)) {
                 $hasInheritdoc = true;
             }

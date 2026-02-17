@@ -85,7 +85,10 @@ ArrayHelper::multisort($properties, 'name');
                     </p>
                 <?php } ?>
 
-                <?= ApiMarkdown::process($property->description, $property->definedBy) ?>
+                <?php if ($property->shortDescription) : ?>
+                    <p><strong><?= ApiMarkdown::process($property->shortDescription, $property->definedBy, true) ?></strong></p>
+                    <?= ApiMarkdown::process($property->description, $property->definedBy) ?>
+                <?php endif; ?>
                 <?= $this->render('seeAlso', ['object' => $property]) ?>
             </div>
 
