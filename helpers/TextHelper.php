@@ -28,7 +28,9 @@ final class TextHelper
     {
         $fullDescription = trim($fullDescription);
         $shortDescription = self::extractFirstSentence($fullDescription);
-        $description = $shortDescription ? substr($fullDescription, strlen($shortDescription)) : '';
+        $description = $shortDescription
+            ? mb_substr($fullDescription, mb_strlen($shortDescription, 'UTF-8'), null, 'UTF-8')
+            : '';
 
         return [
             'short' => StringHelper::mb_ucfirst($shortDescription),
