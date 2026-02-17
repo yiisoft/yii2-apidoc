@@ -162,6 +162,13 @@ class TextHelperTest extends TestCase
                     'detailed' => 'This operation is irreversible.',
                 ],
             ],
+            'single sentence no dot' => [
+                'This text has no sentence terminator',
+                [
+                    'short' => 'This text has no sentence terminator',
+                    'detailed' => '',
+                ],
+            ],
         ];
     }
 }
