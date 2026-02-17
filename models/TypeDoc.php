@@ -238,8 +238,9 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Method) {
-                $shortDescription = TextHelper::extractFirstSentence((string) $tag->getDescription());
-                $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
+                $fullDescription = trim((string) $tag->getDescription());
+                $shortDescription = TextHelper::extractFirstSentence($fullDescription);
+                $description = $shortDescription ? substr($fullDescription, strlen($shortDescription)) : '';
 
                 $method = new MethodDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,

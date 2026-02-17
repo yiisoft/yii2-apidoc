@@ -52,9 +52,9 @@ class TextHelperTest extends TestCase
                 'fallback host info (e.g. `https://www.yiiframework.com`) used when '
                     . '[[\yii\web\Request::$hostInfo|Request::$hostInfo]] is invalid.',
             ],
-            'with newline and no space after dot' => [
+            'with different line breaks and no space after dot' => [
                 "a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or\n"
-                    . 'URI template [RFC6570](https://tools.ietf.org/html/rfc6570). This property is required.',
+                    . "URI\rtemplate\r\n[RFC6570](https://tools.ietf.org/html/rfc6570). This property is required.",
                 'a URI [RFC3986](https://tools.ietf.org/html/rfc3986) or'
                     . ' URI template [RFC6570](https://tools.ietf.org/html/rfc6570).',
             ],

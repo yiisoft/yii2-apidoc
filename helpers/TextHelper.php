@@ -27,7 +27,7 @@ final class TextHelper
             return '';
         }
 
-        $text = str_replace(["\r\n", "\n"], ' ', $text);
+        $text = preg_replace('/\R/', ' ', $text);
         $length = mb_strlen($text, 'UTF-8');
 
         for ($i = 0; $i < $length; $i++) {
@@ -39,7 +39,12 @@ final class TextHelper
             $endPos = $i;
             if ($char === '.') {
                 // Numbers like 1.2.3
-                if ($i > 0 && $i + 1 < $length && is_numeric($text[$i - 1]) && is_numeric($text[$i + 1])) {
+                if (
+                    $i > 0
+                    && $i + 1 < $length
+                    && is_numeric(mb_substr($text, $i - 1, 1, 'UTF-8'))
+                    && is_numeric(mb_substr($text, $i + 1, 1, 'UTF-8'))
+                ) {
                     continue;
                 }
 
