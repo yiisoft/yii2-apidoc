@@ -219,7 +219,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
-                $shortDescription = TextHelper::extractFirstSentence((string) $tag->getDescription());
+                $descriptions = TextHelper::getDescriptionsByFullDescription((string) $tag->getDescription());
                 $name = '$' . $tag->getVariableName();
 
                 $property = new PropertyDoc($this, null, $context, [
@@ -230,24 +230,22 @@ class TypeDoc extends BaseDoc
                     'visibility' => 'public',
                     'definedBy' => $this->name,
                     'type' => $tag->getType(),
-                    'shortDescription' => $shortDescription,
-                    'description' => $tag->getDescription(),
+                    'shortDescription' => $descriptions['short'],
+                    'description' => $descriptions['detailed'],
                 ]);
 
                 $this->properties[$property->name] = $property;
             }
 
             if ($tag instanceof Method) {
-                $fullDescription = trim((string) $tag->getDescription());
-                $shortDescription = TextHelper::extractFirstSentence($fullDescription);
-                $description = $shortDescription ? substr($fullDescription, strlen($shortDescription)) : '';
+                $descriptions = TextHelper::getDescriptionsByFullDescription((string) $tag->getDescription());
 
                 $method = new MethodDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,
                     'name' => $tag->getMethodName(),
                     'fullName' => ltrim((string) $reflector->getFqsen(), '\\') . '::' . $tag->getMethodName(),
-                    'shortDescription' => $shortDescription,
-                    'description' => $description,
+                    'shortDescription' => $descriptions['short'],
+                    'description' => $descriptions['detailed'],
                     'visibility' => 'public',
                     'params' => [],
                     'isStatic' => $tag->isStatic(),

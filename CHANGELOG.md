@@ -30,6 +30,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #294: Make the `yiisoft/yii2-bootstrap` dependency optional (mspirkov)
 - Chg #373: Move `BaseDoc::extractFirstSentence()` to `TextHelper::extractFirstSentence()` (mspirkov)
 - Bug #283: Fix extracting the first sentence from the text (mspirkov)
+- Enh #244: Uniform processing and output of descriptions for methods and properties (mspirkov)
 
 
 3.0.8 November 24, 2025

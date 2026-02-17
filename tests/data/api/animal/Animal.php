@@ -115,6 +115,10 @@ abstract class Animal extends BaseObject
      * @var key-of<self::COLORS>
      */
     public $keyOfProperty;
+    /**
+     * @var mixed See the configuration options (e.g. cache.enabled). This option is important.
+     */
+    public $propertyWithLongDescription;
 
     /**
      * Renders animal description.
@@ -219,5 +223,15 @@ abstract class Animal extends BaseObject
     public function getSelfWithGenerics()
     {
         return $this;
+    }
+
+    /**
+     * Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+     *
+     * Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when
+     * an unknown printer took a galley of type and scrambled it to make a type specimen book.
+     */
+    public function methodWithShortAndDetailedDescriptions(): void
+    {
     }
 }

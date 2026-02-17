@@ -114,63 +114,63 @@ Array
 
     [16] => Array
         (
-            [line] => 147
+            [line] => 151
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'asArray'
         )
 
     [17] => Array
         (
-            [line] => 158
+            [line] => 162
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'asStdClass'
         )
 
     [18] => Array
         (
-            [line] => 166
+            [line] => 170
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setName'
         )
 
     [19] => Array
         (
-            [line] => 172
+            [line] => 176
             [file] => tests/data/api/animal/Animal.php
             [message] => No docblock for element 'setBirthDate'
         )
 
     [20] => Array
         (
-            [line] => 181
+            [line] => 185
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getIntMaskProperty'
         )
 
     [21] => Array
         (
-            [line] => 190
+            [line] => 194
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setIntMaskOfProperty'
         )
 
     [22] => Array
         (
-            [line] => 200
+            [line] => 204
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'setKeyOfProperty'
         )
 
     [23] => Array
         (
-            [line] => 209
+            [line] => 213
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getStatic'
         )
 
     [24] => Array
         (
-            [line] => 219
+            [line] => 223
             [file] => tests/data/api/animal/Animal.php
             [message] => No short description for Method 'getSelfWithGenerics'
         )

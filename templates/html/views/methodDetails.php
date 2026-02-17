@@ -83,8 +83,10 @@ ArrayHelper::multisort($methods, 'name');
                     </p>
                 <?php } ?>
 
-                <p><strong><?= ApiMarkdown::process($method->shortDescription, $method->definedBy, true) ?></strong></p>
-                <?= ApiMarkdown::process($method->description, $method->definedBy) ?>
+                <?php if ($method->shortDescription) : ?>
+                    <p><strong><?= ApiMarkdown::process($method->shortDescription, $method->definedBy, true) ?></strong></p>
+                    <?= ApiMarkdown::process($method->description, $method->definedBy) ?>
+                <?php endif; ?>
                 <?= $this->render('seeAlso', ['object' => $method]) ?>
             </div>
 
