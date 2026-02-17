@@ -11,6 +11,7 @@ namespace yii\apidoc\models;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\Php\Property;
 use phpDocumentor\Reflection\Type;
+use yii\apidoc\helpers\TextHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -100,7 +101,7 @@ class PropertyDoc extends BaseDoc
             if ($tag instanceof Var_) {
                 $this->type = $tag->getType();
                 $this->description = StringHelper::mb_ucfirst($tag->getDescription());
-                $this->shortDescription = BaseDoc::extractFirstSentence($this->description);
+                $this->shortDescription = TextHelper::extractFirstSentence($this->description);
             } elseif ($this->isInheritdocTag($tag)) {
                 $hasInheritdoc = true;
             }

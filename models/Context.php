@@ -18,6 +18,7 @@ use phpDocumentor\Reflection\Php\File;
 use phpDocumentor\Reflection\Php\Project;
 use phpDocumentor\Reflection\Php\ProjectFactory;
 use yii\apidoc\helpers\PrettyPrinter;
+use yii\apidoc\helpers\TextHelper;
 use yii\base\Component;
 
 /**
@@ -508,7 +509,7 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $method->returnType,
-                        'shortDescription' => BaseDoc::extractFirstSentence($method->return),
+                        'shortDescription' => TextHelper::extractFirstSentence((string) $method->return),
                         'description' => $method->return,
                         'since' => $method->since,
                         'getter' => $method,
@@ -541,7 +542,7 @@ class Context extends Component
                         'visibility' => 'public',
                         'isStatic' => false,
                         'type' => $param->type,
-                        'shortDescription' => BaseDoc::extractFirstSentence($param->description),
+                        'shortDescription' => TextHelper::extractFirstSentence((string) $param->description),
                         'description' => $param->description,
                         'since' => $method->since,
                         'setter' => $method,

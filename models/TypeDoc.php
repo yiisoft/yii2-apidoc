@@ -16,6 +16,7 @@ use phpDocumentor\Reflection\DocBlock\Tags\PropertyWrite;
 use phpDocumentor\Reflection\Php\Class_;
 use phpDocumentor\Reflection\Php\Interface_;
 use phpDocumentor\Reflection\Php\Trait_;
+use yii\apidoc\helpers\TextHelper;
 use yii\helpers\StringHelper;
 
 /**
@@ -218,7 +219,7 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Property || $tag instanceof PropertyRead || $tag instanceof PropertyWrite) {
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
+                $shortDescription = TextHelper::extractFirstSentence((string) $tag->getDescription());
                 $name = '$' . $tag->getVariableName();
 
                 $property = new PropertyDoc($this, null, $context, [
@@ -237,8 +238,9 @@ class TypeDoc extends BaseDoc
             }
 
             if ($tag instanceof Method) {
-                $shortDescription = $tag->getDescription() ? BaseDoc::extractFirstSentence($tag->getDescription()) : '';
-                $description = $shortDescription ? substr($tag->getDescription(), strlen($shortDescription)) : '';
+                $fullDescription = trim((string) $tag->getDescription());
+                $shortDescription = TextHelper::extractFirstSentence($fullDescription);
+                $description = $shortDescription ? substr($fullDescription, strlen($shortDescription)) : '';
 
                 $method = new MethodDoc($this, null, $context, [
                     'sourceFile' => $this->sourceFile,

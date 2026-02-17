@@ -345,41 +345,6 @@ class BaseDoc extends BaseObject
     }
 
     /**
-     * Extracts first sentence out of text.
-     *
-     * @param string $text
-     * @param string $prevText
-     * @return string
-     */
-    public static function extractFirstSentence($text, $prevText = '')
-    {
-        $text = str_replace(["\r\n", "\n"], ' ', $text);
-        $length = mb_strlen($text, 'utf-8');
-        if ($length > 4 && ($pos = mb_strpos($text, '. ', 4, 'utf-8')) !== false) {
-            $sentence = mb_substr($text, 0, $pos + 1, 'utf-8');
-            $prevText  .= $sentence;
-
-            if ($length >= $pos + 2) {
-                $abbrev = mb_substr($text, $pos - 3, 4, 'utf-8');
-                // do not break sentence after abbreviation
-                if (
-                    $abbrev === 'e.g.' ||
-                    $abbrev === 'i.e.' ||
-                    mb_substr_count($prevText, '`', 'utf-8') % 2 === 1
-                ) {
-                    $sentence .= static::extractFirstSentence(
-                        mb_substr($text, $pos + 1, $length, 'utf-8'),
-                        $prevText,
-                    );
-                }
-            }
-            return $sentence;
-        }
-
-        return $text;
-    }
-
-    /**
      * @throws RuntimeException
      * @return array{string, string}
      */
