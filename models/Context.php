@@ -403,7 +403,7 @@ class Context extends Component
      */
     private function inheritMethodRecursive($method, $class)
     {
-        /** @var (ClassDoc|InterfaceDoc)[] */
+        /** @var (ClassDoc|InterfaceDoc)[] $inheritanceCandidates */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
             $this->getInterfaces($class),
@@ -430,7 +430,7 @@ class Context extends Component
      */
     private function inheritPropertyRecursive($method, $class)
     {
-        /** @var (ClassDoc|InterfaceDoc)[] */
+        /** @var (ClassDoc|InterfaceDoc)[] $inheritanceCandidates */
         $inheritanceCandidates = array_merge(
             $this->getParents($class),
             $this->getInterfaces($class),
@@ -624,7 +624,7 @@ class Context extends Component
         $projectFactory->addStrategy(new ClassConstantFactory($docBlockFactory, new PrettyPrinter()), $priority);
         $projectFactory->addStrategy(new PropertyFactory($docBlockFactory, new PrettyPrinter()), $priority);
 
-        /** @var Project */
+        /** @var Project $project */
         $project = $projectFactory->create('ApiDoc', $files);
 
         return $project;
