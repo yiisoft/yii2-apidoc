@@ -73,12 +73,8 @@ class ParamDoc extends BaseObject
                 $this->type = $reflector->getType();
             }
 
-            if (PHP_VERSION_ID >= 80100) {
-                $reflectorDefault = $reflector->getDefault(false);
-                $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
-            } else {
-                $this->defaultValue = $reflector->getDefault();
-            }
+            $reflectorDefault = $reflector->getDefault(false);
+            $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
 
             $this->isOptional = $this->defaultValue !== null;
             $this->isPassedByReference = $reflector->isByReference();

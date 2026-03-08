@@ -35,20 +35,3 @@ parameters:
 			count: 1
 			path: helpers/ApiMarkdown.php
 
-		-
-			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Property\\:\\:getDefault\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
-			count: 1
-			reportUnmatched: false
-			path: models/PropertyDoc.php
-
-		-
-			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Argument\\:\\:getDefault\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
-			count: 1
-			reportUnmatched: false
-			path: models/ParamDoc.php
-
-		-
-			message: "#^Method phpDocumentor\\\\Reflection\\\\Php\\\\Constant\\:\\:getValue\\(\\) invoked with 1 parameter\\, 0 required\\.$#"
-			count: 1
-			reportUnmatched: false
-			path: models/ConstDoc.php
