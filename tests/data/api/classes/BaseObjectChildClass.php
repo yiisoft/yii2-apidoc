@@ -42,9 +42,9 @@ class BaseObjectChildClass extends BaseObject
 
     /**
      * Description.
-     * @return mixed
+     * @param mixed $param
      */
-    public function setOnlyWrite()
+    public function setOnlyWrite($param)
     {
     }
 }
