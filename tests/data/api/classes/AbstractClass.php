@@ -14,7 +14,7 @@ use yiiunit\apidoc\data\api\interfaces\SubInterface;
 /**
  * Description.
  *
- * @author Test Authour <test@test.com>
+ * @author Test Author <test@test.com>
  * @since 2.0.0 with description
  * @package SomePackage
  *

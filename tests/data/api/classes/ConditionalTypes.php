@@ -18,7 +18,7 @@ class ConditionalTypes
      *
      * @template T of object
      * @param string|class-string<T> $param
-     * @return ($class is class-string<T> ? T : object)
+     * @return ($param is class-string<T> ? T : object)
      */
     public function conditionalForParameter($param)
     {

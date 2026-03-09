@@ -80,7 +80,7 @@ class OtherTypes
      * Description.
      * @return true
      */
-    public function true()
+    public function getTrue()
     {
     }
 
@@ -88,7 +88,7 @@ class OtherTypes
      * Description.
      * @return false
      */
-    public function false()
+    public function getFalse()
     {
     }
 

@@ -302,7 +302,7 @@ abstract class BaseRenderer extends Component
                         $templateType = $this->getTemplateType($valueTypeFqsen->getName(), $context);
                         if ($templateType !== null) {
                             $typeLink = $this->createTypeLink($templateType, $context, $title, $options, $currentTypeDoc);
-                            $links[] = $this->generateLink('array', self::PHPSTAN_TYPE_BASE_URL . 'general-arrays', $options) . "&lt;{$typeLink}&gt";
+                            $links[] = $this->generateLink('array', self::PHPSTAN_TYPE_BASE_URL . 'general-arrays', $options) . "&lt;{$typeLink}&gt;";
                             continue;
                         }
                     }
