@@ -6,17 +6,16 @@
  * @license https://www.yiiframework.com/license/
  */
 
-namespace yiiunit\apidoc\data\api;
+namespace yiiunit\apidoc\data\api\classes;
 
 /**
  * Description.
  *
- * @phpstan-type SomeData array{name: string, birthDate: int}
- * @psalm-type SomeData array{name: string, birthDate: int}
- * @psalm-type OnlyPsalmType = (string|array<string, mixed>)
- * @phpstan-type OnlyPHPStanType (string|array<string, mixed>|object)
+ * @phpstan-import-type SomeData from PseudoTypes
+ * @psalm-import-type OnlyPsalmType from PseudoTypes
+ * @phpstan-import-type OnlyPHPStanType from PseudoTypes
  */
-class PseudoTypes
+class PseudoTypesImports
 {
     /**
      * Description.

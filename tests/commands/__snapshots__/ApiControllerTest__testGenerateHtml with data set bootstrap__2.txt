@@ -3,96 +3,102 @@ Array
     [0] => Array
         (
             [file] => 
-            [message] => broken link to yiiunit\apidoc\data\api\InlineTags::$name
+            [message] => broken link to yiiunit\apidoc\data\api\classes\InlineTags::$name
         )
 
     [1] => Array
         (
-            [file] => tests/data/api/InlineTags.php
-            [message] => Invalid inline tag "@link": {@link InlineTags::SOME_CONST}
+            [file] => 
+            [message] => broken link to \yiiunit\apidoc\data\api\GenericTypes
         )
 
     [2] => Array
-        (
-            [file] => tests/data/api/InlineTags.php
-            [message] => Invalid inline tag "@link": {@link array_merge() description}
-        )
-
-    [3] => Array
-        (
-            [line] => 19
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Exception: Invalid tag: InvalidPHPStanType
-        )
-
-    [4] => Array
-        (
-            [line] => 19
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Exception: Invalid tag: InvalidPHPStanImportType
-        )
-
-    [5] => Array
-        (
-            [line] => 19
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Exception: Invalid tag: InvalidPsalmType
-        )
-
-    [6] => Array
-        (
-            [line] => 19
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Exception: Invalid tag: InvalidPsalmImportType
-        )
-
-    [7] => Array
-        (
-            [line] => 22
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Invalid tag: @@var.
-        )
-
-    [8] => Array
-        (
-            [line] => 31
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Invalid tag: @param. Exception message: Failed to parse docblock: Unexpected token "\n", expected type at offset 7 on line 1
-        )
-
-    [9] => Array
-        (
-            [line] => 31
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Invalid tag: @@return.
-        )
-
-    [10] => Array
-        (
-            [line] => 31
-            [file] => tests/data/api/InvalidTags.php
-            [message] => Undefined parameter documented: $nonExistentParam in invalidParamAndReturn().
-        )
-
-    [11] => Array
         (
             [line] => 26
             [file] => tests/data/api/classes/ChildClass.php
             [message] => Property $childProperty has no parent to inherit from in yiiunit\apidoc\data\api\classes\ChildClass.
         )
 
-    [12] => Array
+    [3] => Array
         (
             [line] => 31
             [file] => tests/data/api/classes/ChildClass.php
             [message] => Method param $param does not exist in parent method, @inheritdoc not possible in __construct in yiiunit\apidoc\data\api\classes\ChildClass.
         )
 
-    [13] => Array
+    [4] => Array
         (
             [line] => 46
             [file] => tests/data/api/classes/ChildClass.php
             [message] => Method childMethod has no parent to inherit from in yiiunit\apidoc\data\api\classes\ChildClass.
+        )
+
+    [5] => Array
+        (
+            [file] => tests/data/api/classes/InlineTags.php
+            [message] => Invalid inline tag "@link": {@link InlineTags::SOME_CONST}
+        )
+
+    [6] => Array
+        (
+            [file] => tests/data/api/classes/InlineTags.php
+            [message] => Invalid inline tag "@link": {@link array_merge() description}
+        )
+
+    [7] => Array
+        (
+            [line] => 19
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Exception: Invalid tag: InvalidPHPStanType
+        )
+
+    [8] => Array
+        (
+            [line] => 19
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Exception: Invalid tag: InvalidPHPStanImportType
+        )
+
+    [9] => Array
+        (
+            [line] => 19
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Exception: Invalid tag: InvalidPsalmType
+        )
+
+    [10] => Array
+        (
+            [line] => 19
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Exception: Invalid tag: InvalidPsalmImportType
+        )
+
+    [11] => Array
+        (
+            [line] => 22
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Invalid tag: @@var.
+        )
+
+    [12] => Array
+        (
+            [line] => 31
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Invalid tag: @param. Exception message: Failed to parse docblock: Unexpected token "\n", expected type at offset 7 on line 1
+        )
+
+    [13] => Array
+        (
+            [line] => 31
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Invalid tag: @@return.
+        )
+
+    [14] => Array
+        (
+            [line] => 31
+            [file] => tests/data/api/classes/InvalidTags.php
+            [message] => Undefined parameter documented: $nonExistentParam in invalidParamAndReturn().
         )
 
 )

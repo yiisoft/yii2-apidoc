@@ -6,25 +6,26 @@
  * @license https://www.yiiframework.com/license/
  */
 
-namespace yiiunit\apidoc\data\api;
+namespace yiiunit\apidoc\data\api\classes;
 
 /**
  * Description.
+ *
+ * @template TArray of array<array-key, mixed>
  */
-class OffsetAccessTypes
+class Templates
 {
+    /** @var TArray[] description */
+    public $arrays;
+
     /**
      * Description.
      *
-     * @template TArray of array<string, string>
-     * @template TKey of string
-     *
-     * @param TArray $array
+     * @template TKey of array-key
      * @param TKey $key
-     *
      * @return (TKey is key-of<TArray> ? TArray[TKey] : null)
      */
-    public function getSomeField($array, $key)
+    public function getSomeField($key)
     {
     }
 }

@@ -6,7 +6,7 @@
  * @license https://www.yiiframework.com/license/
  */
 
-namespace yiiunit\apidoc\data\api;
+namespace yiiunit\apidoc\data\api\classes;
 
 /**
  * Description.

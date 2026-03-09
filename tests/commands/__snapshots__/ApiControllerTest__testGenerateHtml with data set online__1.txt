@@ -3,7 +3,7 @@ Array
     [0] => Array
         (
             [line] => 22
-            [file] => tests/data/api/InvalidTags.php
+            [file] => tests/data/api/classes/InvalidTags.php
             [message] => No short description for element '$invalidVar'
         )
 
