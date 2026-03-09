@@ -18,6 +18,10 @@ For license information check the [LICENSE](LICENSE.md)-file.
 
 ## Installation
 
+> [!IMPORTANT]
+>
+> - The minimum required [PHP](https://www.php.net/) version is PHP `8.2`.
+
 The preferred way to install this extension is through [composer](https://getcomposer.org/download/).
 
 Either run
