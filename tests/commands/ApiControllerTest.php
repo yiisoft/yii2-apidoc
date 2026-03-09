@@ -8,6 +8,7 @@
 
 namespace yiiunit\apidoc\commands;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
 use yii\helpers\FileHelper;
@@ -64,9 +65,7 @@ class ApiControllerTest extends TestCase
         $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
-    /**
-     * @dataProvider provideGenerateHtmlData
-     */
+    #[DataProvider('provideGenerateHtmlData')]
     public function testGenerateHtml(string $template, string $outputPart): void
     {
         $sourceFilesDir = Yii::getAlias('@yiiunit/apidoc/data/api');

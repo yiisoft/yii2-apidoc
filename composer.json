@@ -33,7 +33,7 @@
     },
     "require-dev": {
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^11.5",
         "spatie/phpunit-snapshot-assertions": "^5.0",
         "phpstan/phpstan": "^2.1",
         "yiisoft/yii2-coding-standards": "^3.0"
