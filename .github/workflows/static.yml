@@ -27,3 +27,4 @@ jobs:
     uses: yiisoft/yii2-actions/.github/workflows/phpstan.yml@master
     with:
       configuration: phpstan.dist.neon
+      php-version: '["8.2", "8.5"]'
