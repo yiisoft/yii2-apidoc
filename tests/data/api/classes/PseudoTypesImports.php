@@ -27,14 +27,6 @@ class PseudoTypesImports
 
     /**
      * Description.
-     * @return SomeData['name']
-     */
-    public function getNameFromSomeData()
-    {
-    }
-
-    /**
-     * Description.
      * @return OnlyPsalmType
      */
     public function getOnlyPsalmType()

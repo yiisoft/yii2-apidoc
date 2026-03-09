@@ -15,8 +15,6 @@ class OtherTypes
 {
     /** @var array-key description */
     public $arrayKey;
-    /** @var number description */
-    public $number;
     /** @var scalar description */
     public $scalar;
     /** @var open-resource description */

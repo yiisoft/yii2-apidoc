@@ -110,7 +110,6 @@ abstract class BaseRenderer extends Component
         ],
         'basic-types' => [
             'array-key',
-            'number',
             'scalar',
             'open-resource',
             'closed-resource',
@@ -154,6 +153,7 @@ abstract class BaseRenderer extends Component
      * @var array<string, string>
      */
     private const PSALM_TYPES_DOC_LINKS = [
+        'interface-string' => 'scalar_types/#class-string-interface-string',
         'trait-string' => 'scalar_types/#trait-string',
         'enum-string' => 'scalar_types/#enum-string',
         'properties-of' => 'utility_types/#properties-oft',
@@ -276,7 +276,22 @@ abstract class BaseRenderer extends Component
                 }
 
                 if ($type instanceof OffsetAccess) {
-                    $typeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
+                    $offsetAccessType = $type->getType();
+                    if ($offsetAccessType instanceof Object_ && ($offsetAccessTypeFqsen = $offsetAccessType->getFqsen()) !== null) {
+                        $templateType = $this->getTemplateType($offsetAccessTypeFqsen->getName(), $context);
+                        if ($templateType instanceof Array_) {
+                            $links[] = $this->createTypeLink(
+                                $templateType->getValueType(),
+                                $context,
+                                $title,
+                                $options,
+                                $currentTypeDoc
+                            );
+                            continue;
+                        }
+                    }
+
+                    $typeLink = $this->createTypeLink($offsetAccessType, $context, $title, $options);
                     $links[] = $typeLink . '[' . $type->getOffset() . ']';
                     continue;
                 }
@@ -703,22 +718,22 @@ abstract class BaseRenderer extends Component
 
         if ($type instanceof PrivatePropertiesOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
-            return $this->createPhpStanTypeLink('private-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
+            return $this->createPsalmTypeLink('private-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
         }
 
         if ($type instanceof ProtectedPropertiesOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
-            return $this->createPhpStanTypeLink('protected-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
+            return $this->createPsalmTypeLink('protected-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
         }
 
         if ($type instanceof PublicPropertiesOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
-            return $this->createPhpStanTypeLink('public-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
+            return $this->createPsalmTypeLink('public-properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
         }
 
         if ($type instanceof PropertiesOf) {
             $genericTypeLink = $this->createTypeLink($type->getType(), $context, $title, $options);
-            return $this->createPhpStanTypeLink('properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
+            return $this->createPsalmTypeLink('properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
         }
 
         if ($type instanceof NonEmptyArray && substr((string) $type, -1, 1) === '>') {

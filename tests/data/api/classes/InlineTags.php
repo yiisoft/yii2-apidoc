@@ -23,11 +23,11 @@ class InlineTags
      *
      * See {@see InlineTags::SOME_CONST}.
      *
-     * See {@see InlineTags::$name}.
+     * See {@see InlineTags::$someProperty}.
      *
      * See {@see InlineTags}.
      *
-     * See {@see \yiiunit\apidoc\data\api\GenericTypes}.
+     * See {@see \yiiunit\apidoc\data\api\classes\GenericTypes}.
      *
      * See {@see https://www.php.net/manual/intro.filter.php documentation}.
      *

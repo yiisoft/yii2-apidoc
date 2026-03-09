@@ -10,6 +10,8 @@ namespace yiiunit\apidoc\data\api\classes;
 
 /**
  * Description.
+ *
+ * @phpstan-type SomeData array{name: string, birthDate: int}
  */
 class OffsetAccessTypes
 {
@@ -25,6 +27,14 @@ class OffsetAccessTypes
      * @return (TKey is key-of<TArray> ? TArray[TKey] : null)
      */
     public function getSomeField($array, $key)
+    {
+    }
+
+    /**
+     * Description.
+     * @return SomeData['name']
+     */
+    public function getNameFromSomeData()
     {
     }
 }
