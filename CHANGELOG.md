@@ -6,7 +6,7 @@ Yii Framework 2 apidoc extension Change Log
 
 - Bug #338: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
 - Enh #337: Log invalid tags (mspirkov)
-- Enh #339, #340, #351, #368: Add support for PHPStan/Psalm syntax (mspirkov)
+- Enh #339, #340, #351, #368, #377: Add support for PHPStan/Psalm syntax (mspirkov)
 - Enh #339: Add support for intersection types (mspirkov)
 - Bug #339: Fix the mechanism for replacing `static` with FQCN (mspirkov)
 - Bug #339: Fix processing of multidimensional arrays (mspirkov)
@@ -31,6 +31,9 @@ Yii Framework 2 apidoc extension Change Log
 - Chg #373: Move `BaseDoc::extractFirstSentence()` to `TextHelper::extractFirstSentence()` (mspirkov)
 - Bug #283: Fix extracting the first sentence from the text (mspirkov)
 - Enh #244: Uniform processing and output of descriptions for methods and properties (mspirkov)
+- Enh #377: Raise minimum PHP version to 8.2 (mspirkov)
+- Enh #377: Raise minimum `phpdocumentor/type-resolver` version to 2.0 (mspirkov)
+- Enh #377: Raise minimum `nikic/php-parser` version to 5.0 (mspirkov)
 
 
 3.0.8 November 24, 2025
@@ -41,7 +44,7 @@ Yii Framework 2 apidoc extension Change Log
 - Bug #313: Fix deprecation error `Method deprecated, use ::getParameters()` (mspirkov)
 - Bug #317: Fix `trim` deprecation errors `Passing null to parameter #1 ($string) of type string is deprecated` (mspirkov)
 - Bug #318: Fix deprecation errors `mb_convert_encoding(): Handling HTML entities via mbstring is deprecated` (mspirkov)
-- Bug #324: Raise minimum PHP version to 7.4 (mspirkov)
+- Enh #324: Raise minimum PHP version to 7.4 (mspirkov)
 - Bug #325: Fix deprecation errors `The Default value will become of type Expression by default` (mspirkov)
 - Bug #327: Fix deprecation errors `The expression value will become of type Expression by default` (mspirkov)
 - Bug #329, #331: Fix getting parameter types from the `@method` annotation (mspirkov)
