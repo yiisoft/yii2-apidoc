@@ -27,7 +27,7 @@ trait ApiMarkdownTrait
      */
     protected function parseApiLinks($text)
     {
-        if (!preg_match('/^\[\[([\w\d\\\\():$]+)(\|[^]]*)?]]/', $text, $matches)) {
+        if (!preg_match('/^\[\[([\w\d\\\\():$]+)(\|[^]]*)?]]/', (string) $text, $matches)) {
             return [['text', '[['], 2];
         }
 
@@ -36,27 +36,24 @@ trait ApiMarkdownTrait
         $title = (empty($matches[2]) || $matches[2] === '|') ? null : substr($matches[2], 1);
         $title = $this->renderApiLinkText($title);
 
-        /** @var TypeDoc[] $contexts */
         $contexts = [];
         $this->findContexts($this->renderingContext, $contexts);
         $contexts = array_unique($contexts, SORT_REGULAR);
         $contexts[] = null;
 
-        $e = null;
+        $exceptions = [];
         foreach ($contexts as $context) {
-            /** @var TypeDoc|null $context */
             try {
                 return $this->parseApiLinkForContext($offset, $object, $title, $context);
             } catch (BrokenLinkException $e) {
-                // Keep going if there are more contexts to check
+                $exceptions[] = $e;
             }
         }
 
-        // If we made it this far, there was a broken link
-        /** @var BrokenLinkException $e */
+        $lastException = $exceptions[array_key_last($exceptions)];
         static::$renderer->apiContext->errors[] = [
-            'file' => ($e->context !== null) ? $e->context->sourceFile : null,
-            'message' => $e->getMessage(),
+            'file' => $lastException->context !== null ? $lastException->context->sourceFile : null,
+            'message' => $lastException->getMessage(),
         ];
 
         return [
@@ -67,7 +64,9 @@ trait ApiMarkdownTrait
 
     /**
      * @param TypeDoc|null $type
-     * @param array $contexts
+     * @param TypeDoc[] $contexts
+     *
+     * @param-out TypeDoc[] $contexts
      */
     private function findContexts($type, &$contexts = [])
     {
@@ -172,7 +171,7 @@ trait ApiMarkdownTrait
             ];
         }
 
-        if (strpos($typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href') !== false) {
+        if (str_contains((string) $typeLink = static::$renderer->createTypeLink($object, null, $title), '<a href')) {
             return [
                 ['apiLink', $typeLink],
                 $offset,
@@ -241,9 +240,9 @@ trait ApiMarkdownTrait
             $parfirst = reset($first['content']);
             if (isset($parfirst[0]) && $parfirst[0] === 'text') {
                 foreach ($blockTypes as $type) {
-                    if (strncasecmp("$type: ", $parfirst[1], $len = strlen($type) + 2) === 0) {
+                    if (strncasecmp("$type: ", (string) $parfirst[1], $len = strlen($type) + 2) === 0) {
                         // remove block indicator
-                        $block[0]['content'][0]['content'][0][1] = substr($parfirst[1], $len);
+                        $block[0]['content'][0]['content'][0][1] = substr((string) $parfirst[1], $len);
                         // add translated block indicator as bold text
                         array_unshift($block[0]['content'][0]['content'], [
                             'strong',

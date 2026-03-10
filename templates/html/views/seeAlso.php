@@ -12,10 +12,10 @@ $type = $object instanceof TypeDoc ? $object : $object->definedBy;
 
 $see = [];
 foreach ($object->tags as $tag) {
-    /** @var \phpDocumentor\Reflection\DocBlock\Tags\See $tag */
-    if (get_class($tag) == 'phpDocumentor\Reflection\DocBlock\Tags\See') {
+    if ($tag::class == 'phpDocumentor\Reflection\DocBlock\Tags\See') {
+        /** @var \phpDocumentor\Reflection\DocBlock\Tags\See $tag */
         $ref = $tag->getReference();
-        if (strpos($ref, '://') === false) {
+        if (!str_contains($ref, '://')) {
             $ref = '[[' . $ref . ']]';
         }
         $see[] = rtrim(ApiMarkdown::process($ref . ' ' . $tag->getDescription(), $type, true), ". \r\n");

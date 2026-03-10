@@ -64,7 +64,7 @@ class GuideController extends BaseController
                 $renderer->apiUrl = $path;
             }
             // use relative paths relative to targetDir
-            if (strncmp($path, '.', 1) === 0) {
+            if (str_starts_with($path, '.')) {
                 $renderer->apiContext = $this->loadContext("$targetDir/$path");
             } else {
                 $renderer->apiContext = $this->loadContext($path);
@@ -97,7 +97,7 @@ class GuideController extends BaseController
 
         $this->stdout('Publishing images...');
         foreach ($sourceDirs as $source) {
-            $imageDir = rtrim($source, '/\\') . '/images';
+            $imageDir = rtrim((string) $source, '/\\') . '/images';
             if (file_exists($imageDir)) {
                 FileHelper::copyDirectory($imageDir, $targetDir . '/images');
             }

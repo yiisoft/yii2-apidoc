@@ -296,7 +296,7 @@ abstract class BaseRenderer extends Component
                     continue;
                 }
 
-                if ($type instanceof Array_ && substr((string) $type, -2, 2) === '[]') {
+                if ($type instanceof Array_ && str_ends_with((string) $type, '[]')) {
                     $valueType = $type->getValueType();
                     if ($valueType instanceof Object_ && ($valueTypeFqsen = $valueType->getFqsen()) !== null) {
                         $templateType = $this->getTemplateType($valueTypeFqsen->getName(), $context);
@@ -499,7 +499,7 @@ abstract class BaseRenderer extends Component
     public function generateGuideUrl($file)
     {
         //skip parsing external url
-        if ((strpos($file, 'https://') !== false) || (strpos($file, 'http://') !== false)) {
+        if ((str_contains($file, 'https://')) || (str_contains($file, 'http://'))) {
             return $file;
         }
 
@@ -509,7 +509,7 @@ abstract class BaseRenderer extends Component
             $file = substr($file, 0, $pos);
         }
 
-        return rtrim($this->guideUrl, '/') . '/' . $this->guidePrefix . basename($file, '.md') . '.html' . $hash;
+        return rtrim((string) $this->guideUrl, '/') . '/' . $this->guidePrefix . basename($file, '.md') . '.html' . $hash;
     }
 
     /**
@@ -708,11 +708,11 @@ abstract class BaseRenderer extends Component
             return  "{$mainTypeLink}&lt;" . implode(', ', $genericTypesLinks) . '&gt;';
         };
 
-        if ($type instanceof NonEmptyList && substr((string) $type, -1, 1) === '>') {
+        if ($type instanceof NonEmptyList && str_ends_with((string) $type, '>')) {
             return $generateLink(new NonEmptyList(), [$type->getValueType()]);
         }
 
-        if ($type instanceof List_ && substr((string) $type, -1, 1) === '>') {
+        if ($type instanceof List_ && str_ends_with((string) $type, '>')) {
             return $generateLink(new List_(), [$type->getValueType()]);
         }
 
@@ -736,12 +736,12 @@ abstract class BaseRenderer extends Component
             return $this->createPsalmTypeLink('properties-of', $options) . "&lt;{$genericTypeLink}&gt;";
         }
 
-        if ($type instanceof NonEmptyArray && substr((string) $type, -1, 1) === '>') {
+        if ($type instanceof NonEmptyArray && str_ends_with((string) $type, '>')) {
             $genericTypes = $this->getGenericTypesByListType($type);
             return $generateLink(new NonEmptyArray(), $genericTypes);
         }
 
-        if ($type instanceof Array_ && substr((string) $type, -1, 1) === '>') {
+        if ($type instanceof Array_ && str_ends_with((string) $type, '>')) {
             $genericTypes = $this->getGenericTypesByListType($type);
             return $generateLink(new Array_(), $genericTypes);
         }
@@ -767,7 +767,7 @@ abstract class BaseRenderer extends Component
             return $mainTypeLink . '&lt;' . $type->getMinValue() . ', ' . $type->getMaxValue() . '&gt;';
         }
 
-        if ($type instanceof Iterable_ && substr((string) $type, -1, 1) === '>') {
+        if ($type instanceof Iterable_ && str_ends_with((string) $type, '>')) {
             $genericTypes = $this->getGenericTypesByListType($type);
             return $generateLink(new Iterable_(), $genericTypes);
         }

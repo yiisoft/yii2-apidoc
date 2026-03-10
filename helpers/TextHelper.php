@@ -51,10 +51,10 @@ final class TextHelper
         }
 
         $text = preg_replace('/\R/', ' ', $text);
-        $length = mb_strlen($text, 'UTF-8');
+        $length = mb_strlen((string) $text, 'UTF-8');
 
         for ($i = 0; $i < $length; $i++) {
-            $char = mb_substr($text, $i, 1, 'UTF-8');
+            $char = mb_substr((string) $text, $i, 1, 'UTF-8');
             if (!in_array($char, ['.', '!', '?'], true)) {
                 continue;
             }
@@ -65,21 +65,21 @@ final class TextHelper
                 if (
                     $i > 0
                     && $i + 1 < $length
-                    && is_numeric(mb_substr($text, $i - 1, 1, 'UTF-8'))
-                    && is_numeric(mb_substr($text, $i + 1, 1, 'UTF-8'))
+                    && is_numeric(mb_substr((string) $text, $i - 1, 1, 'UTF-8'))
+                    && is_numeric(mb_substr((string) $text, $i + 1, 1, 'UTF-8'))
                 ) {
                     continue;
                 }
 
                 // Ellipsis
-                while ($endPos + 1 < $length && mb_substr($text, $endPos + 1, 1, 'UTF-8') === '.') {
+                while ($endPos + 1 < $length && mb_substr((string) $text, $endPos + 1, 1, 'UTF-8') === '.') {
                     $endPos++;
                 }
             }
 
             $nextIndex = $endPos + 1;
             while ($nextIndex < $length) {
-                $c = mb_substr($text, $nextIndex, 1, 'UTF-8');
+                $c = mb_substr((string) $text, $nextIndex, 1, 'UTF-8');
                 if ($c === ' ' || $c === "\t") {
                     $nextIndex++;
                     continue;
@@ -87,9 +87,9 @@ final class TextHelper
                 break;
             }
 
-            $nextChar = mb_substr($text, $nextIndex, 1, 'UTF-8');
+            $nextChar = mb_substr((string) $text, $nextIndex, 1, 'UTF-8');
             if (preg_match('/\p{Lu}/u', $nextChar)) {
-                return trim(mb_substr($text, 0, $endPos + 1, 'UTF-8'));
+                return trim(mb_substr((string) $text, 0, $endPos + 1, 'UTF-8'));
             }
 
             $i = $endPos;

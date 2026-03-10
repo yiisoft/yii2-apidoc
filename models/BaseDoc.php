@@ -107,10 +107,6 @@ class BaseDoc extends BaseObject
      */
     public $templates = [];
     /**
-     * @var self|null
-     */
-    public $parent = null;
-    /**
      * @var array<string, PseudoTypeDoc>
      */
     public array $phpStanTypes = [];
@@ -193,11 +189,9 @@ class BaseDoc extends BaseObject
      * @param Context|null $context
      * @param array $config
      */
-    public function __construct($parent = null, $reflector = null, $context = null, $config = [])
+    public function __construct(public $parent = null, $reflector = null, $context = null, $config = [])
     {
         parent::__construct($config);
-
-        $this->parent = $parent;
 
         if ($reflector === null) {
             return;
@@ -233,7 +227,7 @@ class BaseDoc extends BaseObject
             $context->warnings[] = [
                 'line' => $this->startLine,
                 'file' => $this->sourceFile,
-                'message' => 'No short description for ' . substr(StringHelper::basename(get_class($this)), 0, -3) . " '{$this->name}'",
+                'message' => 'No short description for ' . substr(StringHelper::basename(static::class), 0, -3) . " '{$this->name}'",
             ];
         }
 

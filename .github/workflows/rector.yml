@@ -1,0 +1,49 @@
+name: rector
+
+permissions:
+  contents: read
+
+on:
+  pull_request: &ignore-paths
+    paths-ignore:
+      - ".github/CONTRIBUTING.md"
+      - ".github/FUNDING.yml"
+      - ".github/ISSUE_TEMPLATE.md"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - ".github/SECURITY.md"
+      - ".editorconfig"
+      - ".git-blame-ignore-revs"
+      - ".gitattributes"
+      - ".gitignore"
+      - "LICENSE.md"
+      - "README.md"
+      - "CHANGELOG.md"
+      - "UPGRADE.md"
+
+  push: *ignore-paths
+
+jobs:
+  rector:
+    name: PHP ${{ matrix.php-version }}-${{ matrix.os }}
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+          os: [ubuntu-latest]
+          php: ['8.2']
+
+    steps:
+      - name: Checkout.
+        uses: actions/checkout@v6
+
+      - name: Setup PHP Environment.
+        uses: yiisoft/yii2-actions/actions/php-setup@master
+        with:
+          composer-command: install
+          coverage-driver: none
+          php-version: ${{ matrix.php-version }}
+
+      - name: Run Rector.
+        run: vendor/bin/rector process --dry-run

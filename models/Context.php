@@ -60,17 +60,7 @@ class Context extends Component
     {
         $type = ltrim($type, '\\');
 
-        if (isset($this->classes[$type])) {
-            return $this->classes[$type];
-        }
-        if (isset($this->interfaces[$type])) {
-            return $this->interfaces[$type];
-        }
-        if (isset($this->traits[$type])) {
-            return $this->traits[$type];
-        }
-
-        return null;
+        return $this->classes[$type] ?? $this->interfaces[$type] ?? $this->traits[$type] ?? null;
     }
 
     public function processFiles()
@@ -384,7 +374,7 @@ class Context extends Component
                         ];
                         continue;
                     }
-                    if (empty($param->description) || trim($param->description) === '') {
+                    if (empty($param->description) || trim((string) $param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
                     if ($param->type === null) {
@@ -490,9 +480,9 @@ class Context extends Component
             if ($method->isStatic) {
                 continue;
             }
-            if (!strncmp($name, 'get', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method)) {
-                $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+            if (!strncmp((string) $name, 'get', 3) && strlen((string) $name) > 3 && $this->hasNonOptionalParams($method)) {
+                $propertyName = '$' . lcfirst(substr((string) $method->name, 3));
+                $property = $class->properties[$propertyName] ?? null;
                 if ($property && $property->getter === null && $property->setter === null) {
                     $this->errors[] = [
                         'line' => $property->startLine,
@@ -514,14 +504,14 @@ class Context extends Component
                         'description' => $descriptions['detailed'],
                         'since' => $method->since,
                         'getter' => $method,
-                        'setter' => isset($property->setter) ? $property->setter : null,
+                        'setter' => $property->setter ?? null,
                         // TODO set default value
                     ]);
                 }
             }
-            if (!strncmp($name, 'set', 3) && strlen($name) > 3 && $this->hasNonOptionalParams($method, 1)) {
-                $propertyName = '$' . lcfirst(substr($method->name, 3));
-                $property = isset($class->properties[$propertyName]) ? $class->properties[$propertyName] : null;
+            if (!strncmp((string) $name, 'set', 3) && strlen((string) $name) > 3 && $this->hasNonOptionalParams($method, 1)) {
+                $propertyName = '$' . lcfirst(substr((string) $method->name, 3));
+                $property = $class->properties[$propertyName] ?? null;
                 if ($property) {
                     if ($property->getter === null && $property->setter === null) {
                         $this->errors[] = [

@@ -133,14 +133,14 @@ class ApiController extends BaseController
         $renderer->render($context, $targetDir);
 
         if (!empty($context->errors)) {
-            $errors = array_map('unserialize', array_unique(array_map('serialize', $context->errors)));
+            $errors = array_map(unserialize(...), array_unique(array_map(serialize(...), $context->errors)));
             ArrayHelper::multisort($errors, 'file');
             file_put_contents($targetDir . '/errors.txt', print_r($errors, true));
             $this->stdout(count($errors) . " errors have been logged to $targetDir/errors.txt\n", Console::FG_RED, Console::BOLD);
         }
 
         if (!empty($context->warnings)) {
-            $warnings = array_map('unserialize', array_unique(array_map('serialize', $context->warnings)));
+            $warnings = array_map(unserialize(...), array_unique(array_map(serialize(...), $context->warnings)));
             ArrayHelper::multisort($warnings, 'file');
             file_put_contents($targetDir . '/warnings.txt', print_r($warnings, true));
             $this->stdout(count($warnings) . " warnings have been logged to $targetDir/warnings.txt\n", Console::FG_YELLOW, Console::BOLD);
@@ -161,7 +161,7 @@ class ApiController extends BaseController
         $options = [
             'filter' => function ($path) {
                 if (is_file($path)) {
-                    $file = basename($path);
+                    $file = basename((string) $path);
                     if ($file[0] < 'A' || $file[0] > 'Z') {
                         return false;
                     }

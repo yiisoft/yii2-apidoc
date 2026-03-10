@@ -89,14 +89,14 @@ class TypeDoc extends BaseDoc
                 }
             }
         }
-        if (substr_compare($subjectName, '()', -2, 2) === 0) {
+        if (str_ends_with($subjectName, '()')) {
             return null;
         }
         if ($this->properties === null) {
             return null;
         }
         foreach ($this->properties as $name => $property) {
-            if (ltrim($subjectName, '$') == ltrim($name, '$')) {
+            if (ltrim($subjectName, '$') == ltrim((string) $name, '$')) {
                 return $property;
             }
         }

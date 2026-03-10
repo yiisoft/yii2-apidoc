@@ -42,7 +42,7 @@ trait MarkdownHighlightTrait
         }
         try {
             if (isset($block['language'])) {
-                if ($block['language'] === 'php' && strpos($block['content'], '<?=') !== false) {
+                if ($block['language'] === 'php' && str_contains((string) $block['content'], '<?=')) {
                     $block['language'] = 'html';
                 }
 
@@ -52,7 +52,7 @@ trait MarkdownHighlightTrait
                 $result = self::$_highlighter->highlightAuto($block['content'] . "\n");
                 return "<pre><code class=\"hljs {$result->language}\">{$result->value}</code></pre>\n";
             }
-        } catch (DomainException $e) {
+        } catch (DomainException) {
             return parent::renderCode($block);
         }
     }
@@ -70,7 +70,7 @@ trait MarkdownHighlightTrait
             return htmlspecialchars($code, ENT_NOQUOTES | ENT_SUBSTITUTE);
         }
 
-        if (strncmp($code, '<?php', 5) === 0) {
+        if (str_starts_with($code, '<?php')) {
             $text = @highlight_string(trim($code), true);
         } else {
             $text = highlight_string('<?php ' . trim($code), true);

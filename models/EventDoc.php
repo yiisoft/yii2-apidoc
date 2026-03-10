@@ -53,7 +53,7 @@ class EventDoc extends ConstDoc
             $className = $parts[0];
             $this->description = StringHelper::mb_ucfirst($parts[1]);
 
-            if (strpos($className, '\\') !== false) {
+            if (str_contains($className, '\\')) {
                 $this->type = $className;
             } elseif (isset($docBlock->getContext()->getNamespaceAliases()[$className])) {
                 $this->type = $docBlock->getContext()->getNamespaceAliases()[$className];

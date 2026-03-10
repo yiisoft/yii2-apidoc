@@ -31,7 +31,7 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
         $fileData = [];
         $chapters = $this->loadGuideStructure($files);
         foreach ($files as $file) {
-            $fileData[basename($file)] = file_get_contents($file);
+            $fileData[basename((string) $file)] = file_get_contents($file);
         }
 
         $md = new ApiMarkdownLaTeX();
@@ -42,7 +42,7 @@ class GuideRenderer extends \yii\apidoc\templates\html\GuideRenderer
             }
             foreach ($chapter['content'] as $content) {
                 // ignore URLs in TOC
-                if (strpos($content['file'], 'http://') === 0 || strpos($content['file'], 'https://') === 0) {
+                if (str_starts_with((string) $content['file'], 'http://') || str_starts_with((string) $content['file'], 'https://')) {
                     continue;
                 }
                 if (isset($fileData[$content['file']])) {

@@ -15,7 +15,6 @@ use yii\base\BaseObject;
  * Represents API documentation information for a `@phpstan-import-type` and `@psalm-import-type`.
  *
  * @author Maksim Spirkov <spirkov.2001@mail.ru>
- * @immutable
  */
 final class PseudoTypeImportDoc extends BaseObject
 {
@@ -27,23 +26,14 @@ final class PseudoTypeImportDoc extends BaseObject
         self::TYPE_PSALM,
     ];
 
-    /** @var value-of<self::TYPES> */
-    public string $type;
-
-    public string $typeName;
-
-    public Fqsen $typeParentFqsen;
-
     /**
      * @param value-of<self::TYPES> $type
      */
     public function __construct(
-        string $type,
-        string $typeName,
-        Fqsen $typeParentFqsen
-    ) {
-        $this->type = $type;
-        $this->typeName = $typeName;
-        $this->typeParentFqsen = $typeParentFqsen;
+        public string $type,
+        public string $typeName,
+        public Fqsen $typeParentFqsen
+    )
+    {
     }
 }
