@@ -21,11 +21,11 @@
     "require": {
         "ext-dom": "*",
         "ext-mbstring": "*",
-        "php": "^7.4 || ^8.0",
+        "php": "^8.2",
         "yiisoft/yii2": "~2.0.16",
-        "phpdocumentor/reflection": "^5.3.0 || ^6.0.0",
-        "phpdocumentor/type-resolver": "^1.12",
-        "nikic/php-parser": "^4.0 || ^5.0",
+        "phpdocumentor/reflection": "7.x-dev",
+        "phpdocumentor/type-resolver": "^2.0",
+        "nikic/php-parser": "^5.0",
         "cebe/js-search": "~0.9.0",
         "cebe/markdown": "^1.0",
         "cebe/markdown-latex": "^1.0",
@@ -33,8 +33,8 @@
     },
     "require-dev": {
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "phpunit/phpunit": "^9.6 || ^10.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2 || ^5.0",
+        "phpunit/phpunit": "^11.5",
+        "spatie/phpunit-snapshot-assertions": "^5.0",
         "phpstan/phpstan": "^2.1",
         "yiisoft/yii2-coding-standards": "^3.0"
     },
@@ -64,5 +64,11 @@
         "allow-plugins": {
             "yiisoft/yii2-composer": true
         }
+    },
+    "scripts": {
+        "cs": "./vendor/bin/phpcs",
+        "cs-fix": "./vendor/bin/phpcbf",
+        "static": "./vendor/bin/phpstan --memory-limit=-1",
+        "tests": "./vendor/bin/phpunit"
     }
 }

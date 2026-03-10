@@ -6,14 +6,16 @@
         <exclude-pattern>tests/bootstrap.php</exclude-pattern>
     </rule>
 
-    <!-- display progress -->
-    <arg value="p"/>
-    <!-- Show error codes -->
-    <arg value="s"/>
-    <arg name="colors"/>
-
     <!-- generate relative paths -->
     <arg name="basepath" value="."/>
+
+    <file>commands</file>
+    <file>components</file>
+    <file>helpers</file>
+    <file>models</file>
+    <file>renderers</file>
+    <file>templates</file>
+    <file>tests</file>
 
     <exclude-pattern>templates/*/views/*</exclude-pattern>
     <exclude-pattern>templates/*/layouts/*</exclude-pattern>

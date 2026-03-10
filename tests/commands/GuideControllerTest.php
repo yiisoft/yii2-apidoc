@@ -8,6 +8,7 @@
 
 namespace yiiunit\apidoc\commands;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
 use yiiunit\apidoc\support\controllers\GuideControllerMock;
@@ -63,9 +64,7 @@ class GuideControllerTest extends TestCase
         $this->assertStringContainsString('Error: No files found to process', $output);
     }
 
-    /**
-     * @dataProvider provideGenerateHtmlData
-     */
+    #[DataProvider('provideGenerateHtmlData')]
     public function testGenerateHtml(string $template): void
     {
         $output = $this->generateGuide(

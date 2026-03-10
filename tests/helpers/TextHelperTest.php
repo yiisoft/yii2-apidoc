@@ -8,14 +8,13 @@
 
 namespace yiiunit\apidoc\helpers;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use yii\apidoc\helpers\TextHelper;
 
 class TextHelperTest extends TestCase
 {
-    /**
-     * @dataProvider provideExtractFirstSentenceData
-     */
+    #[DataProvider('provideExtractFirstSentenceData')]
     public function testExtractFirstSentence(string $text, string $expectedResult)
     {
         $result = TextHelper::extractFirstSentence($text);
@@ -109,9 +108,7 @@ class TextHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideGetDescriptionsByFullDescriptionData
-     */
+    #[DataProvider('provideGetDescriptionsByFullDescriptionData')]
     public function testGetDescriptionsByFullDescription(string $text, array $expectedResult)
     {
         $result = TextHelper::getDescriptionsByFullDescription($text);

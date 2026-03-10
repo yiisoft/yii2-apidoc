@@ -31,5 +31,4 @@
 /phpcs.xml.dist             export-ignore
 /phpstan-baseline.neon      export-ignore
 /phpstan.dist.neon          export-ignore
-/phpunit-7x.xml.dist        export-ignore
 /phpunit.xml.dist           export-ignore

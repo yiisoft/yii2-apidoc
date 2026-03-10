@@ -23,16 +23,16 @@ use phpDocumentor\Reflection\Types\Mixed_;
 use phpDocumentor\Reflection\Types\Object_;
 use phpDocumentor\Reflection\Types\Static_;
 use phpDocumentor\Reflection\Types\String_;
+use PHPUnit\Framework\Attributes\DataProvider;
 use yii\apidoc\helpers\TypeHelper;
 use yiiunit\apidoc\TestCase;
 
 class TypeHelperTest extends TestCase
 {
     /**
-     * @dataProvider provideGetTypesByAggregatedTypeData
-     *
      * @param Type[] $expectedResult
      */
+    #[DataProvider('provideGetTypesByAggregatedTypeData')]
     public function testGetTypesByAggregatedType(AggregatedType $type, array $expectedResult): void
     {
         $result = TypeHelper::getTypesByAggregatedType($type);
@@ -57,11 +57,10 @@ class TypeHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetPossibleTypesByConditionalTypeData
-     *
      * @param ConditionalForParameter|Conditional $type
      * @param Type[] $expectedResult
      */
+    #[DataProvider('provideGetPossibleTypesByConditionalTypeData')]
     public function testGetPossibleTypesByConditionalType(Type $type, array $expectedResult): void
     {
         $result = TypeHelper::getPossibleTypesByConditionalType($type);

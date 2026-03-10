@@ -44,11 +44,7 @@ class ConstDoc extends BaseDoc
             return;
         }
 
-        if (PHP_VERSION_ID >= 80100) {
-            $reflectorValue = $reflector->getValue(false);
-            $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
-        } else {
-            $this->value = $reflector->getValue();
-        }
+        $reflectorValue = $reflector->getValue(false);
+        $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
     }
 }

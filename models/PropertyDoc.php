@@ -88,12 +88,8 @@ class PropertyDoc extends BaseDoc
         $this->visibility = (string) $reflector->getVisibility();
         $this->isStatic = $reflector->isStatic();
 
-        if (PHP_VERSION_ID >= 80100) {
-            $reflectorDefault = $reflector->getDefault(false);
-            $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
-        } else {
-            $this->defaultValue = $reflector->getDefault();
-        }
+        $reflectorDefault = $reflector->getDefault(false);
+        $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;
 
         $hasInheritdoc = false;
         foreach ($this->tags as $tag) {
