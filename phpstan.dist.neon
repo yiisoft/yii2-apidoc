@@ -15,7 +15,7 @@ parameters:
         - apidoc
 
     excludePaths:
-        analyse:
+        analyseAndScan:
             - tests/data
 
     bootstrapFiles:
