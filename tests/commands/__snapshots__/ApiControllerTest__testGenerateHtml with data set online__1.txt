@@ -2,6 +2,20 @@ Array
 (
     [0] => Array
         (
+            [line] => 97
+            [file] => tests/data/api/classes/BaseClass.php
+            [message] => No short description for Method 'methodWithoutDocBlock'
+        )
+
+    [1] => Array
+        (
+            [line] => 102
+            [file] => tests/data/api/classes/BaseClass.php
+            [message] => No short description for Method 'methodWithoutDescriptions'
+        )
+
+    [2] => Array
+        (
             [line] => 24
             [file] => tests/data/api/classes/InvalidTags.php
             [message] => No short description for element '$invalidVar'
