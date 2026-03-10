@@ -33,7 +33,6 @@ final class PseudoTypeImportDoc extends BaseObject
         public string $type,
         public string $typeName,
         public Fqsen $typeParentFqsen
-    )
-    {
+    ) {
     }
 }

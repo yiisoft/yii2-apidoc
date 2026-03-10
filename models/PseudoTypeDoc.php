@@ -34,7 +34,6 @@ final class PseudoTypeDoc extends BaseObject
         public BaseDoc $parent,
         public string $name,
         public Type $value
-    )
-    {
+    ) {
     }
 }
