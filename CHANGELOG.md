@@ -31,9 +31,9 @@ Yii Framework 2 apidoc extension Change Log
 - Chg #373: Move `BaseDoc::extractFirstSentence()` to `TextHelper::extractFirstSentence()` (mspirkov)
 - Bug #283: Fix extracting the first sentence from the text (mspirkov)
 - Enh #244: Uniform processing and output of descriptions for methods and properties (mspirkov)
-- Enh #377: Raise minimum PHP version to 8.2 (mspirkov)
-- Enh #377: Raise minimum `phpdocumentor/type-resolver` version to 2.0 (mspirkov)
-- Enh #377: Raise minimum `nikic/php-parser` version to 5.0 (mspirkov)
+- Chg #377: Raise minimum PHP version to 8.2 (mspirkov)
+- Chg #377: Raise minimum `phpdocumentor/type-resolver` version to 2.0 (mspirkov)
+- Chg #377: Raise minimum `nikic/php-parser` version to 5.0 (mspirkov)
 
 
 3.0.8 November 24, 2025
