@@ -93,7 +93,6 @@ class BaseClass extends AbstractClass
     {
     }
 
-    /** */
     public function methodWithoutDocBlock(): void
     {
     }

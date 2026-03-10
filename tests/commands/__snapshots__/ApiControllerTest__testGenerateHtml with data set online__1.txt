@@ -2,14 +2,14 @@ Array
 (
     [0] => Array
         (
-            [line] => 97
+            [line] => 96
             [file] => tests/data/api/classes/BaseClass.php
-            [message] => No short description for Method 'methodWithoutDocBlock'
+            [message] => No docblock for element 'methodWithoutDocBlock'
         )
 
     [1] => Array
         (
-            [line] => 102
+            [line] => 101
             [file] => tests/data/api/classes/BaseClass.php
             [message] => No short description for Method 'methodWithoutDescriptions'
         )
