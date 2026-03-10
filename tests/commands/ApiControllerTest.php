@@ -107,7 +107,8 @@ class ApiControllerTest extends TestCase
             $filesCount++;
         }
 
-        $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true]));
+        // Do not include `BaseObject` in the number of source files
+        $sourceFilesCount = count(FileHelper::findFiles($sourceFilesDir, ['recursive' => true])) - 1;
 
         $this->assertSame($sourceFilesCount, $filesCount);
     }
