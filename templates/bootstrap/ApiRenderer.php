@@ -106,13 +106,13 @@ class ApiRenderer extends \yii\apidoc\templates\html\ApiRenderer
                 if ($type->name == 'Yii') {
                     $url = "$baseUrl/framework/Yii.php";
                 } else {
-                    $url = "$baseUrl/framework/" . str_replace('\\', '/', substr($type->name, 4)) . '.php';
+                    $url = "$baseUrl/framework/" . str_replace('\\', '/', substr((string) $type->name, 4)) . '.php';
                 }
                 break;
             case 'app':
                 return null;
             default:
-                $parts = explode('\\', substr($type->name, 4));
+                $parts = explode('\\', substr((string) $type->name, 4));
                 $ext = $parts[0];
                 unset($parts[0]);
                 $url = "https://github.com/yiisoft/yii2-$ext/blob/master/" . implode('/', $parts) . '.php';

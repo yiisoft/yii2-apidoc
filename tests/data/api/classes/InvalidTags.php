@@ -15,6 +15,8 @@ namespace yiiunit\apidoc\data\api\classes;
  * @phpstan-import-type InvalidPHPStanImportType
  * @psalm-type InvalidPsalmType
  * @psalm-import-type InvalidPsalmImportType
+ *
+ * @see NonExistentClass
  */
 class InvalidTags
 {

@@ -320,11 +320,8 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
             '2113696' => '0x2040A0',
             '16777215' => '0xFFFFFF',
         ];
-        if (isset($specials[$value])) {
-            return $specials[$value];
-        }
 
-        return $value;
+        return $specials[$value] ?? $value;
     }
 
     /**

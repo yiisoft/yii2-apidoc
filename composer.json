@@ -36,7 +36,8 @@
         "phpunit/phpunit": "^11.5",
         "spatie/phpunit-snapshot-assertions": "^5.0",
         "phpstan/phpstan": "^2.1",
-        "yiisoft/yii2-coding-standards": "^3.0"
+        "yiisoft/yii2-coding-standards": "^3.0",
+        "rector/rector": "^2.3"
     },
     "repositories": [
         {
@@ -69,6 +70,7 @@
         "cs": "./vendor/bin/phpcs",
         "cs-fix": "./vendor/bin/phpcbf",
         "static": "./vendor/bin/phpstan --memory-limit=-1",
-        "tests": "./vendor/bin/phpunit"
+        "tests": "./vendor/bin/phpunit",
+        "rector": "./vendor/bin/rector"
     }
 }

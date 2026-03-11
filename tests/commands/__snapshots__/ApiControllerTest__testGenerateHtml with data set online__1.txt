@@ -2,7 +2,21 @@ Array
 (
     [0] => Array
         (
-            [line] => 22
+            [line] => 96
+            [file] => tests/data/api/classes/BaseClass.php
+            [message] => No docblock for element 'methodWithoutDocBlock'
+        )
+
+    [1] => Array
+        (
+            [line] => 101
+            [file] => tests/data/api/classes/BaseClass.php
+            [message] => No short description for Method 'methodWithoutDescriptions'
+        )
+
+    [2] => Array
+        (
+            [line] => 24
             [file] => tests/data/api/classes/InvalidTags.php
             [message] => No short description for element '$invalidVar'
         )

@@ -94,7 +94,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
         $chapters = $this->loadGuideStructure($files);
         foreach ($files as $file) {
             $fileData[$file] = file_get_contents($file);
-            if (basename($file) == 'README.md') {
+            if (basename((string) $file) == 'README.md') {
                 continue; // to not add index file to nav
             }
         }
@@ -175,7 +175,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
 
         foreach ($doc->getElementsByTagName('a') as $link) {
             $href = $link->getAttribute('href');
-            if (strpos($href, '.md') === false) {
+            if (!str_contains($href, '.md')) {
                 continue;
             }
 
@@ -201,6 +201,6 @@ abstract class GuideRenderer extends BaseGuideRenderer
      */
     public function generateApiUrl($typeName)
     {
-        return rtrim($this->apiUrl, '/') . '/' . strtolower(str_replace('\\', '-', $typeName)) . '.html';
+        return rtrim((string) $this->apiUrl, '/') . '/' . strtolower(str_replace('\\', '-', $typeName)) . '.html';
     }
 }

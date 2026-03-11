@@ -93,6 +93,15 @@ class BaseClass extends AbstractClass
     {
     }
 
+    public function methodWithoutDocBlock(): void
+    {
+    }
+
+    /** */
+    public function methodWithoutDescriptions(): void
+    {
+    }
+
     /**
      * Lorem Ipsum is simply dummy text of the printing and typesetting industry.
      *

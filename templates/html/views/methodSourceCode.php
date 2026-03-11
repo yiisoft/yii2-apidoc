@@ -11,7 +11,7 @@ $sourceCode = $method->sourceCode;
 ?>
 
 <?php if ($sourceCode) {
-    $collapseId = 'collapse' . ucfirst($method->name); ?>
+    $collapseId = 'collapse' . ucfirst((string) $method->name); ?>
 
     <p>
         <a class="btn btn-link" data-toggle="collapse" data-target="#<?= $collapseId ?>" role="button"

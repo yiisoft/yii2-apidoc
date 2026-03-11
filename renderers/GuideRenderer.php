@@ -36,7 +36,7 @@ abstract class GuideRenderer extends BaseRenderer
         $chapters = [];
         foreach ($files as $file) {
             $contents = file_get_contents($file);
-            if (basename($file) == 'README.md') {
+            if (basename((string) $file) == 'README.md') {
                 $indexAnalyzer = new IndexFileAnalyzer();
                 $chapters = $indexAnalyzer->analyze($contents);
                 break;
@@ -44,7 +44,7 @@ abstract class GuideRenderer extends BaseRenderer
             if (preg_match("/^(.*)\n=+/", $contents, $matches)) {
                 $headlines[$file] = $matches[1];
             } else {
-                $headlines[$file] = basename($file);
+                $headlines[$file] = basename((string) $file);
             }
         }
 

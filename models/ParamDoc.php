@@ -49,10 +49,6 @@ class ParamDoc extends BaseObject
      * @var string|null
      */
     public $sourceFile;
-    /**
-     * @var FunctionDoc|MethodDoc
-     */
-    public $parent;
 
     /**
      * @param FunctionDoc|MethodDoc $parent
@@ -60,11 +56,9 @@ class ParamDoc extends BaseObject
      * @param Context|null $context
      * @param array $config
      */
-    public function __construct($parent, $reflector = null, $context = null, $config = [])
+    public function __construct(public $parent, $reflector = null, $context = null, $config = [])
     {
         parent::__construct($config);
-
-        $this->parent = $parent;
 
         if ($reflector !== null) {
             $this->name = $reflector->getName();

@@ -44,7 +44,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
         $latex .= str_replace(
             ['\\textbackslash', '::'],
             ['\allowbreak{}\\textbackslash', '\allowbreak{}::\allowbreak{}'],
-            $this->escapeLatex(strip_tags($block[1])),
+            $this->escapeLatex(strip_tags((string) $block[1])),
         );
         $latex .= '}';
 
@@ -65,7 +65,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
      */
     protected function translateBlockType($type)
     {
-        $key = ucfirst($type) . ':';
+        $key = ucfirst((string) $type) . ':';
         if (isset(ApiMarkdown::$blockTranslations[$key])) {
             $translation = ApiMarkdown::$blockTranslations[$key];
         } else {
@@ -100,7 +100,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     {
         $language = $block['language'] ?? 'text';
         // replace No-Break Space characters in code block, which do not render in LaTeX
-        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block['content']);
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', (string) $block['content']);
 
         return implode("\n", [
             '\\begin{minted}{' . "$language}",
@@ -116,7 +116,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
     protected function renderInlineCode($block)
     {
         // replace No-Break Space characters in code block, which do not render in LaTeX
-        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', $block[1]);
+        $content = preg_replace("/[\x{00a0}\x{202f}]/u", ' ', (string) $block[1]);
 
         return '\\mintinline{text}{' . str_replace("\n", ' ', $content) . '}';
     }

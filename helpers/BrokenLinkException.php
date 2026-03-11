@@ -20,27 +20,14 @@ use yii\base\Exception;
 class BrokenLinkException extends Exception
 {
     /**
-     * @var string
-     */
-    public $object;
-    /**
-     * @var TypeDoc|null
-     */
-    public $context;
-
-
-    /**
      * Constructor.
      *
      * @param string $object
      * @param TypeDoc|null $context
      */
-    public function __construct($object, $context)
+    public function __construct(public $object, public $context)
     {
-        $this->object = $object;
-        $this->context = $context;
-
-        $message = 'broken link to ' . $object . (($context !== null) ? ' in ' . $context->name : '');
+        $message = 'broken link to ' . $this->object . (($this->context !== null) ? ' in ' . $this->context->name : '');
         parent::__construct($message);
     }
 

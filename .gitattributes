@@ -32,3 +32,4 @@
 /phpstan-baseline.neon      export-ignore
 /phpstan.dist.neon          export-ignore
 /phpunit.xml.dist           export-ignore
+/rector.php                 export-ignore

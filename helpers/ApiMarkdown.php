@@ -86,12 +86,12 @@ class ApiMarkdown extends GithubMarkdown
         if (!empty($this->headings) && count($this->headings) > 1) {
             $toc = [];
             foreach ($this->headings as $heading) {
-                $toc[] = '<li>' . Html::a(strip_tags($heading['title']), '#' . $heading['id']) . '</li>';
+                $toc[] = '<li>' . Html::a(strip_tags((string) $heading['title']), '#' . $heading['id']) . '</li>';
             }
             $toc = '<div class="toc"><ol>' . implode("\n", $toc) . "</ol></div>\n";
 
             $needle = '</h1>';
-            $pos = strpos($content, $needle);
+            $pos = strpos((string) $content, $needle);
             if ($pos !== false) {
                 $content = substr_replace($content, "$needle\n$toc", $pos, strlen($needle));
             } else {
@@ -107,23 +107,23 @@ class ApiMarkdown extends GithubMarkdown
     protected function renderHeadline($block)
     {
         $content = $this->renderAbsy($block['content']);
-        if (preg_match('~<span id="(.*?)"></span>~', $content, $matches)) {
+        if (preg_match('~<span id="(.*?)"></span>~', (string) $content, $matches)) {
             $hash = $matches[1];
-            $content = preg_replace('~<span id=".*?"></span>~', '', $content);
+            $content = preg_replace('~<span id=".*?"></span>~', '', (string) $content);
         } else {
-            $hash = Inflector::slug(strip_tags($content));
+            $hash = Inflector::slug(strip_tags((string) $content));
         }
         $hashLink = "<span id=\"$hash\"></span><a href=\"#$hash\" class=\"hashlink\">&para;</a>";
 
         if ($block['level'] == 2) {
             $this->headings[] = [
-                'title' => trim($content),
+                'title' => trim((string) $content),
                 'id' => $hash,
             ];
         } elseif ($block['level'] > 2) {
             if (end($this->headings)) {
                 $this->headings[key($this->headings)]['sub'][] = [
-                    'title' => trim($content),
+                    'title' => trim((string) $content),
                     'id' => $hash,
                 ];
             }
@@ -151,9 +151,13 @@ class ApiMarkdown extends GithubMarkdown
 
         $linkHtml = parent::renderLink($block);
         // add special syntax for linking to the guide
-        $guideLinkHtml = preg_replace_callback('/href="guide:([A-z0-9-.#]+)"/i', function ($matches) {
-            return 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"';
-        }, $linkHtml, 1);
+        $guideLinkHtml = preg_replace_callback(
+            '/href="guide:([A-z0-9-.#]+)"/i',
+            fn($matches) => 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"',
+            (string) $linkHtml,
+            1
+        );
+
         if ($guideLinkHtml !== $linkHtml) {
             return $guideLinkHtml;
         }
@@ -175,9 +179,7 @@ class ApiMarkdown extends GithubMarkdown
             return $linkHtml;
         }
 
-        return preg_replace_callback('/href="(.+)"/i', function ($matches) use ($repoUrl) {
-            return 'href="' . $repoUrl . '/' . $matches[1] . '"';
-        }, $linkHtml, 1);
+        return preg_replace_callback('/href="(.+)"/i', fn($matches) => 'href="' . $repoUrl . '/' . $matches[1] . '"', (string) $linkHtml, 1);
     }
 
     /**
@@ -186,7 +188,7 @@ class ApiMarkdown extends GithubMarkdown
      */
     protected function translateBlockType($type)
     {
-        $key = ucfirst($type) . ':';
+        $key = ucfirst((string) $type) . ':';
         if (isset(static::$blockTranslations[$key])) {
             $translation = static::$blockTranslations[$key];
         } else {
@@ -254,7 +256,7 @@ class ApiMarkdown extends GithubMarkdown
                     return $description ?? $value;
                 }
 
-                if (strpos($value, '()') !== false) {
+                if (str_contains($value, '()')) {
                     $functionName = trim(substr($value, strripos($value, '\\') ?: 0, -2), '\\');
                     if (function_exists($functionName)) {
                         $functionUrl =  self::PHP_FUNCTION_BASE_URL . str_replace('_', '-', $functionName) . '.php';
