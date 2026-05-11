@@ -36,9 +36,3 @@ parameters:
 			count: 1
 			path: renderers/BaseRenderer.php
 
-		-
-			message: '#^Static property yii\\BaseYii\<yii\\web\\IdentityInterface\>\:\:\$app \(yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\) does not accept null\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: tests/TestCase.php
-
