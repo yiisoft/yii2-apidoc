@@ -1,37 +1,44 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Constructor of class yii\\\\apidoc\\\\models\\\\ConstDoc has an unused parameter \\$docBlock\\.$#"
-			count: 1
-			path: models/ConstDoc.php
-
-		-
-			message: "#^Constructor of class yii\\\\apidoc\\\\models\\\\ParamDoc has an unused parameter \\$context\\.$#"
-			count: 1
-			path: models/ParamDoc.php
-
-		-
-			message: "#^Static property yii\\\\BaseYii\\<yii\\\\web\\\\IdentityInterface\\>\\:\\:\\$app \\(yii\\\\console\\\\Application\\|yii\\\\web\\\\Application\\<yii\\\\web\\\\IdentityInterface\\>\\) does not accept null\\.$#"
-			count: 1
-			path: tests/TestCase.php
-
-		-
-			message: "#^Right side of \\&\\& is always true\\.$#"
-			count: 1
-			path: renderers/BaseRenderer.php
-
-		-
-			message: "#^Property yii\\\\apidoc\\\\models\\\\TypeDoc\\:\\:\\$events \\(array\\<string\\, yii\\\\apidoc\\\\models\\\\EventDoc\\>\\) does not accept array\\<string\\, yii\\\\apidoc\\\\models\\\\ConstDoc\\|yii\\\\apidoc\\\\models\\\\MethodDoc\\|yii\\\\apidoc\\\\models\\\\PropertyDoc\\>\\.$#"
-			count: 1
-			path: models/Context.php
-
-		-
-			message: "#^Strict comparison using \\=\\=\\= between array and false will always evaluate to false\\.$#"
+			message: '#^Strict comparison using \=\=\= between array and false will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
 			count: 1
 			path: commands/ApiController.php
 
 		-
-			message: "#^Access to an undefined property yii\\\\apidoc\\\\renderers\\\\BaseRenderer\\:\\:\\$repoUrl\\.$#"
+			message: '#^Access to an undefined property yii\\apidoc\\renderers\\BaseRenderer\:\:\$repoUrl\.$#'
+			identifier: property.notFound
 			count: 1
 			path: helpers/ApiMarkdown.php
+
+		-
+			message: '#^Constructor of class yii\\apidoc\\models\\ConstDoc has an unused parameter \$docBlock\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: models/ConstDoc.php
+
+		-
+			message: '#^Property yii\\apidoc\\models\\TypeDoc\:\:\$events \(array\<string, yii\\apidoc\\models\\EventDoc\>\) does not accept array\<string, yii\\apidoc\\models\\ConstDoc\|yii\\apidoc\\models\\MethodDoc\|yii\\apidoc\\models\\PropertyDoc\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: models/Context.php
+
+		-
+			message: '#^Constructor of class yii\\apidoc\\models\\ParamDoc has an unused parameter \$context\.$#'
+			identifier: constructor.unusedParameter
+			count: 1
+			path: models/ParamDoc.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: renderers/BaseRenderer.php
+
+		-
+			message: '#^Static property yii\\BaseYii\<yii\\web\\IdentityInterface\>\:\:\$app \(yii\\console\\Application\|yii\\web\\Application\<yii\\web\\IdentityInterface\>\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: tests/TestCase.php
 
