@@ -35,6 +35,7 @@ Yii Framework 2 apidoc extension Change Log
 - Chg #377: Raise minimum `phpdocumentor/type-resolver` version to 2.0 (mspirkov)
 - Chg #377: Raise minimum `nikic/php-parser` version to 5.0 (mspirkov)
 - Bug #381: Fix "All Classes" broken link (mspirkov)
+- Bug #384: Raise minimum `phpdocumentor/reflection` version to 7.0 (mspirkov)
 
 
 3.0.8 November 24, 2025
