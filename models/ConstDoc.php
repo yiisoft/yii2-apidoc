@@ -44,7 +44,7 @@ class ConstDoc extends BaseDoc
             return;
         }
 
-        $reflectorValue = $reflector->getValue(false);
+        $reflectorValue = $reflector->getValue();
         $this->value = $reflectorValue !== null ? (string) $reflectorValue : null;
     }
 }
