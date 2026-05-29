@@ -48,7 +48,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     /**
      * @var string
      */
-    public $allClassesUrl = 'index';
+    public $allClassesUrl = 'index.html';
     /**
      * @var string
      */
