@@ -29,9 +29,7 @@ class ApiMarkdown extends GithubMarkdown
 
     private const INLINE_TAG_LINK = 'link';
     private const INLINE_TAG_SEE = 'see';
-
     private const PHP_FUNCTION_BASE_URL = 'https://www.php.net/manual/en/function.';
-
     /**
      * @var BaseRenderer|null
      */

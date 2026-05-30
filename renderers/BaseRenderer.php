@@ -72,7 +72,6 @@ abstract class BaseRenderer extends Component
     private const PHP_TYPE_BASE_URL = 'https://www.php.net/language.types.';
     private const PHPSTAN_TYPE_BASE_URL = 'https://phpstan.org/writing-php-code/phpdoc-types#';
     private const PSALM_TYPE_BASE_URL = 'https://psalm.dev/docs/annotating_code/type_syntax/';
-
     /**
      * @var string[]
      */
@@ -95,7 +94,6 @@ abstract class BaseRenderer extends Component
         'never',
         'void',
     ];
-
     /**
      * @var array<string, string[]>
      */
@@ -148,7 +146,6 @@ abstract class BaseRenderer extends Component
             'value-of',
         ],
     ];
-
     /**
      * @var array<string, string>
      */
@@ -162,7 +159,6 @@ abstract class BaseRenderer extends Component
         'public-properties-of' => 'utility_types/#properties-oft',
         'callable-array' => 'array_types/#callable-arrays',
     ];
-
     /**
      * @var array<string, string>
      */
@@ -172,7 +168,6 @@ abstract class BaseRenderer extends Component
         'bool' => 'boolean',
         'int' => 'integer',
     ];
-
     /**
      * @var array<string, string>
      */
@@ -180,7 +175,6 @@ abstract class BaseRenderer extends Component
         'bool' => 'boolean',
         'int' => 'integer',
     ];
-
     /**
      * @var string
      */
@@ -210,6 +204,7 @@ abstract class BaseRenderer extends Component
      * @var string|null
      */
     public $guideUrl;
+
 
     public function init()
     {

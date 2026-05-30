@@ -20,12 +20,10 @@ final class PseudoTypeDoc extends BaseObject
 {
     public const TYPE_PHPSTAN = 'phpstan';
     public const TYPE_PSALM = 'psalm';
-
     public const TYPES = [
         self::TYPE_PHPSTAN,
         self::TYPE_PSALM,
     ];
-
     /**
      * @param value-of<self::TYPES> $type
      */

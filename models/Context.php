@@ -22,6 +22,9 @@ use yii\apidoc\helpers\TextHelper;
 use yii\base\Component;
 
 /**
+ *
+ * @property-read Project $reflectionProject
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  */
 class Context extends Component
@@ -50,6 +53,7 @@ class Context extends Component
      * @var array
      */
     public $warnings = [];
+
 
     /**
      * Returning TypeDoc for a type given

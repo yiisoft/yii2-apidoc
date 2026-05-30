@@ -39,13 +39,10 @@ class BaseDoc extends BaseObject
 {
     private const PHPSTAN_TYPE_ANNOTATION_NAME = 'phpstan-type';
     private const PSALM_TYPE_ANNOTATION_NAME = 'psalm-type';
-
     private const PHPSTAN_IMPORT_TYPE_ANNOTATION_NAME = 'phpstan-import-type';
     private const PSALM_IMPORT_TYPE_ANNOTATION_NAME = 'psalm-import-type';
-
     public const INHERITDOC_TAG_NAME = 'inheritdoc';
     private const TODO_TAG_NAME = 'todo';
-
     /**
      * @var \phpDocumentor\Reflection\Types\Context|null
      */
@@ -106,6 +103,8 @@ class BaseDoc extends BaseObject
      * @var array<string, Template>
      */
     public $templates = [];
+
+
     /**
      * @var array<string, PseudoTypeDoc>
      */
@@ -122,7 +121,6 @@ class BaseDoc extends BaseObject
      * @var array<string, PseudoTypeImportDoc>
      */
     public array $psalmTypeImports = [];
-
     /**
      * Checks if doc has tag of a given name
      * @param string $name tag name

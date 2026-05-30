@@ -1,41 +1,41 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
-4.0.0 under development
------------------------
+4.0.0 May 30, 2026
+------------------
 
+- Bug #275: Fix logging in `ApiMarkdown::renderLink()` (mspirkov)
+- Bug #283: Fix extracting the first sentence from the text (mspirkov)
+- Bug #294: Make the `yiisoft/yii2-bootstrap` dependency optional (mspirkov)
 - Bug #338: Fix deprecation error `Using null as an array offset is deprecated, use an empty string instead` (mspirkov)
-- Enh #337: Log invalid tags (mspirkov)
-- Enh #339, #340, #351, #368, #377: Add support for PHPStan/Psalm syntax (mspirkov)
-- Enh #339: Add support for intersection types (mspirkov)
 - Bug #339: Fix the mechanism for replacing `static` with FQCN (mspirkov)
 - Bug #339: Fix processing of multidimensional arrays (mspirkov)
-- Enh #342: Remove unnecessary files from Composer package (mspirkov)
+- Bug #360: Fix URL processing in inline tags `@link` (mspirkov)
+- Bug #381: Fix "All Classes" broken link (mspirkov)
+- Enh #244: Uniform processing and output of descriptions for methods and properties (mspirkov)
+- Enh #261: Add inheritance of interface constants in classes (mspirkov)
+- Enh #337: Log invalid tags (mspirkov)
+- Enh #339: Add support for intersection types (mspirkov)
+- Enh #339, #340, #351, #368, #377: Add support for PHPStan/Psalm syntax (mspirkov)
 - Enh #341: Add support for nullable types (mspirkov)
+- Enh #342: Remove unnecessary files from Composer package (mspirkov)
 - Enh #347: Add PHPDoc types for class properties (mspirkov)
 - Enh #348: Inherit descriptions of the parent class (mspirkov)
 - Enh #349: Add support for constants in interfaces and traits (mspirkov)
 - Enh #349: Add inheritance of constants in interfaces (mspirkov)
 - Enh #349: Add inheritance of trait constants in classes (mspirkov)
-- Enh #261: Add inheritance of interface constants in classes (mspirkov)
-- Chg #352: Remove deprecated code (mspirkov)
-- New #131: Add a new template for custom projects (jcherniak, cebe, mspirkov)
-- Fix #275: Fix logging in `ApiMarkdown::renderLink()` (mspirkov)
 - Enh #353: Add support for inline tags `@see` (mspirkov)
-- Fix #360: Fix URL processing in inline tags `@link` (mspirkov)
 - Enh #362: Display the method signature like in PHP (mspirkov)
 - Enh #366: Generating links to built-in PHP functions in the `@see` and `@link` tags (mspirkov)
 - Enh #367: Add support for descriptions in inline tags `@see` and `@link` (mspirkov)
+- Chg #352: Remove deprecated code (mspirkov)
 - Chg #367: Remove support for FQSEN in inline tags `@link` (mspirkov)
-- Bug #294: Make the `yiisoft/yii2-bootstrap` dependency optional (mspirkov)
 - Chg #373: Move `BaseDoc::extractFirstSentence()` to `TextHelper::extractFirstSentence()` (mspirkov)
-- Bug #283: Fix extracting the first sentence from the text (mspirkov)
-- Enh #244: Uniform processing and output of descriptions for methods and properties (mspirkov)
 - Chg #377: Raise minimum PHP version to 8.2 (mspirkov)
 - Chg #377: Raise minimum `phpdocumentor/type-resolver` version to 2.0 (mspirkov)
 - Chg #377: Raise minimum `nikic/php-parser` version to 5.0 (mspirkov)
-- Bug #381: Fix "All Classes" broken link (mspirkov)
 - Chg #384: Raise minimum `phpdocumentor/reflection` version to 7.0 (mspirkov)
+- New #131: Add a new template for custom projects (jcherniak, cebe, mspirkov)
 
 
 3.0.8 November 24, 2025
