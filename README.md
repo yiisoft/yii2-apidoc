@@ -27,14 +27,14 @@ The preferred way to install this extension is through [composer](https://getcom
 Either run
 
 ```sh
-composer require --prefer-dist yiisoft/yii2-apidoc:"~3.0.8"
+composer require --prefer-dist yiisoft/yii2-apidoc:"~4.0.0"
 ```
 
 The above command may not work on an existing project due to version conflicts that need to be resolved, so it
 is preferred to add the package manually to the `require` section of your composer.json:
 
 ```json
-"yiisoft/yii2-apidoc": "~3.0.8"
+"yiisoft/yii2-apidoc": "~4.0.0"
 ```
 
 afterwards run `composer update`. You may also run `composer update yiisoft/yii2-apidoc cebe/markdown` if you
