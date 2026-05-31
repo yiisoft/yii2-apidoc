@@ -19,6 +19,8 @@ use Exception;
  *
  * @since 2.0.0
  * @see AbstractClass description.
+ *
+ * @extends AbstractClass<mixed>
  */
 class BaseClass extends AbstractClass
 {
