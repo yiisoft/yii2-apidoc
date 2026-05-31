@@ -13,7 +13,7 @@ namespace yiiunit\apidoc\data\api\interfaces;
  *
  * @property string $interfaceProperty description
  *
- * @template TestExtends
+ * @template TestImplements
  */
 interface BaseInterface
 {
