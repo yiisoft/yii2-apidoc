@@ -20,6 +20,9 @@ use yiiunit\apidoc\data\api\interfaces\SubInterface;
  *
  * @see BaseInterface
  * @see SubInterface
+ *
+ * @template TestImplements
+ * @implements BaseInterface<mixed>
  */
 abstract class AbstractClass implements BaseInterface
 {
