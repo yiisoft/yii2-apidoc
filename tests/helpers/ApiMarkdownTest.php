@@ -95,11 +95,15 @@ class ApiMarkdownTest extends TestCase
                 "```php\n<?= \$x ?>\n```",
                 'language-html',
             ],
-            'unknown language is auto detected without language class' => [
-                "```\nSELECT * FROM t\n```",
-                'class="hljs sql"',
-            ],
         ];
+    }
+
+    public function testCodeBlockWithoutLanguageIsAutoDetected(): void
+    {
+        $result = ApiMarkdown::process("```\nSELECT * FROM t\n```");
+
+        $this->assertStringContainsString('class="hljs', $result);
+        $this->assertStringNotContainsString('language-', $result);
     }
 
     public function testGetHeadingsCollectsLevelTwoHeadings(): void

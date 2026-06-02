@@ -19,11 +19,6 @@ class StubController extends BaseController
 
     public bool $confirmResult = true;
 
-    /**
-     * @var string[]
-     */
-    public array $foundFiles = [];
-
     public function confirm($message, $default = false)
     {
         return $this->confirmResult;
@@ -31,7 +26,7 @@ class StubController extends BaseController
 
     protected function findFiles($dir, $except = [])
     {
-        return $this->foundFiles;
+        return [];
     }
 
     protected function findRenderer($template): never

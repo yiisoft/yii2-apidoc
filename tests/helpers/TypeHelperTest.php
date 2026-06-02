@@ -68,7 +68,7 @@ class TypeHelperTest extends TestCase
     }
 
     /**
-     * @return array<string, array{ConditionalForParameter|Conditional, string[]}>
+     * @return array<string, array{ConditionalForParameter|Conditional, Type[]}>
      */
     public static function provideGetPossibleTypesByConditionalTypeData(): array
     {
