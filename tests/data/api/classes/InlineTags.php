@@ -57,4 +57,11 @@ class InlineTags
     public function inlineLink(): void
     {
     }
+
+    /**
+     * See the [aliases section](guide:concept-aliases.md#defining-aliases) of the guide.
+     */
+    public function guideLink(): void
+    {
+    }
 }
