@@ -126,8 +126,10 @@ class ApiIndexerTest extends TestCase
         $this->assertInstanceOf(StandardTokenizer::class, $tokenizer);
         $this->assertContains('yii', $tokenizer->stopWords);
 
-        $indexer->getTokenizer();
-        $occurrences = array_filter($tokenizer->stopWords, static fn($word) => $word === 'yii');
+        $tokenizerAgain = $indexer->getTokenizer();
+        $this->assertInstanceOf(StandardTokenizer::class, $tokenizerAgain);
+        $this->assertContains('yii', $tokenizerAgain->stopWords);
+        $occurrences = array_filter($tokenizerAgain->stopWords, static fn($word) => $word === 'yii');
         $this->assertCount(1, $occurrences);
     }
 }

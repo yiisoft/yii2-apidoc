@@ -105,7 +105,7 @@ class TextHelperTest extends TestCase
                 'This value (default: null) is optional. It can be omitted.',
                 'This value (default: null) is optional.',
             ],
-            'multibyte ellipsis' => [
+            'cyrillic text before ellipsis' => [
                 'Загрузка... Готово.',
                 'Загрузка...',
             ],

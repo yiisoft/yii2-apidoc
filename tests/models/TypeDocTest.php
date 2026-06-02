@@ -39,6 +39,13 @@ class TypeDocTest extends TestCase
         $this->assertSame($type->methods['save'], $type->findSubject('save'));
     }
 
+    public function testFindSubjectStripsOwnNamespaceFromSubject(): void
+    {
+        $type = $this->makeType();
+        $this->assertSame('app', $type->namespace);
+        $this->assertSame($type->methods['save'], $type->findSubject('app\\save'));
+    }
+
     public function testFindSubjectFindsMethodWithParentheses(): void
     {
         $type = $this->makeType();
