@@ -105,6 +105,26 @@ class TextHelperTest extends TestCase
                 'This value (default: null) is optional. It can be omitted.',
                 'This value (default: null) is optional.',
             ],
+            'multibyte ellipsis' => [
+                'Загрузка... Готово.',
+                'Загрузка...',
+            ],
+            'multibyte sentence boundary' => [
+                'Привет всем. Пока.',
+                'Привет всем.',
+            ],
+            'multibyte before whitespace run' => [
+                'Кот.   Дом.',
+                'Кот.',
+            ],
+            'multiple spaces after terminator' => [
+                'End.   Next sentence.',
+                'End.',
+            ],
+            'tab after terminator' => [
+                "End.\tNext sentence.",
+                'End.',
+            ],
         ];
     }
 

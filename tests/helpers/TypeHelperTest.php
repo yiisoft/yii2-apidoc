@@ -112,6 +112,48 @@ class TypeHelperTest extends TestCase
                     new Static_(new Array_(new Mixed_(), new String_())),
                 ],
             ],
+            'scalar before aggregated keeps order' => [
+                new ConditionalForParameter(
+                    false,
+                    'first',
+                    new True_(),
+                    new Float_(),
+                    new Compound([new String_(), new Integer()]),
+                ),
+                [new Float_(), new String_(), new Integer()],
+            ],
+            'aggregated before nested conditional keeps order' => [
+                new ConditionalForParameter(
+                    false,
+                    'first',
+                    new True_(),
+                    new Compound([new String_(), new Integer()]),
+                    new Conditional(
+                        false,
+                        new Object_(new Fqsen('\\T')),
+                        new Array_(),
+                        new Float_(),
+                        new Mixed_(),
+                    ),
+                ),
+                [new String_(), new Integer(), new Float_(), new Mixed_()],
+            ],
+            'nested conditional for parameter' => [
+                new Conditional(
+                    false,
+                    new Object_(new Fqsen('\\T')),
+                    new Array_(),
+                    new ConditionalForParameter(
+                        false,
+                        'inner',
+                        new True_(),
+                        new String_(),
+                        new Integer(),
+                    ),
+                    new Float_(),
+                ),
+                [new String_(), new Integer(), new Float_()],
+            ],
         ];
     }
 }
