@@ -11,6 +11,7 @@ namespace yiiunit\apidoc\helpers;
 use ErrorException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use yii\apidoc\helpers\ApiMarkdown;
 
 class ApiMarkdownLinkTextTest extends TestCase
@@ -43,6 +44,31 @@ class ApiMarkdownLinkTextTest extends TestCase
         }
 
         $this->assertSame(1, $calls);
+    }
+
+    public function testUnexpectedDomWarningIsDelegated(): void
+    {
+        $receivedMessage = null;
+        $previousHandler = static function (int $severity, string $message) use (&$receivedMessage): bool {
+            $receivedMessage = $message;
+
+            return true;
+        };
+        $method = new ReflectionMethod(ApiMarkdown::class, 'handleLoadHtmlWarning');
+
+        $result = $method->invoke(null, $previousHandler, E_WARNING, 'Unexpected warning', __FILE__, __LINE__);
+
+        $this->assertTrue($result);
+        $this->assertSame('Unexpected warning', $receivedMessage);
+    }
+
+    public function testUnexpectedDomWarningUsesPhpHandlingWithoutPreviousHandler(): void
+    {
+        $method = new ReflectionMethod(ApiMarkdown::class, 'handleLoadHtmlWarning');
+
+        $result = $method->invoke(null, null, E_WARNING, 'Unexpected warning', __FILE__, __LINE__);
+
+        $this->assertFalse($result);
     }
 
     #[DataProvider('provideMalformedTitleData')]

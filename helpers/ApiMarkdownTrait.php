@@ -221,13 +221,7 @@ trait ApiMarkdownTrait
         $previousHandler = null;
         $previousHandler = set_error_handler(
             static function (int $severity, string $message, string $file, int $line) use (&$previousHandler): bool {
-                if (str_starts_with($message, 'DOMDocument::loadHTML():')) {
-                    return true;
-                }
-
-                return $previousHandler === null
-                    ? false
-                    : $previousHandler($severity, $message, $file, $line);
+                return self::handleLoadHtmlWarning($previousHandler, $severity, $message, $file, $line);
             },
             E_WARNING,
         );
@@ -245,6 +239,25 @@ trait ApiMarkdownTrait
         $result = $paragraph->firstChild->C14N();
 
         return $result === false ? '' : $result;
+    }
+
+    /**
+     * @param callable|null $previousHandler
+     */
+    private static function handleLoadHtmlWarning(
+        $previousHandler,
+        int $severity,
+        string $message,
+        string $file,
+        int $line
+    ): bool {
+        if (str_starts_with($message, 'DOMDocument::loadHTML():')) {
+            return true;
+        }
+
+        return $previousHandler === null
+            ? false
+            : $previousHandler($severity, $message, $file, $line);
     }
 
     /**
