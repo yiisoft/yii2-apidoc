@@ -222,7 +222,13 @@ trait ApiMarkdownTrait
         }
 
         $doc = new DOMDocument();
-        @$doc->loadHTML($title);
+        set_error_handler(static fn (): bool => true, E_WARNING);
+        try {
+            $doc->loadHTML($title);
+        } finally {
+            restore_error_handler();
+        }
+
         $paragraph = $doc->getElementsByTagName('p')->item(0);
         if ($paragraph === null || $paragraph->firstChild === null) {
             return '';
