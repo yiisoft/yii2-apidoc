@@ -19,12 +19,6 @@ parameters:
 			path: models/ConstDoc.php
 
 		-
-			message: '#^Property yii\\apidoc\\models\\TypeDoc\:\:\$events \(array\<string, yii\\apidoc\\models\\EventDoc\>\) does not accept array\<string, yii\\apidoc\\models\\ConstDoc\|yii\\apidoc\\models\\MethodDoc\|yii\\apidoc\\models\\PropertyDoc\>\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: models/Context.php
-
-		-
 			message: '#^Constructor of class yii\\apidoc\\models\\ParamDoc has an unused parameter \$context\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
@@ -35,4 +29,3 @@ parameters:
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
 			path: renderers/BaseRenderer.php
-

@@ -221,17 +221,16 @@ trait ApiMarkdownTrait
             return '';
         }
 
-        $useInternalErrors = libxml_use_internal_errors(true);
-
-        try {
-            $doc = new DOMDocument();
-            $doc->loadHTML($title);
-
-            return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
-        } finally {
-            libxml_clear_errors();
-            libxml_use_internal_errors($useInternalErrors);
+        $doc = new DOMDocument();
+        @$doc->loadHTML($title);
+        $paragraph = $doc->getElementsByTagName('p')->item(0);
+        if ($paragraph === null || $paragraph->firstChild === null) {
+            return '';
         }
+
+        $result = $paragraph->firstChild->C14N();
+
+        return $result === false ? '' : $result;
     }
 
     /**
