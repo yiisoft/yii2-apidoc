@@ -212,11 +212,26 @@ trait ApiMarkdownTrait
         }
 
         $title = Markdown::process($title);
-        $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
-        $doc = new DOMDocument();
-        $doc->loadHTML($title);
+        if ($title === '') {
+            return '';
+        }
 
-        return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
+        $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
+        if ($title === '') {
+            return '';
+        }
+
+        $useInternalErrors = libxml_use_internal_errors(true);
+
+        try {
+            $doc = new DOMDocument();
+            $doc->loadHTML($title);
+
+            return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($useInternalErrors);
+        }
     }
 
     /**
