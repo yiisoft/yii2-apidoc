@@ -20,6 +20,31 @@ class ApiMarkdownLinkTextTest extends TestCase
         $this->assertSame('<p>[[</p>' . "\n", ApiMarkdown::process('[['));
     }
 
+    public function testPreviousErrorHandlerIsRestored(): void
+    {
+        $calls = 0;
+        set_error_handler(static function () use (&$calls): bool {
+            $calls++;
+
+            return true;
+        });
+
+        try {
+            $markdown = new class () extends ApiMarkdown {
+                public function renderLinkText(string $title): string
+                {
+                    return $this->renderApiLinkText($title);
+                }
+            };
+            $markdown->renderLinkText('A & B');
+            trigger_error('after DOM parsing', E_USER_WARNING);
+        } finally {
+            restore_error_handler();
+        }
+
+        $this->assertSame(1, $calls);
+    }
+
     #[DataProvider('provideMalformedTitleData')]
     public function testMalformedHtmlDoesNotRaiseWarnings(string $title, ?string $expected): void
     {

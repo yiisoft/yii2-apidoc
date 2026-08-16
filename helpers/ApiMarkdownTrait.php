@@ -218,7 +218,19 @@ trait ApiMarkdownTrait
 
         $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
         $doc = new DOMDocument();
-        set_error_handler(static fn (): bool => true, E_WARNING);
+        $previousHandler = null;
+        $previousHandler = set_error_handler(
+            static function (int $severity, string $message, string $file, int $line) use (&$previousHandler): bool {
+                if (str_starts_with($message, 'DOMDocument::loadHTML():')) {
+                    return true;
+                }
+
+                return $previousHandler === null
+                    ? false
+                    : $previousHandler($severity, $message, $file, $line);
+            },
+            E_WARNING,
+        );
         try {
             $doc->loadHTML($title);
         } finally {
