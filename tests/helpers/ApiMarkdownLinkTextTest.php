@@ -47,6 +47,7 @@ class ApiMarkdownLinkTextTest extends TestCase
     public static function provideMalformedTitleData(): array
     {
         return [
+            'empty title' => ['', ''],
             'whitespace' => [' ', ''],
             'empty paragraph' => ['<p></p>', ''],
             // libxml preserves processing instructions differently across platforms.
