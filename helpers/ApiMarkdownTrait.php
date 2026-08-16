@@ -217,10 +217,6 @@ trait ApiMarkdownTrait
         }
 
         $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
-        if ($title === '') {
-            return '';
-        }
-
         $doc = new DOMDocument();
         set_error_handler(static fn (): bool => true, E_WARNING);
         try {

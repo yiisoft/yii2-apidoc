@@ -47,6 +47,8 @@ class ApiMarkdownLinkTextTest extends TestCase
     public static function provideMalformedTitleData(): array
     {
         return [
+            'whitespace' => [' ', ''],
+            'empty paragraph' => ['<p></p>', ''],
             // libxml preserves processing instructions differently across platforms.
             'PHP processing instruction' => ['<?php echo $value; ?>', null],
             'unescaped ampersand' => ['A & B', 'A &amp; B'],
