@@ -15,6 +15,11 @@ use yii\apidoc\helpers\ApiMarkdown;
 
 class ApiMarkdownLinkTextTest extends TestCase
 {
+    public function testIncompleteApiLinkRemainsText(): void
+    {
+        $this->assertSame('<p>[[</p>' . "\n", ApiMarkdown::process('[['));
+    }
+
     #[DataProvider('provideMalformedTitleData')]
     public function testMalformedHtmlDoesNotRaiseWarnings(string $title, ?string $expected): void
     {
