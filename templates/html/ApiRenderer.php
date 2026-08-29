@@ -289,7 +289,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
+            . $this->createSubjectLink($method, $method->name)
             . str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )')
             . ': <span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
             . $this->createTypeLink($method->returnType, $method, null, [], $context) . '</span>';
@@ -355,9 +355,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     protected function generateLink($text, $href, $options = [])
     {
+        $textWithBreaks = str_replace('\\', '\\<wbr>', $text);
         $options['href'] = $href;
 
-        return Html::a($text, null, $options);
+        return Html::a($textWithBreaks, null, $options);
     }
 
     /**
