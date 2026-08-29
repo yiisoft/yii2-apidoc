@@ -26,13 +26,11 @@ $this->beginContent('@yii/apidoc/templates/bootstrap/layouts/main.php', isset($t
             if (empty($namespace)) {
                 $namespace = 'Not namespaced classes';
             }
-            if (!isset($nav[$namespace])) {
-                $nav[$namespace] = [
-                    'label' => $namespace,
-                    'url' => '#',
-                    'items' => [],
-                ];
-            }
+            $nav[$namespace] ??= [
+                'label' => $namespace,
+                'url' => '#',
+                'items' => [],
+            ];
             $nav[$namespace]['items'][] = [
                 'label' => StringHelper::basename($class->name),
                 'url' => './' . $renderer->generateApiUrl($class->name),
