@@ -4,8 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.1 under development
 -----------------------
 
-- Enh #394: Remove the bold formatting from the method names (mspirkov)
-- Enh #394: Add `<wbr>` to namespaces (mspirkov)
+- no changes in this release.
 
 
 4.0.0 May 30, 2026
