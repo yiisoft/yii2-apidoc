@@ -242,10 +242,10 @@ trait ApiMarkdownTrait
     }
 
     /**
-     * @param callable|null $previousHandler
+     * @param (callable(int, string, string, int): bool)|null $previousHandler
      */
     private static function handleLoadHtmlWarning(
-        $previousHandler,
+        ?callable $previousHandler,
         int $severity,
         string $message,
         string $file,

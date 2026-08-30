@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.1 under development
 -----------------------
 
-- no changes in this release.
+- Bug #393: Suppress recoverable HTML parsing errors in API link titles (samdark)
 
 
 4.0.0 May 30, 2026
