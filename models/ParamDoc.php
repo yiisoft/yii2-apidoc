@@ -64,9 +64,7 @@ class ParamDoc extends BaseObject
         if ($reflector !== null) {
             $this->name = $reflector->getName();
 
-            if ($this->type === null) {
-                $this->type = $reflector->getType();
-            }
+            $this->type ??= $reflector->getType();
 
             $reflectorDefault = $reflector->getDefault();
             $this->defaultValue = $reflectorDefault !== null ? (string) $reflectorDefault : null;

@@ -71,9 +71,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     {
         parent::init();
 
-        if ($this->pageTitle === null) {
-            $this->pageTitle = 'Yii Framework 2.0 API Documentation';
-        }
+        $this->pageTitle ??= 'Yii Framework 2.0 API Documentation';
     }
 
     /**
@@ -289,7 +287,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
         }
 
         return '<span class="signature-defs">' . implode(' ', $definition) . '</span> '
-            . '<strong>' . $this->createSubjectLink($method, $method->name) . '</strong>'
+            . $this->createSubjectLink($method, $method->name)
             . str_replace('  ', ' ', '( ' . implode(', ', $params) . ' )')
             . ': <span class="signature-type">' . ($method->isReturnByReference ? '<b>&</b>' : '')
             . $this->createTypeLink($method->returnType, $method, null, [], $context) . '</span>';
@@ -355,9 +353,10 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
      */
     protected function generateLink($text, $href, $options = [])
     {
+        $textWithBreaks = str_replace('\\', '\\<wbr>', $text);
         $options['href'] = $href;
 
-        return Html::a($text, null, $options);
+        return Html::a($textWithBreaks, null, $options);
     }
 
     /**

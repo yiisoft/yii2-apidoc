@@ -131,9 +131,7 @@ class ApiMarkdownLaTeX extends GithubMarkdown
      */
     public static function process($content, $context = null, $paragraph = false)
     {
-        if (!isset(Markdown::$flavors['api-latex'])) {
-            Markdown::$flavors['api-latex'] = new static();
-        }
+        Markdown::$flavors['api-latex'] ??= new static();
 
         if (is_string($context)) {
             $context = static::$renderer->apiContext->getType($context);

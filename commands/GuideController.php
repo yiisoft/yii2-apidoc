@@ -52,17 +52,13 @@ class GuideController extends BaseController
         if ($this->pageTitle !== null) {
             $renderer->pageTitle = $this->pageTitle;
         }
-        if ($renderer->guideUrl === null) {
-            $renderer->guideUrl = './';
-        }
+        $renderer->guideUrl ??= './';
         $renderer->guidePrefix = $this->guidePrefix;
 
         // setup reference to apidoc
         if ($this->apiDocs !== null) {
             $path = $this->apiDocs;
-            if ($renderer->apiUrl === null) {
-                $renderer->apiUrl = $path;
-            }
+            $renderer->apiUrl ??= $path;
             // use relative paths relative to targetDir
             if (str_starts_with($path, '.')) {
                 $renderer->apiContext = $this->loadContext("$targetDir/$path");
@@ -70,9 +66,7 @@ class GuideController extends BaseController
                 $renderer->apiContext = $this->loadContext($path);
             }
         } elseif (file_exists($targetDir . '/cache/apidoc.data')) {
-            if ($renderer->apiUrl === null) {
-                $renderer->apiUrl = './';
-            }
+            $renderer->apiUrl ??= './';
             $renderer->apiContext = $this->loadContext($targetDir);
         } else {
             $renderer->apiContext = new Context();
