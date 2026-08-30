@@ -176,6 +176,8 @@ class SideNavWidget extends Widget
             Html::addCssClass($linkOptions, 'active');
         }
 
-        return Html::a($label, $url, $linkOptions) . $items;
+        $labelWithBreaks = str_replace('\\', '\\<wbr>', $label);
+
+        return Html::a($labelWithBreaks, $url, $linkOptions) . $items;
     }
 }
