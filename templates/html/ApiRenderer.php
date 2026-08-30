@@ -71,9 +71,7 @@ class ApiRenderer extends BaseApiRenderer implements ViewContextInterface
     {
         parent::init();
 
-        if ($this->pageTitle === null) {
-            $this->pageTitle = 'Yii Framework 2.0 API Documentation';
-        }
+        $this->pageTitle ??= 'Yii Framework 2.0 API Documentation';
     }
 
     /**

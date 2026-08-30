@@ -206,9 +206,7 @@ class ApiMarkdown extends GithubMarkdown
             return '';
         }
 
-        if (!isset(Markdown::$flavors['api'])) {
-            Markdown::$flavors['api'] = new static();
-        }
+        Markdown::$flavors['api'] ??= new static();
 
         if (is_string($context)) {
             $context = static::$renderer->apiContext->getType($context);

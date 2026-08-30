@@ -50,9 +50,7 @@ abstract class GuideRenderer extends BaseGuideRenderer
     {
         parent::init();
 
-        if ($this->pageTitle === null) {
-            $this->pageTitle = 'The Definitive Guide to Yii 2.0';
-        }
+        $this->pageTitle ??= 'The Definitive Guide to Yii 2.0';
     }
 
     /**

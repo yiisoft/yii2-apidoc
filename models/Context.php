@@ -182,21 +182,15 @@ class Context extends Component
             $trait->usedBy[] = $class->name;
 
             foreach ($trait->properties as $property) {
-                if (!isset($class->properties[$property->name])) {
-                    $class->properties[$property->name] = $property;
-                }
+                $class->properties[$property->name] ??= $property;
             }
 
             foreach ($trait->methods as $method) {
-                if (!isset($class->methods[$method->name])) {
-                    $class->methods[$method->name] = $method;
-                }
+                $class->methods[$method->name] ??= $method;
             }
 
             foreach ($trait->constants as $constant) {
-                if (!isset($class->constants[$constant->name])) {
-                    $class->constants[$constant->name] = $constant;
-                }
+                $class->constants[$constant->name] ??= $constant;
             }
         }
     }
@@ -214,17 +208,13 @@ class Context extends Component
             $this->interfaces[$interface]->implementedBy[] = $class->name;
 
             foreach ($this->interfaces[$interface]->constants as $constant) {
-                if (!isset($class->constants[$constant->name])) {
-                    $class->constants[$constant->name] = $constant;
-                }
+                $class->constants[$constant->name] ??= $constant;
             }
 
             // add not implemented interface methods
             if ($class->isAbstract) {
                 foreach ($this->interfaces[$interface]->methods as $method) {
-                    if (!isset($class->methods[$method->name])) {
-                        $class->methods[$method->name] = $method;
-                    }
+                    $class->methods[$method->name] ??= $method;
                 }
             }
         }
@@ -381,9 +371,7 @@ class Context extends Component
                     if (empty($param->description) || trim((string) $param->description) === '') {
                         $param->description = $inheritedMethod->params[$i]->description;
                     }
-                    if ($param->type === null) {
-                        $param->type = $inheritedMethod->params[$i]->type;
-                    }
+                    $param->type ??= $inheritedMethod->params[$i]->type;
                 }
                 $m->removeTag(BaseDoc::INHERITDOC_TAG_NAME);
             }
