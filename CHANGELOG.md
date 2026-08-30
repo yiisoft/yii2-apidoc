@@ -4,6 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.1 under development
 -----------------------
 
+- Bug #393: Suppress recoverable HTML parsing errors in API link titles (samdark)
 - Enh #394: Remove the bold formatting from the method names (mspirkov)
 - Enh #394: Add `<wbr>` to namespaces (mspirkov)
 

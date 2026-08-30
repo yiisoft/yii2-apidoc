@@ -29,4 +29,3 @@ parameters:
 			identifier: booleanAnd.rightAlwaysTrue
 			count: 1
 			path: renderers/BaseRenderer.php
-

@@ -212,11 +212,52 @@ trait ApiMarkdownTrait
         }
 
         $title = Markdown::process($title);
+        if ($title === '') {
+            return '';
+        }
+
         $title = EncodingHelper::convertToUtf8WithHtmlEntities($title);
         $doc = new DOMDocument();
-        $doc->loadHTML($title);
+        $previousHandler = null;
+        $previousHandler = set_error_handler(
+            static function (int $severity, string $message, string $file, int $line) use (&$previousHandler): bool {
+                return self::handleLoadHtmlWarning($previousHandler, $severity, $message, $file, $line);
+            },
+            E_WARNING,
+        );
+        try {
+            $doc->loadHTML($title);
+        } finally {
+            restore_error_handler();
+        }
 
-        return $doc->getElementsByTagName('p')[0]->childNodes[0]->c14n();
+        $paragraph = $doc->getElementsByTagName('p')->item(0);
+        if ($paragraph === null || $paragraph->firstChild === null) {
+            return '';
+        }
+
+        $result = $paragraph->firstChild->C14N();
+
+        return $result === false ? '' : $result;
+    }
+
+    /**
+     * @param (callable(int, string, string, int): bool)|null $previousHandler
+     */
+    private static function handleLoadHtmlWarning(
+        ?callable $previousHandler,
+        int $severity,
+        string $message,
+        string $file,
+        int $line
+    ): bool {
+        if (str_starts_with($message, 'DOMDocument::loadHTML():')) {
+            return true;
+        }
+
+        return $previousHandler === null
+            ? false
+            : $previousHandler($severity, $message, $file, $line);
     }
 
     /**
