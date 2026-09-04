@@ -1,5 +1,7 @@
 <?php
 
+use MSpirkov\Yii2\Rector\Rules\AddPropertyTagsRector;
+use MSpirkov\Yii2\Rector\Rules\RemoveRedundantPropertyTagsRector;
 use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
@@ -15,6 +17,10 @@ return RectorConfig::configure()
     ->withPhpSets(php82: true)
     ->withPHPStanConfigs([
         __DIR__ . '/phpstan.dist.neon',
+    ])
+    ->withRules([
+        AddPropertyTagsRector::class,
+        RemoveRedundantPropertyTagsRector::class,
     ])
     ->withSkip([
         __DIR__ . '/tests/data',
