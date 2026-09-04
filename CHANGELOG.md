@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.2 under development
 -----------------------
 
-- no changes in this release.
+- Enh #396: Add the missing `@property` tags (mspirkov)
 
 
 4.0.1 August 30, 2026
