@@ -27,6 +27,7 @@ use yii\apidoc\models\TypeDoc;
  * The base class for HTML API documentation renderers.
  *
  * @property-read View $view The view instance.
+ * @property-read string $viewPath The view path that may be prefixed to a relative view name.
  *
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0

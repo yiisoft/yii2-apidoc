@@ -18,6 +18,8 @@ use yii\base\ViewContextInterface;
 /**
  * The class for outputting documentation data structures as a JSON text.
  *
+ * @property-read string $viewPath The view path that may be prefixed to a relative view name.
+ *
  * @author Tom Worster <fsb@thefsb.org>
  * @since 2.0.5
  */
