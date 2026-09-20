@@ -26,6 +26,7 @@ $finder = (new Finder())
 return (new Config())
     ->setFinder($finder)
     ->setRules([
+        'no_unused_imports' => true,
         'phpdoc_scalar' => true,
         'header_comment' => [
             'comment_type' => 'PHPDoc',
