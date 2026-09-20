@@ -8,7 +8,6 @@
 
 namespace yii\apidoc\templates\project;
 
-
 /**
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 4.0
