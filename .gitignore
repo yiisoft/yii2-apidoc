@@ -44,9 +44,6 @@ phpunit.phar
 # local phpstan config
 phpstan.neon
 
-# local phpcs config
-phpcs.xml
-
 # PHP CS Fixer
 .php-cs-fixer.php
 .php-cs-fixer.cache
