@@ -8,7 +8,6 @@
 
 namespace yii\apidoc\helpers;
 
-use PhpParser\Node\Expr;
 use PhpParser\NodeAbstract;
 use PhpParser\PrettyPrinter\Standard as BasePrettyPrinter;
 

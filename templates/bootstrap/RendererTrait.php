@@ -94,7 +94,7 @@ trait RendererTrait
     {
         switch ($navClasses) {
             case 'app':
-                $types = array_filter($types, fn($val) => !str_starts_with((string) $val->name, 'yii\\'));
+                $types = array_filter($types, fn ($val) => !str_starts_with((string) $val->name, 'yii\\'));
                 break;
             case 'yii':
                 $self = $this;
@@ -111,7 +111,7 @@ trait RendererTrait
                 });
                 break;
             default:
-                $types = array_filter($types, fn($val) => str_starts_with((string) $val->name, "yii\\$navClasses\\"));
+                $types = array_filter($types, fn ($val) => str_starts_with((string) $val->name, "yii\\$navClasses\\"));
         }
 
         return $types;

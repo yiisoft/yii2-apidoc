@@ -31,7 +31,7 @@ class ApiMarkdownLinkTextTest extends TestCase
         });
 
         try {
-            $markdown = new class () extends ApiMarkdown {
+            $markdown = new class() extends ApiMarkdown {
                 public function renderLinkText(string $title): string
                 {
                     return $this->renderApiLinkText($title);
@@ -74,7 +74,7 @@ class ApiMarkdownLinkTextTest extends TestCase
     #[DataProvider('provideMalformedTitleData')]
     public function testMalformedHtmlDoesNotRaiseWarnings(string $title, ?string $expected): void
     {
-        $markdown = new class () extends ApiMarkdown {
+        $markdown = new class() extends ApiMarkdown {
             public function renderLinkText(string $title): string
             {
                 return $this->renderApiLinkText($title);

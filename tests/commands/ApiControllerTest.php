@@ -82,7 +82,7 @@ class ApiControllerTest extends TestCase
             // Normalize file paths
             $fileContent = preg_replace_callback(
                 '#(?:[A-Za-z]:)?[\\\\/](?:[^"\s]+[\\\\/])*?(tests[\\\\/][^"\s]+\.php)#',
-                fn(array $m) => str_replace('\\', '/', $m[1]),
+                fn (array $m) => str_replace('\\', '/', $m[1]),
                 $fileContent
             );
             $this->assertMatchesTextSnapshot($fileContent);
