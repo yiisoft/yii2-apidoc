@@ -151,7 +151,7 @@ class ApiMarkdown extends GithubMarkdown
         // add special syntax for linking to the guide
         $guideLinkHtml = preg_replace_callback(
             '/href="guide:([A-z0-9-.#]+)"/i',
-            fn($matches) => 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"',
+            fn ($matches) => 'href="' . static::$renderer->generateGuideUrl($matches[1]) . '"',
             (string) $linkHtml,
             1
         );
@@ -177,7 +177,7 @@ class ApiMarkdown extends GithubMarkdown
             return $linkHtml;
         }
 
-        return preg_replace_callback('/href="(.+)"/i', fn($matches) => 'href="' . $repoUrl . '/' . $matches[1] . '"', (string) $linkHtml, 1);
+        return preg_replace_callback('/href="(.+)"/i', fn ($matches) => 'href="' . $repoUrl . '/' . $matches[1] . '"', (string) $linkHtml, 1);
     }
 
     /**

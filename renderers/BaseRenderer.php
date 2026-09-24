@@ -263,7 +263,7 @@ abstract class BaseRenderer extends Component
                 if ($type instanceof Intersection) {
                     $innerTypes = TypeHelper::getTypesByAggregatedType($type);
                     $innerTypesLinks = array_map(
-                        fn(Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
+                        fn (Type $innerType) => $this->createTypeLink($innerType, $context, $title, $options, $currentTypeDoc),
                         $innerTypes,
                     );
                     $links[] = implode('&amp;', $innerTypesLinks);
@@ -804,7 +804,7 @@ abstract class BaseRenderer extends Component
         array $options
     ): array {
         return array_map(
-            fn(Type $type) => $this->createTypeLink($type, $context, $title, $options),
+            fn (Type $type) => $this->createTypeLink($type, $context, $title, $options),
             $types,
         );
     }
