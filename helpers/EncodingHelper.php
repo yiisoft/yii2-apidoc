@@ -18,9 +18,11 @@ final class EncodingHelper
     public static function convertToUtf8WithHtmlEntities(string $string): string
     {
         // The solution is taken from here: https://github.com/symfony/symfony/issues/44281#issuecomment-1647665965
+        // Encode existing entities too, so decoding the HTML syntax below does
+        // not turn escaped code examples or attribute values into raw markup.
         return mb_encode_numericentity(
             htmlspecialchars_decode(
-                htmlentities($string, ENT_NOQUOTES, 'UTF-8', false),
+                htmlentities($string, ENT_NOQUOTES, 'UTF-8'),
                 ENT_NOQUOTES,
             ),
             [0x80, 0x10FFFF, 0, ~0],
