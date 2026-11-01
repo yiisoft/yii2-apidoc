@@ -106,6 +106,7 @@ class ApiMarkdownLinkTextTest extends TestCase
             'empty title' => ['', ''],
             'whitespace' => [' ', ''],
             'empty paragraph' => ['<p></p>', ''],
+            'unknown HTML element' => ['<p><unknown>label</unknown></p>', '<unknown>label</unknown>'],
             // libxml preserves processing instructions differently across platforms.
             'PHP processing instruction' => ['<?php echo $value; ?>', null],
             'unescaped ampersand' => ['A & B', 'A &amp; B'],
