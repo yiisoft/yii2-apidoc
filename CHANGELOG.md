@@ -4,7 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.2 under development
 -----------------------
 
-- Bug: Preserve encoded code examples when rendering HTML documentation (samdark)
+- Bug #399: Preserve encoded code examples when rendering HTML documentation (samdark)
 - Enh #396: Add the missing `@property` tags (mspirkov)
 
 
