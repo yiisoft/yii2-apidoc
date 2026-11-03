@@ -178,6 +178,12 @@ Simple usage for stand-alone guide documentation:
 vendor/bin/apidoc guide source/docs ./output
 ```
 
+API generation also writes `cache/markdown.data`, a compact context containing the type and member metadata
+needed for Markdown API links. Guide generation prefers this resolved context to avoid loading documentation
+descriptions and source code into memory. The full `cache/apidoc.data` remains available for incremental API
+generation. Guides fall back to the full cache when the compact cache is missing or invalid, so older API builds
+continue to work. Regenerate API documentation to create the compact cache for existing output directories.
+
 Note that in order to generate a proper index file, the `README.md` file containing links to guide sections must be
 present. An example of such file can be found
 in the [yii2 repository](https://raw.githubusercontent.com/yiisoft/yii2/master/docs/guide/README.md).

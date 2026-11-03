@@ -131,6 +131,7 @@ class ApiController extends BaseController
         // render models
         $renderer->controller = $this;
         $renderer->render($context, $targetDir);
+        $this->storeMarkdownContext($context, $targetDir);
 
         if (!empty($context->errors)) {
             $errors = array_map(unserialize(...), array_unique(array_map(serialize(...), $context->errors)));

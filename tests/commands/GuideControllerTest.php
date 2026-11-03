@@ -11,6 +11,11 @@ namespace yiiunit\apidoc\commands;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
+use yii\apidoc\helpers\MarkdownContext;
+use yii\apidoc\models\ClassDoc;
+use yii\apidoc\models\Context;
+use yii\helpers\FileHelper;
+use yiiunit\apidoc\support\UnexpectedFullContext;
 use yiiunit\apidoc\support\controllers\GuideControllerMock;
 use yiiunit\apidoc\TestCase;
 
@@ -110,5 +115,47 @@ class GuideControllerTest extends TestCase
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'main.tex'));
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'guide.tex'));
         $this->assertTrue(file_exists($outputPath . DIRECTORY_SEPARATOR . 'title.tex'));
+    }
+
+    #[DataProvider('provideContextCacheData')]
+    public function testGuideApiLinksUseCompactCacheWithLegacyFallback(string $cache, string $location): void
+    {
+        $runtime = Yii::getAlias('@runtime');
+        $apiDirectory = $location === 'colocated' ? "$runtime/output" : "$runtime/api";
+        FileHelper::createDirectory("$apiDirectory/cache");
+        FileHelper::createDirectory("$runtime/input");
+        file_put_contents("$runtime/input/README.md", "# Example\n\n[[example\\Example]]");
+        $context = new Context();
+        $context->classes['example\\Example'] = new ClassDoc(null, null, ['name' => 'example\\Example']);
+        if ($cache === 'compact') {
+            file_put_contents("$apiDirectory/cache/markdown.data", serialize(MarkdownContext::create($context)));
+            file_put_contents("$apiDirectory/cache/apidoc.data", serialize(new UnexpectedFullContext()));
+        } else {
+            file_put_contents("$apiDirectory/cache/apidoc.data", serialize($context));
+            if ($cache === 'invalid') {
+                file_put_contents("$apiDirectory/cache/markdown.data", 'truncated cache');
+            }
+        }
+        $options = ['template' => 'project'];
+        if ($location !== 'colocated') {
+            $options['apiDocs'] = $location === 'relative' ? '../api' : $apiDirectory;
+        }
+
+        $this->generateGuide("$runtime/input", "$runtime/output", $options);
+
+        $html = file_get_contents("$runtime/output/guide-README.html");
+        $this->assertStringContainsString('example-example.html', $html);
+        $this->assertStringNotContainsString('broken-link', $html);
+    }
+
+    public static function provideContextCacheData(): array
+    {
+        return [
+            'compact absolute path' => ['compact', 'absolute'],
+            'compact relative path' => ['compact', 'relative'],
+            'compact colocated' => ['compact', 'colocated'],
+            'legacy cache' => ['legacy', 'absolute'],
+            'invalid compact cache' => ['invalid', 'absolute'],
+        ];
     }
 }

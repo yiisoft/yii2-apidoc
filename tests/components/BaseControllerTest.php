@@ -9,6 +9,7 @@
 namespace yiiunit\apidoc\components;
 
 use Yii;
+use RuntimeException;
 use yii\apidoc\models\Context;
 use yii\helpers\FileHelper;
 use yiiunit\apidoc\support\controllers\StubController;
@@ -103,5 +104,34 @@ class BaseControllerTest extends TestCase
 
         $this->assertSame([['message' => 'cached marker']], $context->errors);
         $this->assertStringContainsString('done', $this->_controller->flushStdOutBuffer());
+    }
+
+    public function testStoreMarkdownContextPublishesReadableCache(): void
+    {
+        $location = $this->tmpPath('compact');
+        $this->invoke($this->_controller, 'storeMarkdownContext', [new Context(), $location]);
+
+        $cacheFile = $location . '/cache/markdown.data';
+        $this->assertInstanceOf(Context::class, unserialize(file_get_contents($cacheFile)));
+        $this->assertFileIsReadable($cacheFile);
+        if (DIRECTORY_SEPARATOR === '/') {
+            $this->assertSame(0644, fileperms($cacheFile) & 0777);
+        }
+        $this->assertSame([], glob($location . '/cache/markdown-*'));
+    }
+
+    public function testStoreMarkdownContextCleansUpWhenPublicationFails(): void
+    {
+        $location = $this->tmpPath('failed-publication');
+        FileHelper::createDirectory($location . '/cache/markdown.data');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot publish Markdown context');
+
+        try {
+            $this->invoke($this->_controller, 'storeMarkdownContext', [new Context(), $location]);
+        } finally {
+            $this->assertDirectoryExists($location . '/cache/markdown.data');
+            $this->assertSame([], glob($location . '/cache/markdown-*'));
+        }
     }
 }
