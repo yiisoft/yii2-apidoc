@@ -61,17 +61,16 @@ class GuideController extends BaseController
             $renderer->apiUrl ??= $path;
             // use relative paths relative to targetDir
             if (str_starts_with($path, '.')) {
-                $renderer->apiContext = $this->loadContext("$targetDir/$path");
+                $renderer->apiContext = $this->loadMarkdownContext("$targetDir/$path");
             } else {
-                $renderer->apiContext = $this->loadContext($path);
+                $renderer->apiContext = $this->loadMarkdownContext($path);
             }
-        } elseif (file_exists($targetDir . '/cache/apidoc.data')) {
+        } elseif (file_exists($targetDir . '/cache/markdown.data') || file_exists($targetDir . '/cache/apidoc.data')) {
             $renderer->apiUrl ??= './';
-            $renderer->apiContext = $this->loadContext($targetDir);
+            $renderer->apiContext = $this->loadMarkdownContext($targetDir);
         } else {
             $renderer->apiContext = new Context();
         }
-        $this->updateContext($renderer->apiContext);
 
         // read blocktypes translations
         ApiMarkdown::$blockTranslations = [];
@@ -99,6 +98,27 @@ class GuideController extends BaseController
         $this->stdout('done.' . PHP_EOL, Console::FG_GREEN);
 
         return 0;
+    }
+
+    /**
+     * Loads resolved Markdown link metadata, retaining compatibility with older API builds.
+     * @param string $location
+     * @return Context
+     */
+    protected function loadMarkdownContext($location)
+    {
+        $cacheFile = $location . '/cache/markdown.data';
+        if (is_file($cacheFile)) {
+            $context = @unserialize(file_get_contents($cacheFile));
+            if ($context instanceof Context) {
+                return $context;
+            }
+        }
+
+        $context = $this->loadContext($location);
+        $this->updateContext($context);
+
+        return $context;
     }
 
 

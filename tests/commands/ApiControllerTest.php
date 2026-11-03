@@ -11,6 +11,7 @@ namespace yiiunit\apidoc\commands;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 use Yii;
+use yii\apidoc\models\Context;
 use yii\helpers\FileHelper;
 use yiiunit\apidoc\support\controllers\ApiControllerMock;
 use yiiunit\apidoc\TestCase;
@@ -135,5 +136,9 @@ class ApiControllerTest extends TestCase
 
         $content = file_get_contents(Yii::getAlias('@runtime') . '/types.json');
         $this->assertNotEmpty($content);
+        $compact = unserialize(file_get_contents(Yii::getAlias('@runtime') . '/cache/markdown.data'));
+        $this->assertInstanceOf(Context::class, $compact);
+        $this->assertNotEmpty($compact->classes);
+        $this->assertSame([], $compact->files);
     }
 }

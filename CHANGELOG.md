@@ -4,6 +4,7 @@ Yii Framework 2 apidoc extension Change Log
 4.0.2 under development
 -----------------------
 
+- Enh: Generate a compact API context for Markdown links to reduce guide generation memory use (samdark)
 - Bug #399: Preserve encoded code examples when rendering HTML documentation (samdark)
 - Enh #396: Add the missing `@property` tags (mspirkov)
 

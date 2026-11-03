@@ -8,6 +8,8 @@
 
 namespace yii\apidoc\components;
 
+use RuntimeException;
+use yii\apidoc\helpers\MarkdownContext;
 use yii\console\Application;
 use yii\apidoc\renderers\BaseRenderer;
 use yii\console\Controller;
@@ -141,6 +143,39 @@ abstract class BaseController extends Controller
             mkdir($dir, 0777, true);
         }
         file_put_contents($cacheFile, serialize($context));
+    }
+
+    /**
+     * Publishes an already resolved context containing only Markdown link metadata.
+     * @param Context $context
+     * @param string $location
+     */
+    protected function storeMarkdownContext($context, $location)
+    {
+        $directory = $location . '/cache';
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
+        $data = serialize(MarkdownContext::create($context));
+        $temporaryFile = @tempnam($directory, 'markdown-');
+        if ($temporaryFile === false) {
+            throw new RuntimeException("Cannot create temporary Markdown context in $directory.");
+        }
+
+        try {
+            // tempnam uses mode 0600; the published cache must also be readable by web applications.
+            if (dirname($temporaryFile) !== realpath($directory)
+                || @file_put_contents($temporaryFile, $data) !== strlen($data)
+                || !@chmod($temporaryFile, 0644)
+                || !@rename($temporaryFile, $directory . '/markdown.data')
+            ) {
+                throw new RuntimeException("Cannot publish Markdown context in $directory.");
+            }
+        } finally {
+            if (is_file($temporaryFile)) {
+                unlink($temporaryFile);
+            }
+        }
     }
 
     /**
