@@ -1,6 +1,12 @@
 Yii Framework 2 apidoc extension Change Log
 ===========================================
 
+4.0.3 under development
+-----------------------
+
+- no changes in this release.
+
+
 4.0.2 November 04, 2026
 -----------------------
 
